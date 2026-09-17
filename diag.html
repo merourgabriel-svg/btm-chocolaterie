@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html><body style="font-family:sans-serif;padding:20px;">
+<h1>Diagnostic relais (depuis ton site)</h1>
+<button onclick="test()">Lancer le test</button>
+<pre id="out" style="background:#eee;padding:10px;white-space:pre-wrap;"></pre>
+<script>
+async function test(){
+  const out = document.getElementById('out');
+  out.textContent = 'Test en cours...';
+  try{
+    const r = await fetch('/.netlify/functions/chat', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({messages:[{role:'user',content:'Réponds OK'}]})
+    });
+    const text = await r.text();
+    out.textContent = 'Code HTTP: ' + r.status + '\n\n' + text;
+  }catch(e){
+    out.textContent = 'Erreur: ' + e.message;
+  }
+}
+</script>
+</body></html>
