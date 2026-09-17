@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mes modules — Chocolaterie</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #20110a;
+    --surface: #2b1810;
+    --surface-alt: #3d2416;
+    --border: rgba(242,232,216,0.14);
+    --text: #f2e8d8;
+    --text-bright: #faf4e9;
+    --text-dim: rgba(242,232,216,0.62);
+    --caramel: #b8783a;
+    --caramel-hi: #cf9455;
+    --gold: #d8b66e;
+    --error: #7a2e2a;
+    --error-text: #e2a29d;
+    --shadow: rgba(0,0,0,0.35);
+  }
+  [data-theme="light"]{
+    --bg: #f7efdf;
+    --surface: #fffaf0;
+    --surface-alt: #efe0c4;
+    --border: rgba(61,36,22,0.16);
+    --text: #3a2415;
+    --text-bright: #241207;
+    --text-dim: rgba(58,36,21,0.62);
+    --caramel: #a8632b;
+    --caramel-hi: #94551f;
+    --gold: #93701f;
+    --error: #a13d34;
+    --error-text: #7c2b25;
+    --shadow: rgba(58,36,21,0.12);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Inter',sans-serif;
+    min-height:100vh;
+    -webkit-font-smoothing:antialiased;
+    transition:background .35s ease, color .35s ease;
+  }
+  h1,h2,h3{font-family:'Merriweather',serif; font-weight:700; letter-spacing:-0.005em;}
+  .wrap{max-width:920px; margin:0 auto; padding:44px 24px 80px;}
+
+  .hero{margin-bottom:36px; display:flex; justify-content:space-between; align-items:flex-start; gap:16px; flex-wrap:wrap;}
+  .hero .kicker{color:var(--caramel-hi); font-size:13px; font-weight:600; margin:0 0 8px;}
+  .hero h1{font-size:clamp(26px,4vw,34px); margin:0 0 8px; color:var(--text-bright); line-height:1.15;}
+  .hero p{color:var(--text-dim); font-size:15px; margin:0; max-width:52ch; line-height:1.6;}
+
+  .theme-toggle{
+    display:flex; align-items:center; gap:8px;
+    background:var(--surface); border:1px solid var(--border); color:var(--text-dim);
+    padding:9px 14px; border-radius:10px; font-size:13px; cursor:pointer; white-space:nowrap;
+  }
+  .theme-toggle:hover{color:var(--text);}
+  .theme-toggle svg{width:15px; height:15px;}
+
+  .grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill, minmax(260px, 1fr));
+    gap:18px;
+    margin-bottom:32px;
+  }
+  .card{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:16px;
+    padding:22px;
+    box-shadow:0 8px 24px var(--shadow);
+    display:flex;
+    flex-direction:column;
+    gap:14px;
+    transition:background .35s ease, border-color .35s ease;
+  }
+  .card h3{font-size:17px; margin:0; color:var(--text-bright); line-height:1.3;}
+  .card p.desc{color:var(--text-dim); font-size:13.5px; line-height:1.55; margin:0; flex-grow:1;}
+
+  /* Carte "Révisions générales" mise en valeur */
+  .card.highlight{
+    background:linear-gradient(155deg, var(--caramel-hi), var(--caramel) 70%, #8a5427);
+    border-color:transparent;
+  }
+  .card.highlight h3{color:#2a1a0a;}
+  .card.highlight p.desc{color:rgba(42,26,10,0.78);}
+  .card.highlight .btn{
+    background:var(--bg); color:var(--text-bright);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,0.08), 0 3px 10px var(--shadow);
+  }
+
+  .btn{
+    display:inline-flex; align-items:center; justify-content:center; gap:8px;
+    position:relative; border:none; border-radius:11px;
+    font-family:'Inter',sans-serif; font-weight:600; font-size:14px;
+    padding:11px 18px; cursor:pointer; color:var(--bg); text-decoration:none;
+    background:linear-gradient(155deg, var(--caramel-hi), var(--caramel) 60%, #8a5427);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,0.25), 0 3px 10px var(--shadow);
+    transition:transform .2s ease, box-shadow .2s ease;
+  }
+  .btn:hover{transform:translateY(-1px);}
+
+  .footer-note{
+    padding-top:20px; border-top:1px solid var(--border);
+    font-size:12.5px; color:var(--text-dim); text-align:center;
+  }
+
+  .section-title{
+    font-size:20px; margin:44px 0 6px; color:var(--text-bright);
+  }
+  .section-sub{
+    color:var(--text-dim); font-size:13.5px; margin:0 0 18px;
+  }
+  .doc-card{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:16px 18px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:14px;
+    margin-bottom:10px;
+    transition:background .35s ease, border-color .35s ease;
+  }
+  .doc-card .doc-icon{
+    width:36px; height:36px; flex-shrink:0; border-radius:9px;
+    background:var(--surface-alt); display:flex; align-items:center; justify-content:center;
+    color:var(--caramel-hi);
+  }
+  .doc-card .doc-icon svg{width:18px; height:18px;}
+  .doc-info{display:flex; align-items:center; gap:12px; min-width:0;}
+  .doc-text h4{margin:0 0 2px; font-size:14.5px; color:var(--text-bright); font-family:'Inter',sans-serif; font-weight:600;}
+  .doc-text p{margin:0; font-size:12.5px; color:var(--text-dim);}
+  .doc-tag{
+    font-size:11px; font-weight:600; padding:4px 10px; border-radius:99px;
+    white-space:nowrap; flex-shrink:0;
+  }
+  .doc-tag.consult{ background:color-mix(in srgb, var(--gold) 18%, transparent); color:var(--gold); }
+  .doc-tag.download{ background:color-mix(in srgb, var(--caramel) 20%, transparent); color:var(--caramel-hi); }
+  .doc-card a{ text-decoration:none; display:flex; align-items:center; gap:14px; flex:1; min-width:0; }
+
+  .lock-screen{
+    position:fixed; inset:0; background:var(--bg); z-index:100;
+    display:flex; align-items:center; justify-content:center; padding:24px;
+  }
+  .lock-screen.hidden{display:none;}
+  .lock-box{
+    background:var(--surface); border:1px solid var(--border); border-radius:16px;
+    padding:32px 28px; max-width:320px; width:100%; text-align:center;
+    box-shadow:0 12px 32px var(--shadow);
+  }
+  .lock-box h2{font-size:19px; margin:0 0 8px; color:var(--text-bright); font-family:'Merriweather',serif;}
+  .lock-box p{font-size:13.5px; color:var(--text-dim); margin:0 0 18px; line-height:1.5;}
+  .lock-box input{
+    width:100%; background:var(--surface-alt); border:1px solid var(--border); border-radius:10px;
+    color:var(--text); font-family:'Inter',sans-serif; font-size:16px; padding:12px 14px;
+    text-align:center; letter-spacing:2px; margin-bottom:12px;
+  }
+  .lock-box input:focus{outline:none; border-color:var(--caramel-hi);}
+  .lock-error{color:var(--error-text); font-size:12.5px; margin:-4px 0 12px; display:none;}
+  .lock-error.show{display:block;}
+</style>
+</head>
+<body>
+
+<div class="lock-screen" id="lockScreen">
+  <div class="lock-box">
+    <h2>Accès au hub</h2>
+    <p>Entre le code d'accès fourni par ton formateur pour consulter les modules.</p>
+    <input type="password" id="lockInput" placeholder="Code d'accès" autofocus>
+    <p class="lock-error" id="lockError">Code incorrect, réessaie.</p>
+    <button class="btn" id="lockSubmit" style="width:100%;">Accéder</button>
+  </div>
+</div>
+
+<div class="wrap" id="mainWrap" style="display:none;">
+
+  <div class="hero">
+    <div>
+      <p class="kicker">BTM Chocolatier — révisions</p>
+      <h1>Mes modules de cours</h1>
+      <p>Un quiz, un tuteur et une question d'examen par module. Clique sur "Ouvrir" pour commencer — connecte-toi à ton compte Claude pour que le tuteur IA fonctionne.</p>
+    </div>
+    <button class="theme-toggle" id="themeToggle">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4.5"/><path d="M12 2.5v2M12 19.5v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M2.5 12h2M19.5 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4"/></svg>
+      <span id="themeLabel">Mode clair</span>
+    </button>
+  </div>
+
+  <div class="grid" id="grid"></div>
+
+  <h2 class="section-title">Outils</h2>
+  <p class="section-sub">Des outils pratiques indépendants des modules de cours.</p>
+  <div class="grid" id="toolsGrid"></div>
+
+  <h2 class="section-title">Documents utiles</h2>
+  <p class="section-sub">Book, notation, TAC et matériel — certains sont à consulter, d'autres à télécharger.</p>
+  <div id="docsList"></div>
+
+  <p class="footer-note">Pour ajouter ou modifier un module ou un document, contacte ton formateur.</p>
+
+</div>
+
+<script>
+/* =========================================================
+   LISTE DES MODULES — ordre alphabétique, Révisions générales
+   toujours en dernier (mise en avant visuellement).
+   Chaque module est un artefact Claude publié : le tuteur IA
+   n'y fonctionne que si le visiteur est connecté à un compte
+   Claude et autorise l'artefact à l'utiliser.
+   ========================================================= */
+const MODULES = [
+  {
+    title: "Arômes & spiritueux",
+    desc: "Classification des arômes, réaction de Maillard, eaux de vie, liqueurs et vins.",
+    url: "https://claude.ai/artifact/XVJrY7oTXXaTPXejZQwujZ"
+  },
+  {
+    title: "Confiseries techniques",
+    desc: "Guimauve, pâte d'amande, pâte de fruits, fondant, nougat, caramels, fruits confits, bonbons liqueurs.",
+    url: "https://claude.ai/artifact/HdLCDPfYDp66nTszVphPNS"
+  },
+  {
+    title: "La rhéologie du chocolat",
+    desc: "Viscosité, limite d'écoulement et leviers de modification en atelier.",
+    url: "https://claude.ai/artifact/My2zNYafcEuFPXF1U2Yx4t"
+  },
+  {
+    title: "La transformation du cacao",
+    desc: "De la récolte à la tablette : fermentation, séchage, torréfaction, conchage.",
+    url: "https://claude.ai/artifact/ARJ14QJc9NqgsNfxVDCDez"
+  },
+  {
+    title: "Le beurre de cacao & la cristallisation",
+    desc: "Polymorphisme des cristaux, pré-cristallisation, tempérage, blanchiments, conservation.",
+    url: "https://claude.ai/artifact/1kfYdxDEJGKAnCYea6m6x8"
+  },
+  {
+    title: "Le cacao",
+    desc: "Botanique, culture, variétés, maladies et marché du cacao.",
+    url: "https://claude.ai/artifact/NAkV9yLFf2i5Do5UoxdVoj"
+  },
+  {
+    title: "Législation, réglementation & hygiène",
+    desc: "Appellations légales du chocolat, étiquetage, allergènes, HACCP et hygiène en laboratoire.",
+    url: "https://claude.ai/artifact/YVFtwc1m1d8MSdCpu1kUeX"
+  },
+  {
+    title: "Les additifs",
+    desc: "Colorants, conservateurs, antioxydants, gélifiants, acidifiants : réglementation et rôles.",
+    url: "https://claude.ai/artifact/B4LJgsESoK7ei83QTPuVbb"
+  },
+  {
+    title: "Les fruits & fruits secs",
+    desc: "Classification des fruits, fruits secs à coque, conservation et rancissement.",
+    url: "https://claude.ai/artifact/9tTWznrHDgSqp7QF74U9fC"
+  },
+  {
+    title: "Les ganaches",
+    desc: "Émulsion, AW/HRE, hygiène, défauts et conservation des ganaches.",
+    url: "https://claude.ai/artifact/6youw8nFzMZS7g51SSFP95"
+  },
+  {
+    title: "Les matières grasses",
+    desc: "Lait, crème, beurre et margarine : composition, fabrication, rôles en chocolaterie.",
+    url: "https://claude.ai/artifact/LvQGipgn7zUcxV8XTB5TcM"
+  },
+  {
+    title: "Produits dérivés du cacao",
+    desc: "Beurre de cacao et poudre de cacao : obtention, polymorphisme, alcalinisation.",
+    url: "https://claude.ai/artifact/2RrvztRAzy7Vxdis34qbD1"
+  },
+  {
+    title: "Sucres & édulcorants",
+    desc: "Saccharose, fabrication du sucre, sirops, polyols, édulcorants intenses.",
+    url: "https://claude.ai/artifact/9yqyuF3hc8ZAuJZpxY6nE2"
+  },
+  {
+    title: "Révisions générales",
+    desc: "Banque de questions par thème (cheminement guidé) et discussion libre avec le tuteur, tous modules confondus.",
+    url: "https://claude.ai/artifact/2kbSisf7qWiBgiD1fAZGTX",
+    highlight: true
+  }
+];
+
+/* =========================================================
+   OUTILS — outils pratiques indépendants, publiés comme
+   artefacts Claude à part (pas des modules de cours).
+   ========================================================= */
+const TOOLS = [
+  {
+    title: "Ancrage — révision par répétition espacée",
+    desc: "101 questions rédigées tirées de tous les modules. Réponds par écrit avant de voir la correction : le tuteur évalue si c'est juste ET assez développé, puis espace les révisions selon ta maîtrise.",
+    url: "https://claude.ai/artifact/2RERH2wvEGmK2tLZ8AgY5p"
+  },
+  {
+    title: "Générateur d'étiquette",
+    desc: "Renseigne une fiche produit pour générer une étiquette conforme (réglementation INCO) et un rapport de vérification automatique.",
+    url: "https://claude.ai/artifact/XnjZr6CLPGt9n5wyVH9s5R"
+  },
+  {
+    title: "Générateur d'évaluations transversales",
+    desc: "Génère une série de questions d'évaluation façon « Évaluation N°X », à cheval sur plusieurs modules, chacune avec un cheminement guidé (indices puis réponse assemblée).",
+    url: "https://claude.ai/artifact/N8chd6Eq4PekMp5tWyua54"
+  }
+];
+
+/* =========================================================
+   DOCUMENTS UTILES — fichiers déposés dans le dossier
+   documents/ à côté de ce fichier. type: "consult" ouvre le
+   PDF dans un nouvel onglet ; type: "download" force le
+   téléchargement (utile pour les fichiers Word/Excel actifs).
+   ========================================================= */
+const DOCUMENTS = [
+  {
+    title: "Le Book — mode d'emploi",
+    desc: "Objectif, structure et contenu attendu du book de fin de formation.",
+    url: "documents/book-mode-emploi.pdf",
+    type: "consult"
+  },
+  {
+    title: "Le Book — barème de notation",
+    desc: "Grille de notation : forme (/20) et contenus (/40).",
+    url: "documents/book-bareme-notation.pdf",
+    type: "consult"
+  },
+  {
+    title: "Tableaux d'Appréciation des Compétences (TAC)",
+    desc: "Grille d'évaluation en entreprise : comportement, organisation, technique.",
+    url: "documents/tac-competences.pdf",
+    type: "consult"
+  },
+  {
+    title: "Matériel utile CAP / BTM",
+    desc: "Liste non exhaustive de matériel conseillé, avec liens d'achat.",
+    url: "documents/materiel-utiles.pdf",
+    type: "consult"
+  },
+  {
+    title: "Table analytique — modèle vierge",
+    desc: "Table neutre à remplir pour équilibrer et analyser une recette de ganache.",
+    url: "documents/table-analytique-neutre.docx",
+    type: "download"
+  },
+  {
+    title: "Table analytique — outil d'autocorrection",
+    desc: "Feuille de calcul interactive : entre ta recette, les cases se colorent en vert ou rouge selon les paramètres cibles.",
+    url: "documents/autocorrection-table-analytique.xlsx",
+    type: "download"
+  },
+  {
+    title: "Calculateur de mélange ganache",
+    desc: "Calcule la température du liquide à ajouter au chocolat pour atteindre la température finale visée.",
+    url: "documents/calculateur-melange-ganache.xlsx",
+    type: "download"
+  },
+  {
+    title: "Fiche technique — coût de revient",
+    desc: "Modèle de fiche technique avec grille de prix des denrées, pour calculer le coût de production.",
+    url: "documents/fiche-technique-cout.docx",
+    type: "download"
+  },
+  {
+    title: "Économat — bon de commande",
+    desc: "Modèle vierge de bon de commande de matières premières.",
+    url: "documents/economat-bon-commande.docx",
+    type: "download"
+  },
+  {
+    title: "Tableau d'organisation du poste de travail",
+    desc: "Planifie ton temps de production minute par minute selon les réalisations du jour.",
+    url: "documents/tableau-organisation-poste.xlsx",
+    type: "download"
+  },
+  {
+    title: "Code d'usages en confiserie",
+    desc: "Document officiel du Syndicat National de la Confiserie : caramels, nougats, pâtes de fruits.",
+    url: "documents/code-usages-confiserie.pdf",
+    type: "download"
+  }
+];
+
+const ICONS = {
+  consult: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>`,
+  download: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12m0 0 4-4m-4 4-4-4M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg>`
+};
+
+function escapeHtml(str){
+  const div = document.createElement('div');
+  div.textContent = str || '';
+  return div.innerHTML;
+}
+function escapeAttr(str){
+  return (str || '').replace(/"/g, '&quot;');
+}
+
+function render(){
+  const grid = document.getElementById('grid');
+  grid.innerHTML = MODULES.map(mod => `
+    <div class="card${mod.highlight ? ' highlight' : ''}">
+      <h3>${escapeHtml(mod.title)}</h3>
+      <p class="desc">${escapeHtml(mod.desc || '')}</p>
+      <a class="btn" href="${escapeAttr(mod.url)}" target="_blank" rel="noopener">Ouvrir le module</a>
+    </div>
+  `).join('');
+
+  const toolsGrid = document.getElementById('toolsGrid');
+  toolsGrid.innerHTML = TOOLS.map(tool => `
+    <div class="card">
+      <h3>${escapeHtml(tool.title)}</h3>
+      <p class="desc">${escapeHtml(tool.desc || '')}</p>
+      <a class="btn" href="${escapeAttr(tool.url)}" target="_blank" rel="noopener">Ouvrir l'outil</a>
+    </div>
+  `).join('');
+
+  const docsList = document.getElementById('docsList');
+  docsList.innerHTML = DOCUMENTS.map(doc => {
+    const isDownload = doc.type === 'download';
+    const tagLabel = isDownload ? 'Télécharger' : 'Consulter';
+    const tagClass = isDownload ? 'download' : 'consult';
+    const attrs = isDownload ? `download rel="noopener"` : `target="_blank" rel="noopener"`;
+    return `
+      <div class="doc-card">
+        <a href="${escapeAttr(doc.url)}" ${attrs}>
+          <span class="doc-icon">${ICONS[doc.type] || ICONS.consult}</span>
+          <span class="doc-text">
+            <h4>${escapeHtml(doc.title)}</h4>
+            <p>${escapeHtml(doc.desc || '')}</p>
+          </span>
+        </a>
+        <span class="doc-tag ${tagClass}">${tagLabel}</span>
+      </div>
+    `;
+  }).join('');
+}
+
+/* ============ Theme toggle ============ */
+const themeToggle = document.getElementById('themeToggle');
+const themeLabel = document.getElementById('themeLabel');
+themeToggle.addEventListener('click', () => {
+  const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+  document.documentElement.setAttribute('data-theme', isLight ? 'dark' : 'light');
+  themeLabel.textContent = isLight ? 'Mode clair' : 'Mode sombre';
+});
+
+/* ============ View lock ============ */
+const VIEW_PASSCODE = "idm";
+const lockScreen = document.getElementById('lockScreen');
+const lockInput = document.getElementById('lockInput');
+const lockError = document.getElementById('lockError');
+const mainWrap = document.getElementById('mainWrap');
+
+function tryUnlock(){
+  if (lockInput.value.trim().toLowerCase() === VIEW_PASSCODE){
+    lockScreen.classList.add('hidden');
+    mainWrap.style.display = 'block';
+    render();
+  } else {
+    lockError.classList.add('show');
+  }
+}
+document.getElementById('lockSubmit').addEventListener('click', tryUnlock);
+lockInput.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') tryUnlock();
+});
+lockInput.addEventListener('input', () => lockError.classList.remove('show'));
+</script>
+</body>
+</html>
