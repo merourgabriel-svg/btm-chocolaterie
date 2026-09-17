@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Confiseries techniques — BTM Chocolatier</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #20110a;
+    --surface: #2b1810;
+    --surface-alt: #3d2416;
+    --border: rgba(242,232,216,0.14);
+    --text: #f2e8d8;
+    --text-bright: #faf4e9;
+    --text-dim: rgba(242,232,216,0.62);
+    --caramel: #b8783a;
+    --caramel-hi: #cf9455;
+    --gold: #d8b66e;
+    --error: #7a2e2a;
+    --error-text: #e2a29d;
+    --success: #4c7a3a;
+    --success-text: #b7dba0;
+    --shadow: rgba(0,0,0,0.35);
+  }
+  [data-theme="light"]{
+    --bg: #f7efdf;
+    --surface: #fffaf0;
+    --surface-alt: #efe0c4;
+    --border: rgba(61,36,22,0.16);
+    --text: #3a2415;
+    --text-bright: #241207;
+    --text-dim: rgba(58,36,21,0.62);
+    --caramel: #a8632b;
+    --caramel-hi: #94551f;
+    --gold: #93701f;
+    --error: #a13d34;
+    --error-text: #7c2b25;
+    --success: #3d6b2c;
+    --success-text: #2c4f20;
+    --shadow: rgba(58,36,21,0.12);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--bg); color:var(--text); font-family:'Inter',sans-serif;
+    min-height:100vh; -webkit-font-smoothing:antialiased;
+    transition:background .35s ease, color .35s ease;
+  }
+  h1,h2,h3{font-family:'Merriweather',serif; font-weight:700; letter-spacing:-0.005em;}
+  a{color:var(--caramel-hi);}
+  ::-webkit-scrollbar{width:10px;height:10px;}
+  ::-webkit-scrollbar-thumb{background:var(--surface-alt); border-radius:8px;}
+
+  .app{display:flex; min-height:100vh;}
+
+  /* ===== Sidebar ===== */
+  .sidebar{
+    width:230px; flex-shrink:0; background:var(--surface); border-right:1px solid var(--border);
+    display:flex; flex-direction:column; padding:24px 16px; gap:6px;
+    position:sticky; top:0; height:100vh;
+  }
+  .sidebar .brand{padding:4px 10px 20px;}
+  .sidebar .brand .kicker{color:var(--caramel-hi); font-size:11.5px; font-weight:600; text-transform:uppercase; letter-spacing:.06em; margin:0 0 4px;}
+  .sidebar .brand h1{font-size:20px; margin:0; color:var(--text-bright); line-height:1.25;}
+  .navbtn{
+    display:flex; align-items:center; gap:10px; text-align:left; width:100%;
+    background:transparent; border:none; border-radius:10px; padding:11px 12px;
+    color:var(--text-dim); font-family:'Inter',sans-serif; font-size:14px; font-weight:500;
+    cursor:pointer; transition:background .2s ease, color .2s ease;
+  }
+  .navbtn svg{width:17px; height:17px; flex-shrink:0;}
+  .navbtn:hover{background:var(--surface-alt); color:var(--text);}
+  .navbtn.active{background:linear-gradient(155deg, var(--caramel-hi), var(--caramel) 65%); color:var(--bg); font-weight:600;}
+  .sidebar-spacer{flex:1;}
+  .theme-toggle{
+    display:flex; align-items:center; gap:8px; background:var(--surface-alt); border:1px solid var(--border);
+    color:var(--text-dim); padding:10px 12px; border-radius:10px; font-size:13px; cursor:pointer;
+  }
+  .theme-toggle:hover{color:var(--text);}
+  .theme-toggle svg{width:15px;height:15px;}
+  .back-link{display:block; font-size:12.5px; color:var(--text-dim); text-decoration:none; padding:8px 12px 2px;}
+  .back-link:hover{color:var(--text);}
+
+  /* ===== Main ===== */
+  .main{flex:1; min-width:0; padding:40px 44px 80px;}
+  .panel{display:none; max-width:820px; margin:0 auto;}
+  .panel.active{display:block;}
+  .panel-head{margin-bottom:28px;}
+  .panel-head .kicker{color:var(--caramel-hi); font-size:12.5px; font-weight:600; margin:0 0 6px;}
+  .panel-head h2{font-size:26px; margin:0 0 8px; color:var(--text-bright);}
+  .panel-head p{color:var(--text-dim); font-size:14px; margin:0; line-height:1.55; max-width:60ch;}
+
+  .card{
+    background:var(--surface); border:1px solid var(--border); border-radius:16px;
+    padding:26px; box-shadow:0 8px 24px var(--shadow); margin-bottom:18px;
+  }
+
+  /* ===== Quiz ===== */
+  .quiz-progress-wrap{display:flex; align-items:center; gap:12px; margin-bottom:22px;}
+  .quiz-progress-bar{flex:1; height:8px; border-radius:99px; background:var(--surface-alt); overflow:hidden;}
+  .quiz-progress-fill{height:100%; background:linear-gradient(90deg, var(--caramel), var(--gold)); border-radius:99px; transition:width .3s ease;}
+  .quiz-progress-label{font-size:12.5px; color:var(--text-dim); white-space:nowrap;}
+  .quiz-q{font-size:17px; line-height:1.5; color:var(--text-bright); margin:0 0 20px; font-family:'Merriweather',serif; font-weight:700;}
+  .quiz-options{display:flex; flex-direction:column; gap:10px;}
+  .quiz-opt{
+    text-align:left; padding:13px 16px; border-radius:11px; border:1px solid var(--border);
+    background:var(--surface-alt); color:var(--text); font-family:'Inter',sans-serif; font-size:14.5px;
+    cursor:pointer; transition:border-color .15s ease, background .15s ease;
+  }
+  .quiz-opt:hover{border-color:var(--caramel-hi);}
+  .quiz-opt.correct{background:color-mix(in srgb, var(--success) 30%, var(--surface-alt)); border-color:var(--success);}
+  .quiz-opt.incorrect{background:color-mix(in srgb, var(--error) 30%, var(--surface-alt)); border-color:var(--error);}
+  .quiz-opt[disabled]{cursor:default;}
+  .quiz-explain{
+    margin-top:18px; padding:16px 18px; border-radius:12px; background:var(--surface-alt);
+    border-left:3px solid var(--gold); font-size:13.5px; line-height:1.6; color:var(--text); display:none;
+  }
+  .quiz-explain.show{display:block;}
+  .quiz-explain b{color:var(--text-bright);}
+  .quiz-next{margin-top:18px; display:none;}
+  .quiz-next.show{display:inline-flex;}
+  .quiz-result{text-align:center; padding:20px 0;}
+  .badge{
+    width:110px; height:110px; border-radius:50%; margin:0 auto 18px; display:flex; align-items:center;
+    justify-content:center; font-family:'Merriweather',serif; font-weight:900; font-size:15px; text-align:center;
+    box-shadow:inset 0 2px 6px rgba(0,0,0,0.25), 0 6px 18px var(--shadow); color:#2a1a0a;
+  }
+  .badge.bronze{background:linear-gradient(155deg,#d3925a,#9a5a2c);}
+  .badge.argent{background:linear-gradient(155deg,#e6e6e6,#a8a8a8); color:#2a2a2a;}
+  .badge.or{background:linear-gradient(155deg,#f2d27a,#c99a2e);}
+  .quiz-result h3{margin:0 0 6px; color:var(--text-bright); font-size:20px;}
+  .quiz-result p{color:var(--text-dim); font-size:14px; margin:0 0 22px;}
+
+  .btn{
+    display:inline-flex; align-items:center; justify-content:center; gap:8px; border:none; border-radius:11px;
+    font-family:'Inter',sans-serif; font-weight:600; font-size:14px; padding:11px 20px; cursor:pointer;
+    color:var(--bg); text-decoration:none; background:linear-gradient(155deg, var(--caramel-hi), var(--caramel) 60%, #8a5427);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,0.25), 0 3px 10px var(--shadow); transition:transform .15s ease;
+  }
+  .btn:hover{transform:translateY(-1px);}
+  .btn.ghost{background:transparent; color:var(--text); border:1px solid var(--border); box-shadow:none;}
+
+  /* ===== Tuteur ===== */
+  .chat-wrap{display:flex; flex-direction:column; height:64vh;}
+  .chat-log{flex:1; overflow-y:auto; padding:4px 2px 12px; display:flex; flex-direction:column; gap:14px;}
+  .msg{max-width:88%; padding:12px 15px; border-radius:14px; font-size:14px; line-height:1.55;}
+  .msg.user{align-self:flex-end; background:linear-gradient(155deg, var(--caramel-hi), var(--caramel)); color:var(--bg); border-bottom-right-radius:4px;}
+  .msg.bot{align-self:flex-start; background:var(--surface-alt); border:1px solid var(--border); color:var(--text); border-bottom-left-radius:4px; white-space:pre-wrap;}
+  .msg.bot.loading{color:var(--text-dim); font-style:italic;}
+  .suggestions{display:flex; flex-wrap:wrap; gap:8px; margin:6px 0 16px;}
+  .suggestion-chip{
+    background:var(--surface-alt); border:1px solid var(--border); color:var(--text-dim); font-size:12.5px;
+    padding:8px 13px; border-radius:99px; cursor:pointer; text-align:left;
+  }
+  .suggestion-chip:hover{border-color:var(--caramel-hi); color:var(--text);}
+  .chat-input-row{display:flex; gap:10px; margin-top:8px;}
+  .chat-input-row input{
+    flex:1; background:var(--surface-alt); border:1px solid var(--border); border-radius:11px; color:var(--text);
+    font-family:'Inter',sans-serif; font-size:14px; padding:12px 15px;
+  }
+  .chat-input-row input:focus{outline:none; border-color:var(--caramel-hi);}
+
+  /* ===== Question d'examen ===== */
+  .exam-pills{display:flex; flex-wrap:wrap; gap:8px; margin-bottom:22px;}
+  .exam-pill{
+    background:var(--surface-alt); border:1px solid var(--border); color:var(--text-dim); font-size:13px;
+    padding:9px 15px; border-radius:99px; cursor:pointer; font-family:'Inter',sans-serif;
+  }
+  .exam-pill.active{background:linear-gradient(155deg, var(--caramel-hi), var(--caramel)); color:var(--bg); border-color:transparent; font-weight:600;}
+  .exam-q-title{font-size:17px; font-family:'Merriweather',serif; font-weight:700; color:var(--text-bright); margin:0 0 6px;}
+  .exam-q-points{font-size:12px; color:var(--text-dim); margin:0 0 20px;}
+  .step{
+    background:var(--surface-alt); border-radius:12px; padding:14px 16px; margin-bottom:12px;
+    font-size:13.5px; line-height:1.6; border-left:3px solid var(--border);
+  }
+  .step.hint{border-left-color:var(--gold);}
+  .step-label{font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:.05em; color:var(--caramel-hi); margin-bottom:5px;}
+  .exam-answer{
+    display:none; margin-top:16px; padding:18px; border-radius:12px; background:var(--surface-alt);
+    border-left:3px solid var(--success); font-size:13.5px; line-height:1.65;
+  }
+  .exam-answer.show{display:block;}
+  .exam-answer h4{margin:14px 0 6px; font-size:13.5px; color:var(--text-bright); font-family:'Inter',sans-serif;}
+  .exam-answer h4:first-child{margin-top:0;}
+  .exam-answer ul{margin:4px 0; padding-left:18px;}
+  .exam-controls{display:flex; gap:10px; flex-wrap:wrap; margin-top:6px;}
+  .exam-note{font-size:11.5px; color:var(--text-dim); margin-top:14px; font-style:italic;}
+
+  /* ===== En bref ===== */
+  .brief-svg-wrap{background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:18px; margin-bottom:18px; overflow-x:auto;}
+  .brief-points{display:grid; grid-template-columns:repeat(auto-fit, minmax(230px,1fr)); gap:14px;}
+  .brief-point{background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:16px 18px;}
+  .brief-point h4{margin:0 0 6px; font-size:14px; color:var(--gold); font-family:'Inter',sans-serif;}
+  .brief-point p{margin:0; font-size:13px; line-height:1.55; color:var(--text-dim);}
+
+  @media (max-width: 860px){
+    .app{flex-direction:column;}
+    .sidebar{width:100%; height:auto; position:relative; flex-direction:row; overflow-x:auto; padding:14px 12px; align-items:center;}
+    .sidebar .brand{padding:0 12px 0 4px; flex-shrink:0;}
+    .sidebar-spacer{display:none;}
+    .navbtn{flex-shrink:0; width:auto;}
+    .theme-toggle{flex-shrink:0;}
+    .main{padding:26px 18px 60px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="app">
+  <nav class="sidebar">
+    <div class="brand">
+      <p class="kicker">BTM Chocolatier</p>
+      <h1>Confiseries techniques</h1>
+    </div>
+    <button class="navbtn active" data-tab="quiz">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+      Quiz
+    </button>
+    <button class="navbtn" data-tab="tuteur">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      Poser une question
+    </button>
+    <button class="navbtn" data-tab="examen">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M9 13h6M9 17h6M9 9h1"/></svg>
+      Question d'examen
+    </button>
+    <button class="navbtn" data-tab="brief">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+      En bref
+    </button>
+    <div class="sidebar-spacer"></div>
+    <a class="back-link" href="../index.html">← Retour au hub</a>
+    <button class="theme-toggle" id="themeToggle">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4.5"/><path d="M12 2.5v2M12 19.5v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M2.5 12h2M19.5 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4"/></svg>
+      <span id="themeLabel">Mode clair</span>
+    </button>
+  </nav>
+
+  <main class="main">
+
+    <!-- ===== QUIZ ===== -->
+    <section class="panel active" id="panel-quiz">
+      <div class="panel-head">
+        <p class="kicker">Quiz — Confiseries techniques</p>
+        <h2>Teste tes connaissances</h2>
+        <p>Guimauve, pâte d'amande, pâte de fruits, fondant, nougat, caramels, fruits confits, bonbons liqueurs.</p>
+      </div>
+      <div class="card" id="quizCard"></div>
+    </section>
+
+    <!-- ===== TUTEUR ===== -->
+    <section class="panel" id="panel-tuteur">
+      <div class="panel-head">
+        <p class="kicker">Tuteur IA — Confiseries techniques</p>
+        <h2>Poser une question</h2>
+        <p>Le tuteur répond uniquement à partir du cours de ce module. Pour les autres sujets, utilise le module concerné.</p>
+      </div>
+      <div class="card chat-wrap">
+        <div class="chat-log" id="chatLog"></div>
+        <div class="suggestions" id="chatSuggestions"></div>
+        <div class="chat-input-row">
+          <input type="text" id="chatInput" placeholder="Écris ta question sur le cacao…">
+          <button class="btn" id="chatSend">Envoyer</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== EXAMEN ===== -->
+    <section class="panel" id="panel-examen">
+      <div class="panel-head">
+        <p class="kicker">Question d'examen — Confiseries techniques</p>
+        <h2>Cheminement guidé</h2>
+        <p>Choisis une question, avance indice par indice, puis assemble ta réponse avant de découvrir le corrigé.</p>
+      </div>
+      <div class="exam-pills" id="examPills"></div>
+      <div class="card" id="examCard"></div>
+    </section>
+
+    <!-- ===== EN BREF ===== -->
+    <section class="panel" id="panel-brief">
+      <div class="panel-head">
+        <p class="kicker">En bref — Confiseries techniques</p>
+        <h2>Récapitulatif visuel</h2>
+        <p>Les 4 grandes variétés et l'essentiel à retenir avant l'épreuve.</p>
+      </div>
+      <div class="brief-svg-wrap" id="briefSvgWrap"></div>
+      <div class="brief-points" id="briefPoints"></div>
+    </section>
+
+  </main>
+</div>
+
+
+<script>
+/* =========================================================
+   COURSE_TEXT — synthèse fidèle du cours "Confiseries techniques"
+   (source du tuteur IA — ne répond qu'à partir de ce texte)
+   ========================================================= */
+const COURSE_TEXT = `
+
+MODULE : CONFISERIES TECHNIQUES — BTM Chocolatier Confiseur (Bloc 4)
+Module reconstitué à partir de la banque de questions techno et des codes d'usages officiels de la confiserie (Syndicat National de la Confiserie) — il n'existe pas de document de cours dédié pour ce thème, contrairement aux autres modules.
+
+1/ LE CANDISSAGE CONFISEUR
+Procédé de conservation visant à former une couche de cristaux de sucre soudés les uns aux autres, apportant une protection hermétique (empêche le séchage de la confiserie) et une finition brillante.
+Principe : la capacité de saturation d'un sirop de sucre dépend de sa température (l'eau à 100°C dissout 3 fois son poids en sucre ; à 10°C, seulement 1,7 fois). La saturation est la capacité de l'eau à maintenir dissous les cristaux de sucre ; la sursaturation est un sirop dont l'eau ne suffit plus, donc les cristaux se reforment.
+Méthode : réaliser un sirop de sucre saturé (3L d'eau pour 7,5kg de sucre) à 72Bx à chaud, en démarrant la fonte lentement et en nettoyant soigneusement (les impuretés gênent la cristallisation) — utiliser de préférence eau de source et sucre en morceaux pour leur propreté. Réserver le sirop avec du papier sulfurisé au contact (évite une recristallisation prématurée) jusqu'à température ambiante (~25°C). Filtrer et verser sur les supports à candir, en les immergeant complètement ; recouvrir d'un film au contact, laisser au repos 12h sans vibrations. En refroidissant, le sirop devient sursaturé et recristallise : le support (une « impureté » pour le sucre) sert de point d'accroche, permettant une cristallisation fine et régulière. Les vibrations pendant la cristallisation déplaceraient les cristaux en formation et donneraient une cristallisation irrégulière. Une fois la cristallisation effectuée, les supports sont totalement égouttés.
+
+2/ LES BONBONS LIQUEUR AVEC ROBE DE SUCRE
+Étapes de fabrication artisanale : préparation du matériel et pesée des matières premières → réalisation des empreintes dans un coffret d'amidon (préalablement tamisé et placé 24h à l'étuve) → cuisson de l'eau et du sucre → mélange sirop et alcool par transvasement d'un récipient à l'autre → remplissage des empreintes à l'entonnoir à couler → obturation des empreintes pleines par tamisage d'une fine couche d'amidon → repos 6 à 8h avant retournement → cristallisation 12 heures → ramassage et dépoussiérage des bonbons.
+Formation de la croûte de sucre : le sirop préparé est sursaturé. L'ajout d'alcool ramène ce sirop à saturation ; lors du repos dans l'amidon après coulage, l'alcool contenu dans le sirop repousse le saccharose en périphérie du bonbon, qui cristallise au contact de l'amidon — formant la fine robe de sucre caractéristique.
+
+3/ LE CODE D'USAGES « CARAMELS » (Syndicat National de la Confiserie, adopté le 22 mai 1996)
+La dénomination de vente « caramel » est réservée aux produits de confiserie préparés exclusivement par cuisson de sucres et/ou miel, lait et/ou protéines de lait, matières grasses alimentaires le cas échéant. Le produit fini doit contenir au minimum 1,5% de protéines de lait.
+« Caramel au lait » : cuisson de sucres et/ou miel, lait, matières grasses. Minimum 4,5% de matière sèche non grasse du lait et 1,5% de matières grasses d'origine lactique.
+« Caramel à la crème » / « caramel au beurre » : cuisson de sucres et/ou miel, lait/crème/beurre selon le cas, à l'exclusion de toute matière grasse non laitière. Minimum 4,5% de matière sèche non grasse du lait et 3% de matières grasses d'origine lactique.
+Ajouts autorisés dans les caramels ainsi définis : fruits secs, chocolat, café, parfums, suivant la législation en vigueur.
+C'est le lait qui donne au caramel sa saveur et sa couleur, via la caramélisation qu'il subit à la cuisson.
+
+4/ LE CODE DE BONNES PRATIQUES « NOUGAT » (adopté le 17 novembre 1997)
+Définition générale : un nougat est composé d'une pâte de base aérée et d'une garniture de « fruits » (au minimum amandes douces, noisettes, pistaches), représentant au moins 15% du produit fini.
+Pâte de base : consistance dure ou tendre, constituée de matières sucrantes (éventuellement additionnées de miel) ; aération obtenue par un ou plusieurs agents d'aération autorisés (blanc d'œuf de poule, albumine d'œuf, albumine de lait, gélatine alimentaire).
+Garniture : amandes douces/noisettes/pistaches au minimum 15% ; ingrédients facultatifs possibles (noix, noix de pécan, amandes de noyaux doux, pignons de pin, arachides, fruits confits/séchés, céréales soufflées, pralines, végétaux confits, grains d'anis/coriandre) — s'ils dépassent 3% du produit fini, ils doivent figurer dans la dénomination de vente, par ordre décroissant.
+Nougat de Montélimar (dénomination protégée si AOP/IGP) : aération uniquement à l'albumine d'œuf/blanc d'œuf, miel ≥25% du poids de matière sèche des matières sucrantes, seule substance aromatisante autorisée = arôme naturel de vanille. Garniture ≥30% du produit fini (30% min. d'amandes douces entières ou 28% amandes + 2% pistaches).
+Nougat blanc de Provence : aération identique, miel ≥30% des matières sucrantes (miel de lavande provençal), garniture ≥35% (amandes et/ou pistaches méditerranéennes exclusivement).
+Nougat à pâte NON aérée (nougat noir, nougat rouge, croquante) : pâte de base = sirop de matières sucrantes cuit et fortement caramélisé, garniture identique (min. 15%). Nougat noir de Provence : matières sucrantes ≥25% de miel provençal, garniture ≥50% (amandes/pistaches méditerranéennes et/ou anis/coriandre).
+
+5/ LE CODE D'USAGES « PÂTES DE FRUITS » (adopté le 16 septembre 2010)
+Définition : une confiserie ayant pour caractéristiques essentielles la présence majoritaire de « fruits », une texture solide, souple et non élastique, pouvant être aromatisée et/ou colorée.
+Critères de composition : doit contenir au moins 50% de fruits mis en œuvre (équivalent à 11% d'extrait sec) par rapport au produit avant finition (ex : candissage). Le fruit est apporté sous forme de pulpe et/ou de purée (procédés de conservation physique autorisés sans additifs autres que correcteurs d'acidité/acidifiants).
+Précisions sur la dénomination : « pâte de [fruit] » (ex. « pâte d'abricot ») réservée aux pâtes où 100% de la pulpe/purée utilisée provient du fruit cité (donc au moins 50% du fruit cité dans le produit fini) ; mention « pur [fruit] » possible pour un seul fruit. « Pâte de fruits [fruit] » (ex. « pâte de fruits à l'abricot ») réservée aux pâtes où au moins 25% de la pulpe/purée provient du fruit cité (au moins 12,5% dans le produit fini). Dans tous les autres cas, la mention « aromatisée » (ou équivalent : goût, arôme, saveur) est obligatoire si des arômes autres que naturels ont été utilisés. La représentation graphique d'un fruit n'est autorisée que si la saveur en provient réellement. Ajouts autorisés (fruits secs, épices, aromates) doivent être mentionnés dans la dénomination de vente s'ils sont mis en œuvre.
+
+6/ LE PRALINÉ ET LA PÂTE DE NOUGAT (ingrédients composés — Chambre Syndicale des Chocolatiers, avril 1999)
+Praliné : produit de confiserie, généralement à usage de fourrage, composé d'un mélange intime et broyé d'au minimum 50% d'amandes douces et/ou de noisettes (décortiquées, éventuellement torréfiées) et de sucre. Si d'autres fruits à coque (hors amande/noisette) sont utilisés, leur nom doit accompagner la dénomination de vente (ex. « praliné pistache »). L'arachide n'est pas considérée comme un « fruit à coque ». Fourrage au praliné : praliné + autres ingrédients, pourcentage de praliné indiqué sur l'étiquetage.
+Pâte de nougat : produit dont la pâte de base est aérée par un/plusieurs agents d'aération, et dont la garniture représente moins de 15% en poids du produit fini (5% si constituée uniquement de céréales soufflées).
+
+7/ LA GÉLATINE COMME AGENT AÉRATEUR
+Utilisée pour son pouvoir aérateur dans la guimauve, le nougat et les mousses, et comme stabilisant dans les caramels mous. Sa puissance de « collage » se mesure en degré bloom (50 à 300) : force en grammes nécessaire pour enfoncer de 4mm un plongeur de 12,7mm de diamètre dans une gelée à 6,67% de concentration, maintenue 16 à 18h à 10°C. Plus le bloom est élevé, plus la gélatine est puissante.
+
+8/ RAPPEL — LA CUISSON DU SUCRE EN CONFISERIE
+Les degrés de cuisson (voir module « Sucres & édulcorants ») déterminent l'usage confiseur : nappe/grand perlé pour la pâte de fruits (105-108,5°C), grand soufflé pour le fondant intérieur (115°C), boulé pour le fondant confiseur (120-124°C), petit cassé pour le caramel dur (130-140°C). Le fondant confiseur, une fois cuit au boulé puis travaillé (refroidi et malaxé pour cristalliser finement en masse blanche et lisse), sert de base pour glaçages et fourrages ; sa finition peut se faire par candissage (voir point 1).
+
+`;
+
+/* =========================================================
+   QUESTIONS — Quiz (QCM)
+   ========================================================= */
+const QUESTIONS = [
+  {
+    q: "Quel est le principe physique de base du candissage confiseur ?",
+    options: [
+      "La fermentation d'un sirop de sucre",
+      "La sursaturation d'un sirop de sucre qui recristallise en refroidissant, en s'accrochant à un support",
+      "L'ajout direct de cristaux de sucre en surface",
+      "Une simple évaporation à froid"
+    ],
+    correct: 1,
+    explain: "Le candissage exploite la <b>sursaturation</b> d'un sirop de sucre : en refroidissant, l'eau ne peut plus maintenir tout le sucre dissous, qui recristallise en s'accrochant au support immergé (une « impureté » pour le sucre), formant une couche fine et régulière."
+  },
+  {
+    q: "Pourquoi le repos du candissage doit-il se faire sans aucune vibration ?",
+    options: [
+      "Pour accélérer le processus",
+      "Les vibrations déplaceraient les cristaux en formation, donnant une cristallisation irrégulière",
+      "Cela n'a aucune importance",
+      "Pour éviter la fermentation"
+    ],
+    correct: 1,
+    explain: "Des vibrations pendant les <b>12h de repos</b> déplaceraient les cristaux en cours de formation, ce qui donnerait une cristallisation <b>irrégulière</b> au lieu d'une couche fine et homogène — d'où l'importance d'un repos parfaitement immobile."
+  },
+  {
+    q: "Comment se forme la croûte de sucre (robe) d'un bonbon liqueur ?",
+    options: [
+      "Par simple trempage dans du sucre glace",
+      "L'alcool du sirop repousse le saccharose en périphérie du bonbon lors du repos en amidon, qui cristallise au contact de l'amidon",
+      "Par cuisson directe à haute température",
+      "Par ajout de gélatine"
+    ],
+    correct: 1,
+    explain: "Le sirop est sursaturé, et l'ajout d'<b>alcool le ramène à saturation</b>. Lors du repos en coffret d'amidon après coulage, l'alcool <b>repousse le saccharose en périphérie</b> du bonbon, où il cristallise au contact de l'amidon — formant la fine robe de sucre caractéristique."
+  },
+  {
+    q: "Selon le code d'usages officiel, quel pourcentage minimal de protéines de lait un produit doit-il contenir pour porter la dénomination « caramel » ?",
+    options: ["0,5%", "1,5%", "5%", "10%"],
+    correct: 1,
+    explain: "Le produit fini doit contenir au minimum <b>1,5% de protéines de lait</b> pour porter la dénomination « caramel », réservée aux produits préparés exclusivement par cuisson de sucres/miel, lait/protéines de lait et matières grasses le cas échéant."
+  },
+  {
+    q: "Quelle est la différence de composition entre un « caramel au lait » et un « caramel à la crème/au beurre » ?",
+    options: [
+      "Aucune différence",
+      "Le caramel à la crème/au beurre exige une matière grasse d'origine exclusivement laitière et un taux de MG plus élevé (3% contre 1,5%)",
+      "Le caramel au lait contient plus de sucre",
+      "Le caramel à la crème ne contient jamais de lait"
+    ],
+    correct: 1,
+    explain: "Le « caramel au lait » exige minimum 4,5% de matière sèche non grasse du lait et <b>1,5%</b> de MG lactique. Le « caramel à la crème » ou « au beurre » exige la <b>même matière sèche non grasse</b> mais <b>3% de MG d'origine lactique</b>, à l'exclusion de toute matière grasse non laitière."
+  },
+  {
+    q: "Quel pourcentage minimal de « fruits » (amandes, noisettes, pistaches) la garniture d'un nougat doit-elle représenter ?",
+    options: ["5%", "15%", "30%", "50%"],
+    correct: 1,
+    explain: "La garniture doit représenter au moins <b>15%</b> du produit fini pour un nougat classique. Pour le Nougat de Montélimar, ce seuil monte à 30% minimum ; pour le Nougat blanc de Provence, à 35% minimum."
+  },
+  {
+    q: "Quels agents d'aération sont autorisés pour la pâte de base d'un nougat ?",
+    options: [
+      "Uniquement la levure chimique",
+      "Blanc d'œuf de poule, albumine d'œuf, albumine de lait, gélatine alimentaire",
+      "Uniquement le bicarbonate",
+      "Aucun agent n'est nécessaire"
+    ],
+    correct: 1,
+    explain: "L'aération de la pâte de base est obtenue à l'aide d'un ou plusieurs agents d'aération autorisés : <b>blanc d'œuf de poule, albumine d'œuf, albumine de lait ou gélatine alimentaire</b>. Le Nougat de Montélimar impose spécifiquement l'albumine d'œuf/blanc d'œuf uniquement."
+  },
+  {
+    q: "Quelle proportion minimale de miel doit contenir un Nougat de Montélimar (en poids de matière sèche des matières sucrantes) ?",
+    options: ["5%", "15%", "25%", "50%"],
+    correct: 2,
+    explain: "Le miel doit représenter au minimum <b>25%</b> du poids de matière sèche des matières sucrantes pour un Nougat de Montélimar, avec pour seule substance aromatisante autorisée l'arôme naturel de vanille (minimum 0,5g équivalent gousse par kg de matières sucrantes)."
+  },
+  {
+    q: "Selon le code d'usages, quel pourcentage minimal de fruits (pulpe/purée) une « pâte de fruits » doit-elle contenir ?",
+    options: ["10%", "25%", "50%", "80%"],
+    correct: 2,
+    explain: "La pâte de fruits doit contenir au moins <b>50%</b> de fruits mis en œuvre (équivalent à 11% d'extrait sec) par rapport au produit avant finition. Ce seuil descend à 25% de pulpe/purée du fruit cité (soit 12,5% dans le produit fini) pour l'appellation « pâte de fruits [fruit] » avec un autre nom composé."
+  },
+  {
+    q: "Quelle est la différence entre « pâte d'abricot » et « pâte de fruits à l'abricot » ?",
+    options: [
+      "Aucune différence légale",
+      "« Pâte d'abricot » exige 100% de la pulpe issue de l'abricot ; « pâte de fruits à l'abricot » n'en exige que 25% minimum",
+      "« Pâte de fruits à l'abricot » exige plus d'abricot que « pâte d'abricot »",
+      "Les deux appellations sont interchangeables sans condition"
+    ],
+    correct: 1,
+    explain: "« Pâte d'abricot » (ou « pur abricot ») exige que <b>100%</b> de la pulpe/purée utilisée provienne de l'abricot. « Pâte de fruits à l'abricot » n'exige que <b>25% minimum</b> de la pulpe issue de l'abricot cité — une différence de dénomination très encadrée légalement."
+  },
+  {
+    q: "Quelle est la composition minimale légale d'un praliné (au sens des ingrédients composés) ?",
+    options: [
+      "100% de sucre",
+      "Au minimum 50% d'amandes douces et/ou de noisettes, mélangées à du sucre",
+      "Uniquement des noisettes, sans sucre",
+      "Un mélange à parts égales d'eau et de sucre"
+    ],
+    correct: 1,
+    explain: "Le praliné est composé d'un mélange intime et broyé comprenant au minimum <b>50% d'amandes douces d'amandier et/ou de noisettes</b> (décortiquées, éventuellement torréfiées), le reste étant du sucre. Si un autre fruit à coque est utilisé, son nom doit accompagner la dénomination de vente."
+  },
+  {
+    q: "Que mesure le degré bloom d'une gélatine ?",
+    options: [
+      "Sa teneur en sucre",
+      "Sa puissance de « collage » (force en gramme pour enfoncer un plongeur dans une gelée test)",
+      "Sa couleur",
+      "Sa température de fusion"
+    ],
+    correct: 1,
+    explain: "Le degré bloom mesure la <b>force en grammes nécessaire</b> pour enfoncer de 4mm un plongeur de 12,7mm de diamètre dans une gelée test à 6,67% de concentration, maintenue 16-18h à 10°C. C'est la <b>puissance de collage</b> de la gélatine, sur une échelle de 50 à 300."
+  },
+  {
+    q: "Dans quelles confiseries la gélatine joue-t-elle un rôle d'agent aérateur ?",
+    options: ["Le caramel dur uniquement", "La guimauve, le nougat, les mousses", "Les fruits confits uniquement", "Le fondant uniquement"],
+    correct: 1,
+    explain: "La gélatine est utilisée comme agent <b>aérateur</b> dans la <b>guimauve, le nougat et les mousses</b>, et comme agent <b>stabilisant</b> dans les caramels mous — un rôle bien distinct de son emploi comme gélifiant classique (gelées)."
+  }
+];
+
+/* =========================================================
+   EXAM_QUESTIONS — cheminements guidés
+   ========================================================= */
+const EXAM_QUESTIONS = [
+  {
+    id: "candissage",
+    title: "Qu'est-ce que le candissage confiseur ? Quel est son rôle ? Comment s'effectue cette opération ?",
+    points: "d'après la banque de questions et l'Évaluation N°4",
+    hints: [
+      "Explique d'abord le principe physique (saturation/sursaturation) et le rôle protecteur du candissage.",
+      "Détaille ensuite la méthode étape par étape, du sirop au support candi."
+    ],
+    answerHtml: `
+      <h4>Définition et rôle</h4>
+      <p>Procédé de conservation qui forme une couche de cristaux de sucre soudés entre eux, apportant une <b>protection hermétique</b> (empêche le séchage de la confiserie) et une <b>finition brillante</b>. Il exploite la capacité de saturation d'un sirop de sucre selon sa température (1,7 fois son poids à 10°C, 3 fois à 100°C).</p>
+      <h4>Méthode</h4>
+      <p>Réaliser un sirop saturé (3L d'eau pour 7,5kg de sucre) à 72Bx à chaud, en nettoyant soigneusement le matériel (les impuretés gênent la cristallisation). Réserver au repos avec papier sulfurisé au contact jusqu'à température ambiante (~25°C). Filtrer et verser sur les supports à candir en les immergeant complètement, recouvrir d'un film au contact, laisser reposer <b>12h sans vibrations</b>. Le sirop en refroidissant devient sursaturé et recristallise en s'accrochant au support (une « impureté » pour le sucre), donnant une cristallisation fine et régulière. Égoutter totalement les supports une fois cristallisés.</p>`
+  },
+  {
+    id: "bonbon-liqueur",
+    title: "Indiquez les étapes de fabrication d'un bonbon liqueur avec robe de sucre. Expliquez le phénomène de cristallisation",
+    points: "d'après le corrigé officiel 1103-2023 et la banque de questions",
+    hints: [
+      "Il y a 9 étapes, du coffret d'amidon au dépoussiérage final.",
+      "Le phénomène de cristallisation repose sur le rôle particulier joué par l'alcool dans le sirop sursaturé."
+    ],
+    answerHtml: `
+      <h4>Étapes de fabrication</h4>
+      <p>Préparation du matériel et pesée des matières premières → réalisation des empreintes dans un coffret d'amidon (tamisé, 24h à l'étuve) → cuisson de l'eau et du sucre → mélange sirop et alcool par transvasement → remplissage des empreintes à l'entonnoir à couler → obturation par tamisage d'une fine couche d'amidon → repos 6 à 8h avant retournement → cristallisation 12 heures → ramassage et dépoussiérage.</p>
+      <h4>Le phénomène de cristallisation</h4>
+      <p>Le sirop préparé est <b>sursaturé</b>. L'ajout d'<b>alcool</b> le ramène à saturation. Lors du repos en amidon après coulage, l'alcool contenu dans le sirop <b>repousse le saccharose en périphérie</b> du bonbon, qui cristallise au contact de l'amidon — c'est ainsi que se forme la fine robe de sucre caractéristique du bonbon liqueur.</p>`
+  },
+  {
+    id: "code-caramels",
+    title: "Sous quelles conditions peut-on utiliser la mention « au beurre » ou « à la crème » dans la fabrication des caramels ?",
+    points: "d'après la banque de questions et le code d'usages officiel « Caramels »",
+    hints: [
+      "Ces deux mentions imposent une exclusivité sur l'origine de la matière grasse.",
+      "Précise le taux minimal de matière grasse d'origine lactique exigé."
+    ],
+    answerHtml: `
+      <p>Les dénominations « caramel à la crème » et « caramel au beurre » sont réservées aux produits de confiserie préparés exclusivement par cuisson de sucres et/ou miel, et de lait, crème ou beurre selon le cas, <b>à l'exclusion de toute matière grasse d'origine non laitière</b>. Le produit fini doit contenir au moins 4,5% de matière sèche non grasse du lait, et <b>3% de matières grasses d'origine lactique</b>. Dans ces caramels, sont autorisés des ajouts comme des fruits secs, du chocolat, du café ou des parfums, suivant la législation en vigueur.</p>`
+  },
+  {
+    id: "nougat-miel",
+    title: "Quel pourcentage de miel un nougat doit-il contenir pour prétendre à l'appellation « nougat au miel » ou « Nougat de Montélimar » ?",
+    points: "d'après la banque de questions et le code d'usages officiel « Nougat »",
+    hints: [
+      "Le seuil de miel n'est pas le même selon qu'on parle d'un nougat générique « au miel » ou de l'appellation protégée « Montélimar ».",
+      "Précise aussi la nature de l'agent d'aération et de l'arôme autorisés pour le Nougat de Montélimar."
+    ],
+    answerHtml: `
+      <p>Pour le <b>Nougat de Montélimar</b> spécifiquement, le miel doit représenter au minimum <b>25% du poids de matière sèche</b> des matières sucrantes mises en œuvre. L'aération doit être obtenue uniquement au moyen d'albumine d'œuf et/ou de blanc d'œuf de poule, et la seule substance aromatisante autorisée est l'arôme naturel de vanille (minimum 0,5g équivalent gousse par kg de matières sucrantes). La garniture doit représenter au moins 30% du produit fini (amandes et/ou pistaches). Pour un nougat générique portant la mention « au miel » dans sa dénomination, le pourcentage de miel doit simplement être déclaré dès lors qu'il dépasse 3% du produit fini, par ordre décroissant avec les autres ingrédients facultatifs.</p>`
+  }
+];
+
+/* =========================================================
+   QUIZ LOGIC
+   ========================================================= */
+let quizOrder = [];
+let quizIndex = 0;
+let quizScore = 0;
+
+function shuffle(arr){
+  const a = arr.slice();
+  for(let i=a.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]]=[a[j],a[i]];
+  }
+  return a;
+}
+
+function startQuiz(){
+  quizOrder = shuffle(QUESTIONS.map((_,i)=>i));
+  quizIndex = 0;
+  quizScore = 0;
+  renderQuizQuestion();
+}
+
+function renderQuizQuestion(){
+  const card = document.getElementById('quizCard');
+  if(quizIndex >= quizOrder.length){
+    renderQuizResult();
+    return;
+  }
+  const q = QUESTIONS[quizOrder[quizIndex]];
+  const pct = Math.round((quizIndex/quizOrder.length)*100);
+  card.innerHTML = `
+    <div class="quiz-progress-wrap">
+      <div class="quiz-progress-bar"><div class="quiz-progress-fill" style="width:${pct}%"></div></div>
+      <div class="quiz-progress-label">${quizIndex+1} / ${quizOrder.length}</div>
+    </div>
+    <p class="quiz-q">${q.q}</p>
+    <div class="quiz-options" id="quizOptions">
+      ${q.options.map((o,i)=>`<button class="quiz-opt" data-i="${i}">${o}</button>`).join('')}
+    </div>
+    <div class="quiz-explain" id="quizExplain"></div>
+    <button class="btn quiz-next" id="quizNextBtn">Question suivante</button>
+  `;
+  document.querySelectorAll('#quizOptions .quiz-opt').forEach(btn=>{
+    btn.addEventListener('click', ()=>answerQuiz(parseInt(btn.dataset.i), q));
+  });
+  document.getElementById('quizNextBtn').addEventListener('click', ()=>{
+    quizIndex++;
+    renderQuizQuestion();
+  });
+}
+
+function answerQuiz(i, q){
+  const opts = document.querySelectorAll('#quizOptions .quiz-opt');
+  opts.forEach(o=>o.disabled=true);
+  if(i === q.correct){
+    opts[i].classList.add('correct');
+    quizScore++;
+  } else {
+    opts[i].classList.add('incorrect');
+    opts[q.correct].classList.add('correct');
+  }
+  const ex = document.getElementById('quizExplain');
+  ex.innerHTML = q.explain;
+  ex.classList.add('show');
+  document.getElementById('quizNextBtn').classList.add('show');
+}
+
+function renderQuizResult(){
+  const card = document.getElementById('quizCard');
+  const pct = Math.round((quizScore/quizOrder.length)*100);
+  let tier = 'bronze', label = 'Bronze';
+  if(pct >= 85){ tier='or'; label='Or'; }
+  else if(pct >= 65){ tier='argent'; label='Argent'; }
+  card.innerHTML = `
+    <div class="quiz-result">
+      <div class="badge ${tier}">${label}</div>
+      <h3>${quizScore} / ${quizOrder.length} bonnes réponses</h3>
+      <p>${pct}% de réussite sur le module « Confiseries techniques »</p>
+      <button class="btn" id="quizRestart">Recommencer le quiz</button>
+    </div>
+  `;
+  document.getElementById('quizRestart').addEventListener('click', startQuiz);
+}
+
+/* =========================================================
+   TUTEUR IA — appel direct à l'API Groq (gratuite), fonctionne
+   dans n'importe quel navigateur, sans compte ni autorisation
+   ========================================================= */
+const SUGGESTED_QUESTIONS = [
+  "Comment fonctionne le candissage d'une confiserie ?",
+  "Quelle différence entre un caramel au lait et un caramel à la crème ?",
+  "Quel pourcentage de fruits une pâte de fruits doit-elle contenir légalement ?"
+];
+
+const GROQ_MODEL = "llama-3.3-70b-versatile";
+const RELAY_URL = "/.netlify/functions/chat";
+
+let chatHistory = [];
+
+function renderChatSuggestions(){
+  const wrap = document.getElementById('chatSuggestions');
+  wrap.innerHTML = SUGGESTED_QUESTIONS.map(s=>`<button class="suggestion-chip">${s}</button>`).join('');
+  wrap.querySelectorAll('.suggestion-chip').forEach(chip=>{
+    chip.addEventListener('click', ()=>{
+      document.getElementById('chatInput').value = chip.textContent;
+      sendChat();
+    });
+  });
+}
+
+function addMsg(text, cls){
+  const log = document.getElementById('chatLog');
+  const div = document.createElement('div');
+  div.className = 'msg ' + cls;
+  div.textContent = text;
+  log.appendChild(div);
+  log.scrollTop = log.scrollHeight;
+  return div;
+}
+
+async function askTuteur(systemPrompt, messages){
+  const response = await fetch(RELAY_URL, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      model: GROQ_MODEL,
+      messages: [{role: "system", content: systemPrompt}, ...messages],
+      temperature: 0.4
+    })
+  });
+  if(!response.ok){
+    const errBody = await response.text().catch(()=>"");
+    const err = new Error("HTTP " + response.status);
+    err.status = response.status;
+    err.body = errBody;
+    throw err;
+  }
+  const data = await response.json();
+  return data.choices[0].message.content;
+}
+
+async function sendChat(){
+  const inputEl = document.getElementById('chatInput');
+  const text = inputEl.value.trim();
+  if(!text) return;
+  inputEl.value = '';
+  addMsg(text, 'user');
+  chatHistory.push({role:'user', content:text});
+  const loadingDiv = addMsg('Le tuteur réfléchit…', 'bot loading');
+
+  const RULES = "Tu es un tuteur pour des élèves en BTM Chocolatier-Confiseur. Tu réponds UNIQUEMENT à partir du texte de cours suivant, sur le module 'Confiseries techniques'. Si la question sort de ce cours (autre module), dis poliment que ce sujet est traité dans un autre module et invite l'élève à s'y rendre. Réponds de façon claire, pédagogique, avec des exemples concrets d'atelier quand c'est pertinent. Ne mentionne jamais quel modèle d'IA tu es : reste dans ton rôle de tuteur du module.\n\nCOURS :\n" + COURSE_TEXT;
+
+  const recentHistory = chatHistory.slice(-10);
+
+  try{
+    const answer = await askTuteur(RULES, recentHistory);
+    loadingDiv.classList.remove('loading');
+    loadingDiv.textContent = answer;
+    chatHistory.push({role:'assistant', content: answer});
+  } catch(err){
+    loadingDiv.classList.remove('loading');
+    loadingDiv.textContent = err.status === 429
+      ? "Trop de questions envoyées d'un coup : attends un instant avant de réessayer."
+      : "Une erreur est survenue en contactant le tuteur. Réessaie dans un instant.";
+    console.error(err);
+  }
+}
+
+/* =========================================================
+   QUESTION D'EXAMEN — cheminement guidé
+   ========================================================= */
+let currentExamId = EXAM_QUESTIONS[0].id;
+let examStepIndex = {};
+
+function renderExamPills(){
+  const wrap = document.getElementById('examPills');
+  wrap.innerHTML = EXAM_QUESTIONS.map(q=>`<button class="exam-pill${q.id===currentExamId?' active':''}" data-id="${q.id}">${q.title.length>38?q.title.slice(0,38)+'…':q.title}</button>`).join('');
+  wrap.querySelectorAll('.exam-pill').forEach(p=>{
+    p.addEventListener('click', ()=>{
+      currentExamId = p.dataset.id;
+      renderExamPills();
+      renderExamQuestion();
+    });
+  });
+}
+
+function renderExamQuestion(){
+  const q = EXAM_QUESTIONS.find(e=>e.id===currentExamId);
+  if(!(currentExamId in examStepIndex)) examStepIndex[currentExamId] = 0;
+  const step = examStepIndex[currentExamId];
+  const card = document.getElementById('examCard');
+
+  let stepsHtml = '';
+  for(let i=0;i<step;i++){
+    stepsHtml += `<div class="step hint"><div class="step-label">Indice ${i+1}</div>${q.hints[i]}</div>`;
+  }
+
+  let controlsHtml = '';
+  if(step < q.hints.length){
+    controlsHtml += `<button class="btn" id="examHintBtn">Indice ${step+1}</button>`;
+  }
+  if(step > 0 || q.hints.length===0){
+    controlsHtml += `<button class="btn ghost" id="examAnswerBtn">Voir la réponse assemblée</button>`;
+  }
+  controlsHtml += `<button class="btn ghost" id="examResetBtn">Recommencer cette question</button>`;
+
+  card.innerHTML = `
+    <p class="exam-q-title">${q.title}</p>
+    <p class="exam-q-points">${q.points}</p>
+    ${stepsHtml}
+    <div class="exam-controls">${controlsHtml}</div>
+    <div class="exam-answer" id="examAnswer">${q.answerHtml}</div>
+    <p class="exam-note">Corrigé reconstitué à partir des sources internes du module (banque de questions, évaluations, corrigés officiels) — à relire avant diffusion en cas d'écart avec le cours.</p>
+  `;
+
+  const hintBtn = document.getElementById('examHintBtn');
+  if(hintBtn) hintBtn.addEventListener('click', ()=>{
+    examStepIndex[currentExamId] = step+1;
+    renderExamQuestion();
+  });
+  const answerBtn = document.getElementById('examAnswerBtn');
+  if(answerBtn) answerBtn.addEventListener('click', ()=>{
+    document.getElementById('examAnswer').classList.add('show');
+    answerBtn.disabled = true;
+  });
+  document.getElementById('examResetBtn').addEventListener('click', ()=>{
+    examStepIndex[currentExamId] = 0;
+    renderExamQuestion();
+  });
+}
+
+/* =========================================================
+   EN BREF — schéma SVG + points clés
+   ========================================================= */
+function renderBrief(){
+  const svgWrap = document.getElementById('briefSvgWrap');
+  svgWrap.innerHTML = `
+  <svg viewBox="0 0 900 260" width="100%" style="min-width:600px;display:block;">
+    <defs>
+      <style>
+        .vt{font-family:'Inter',sans-serif; font-weight:700; fill:var(--text-bright); font-size:13px;}
+        .vs{font-family:'Inter',sans-serif; fill:var(--text-dim); font-size:10.5px;}
+      </style>
+    </defs>
+    <rect x="0" y="0" width="900" height="260" fill="var(--surface)"/>
+    <text x="20" y="28" fill="var(--gold)" font-family="Merriweather,serif" font-weight="700" font-size="15">3 codes d'usages officiels de la confiserie</text>
+    ${[
+      {n:"Caramels", d:"≥1,5% protéines de lait. Au lait / à la crème / au beurre selon la MG."},
+      {n:"Nougats", d:"Garniture ≥15% (fruits). Montélimar : miel ≥25%, garniture ≥30%."},
+      {n:"Pâtes de fruits", d:"≥50% de fruits (pulpe/purée). « Pâte de X » = 100% du fruit X."}
+    ].map((c,i) => `
+      <rect x="${30+i*280}" y="55" width="255" height="160" rx="14" fill="var(--surface-alt)" stroke="var(--border)"/>
+      <text x="${30+i*280+128}" y="90" text-anchor="middle" class="vt">${c.n}</text>
+      <foreignObject x="${30+i*280+18}" y="105" width="220" height="100">
+        <div xmlns="http://www.w3.org/1999/xhtml" style="font-family:'Inter',sans-serif;font-size:12px;line-height:1.5;color:var(--text-dim);text-align:center;">${c.d}</div>
+      </foreignObject>
+    `).join('')}
+  </svg>`;
+
+  const points = document.getElementById('briefPoints');
+  const data = [
+  {h:"Candissage", p:"Sirop sursaturé qui recristallise sur un support au repos (12h, sans vibrations) → protection + brillant."},
+  {h:"Bonbon liqueur", p:"L'alcool ramène le sirop sursaturé à saturation ; il repousse le saccharose en périphérie au contact de l'amidon."},
+  {h:"Caramel", p:"≥1,5% protéines de lait. « À la crème/au beurre » = ≥3% MG lactique exclusive."},
+  {h:"Nougat", p:"Garniture ≥15% de fruits secs. Montélimar : miel ≥25%, aération à l'œuf uniquement, garniture ≥30%."},
+  {h:"Pâte de fruits", p:"≥50% de fruits (11% extrait sec). « Pâte de X » = 100% du fruit X ; « pâte de fruits à X » = 25% min."},
+  {h:"Praliné", p:"≥50% amandes/noisettes + sucre. Nom du fruit à coque précisé si autre que amande/noisette."},
+  {h:"Gélatine aérateur", p:"Guimauve, nougat, mousse. Puissance mesurée en bloom (50-300)."},
+  {h:"Sans cours dédié", p:"Module reconstitué depuis la banque de questions et les codes d'usages officiels du Syndicat de la Confiserie."}
+];
+  points.innerHTML = data.map(d=>`<div class="brief-point"><h4>${d.h}</h4><p>${d.p}</p></div>`).join('');
+}
+
+/* =========================================================
+   NAVIGATION + THEME
+   ========================================================= */
+document.querySelectorAll('.navbtn[data-tab]').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    document.querySelectorAll('.navbtn[data-tab]').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('panel-'+btn.dataset.tab).classList.add('active');
+  });
+});
+
+const themeToggle = document.getElementById('themeToggle');
+const themeLabel = document.getElementById('themeLabel');
+themeToggle.addEventListener('click', () => {
+  const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+  document.documentElement.setAttribute('data-theme', isLight ? 'dark' : 'light');
+  themeLabel.textContent = isLight ? 'Mode clair' : 'Mode sombre';
+});
+
+/* ===== Init ===== */
+startQuiz();
+renderChatSuggestions();
+document.getElementById('chatSend').addEventListener('click', sendChat);
+document.getElementById('chatInput').addEventListener('keydown', e=>{ if(e.key==='Enter') sendChat(); });
+renderExamPills();
+renderExamQuestion();
+renderBrief();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,949 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Le beurre de cacao & la cristallisation — BTM Chocolatier</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #20110a;
+    --surface: #2b1810;
+    --surface-alt: #3d2416;
+    --border: rgba(242,232,216,0.14);
+    --text: #f2e8d8;
+    --text-bright: #faf4e9;
+    --text-dim: rgba(242,232,216,0.62);
+    --caramel: #b8783a;
+    --caramel-hi: #cf9455;
+    --gold: #d8b66e;
+    --error: #7a2e2a;
+    --error-text: #e2a29d;
+    --success: #4c7a3a;
+    --success-text: #b7dba0;
+    --shadow: rgba(0,0,0,0.35);
+  }
+  [data-theme="light"]{
+    --bg: #f7efdf;
+    --surface: #fffaf0;
+    --surface-alt: #efe0c4;
+    --border: rgba(61,36,22,0.16);
+    --text: #3a2415;
+    --text-bright: #241207;
+    --text-dim: rgba(58,36,21,0.62);
+    --caramel: #a8632b;
+    --caramel-hi: #94551f;
+    --gold: #93701f;
+    --error: #a13d34;
+    --error-text: #7c2b25;
+    --success: #3d6b2c;
+    --success-text: #2c4f20;
+    --shadow: rgba(58,36,21,0.12);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--bg); color:var(--text); font-family:'Inter',sans-serif;
+    min-height:100vh; -webkit-font-smoothing:antialiased;
+    transition:background .35s ease, color .35s ease;
+  }
+  h1,h2,h3{font-family:'Merriweather',serif; font-weight:700; letter-spacing:-0.005em;}
+  a{color:var(--caramel-hi);}
+  ::-webkit-scrollbar{width:10px;height:10px;}
+  ::-webkit-scrollbar-thumb{background:var(--surface-alt); border-radius:8px;}
+
+  .app{display:flex; min-height:100vh;}
+
+  /* ===== Sidebar ===== */
+  .sidebar{
+    width:230px; flex-shrink:0; background:var(--surface); border-right:1px solid var(--border);
+    display:flex; flex-direction:column; padding:24px 16px; gap:6px;
+    position:sticky; top:0; height:100vh;
+  }
+  .sidebar .brand{padding:4px 10px 20px;}
+  .sidebar .brand .kicker{color:var(--caramel-hi); font-size:11.5px; font-weight:600; text-transform:uppercase; letter-spacing:.06em; margin:0 0 4px;}
+  .sidebar .brand h1{font-size:20px; margin:0; color:var(--text-bright); line-height:1.25;}
+  .navbtn{
+    display:flex; align-items:center; gap:10px; text-align:left; width:100%;
+    background:transparent; border:none; border-radius:10px; padding:11px 12px;
+    color:var(--text-dim); font-family:'Inter',sans-serif; font-size:14px; font-weight:500;
+    cursor:pointer; transition:background .2s ease, color .2s ease;
+  }
+  .navbtn svg{width:17px; height:17px; flex-shrink:0;}
+  .navbtn:hover{background:var(--surface-alt); color:var(--text);}
+  .navbtn.active{background:linear-gradient(155deg, var(--caramel-hi), var(--caramel) 65%); color:var(--bg); font-weight:600;}
+  .sidebar-spacer{flex:1;}
+  .theme-toggle{
+    display:flex; align-items:center; gap:8px; background:var(--surface-alt); border:1px solid var(--border);
+    color:var(--text-dim); padding:10px 12px; border-radius:10px; font-size:13px; cursor:pointer;
+  }
+  .theme-toggle:hover{color:var(--text);}
+  .theme-toggle svg{width:15px;height:15px;}
+  .back-link{display:block; font-size:12.5px; color:var(--text-dim); text-decoration:none; padding:8px 12px 2px;}
+  .back-link:hover{color:var(--text);}
+
+  /* ===== Main ===== */
+  .main{flex:1; min-width:0; padding:40px 44px 80px;}
+  .panel{display:none; max-width:820px; margin:0 auto;}
+  .panel.active{display:block;}
+  .panel-head{margin-bottom:28px;}
+  .panel-head .kicker{color:var(--caramel-hi); font-size:12.5px; font-weight:600; margin:0 0 6px;}
+  .panel-head h2{font-size:26px; margin:0 0 8px; color:var(--text-bright);}
+  .panel-head p{color:var(--text-dim); font-size:14px; margin:0; line-height:1.55; max-width:60ch;}
+
+  .card{
+    background:var(--surface); border:1px solid var(--border); border-radius:16px;
+    padding:26px; box-shadow:0 8px 24px var(--shadow); margin-bottom:18px;
+  }
+
+  /* ===== Quiz ===== */
+  .quiz-progress-wrap{display:flex; align-items:center; gap:12px; margin-bottom:22px;}
+  .quiz-progress-bar{flex:1; height:8px; border-radius:99px; background:var(--surface-alt); overflow:hidden;}
+  .quiz-progress-fill{height:100%; background:linear-gradient(90deg, var(--caramel), var(--gold)); border-radius:99px; transition:width .3s ease;}
+  .quiz-progress-label{font-size:12.5px; color:var(--text-dim); white-space:nowrap;}
+  .quiz-q{font-size:17px; line-height:1.5; color:var(--text-bright); margin:0 0 20px; font-family:'Merriweather',serif; font-weight:700;}
+  .quiz-options{display:flex; flex-direction:column; gap:10px;}
+  .quiz-opt{
+    text-align:left; padding:13px 16px; border-radius:11px; border:1px solid var(--border);
+    background:var(--surface-alt); color:var(--text); font-family:'Inter',sans-serif; font-size:14.5px;
+    cursor:pointer; transition:border-color .15s ease, background .15s ease;
+  }
+  .quiz-opt:hover{border-color:var(--caramel-hi);}
+  .quiz-opt.correct{background:color-mix(in srgb, var(--success) 30%, var(--surface-alt)); border-color:var(--success);}
+  .quiz-opt.incorrect{background:color-mix(in srgb, var(--error) 30%, var(--surface-alt)); border-color:var(--error);}
+  .quiz-opt[disabled]{cursor:default;}
+  .quiz-explain{
+    margin-top:18px; padding:16px 18px; border-radius:12px; background:var(--surface-alt);
+    border-left:3px solid var(--gold); font-size:13.5px; line-height:1.6; color:var(--text); display:none;
+  }
+  .quiz-explain.show{display:block;}
+  .quiz-explain b{color:var(--text-bright);}
+  .quiz-next{margin-top:18px; display:none;}
+  .quiz-next.show{display:inline-flex;}
+  .quiz-result{text-align:center; padding:20px 0;}
+  .badge{
+    width:110px; height:110px; border-radius:50%; margin:0 auto 18px; display:flex; align-items:center;
+    justify-content:center; font-family:'Merriweather',serif; font-weight:900; font-size:15px; text-align:center;
+    box-shadow:inset 0 2px 6px rgba(0,0,0,0.25), 0 6px 18px var(--shadow); color:#2a1a0a;
+  }
+  .badge.bronze{background:linear-gradient(155deg,#d3925a,#9a5a2c);}
+  .badge.argent{background:linear-gradient(155deg,#e6e6e6,#a8a8a8); color:#2a2a2a;}
+  .badge.or{background:linear-gradient(155deg,#f2d27a,#c99a2e);}
+  .quiz-result h3{margin:0 0 6px; color:var(--text-bright); font-size:20px;}
+  .quiz-result p{color:var(--text-dim); font-size:14px; margin:0 0 22px;}
+
+  .btn{
+    display:inline-flex; align-items:center; justify-content:center; gap:8px; border:none; border-radius:11px;
+    font-family:'Inter',sans-serif; font-weight:600; font-size:14px; padding:11px 20px; cursor:pointer;
+    color:var(--bg); text-decoration:none; background:linear-gradient(155deg, var(--caramel-hi), var(--caramel) 60%, #8a5427);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,0.25), 0 3px 10px var(--shadow); transition:transform .15s ease;
+  }
+  .btn:hover{transform:translateY(-1px);}
+  .btn.ghost{background:transparent; color:var(--text); border:1px solid var(--border); box-shadow:none;}
+
+  /* ===== Tuteur ===== */
+  .chat-wrap{display:flex; flex-direction:column; height:64vh;}
+  .chat-log{flex:1; overflow-y:auto; padding:4px 2px 12px; display:flex; flex-direction:column; gap:14px;}
+  .msg{max-width:88%; padding:12px 15px; border-radius:14px; font-size:14px; line-height:1.55;}
+  .msg.user{align-self:flex-end; background:linear-gradient(155deg, var(--caramel-hi), var(--caramel)); color:var(--bg); border-bottom-right-radius:4px;}
+  .msg.bot{align-self:flex-start; background:var(--surface-alt); border:1px solid var(--border); color:var(--text); border-bottom-left-radius:4px; white-space:pre-wrap;}
+  .msg.bot.loading{color:var(--text-dim); font-style:italic;}
+  .suggestions{display:flex; flex-wrap:wrap; gap:8px; margin:6px 0 16px;}
+  .suggestion-chip{
+    background:var(--surface-alt); border:1px solid var(--border); color:var(--text-dim); font-size:12.5px;
+    padding:8px 13px; border-radius:99px; cursor:pointer; text-align:left;
+  }
+  .suggestion-chip:hover{border-color:var(--caramel-hi); color:var(--text);}
+  .chat-input-row{display:flex; gap:10px; margin-top:8px;}
+  .chat-input-row input{
+    flex:1; background:var(--surface-alt); border:1px solid var(--border); border-radius:11px; color:var(--text);
+    font-family:'Inter',sans-serif; font-size:14px; padding:12px 15px;
+  }
+  .chat-input-row input:focus{outline:none; border-color:var(--caramel-hi);}
+
+  /* ===== Question d'examen ===== */
+  .exam-pills{display:flex; flex-wrap:wrap; gap:8px; margin-bottom:22px;}
+  .exam-pill{
+    background:var(--surface-alt); border:1px solid var(--border); color:var(--text-dim); font-size:13px;
+    padding:9px 15px; border-radius:99px; cursor:pointer; font-family:'Inter',sans-serif;
+  }
+  .exam-pill.active{background:linear-gradient(155deg, var(--caramel-hi), var(--caramel)); color:var(--bg); border-color:transparent; font-weight:600;}
+  .exam-q-title{font-size:17px; font-family:'Merriweather',serif; font-weight:700; color:var(--text-bright); margin:0 0 6px;}
+  .exam-q-points{font-size:12px; color:var(--text-dim); margin:0 0 20px;}
+  .step{
+    background:var(--surface-alt); border-radius:12px; padding:14px 16px; margin-bottom:12px;
+    font-size:13.5px; line-height:1.6; border-left:3px solid var(--border);
+  }
+  .step.hint{border-left-color:var(--gold);}
+  .step-label{font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:.05em; color:var(--caramel-hi); margin-bottom:5px;}
+  .exam-answer{
+    display:none; margin-top:16px; padding:18px; border-radius:12px; background:var(--surface-alt);
+    border-left:3px solid var(--success); font-size:13.5px; line-height:1.65;
+  }
+  .exam-answer.show{display:block;}
+  .exam-answer h4{margin:14px 0 6px; font-size:13.5px; color:var(--text-bright); font-family:'Inter',sans-serif;}
+  .exam-answer h4:first-child{margin-top:0;}
+  .exam-answer ul{margin:4px 0; padding-left:18px;}
+  .exam-controls{display:flex; gap:10px; flex-wrap:wrap; margin-top:6px;}
+  .exam-note{font-size:11.5px; color:var(--text-dim); margin-top:14px; font-style:italic;}
+
+  /* ===== En bref ===== */
+  .brief-svg-wrap{background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:18px; margin-bottom:18px; overflow-x:auto;}
+  .brief-points{display:grid; grid-template-columns:repeat(auto-fit, minmax(230px,1fr)); gap:14px;}
+  .brief-point{background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:16px 18px;}
+  .brief-point h4{margin:0 0 6px; font-size:14px; color:var(--gold); font-family:'Inter',sans-serif;}
+  .brief-point p{margin:0; font-size:13px; line-height:1.55; color:var(--text-dim);}
+
+  @media (max-width: 860px){
+    .app{flex-direction:column;}
+    .sidebar{width:100%; height:auto; position:relative; flex-direction:row; overflow-x:auto; padding:14px 12px; align-items:center;}
+    .sidebar .brand{padding:0 12px 0 4px; flex-shrink:0;}
+    .sidebar-spacer{display:none;}
+    .navbtn{flex-shrink:0; width:auto;}
+    .theme-toggle{flex-shrink:0;}
+    .main{padding:26px 18px 60px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="app">
+  <nav class="sidebar">
+    <div class="brand">
+      <p class="kicker">BTM Chocolatier</p>
+      <h1>Le beurre de cacao & la cristallisation</h1>
+    </div>
+    <button class="navbtn active" data-tab="quiz">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+      Quiz
+    </button>
+    <button class="navbtn" data-tab="tuteur">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      Poser une question
+    </button>
+    <button class="navbtn" data-tab="examen">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M9 13h6M9 17h6M9 9h1"/></svg>
+      Question d'examen
+    </button>
+    <button class="navbtn" data-tab="brief">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+      En bref
+    </button>
+    <div class="sidebar-spacer"></div>
+    <a class="back-link" href="../index.html">← Retour au hub</a>
+    <button class="theme-toggle" id="themeToggle">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4.5"/><path d="M12 2.5v2M12 19.5v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M2.5 12h2M19.5 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4"/></svg>
+      <span id="themeLabel">Mode clair</span>
+    </button>
+  </nav>
+
+  <main class="main">
+
+    <!-- ===== QUIZ ===== -->
+    <section class="panel active" id="panel-quiz">
+      <div class="panel-head">
+        <p class="kicker">Quiz — Le beurre de cacao & la cristallisation</p>
+        <h2>Teste tes connaissances</h2>
+        <p>Polymorphisme des cristaux, pré-cristallisation, méthodes de tempérage, blanchiments et conservation.</p>
+      </div>
+      <div class="card" id="quizCard"></div>
+    </section>
+
+    <!-- ===== TUTEUR ===== -->
+    <section class="panel" id="panel-tuteur">
+      <div class="panel-head">
+        <p class="kicker">Tuteur IA — Le beurre de cacao & la cristallisation</p>
+        <h2>Poser une question</h2>
+        <p>Le tuteur répond uniquement à partir du cours de ce module. Pour les autres sujets, utilise le module concerné.</p>
+      </div>
+      <div class="card chat-wrap">
+        <div class="chat-log" id="chatLog"></div>
+        <div class="suggestions" id="chatSuggestions"></div>
+        <div class="chat-input-row">
+          <input type="text" id="chatInput" placeholder="Écris ta question sur le cacao…">
+          <button class="btn" id="chatSend">Envoyer</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== EXAMEN ===== -->
+    <section class="panel" id="panel-examen">
+      <div class="panel-head">
+        <p class="kicker">Question d'examen — Le beurre de cacao & la cristallisation</p>
+        <h2>Cheminement guidé</h2>
+        <p>Choisis une question, avance indice par indice, puis assemble ta réponse avant de découvrir le corrigé.</p>
+      </div>
+      <div class="exam-pills" id="examPills"></div>
+      <div class="card" id="examCard"></div>
+    </section>
+
+    <!-- ===== EN BREF ===== -->
+    <section class="panel" id="panel-brief">
+      <div class="panel-head">
+        <p class="kicker">En bref — Le beurre de cacao & la cristallisation</p>
+        <h2>Récapitulatif visuel</h2>
+        <p>Les 4 grandes variétés et l'essentiel à retenir avant l'épreuve.</p>
+      </div>
+      <div class="brief-svg-wrap" id="briefSvgWrap"></div>
+      <div class="brief-points" id="briefPoints"></div>
+    </section>
+
+  </main>
+</div>
+
+
+<script>
+/* =========================================================
+   COURSE_TEXT — synthèse fidèle du cours "Le beurre de cacao & la cristallisation"
+   (source du tuteur IA — ne répond qu'à partir de ce texte)
+   ========================================================= */
+const COURSE_TEXT = `
+
+MODULE : LE BEURRE DE CACAO ET LA CRISTALLISATION — BTM Chocolatier Confiseur (Bloc 4)
+
+1/ LE BEURRE DE CACAO ET SES CRISTAUX
+Le beurre de cacao est une matière grasse qui, en cristallisant, crée des cristaux capables de s'organiser de manière multiple en fonction de la température (de leur point de fusion) : on dit qu'ils sont polymorphes. On distingue 5 formes de cristaux :
+- Gamma (γ) : point de fusion 13-17°C, forme instable
+- Alpha (α) : point de fusion 17-20°C, forme instable
+- Bêta seconde (β'') : point de fusion 22-24°C, forme instable
+- Bêta prime (β') : point de fusion 26-28°C, forme instable
+- Bêta (β) : point de fusion 31-35°C, forme STABLE — la plus stable
+
+Les cristaux Bêta (β) sont les seuls stables, ils donnent au chocolat : une fracture nette (cassant), un point de fusion et une texture agréable en bouche (fondant), une contraction adéquate pendant la cristallisation, un brillant maximal, et ils retardent le blanchiment gras.
+
+Composition du beurre de cacao (acides gras) : acide oléique 34% (insaturé), acide linoléique 3% (insaturé) — total insaturés 38% ; acide stéarique 35% (saturé), acide palmitique 26% (saturé) — total saturés 61%.
+C'est un corps gras stable car il contient un antioxydant naturel, le tocophérol (famille des polyphénols), qui le protège notamment du rancissement.
+
+2/ LA PRÉ-CRISTALLISATION
+La pré-cristallisation a pour but de créer un maximum de cristaux β (bêta, stable). À l'état liquide, les molécules ont une certaine mobilité les unes par rapport aux autres ; à l'état solide, elles sont immobilisées, imbriquées les unes dans les autres. L'objectif est de les « souder » pour qu'elles s'imbriquent au mieux de leur structure géométrique, ce qui confère au chocolat brillant et cassant.
+
+Trois facteurs importants durant la pré-cristallisation :
+- La température : permet la création des différents cristaux.
+- La friction (le mouvement) : permet l'accélération et l'optimisation de la formation des cristaux.
+- La vitesse : réalisée trop lentement, trop de cristaux instables sont formés.
+
+La brillance de la couverture dépend des molécules β : si elles ne sont pas imbriquées correctement, il n'y aura pas de reflet, donc pas de brillance.
+
+Les 4 étapes de la courbe de tempérage :
+- Fonte : 45-50°C (50°C pour le chocolat noir, 45°C pour le chocolat au lait/ivoire) — la quasi-totalité des molécules sont à l'état liquide (fusionnées).
+- Refroidissement : 26-28°C — les molécules cristallisent sous forme cristalline suivant leur point de fusion (couverture pâteuse, changement d'aspect).
+- Mise à température de travail : 31-32°C — en réchauffant, on fusionne les cristaux instables (point de fusion à 35°C) pour ne conserver que les cristaux β ; la couverture se fluidifie et se stabilise, soude les molécules et apporte brillance, cassant, rétractation.
+- Refroidissement final : 16-17°C — les cristaux s'emboîtent les uns aux autres de manière stable, apportant cassant, fondant, réfraction et brillance.
+
+Le but est de descendre en température la masse rapidement pour cristalliser au minimum 5% de cristaux β (la molécule la plus stable) et stabiliser la couverture.
+
+Décristallisation : dépassement de 35°C, point de fusion des cristaux β.
+Sur-cristallisation : descente de température trop importante, donc création de trop de cristaux à l'état solide (la couverture vaseline). Remède : ajout de couverture à 50°C ou décristallisation d'une partie de la couverture.
+Sous-cristallisation : la température de pré-cristallisation n'a pas été atteinte, la couverture est fluide mais non cristallisée. Remède : refaire une cristallisation.
+
+Refroidissement / cristallisation : après avoir donné une forme idéale aux cristaux, il faut la garder en refroidissant à la température du point de fusion le plus bas de ces triglycérides, c'est-à-dire 17°C (cristaux gamma). Idéalement la couverture cristallise dans un espace climatisé entre 16 et 18°C. On peut accélérer cette descente avec un passage au froid positif à +4°C pendant 20 minutes ; attention au froid ventilé qui brasse de l'air riche en humidité, préférer un froid statique. Le froid négatif est fortement déconseillé : ne pas dépasser 5 minutes maximum, sinon le problème vient de la pré-cristallisation.
+
+3/ LES MÉTHODES DE TEMPÉRAGE
+
+Le tablage : méthode la plus classique. Elle consiste à descendre en température 2/3 de la masse sur une surface froide (marbre) en y apportant de la friction par le mouvement. On ajoute cette masse au tiers restant, puis on mélange. La couverture refroidie (surcristallisée) va alors ensemencer les particules de la masse restante et donner un équilibre à l'ensemble. Le mixeur peut aider à stabiliser les cristaux, mais attention à ne pas hydrogéner les globules gras du beurre de cacao et donc émulsionner la couverture.
+
+Par le froid : consiste à refroidir la totalité de la masse au bain-marie froid ou au frais jusqu'à cristallisation complète, puis à réchauffer l'ensemble à température d'utilisation. Efficace mais fastidieuse à la main, car il est compliqué de réchauffer la couverture graduellement et régulièrement sans la décristalliser.
+
+Par ensemencement : consiste à refroidir la masse en y ajoutant des morceaux de couverture (sous forme de petits palets de préférence). Il est impératif que ces palets soient stabilisés, donc au point ; sinon ils ne pourront pas fournir à la masse les cristaux nécessaires à sa bonne stabilisation.
+
+4/ QUELQUES RÈGLES POUR LE MOULAGE
+- Température du local : 18-22°C.
+- Température des moules : 18-22°C, attention au lieu de stockage et au moulage en série lors de passage au froid.
+- Des moules propres et brillants : nettoyage de préférence avec du coton hydrophile qui capte le beurre de cacao résiduel après démoulage.
+- Taux d'hygrométrie : maximum 70%, au-delà le risque de blanchiment sucré augmente.
+- Refroidissement : idéalement 10°C ; le refroidissement au froid positif est possible mais augmente le risque de blanchiment sucré.
+- Éviter le contact avec les doigts après démoulage, surtout sur les surfaces brillantes. La chaleur du corps (37°C) étant supérieure au point de cristallisation du beurre de cacao, le chocolat marquera vite et blanchira ensuite. Il faut manipuler autant que possible les moulages par l'intérieur et utiliser des gants, non poudrés de préférence.
+
+5/ BLANCHIMENTS
+Le blanchiment de la couverture post-enrobage ou post-moulage est un problème qu'il faut savoir reconnaître pour l'anticiper et trouver les bonnes solutions.
+
+Le blanchiment gras (« fatbloom ») : dû à une remontée à la surface du beurre de cacao. Peut venir d'une surcristallisation ou d'une température de stockage trop élevée. Les cristaux n'étant pas soudés entre eux, les globules gras (beurre de cacao et autres matières grasses) remontent par les brèches créées. Très présent sur l'enrobage des pralinés : la couverture en cristallisant presse l'intérieur, où la MG liquide est très présente et remonte plus facilement en surface.
+Repères : voile blanchâtre à la surface, disparaît au toucher (fond).
+Remèdes : double chablonnage, apport de lécithine, bon tempérage de la couverture.
+
+Le blanchiment sucrier ou cristallin (« sugarbloom ») : dû à une remontée du sucre en surface. Souvent causé par un phénomène de condensation (ambiance humide) ou une variation de température trop importante. L'eau dissout les sucres qui remontent en surface, puis s'évapore, laissant les cristaux de sucre.
+Repères : couche irrégulière, rugueuse et collante au toucher. Provoque des marbrures, des traces, des lignes blanches.
+Remèdes : maîtrise de la température des bonbons et des locaux d'enrobage, éviter les gros écarts de température, maîtriser la température des locaux de stockage.
+
+6/ CONSERVATION
+Le chocolat craint :
+- L'humidité, qui provoque le blanchiment cristallin.
+- La chaleur, qui provoque le blanchiment gras.
+- La lumière, qui l'oxyde et le rancit.
+
+Conditions de stockage idéales :
+- Locaux entre 15 et 18°C.
+- Hygroscopie constante à 70-75% (à déterminer en fonction des intérieurs, voir équilibrage des ganaches).
+- À l'abri des odeurs : les matières grasses fixent les odeurs.
+- À l'abri de la lumière.
+- À l'abri de l'humidité (emballage hermétique).
+
+Temps de conservation :
+- Le chocolat noir (tablettes) peut atteindre une conservation d'un an dans de bonnes conditions.
+- Le chocolat au lait ou fourré : 6 à 8 mois.
+- Les confiseries contenant des produits laitiers (truffes, ganaches, pralinés) ne se conservent pas plus d'un mois sans ajout de conservateurs.
+
+`;
+
+/* =========================================================
+   QUESTIONS — Quiz (QCM)
+   ========================================================= */
+const QUESTIONS = [
+  {
+    q: "Combien de formes de cristaux distingue-t-on dans le beurre de cacao ?",
+    options: ["2", "3", "5", "8"],
+    correct: 2,
+    explain: "<b>5 formes</b> : gamma, alpha, bêta seconde, bêta prime, et bêta. C'est ce polymorphisme (capacité à cristalliser sous plusieurs formes selon la température) qui rend le tempérage indispensable pour obtenir un chocolat brillant et cassant."
+  },
+  {
+    q: "Quelle est la seule forme de cristal stable du beurre de cacao ?",
+    options: ["Gamma", "Alpha", "Bêta seconde", "Bêta"],
+    correct: 3,
+    explain: "Le cristal <b>Bêta (β)</b>, avec un point de fusion de 31 à 35°C, est le seul stable. C'est lui qu'on cherche à obtenir en majorité lors du tempérage : il donne fracture nette, fondant en bouche, brillant maximal et retarde le blanchiment gras."
+  },
+  {
+    q: "Quel est le point de fusion des cristaux Bêta, les plus stables ?",
+    options: ["13-17°C", "22-24°C", "26-28°C", "31-35°C"],
+    correct: 3,
+    explain: "<b>31 à 35°C</b>. C'est pour cette raison que le chocolat de couverture bien tempéré fond précisément en bouche autour de la température corporelle, donnant cette sensation fondante caractéristique."
+  },
+  {
+    q: "Quels sont les deux acides gras saturés majoritaires du beurre de cacao ?",
+    options: ["Oléique et linoléique", "Stéarique et palmitique", "Butyrique et acétique", "Citrique et lactique"],
+    correct: 1,
+    explain: "<b>Acide stéarique (35%)</b> et <b>acide palmitique (26%)</b>, saturés, représentent 61% du total. Les insaturés (oléique 34%, linoléique 3%) représentent les 38% restants. C'est cet équilibre saturé/insaturé qui donne au beurre de cacao sa dureté à température ambiante et son fondant en bouche."
+  },
+  {
+    q: "Quel antioxydant naturel protège le beurre de cacao du rancissement ?",
+    options: ["La lécithine", "Le tocophérol", "L'acide ascorbique", "Le sorbitol"],
+    correct: 1,
+    explain: "Le <b>tocophérol</b> (famille des polyphénols) est un antioxydant naturel qui protège le beurre de cacao du rancissement, ce qui explique en partie pourquoi le chocolat noir se conserve jusqu'à un an dans de bonnes conditions."
+  },
+  {
+    q: "Quel est le but de la pré-cristallisation (tempérage) ?",
+    options: [
+      "Éliminer tous les cristaux",
+      "Créer un maximum de cristaux β (stable)",
+      "Faire fondre totalement le beurre de cacao",
+      "Ajouter de la lécithine"
+    ],
+    correct: 1,
+    explain: "L'objectif est de <b>créer un maximum de cristaux β</b> : les molécules doivent se « souder » pour s'imbriquer au mieux de leur structure géométrique, ce qui confère au chocolat brillant et cassant."
+  },
+  {
+    q: "Quels sont les 3 facteurs importants durant la pré-cristallisation ?",
+    options: [
+      "Le sucre, l'humidité et l'acidité",
+      "La température, la friction et la vitesse",
+      "Le beurre de cacao, le lait et la lécithine",
+      "La couleur, le brillant et le goût"
+    ],
+    correct: 1,
+    explain: "<b>Température</b> (crée les cristaux), <b>friction/mouvement</b> (accélère et optimise leur formation), et <b>vitesse</b> (une réalisation trop lente forme trop de cristaux instables). Ces trois facteurs sont la base de toute méthode de tempérage, qu'elle soit au tablage, par le froid ou par ensemencement."
+  },
+  {
+    q: "À quelle température fond-on la couverture pour repartir de zéro (début de la courbe de tempérage) ?",
+    options: ["17°C", "26-28°C", "45-50°C", "70°C"],
+    correct: 2,
+    explain: "<b>45 à 50°C</b> (50°C pour le noir, 45°C pour le lait/ivoire) : à cette température, la quasi-totalité des molécules sont à l'état liquide (fusionnées), ce qui efface la mémoire cristalline précédente avant de repartir sur une nouvelle courbe de tempérage."
+  },
+  {
+    q: "À quelle température de travail la couverture noire est-elle mise après refroidissement, pour ne garder que les cristaux β ?",
+    options: ["17°C", "22-24°C", "31-32°C", "45°C"],
+    correct: 2,
+    explain: "<b>31-32°C</b> : en réchauffant légèrement à cette température, on fait fondre les cristaux instables (point de fusion 35°C) pour ne conserver que les cristaux β, ce qui fluidifie et stabilise la couverture tout en apportant brillance et cassant."
+  },
+  {
+    q: "Que se passe-t-il en cas de décristallisation ?",
+    options: [
+      "La température dépasse 35°C, point de fusion des cristaux β",
+      "La couverture est refroidie trop lentement",
+      "Trop de lécithine a été ajoutée",
+      "Le taux d'humidité est trop bas"
+    ],
+    correct: 0,
+    explain: "La <b>décristallisation</b> survient dès que la température dépasse <b>35°C</b>, le point de fusion des cristaux β : tous les cristaux fondent et il faut recommencer une courbe de tempérage complète."
+  },
+  {
+    q: "Qu'est-ce qu'une couverture « sur-cristallisée » et comment la corriger ?",
+    options: [
+      "Trop de cristaux instables : refaire toute la courbe de tempérage",
+      "Trop de cristaux à l'état solide, la couverture vaseline : ajouter de la couverture à 50°C ou décristalliser une partie",
+      "Un excès de beurre de cacao ajouté : ajouter du sucre",
+      "Un défaut permanent, sans remède"
+    ],
+    correct: 1,
+    explain: "La <b>sur-cristallisation</b> vient d'une descente de température trop importante, créant trop de cristaux solides (la couverture « vaseline »). Le remède est d'ajouter de la couverture à 50°C ou de décristalliser une partie de la masse pour rééquilibrer le ratio liquide/solide."
+  },
+  {
+    q: "Quelle est la température idéale de refroidissement final après le tempérage ?",
+    options: ["0°C", "10°C", "16-17°C", "25°C"],
+    correct: 2,
+    explain: "<b>16 à 17°C</b> — c'est le point de fusion le plus bas des triglycérides (cristaux gamma). Il faut refroidir jusqu'à cette température pour figer la forme cristalline idéale obtenue, idéalement dans un espace climatisé stable."
+  },
+  {
+    q: "Combien de temps maximum peut-on passer une couverture au froid négatif pendant le tempérage ?",
+    options: ["30 secondes", "5 minutes", "20 minutes", "1 heure"],
+    correct: 1,
+    explain: "<b>5 minutes maximum</b> — le froid négatif est fortement déconseillé pour le tempérage. Si cela ne suffit pas à stabiliser la couverture, le problème vient en réalité d'une pré-cristallisation mal réalisée, pas d'un manque de froid."
+  },
+  {
+    q: "Quelle méthode de tempérage consiste à descendre 2/3 de la masse sur une surface froide en y apportant de la friction ?",
+    options: ["Le tablage", "Par le froid", "Par ensemencement", "Par décristallisation"],
+    correct: 0,
+    explain: "<b>Le tablage</b>, la méthode la plus classique. Les 2/3 de la masse sont refroidis sur marbre avec friction, puis rajoutés au tiers restant : la couverture refroidie va ensemencer les particules de la masse restante et équilibrer l'ensemble."
+  },
+  {
+    q: "Pour la méthode par ensemencement, quelle condition doit impérativement remplir la couverture ajoutée en morceaux ?",
+    options: [
+      "Être fondue à 50°C",
+      "Être stabilisée, donc déjà au point",
+      "Contenir de la lécithine en excès",
+      "Être conservée au congélateur"
+    ],
+    correct: 1,
+    explain: "Les palets ajoutés doivent être <b>stabilisés (au point)</b>. Sinon, ils ne pourront pas fournir à la masse les cristaux β nécessaires à sa bonne stabilisation — c'est le principe même de l'ensemencement : apporter des germes cristallins déjà formés."
+  },
+  {
+    q: "À quelle hygrométrie maximale doit-on rester pour le moulage, au-delà de laquelle le risque de blanchiment sucré augmente ?",
+    options: ["40%", "70%", "90%", "100%"],
+    correct: 1,
+    explain: "<b>70% maximum</b>. Au-delà, l'humidité ambiante favorise le blanchiment sucrier lors du démoulage et du stockage — un point de vigilance important en atelier selon les saisons."
+  },
+  {
+    q: "Quel type de blanchiment est dû à une remontée du beurre de cacao en surface ?",
+    options: ["Le blanchiment sucrier", "Le blanchiment gras (fatbloom)", "La décristallisation", "La sur-cristallisation"],
+    correct: 1,
+    explain: "Le <b>blanchiment gras (« fatbloom »)</b> est dû à une remontée du beurre de cacao en surface, causée par une surcristallisation ou un stockage trop chaud. Repère : un voile blanchâtre qui disparaît au toucher, car il fond. Remèdes : double chablonnage, lécithine, bon tempérage."
+  },
+  {
+    q: "Quel type de blanchiment donne une couche rugueuse et collante au toucher, avec marbrures et lignes blanches ?",
+    options: ["Le blanchiment gras", "Le blanchiment sucrier (sugarbloom)", "La sous-cristallisation", "La décristallisation"],
+    correct: 1,
+    explain: "Le <b>blanchiment sucrier (« sugarbloom »)</b>, causé par de la condensation ou des écarts de température trop importants : l'eau dissout le sucre en surface puis s'évapore, laissant des cristaux de sucre rugueux et collants."
+  },
+  {
+    q: "Pourquoi doit-on éviter de toucher un chocolat moulé fraîchement démoulé avec les doigts nus ?",
+    options: [
+      "Cela n'a aucun effet",
+      "La chaleur du corps (37°C) dépasse le point de cristallisation du beurre de cacao et provoque un marquage puis un blanchiment",
+      "Cela accélère uniquement le séchage",
+      "Cela améliore le brillant"
+    ],
+    correct: 1,
+    explain: "La chaleur du corps (<b>37°C</b>) est supérieure au point de cristallisation du beurre de cacao : le contact marque immédiatement la surface, qui blanchira ensuite. Il faut manipuler les moulages par l'intérieur et porter des gants non poudrés."
+  },
+  {
+    q: "Combien de temps peut se conserver du chocolat noir en tablette dans de bonnes conditions ?",
+    options: ["1 mois", "6 à 8 mois", "1 an", "5 ans"],
+    correct: 2,
+    explain: "Jusqu'à <b>1 an</b> dans de bonnes conditions, grâce notamment au tocophérol naturel qui le protège du rancissement. Le chocolat au lait ou fourré tient 6 à 8 mois, et les confiseries à base de produits laitiers (ganaches, truffes) seulement 1 mois sans conservateur."
+  }
+];
+
+/* =========================================================
+   EXAM_QUESTIONS — cheminements guidés
+   ========================================================= */
+const EXAM_QUESTIONS = [
+  {
+    id: "cristaux",
+    title: "On distingue 5 grands types de cristaux dans le beurre de cacao : nommez-les et indiquez leur température de fusion et leur état de stabilité",
+    points: "d'après la banque de questions et le corrigé officiel 1102-2017",
+    hints: [
+      "Les 5 formes portent des noms de lettres grecques, de la plus instable à la plus stable.",
+      "Pour chacune, associe une plage de température de fusion croissante."
+    ],
+    answerHtml: `
+      <h4>Les 5 formes cristallines</h4>
+      <ul>
+        <li><b>Gamma (γ)</b> — 13 à 17°C — instable</li>
+        <li><b>Alpha (α)</b> — 17 à 20°C — instable</li>
+        <li><b>Bêta seconde (β'')</b> — 22 à 24°C — instable</li>
+        <li><b>Bêta prime (β')</b> — 26 à 28°C — instable</li>
+        <li><b>Bêta (β)</b> — 31 à 35°C — la plus <b>stable</b></li>
+      </ul>
+      <p>Seuls les cristaux β sont stables : ce sont eux que le tempérage cherche à sélectionner et à multiplier, en éliminant les 4 autres formes instables.</p>`
+  },
+  {
+    id: "acides-gras",
+    title: "Le beurre de cacao est composé de différents acides gras : citez-en au moins 3 (ou les 4 principaux) et leurs proportions",
+    points: "d'après la banque de questions et les corrigés officiels 1102-2017 / 1103-2022",
+    hints: [
+      "Il y a 2 acides gras saturés et 2 acides gras insaturés à connaître.",
+      "Donne un ordre de grandeur en pourcentage pour chacun."
+    ],
+    answerHtml: `
+      <h4>Acides gras saturés (61% au total)</h4>
+      <ul><li>Acide stéarique — environ 35%</li><li>Acide palmitique — environ 26%</li></ul>
+      <h4>Acides gras insaturés (38% au total)</h4>
+      <ul><li>Acide oléique — environ 34%</li><li>Acide linoléique — environ 3%</li></ul>
+      <p>Cet équilibre entre saturés et insaturés explique la texture particulière du beurre de cacao : solide et cassant à température ambiante, mais fondant précisément autour de la température du corps.</p>`
+  },
+  {
+    id: "precristallisation",
+    title: "Expliquez le phénomène de pré-cristallisation du chocolat de couverture à un apprenti",
+    points: "d'après la banque de questions techno",
+    hints: [
+      "Explique d'abord le but recherché (quel type de cristal, et pourquoi).",
+      "Puis détaille les 3 facteurs qui influencent cette étape."
+    ],
+    answerHtml: `
+      <h4>But de la pré-cristallisation</h4>
+      <p>Créer un maximum de cristaux <b>β (bêta), les seuls stables</b>. À l'état liquide, les molécules ont une certaine mobilité ; à l'état solide, elles s'imbriquent. L'objectif est de les « souder » pour qu'elles s'imbriquent au mieux de leur structure géométrique, ce qui donne au chocolat son brillant et son cassant.</p>
+      <h4>Les 3 facteurs clés</h4>
+      <ul>
+        <li><b>La température</b> : permet la création des différents cristaux (courbe fonte → refroidissement → travail → refroidissement final).</li>
+        <li><b>La friction</b> (le mouvement) : accélère et optimise la formation des cristaux.</li>
+        <li><b>La vitesse</b> : réalisée trop lentement, trop de cristaux instables se forment.</li>
+      </ul>
+      <p>Le but final est de descendre la masse rapidement en température pour cristalliser au minimum 5% de cristaux β, garantissant la stabilité de la couverture.</p>`
+  },
+  {
+    id: "blanchiments",
+    title: "Qu'est-ce que le blanchiment sur un bonbon de chocolat ? Quelles en sont les causes et les solutions ?",
+    points: "d'après la banque de questions et l'évaluation N°3 (2022)",
+    hints: [
+      "Il existe 2 types de blanchiment très différents dans leur cause : l'un lié à une matière grasse, l'autre à un sucre.",
+      "Pour chacun, donne un repère visuel/tactile, une cause et un remède."
+    ],
+    answerHtml: `
+      <h4>Le blanchiment gras (« fatbloom »)</h4>
+      <p><b>Cause</b> : remontée du beurre de cacao en surface, due à une surcristallisation ou à un stockage trop chaud. <b>Repère</b> : voile blanchâtre qui disparaît au toucher (il fond). <b>Remèdes</b> : double chablonnage, apport de lécithine, bon tempérage de la couverture.</p>
+      <h4>Le blanchiment sucrier (« sugarbloom »)</h4>
+      <p><b>Cause</b> : remontée du sucre en surface, due à la condensation (ambiance humide) ou à des écarts de température trop importants. <b>Repère</b> : couche irrégulière, rugueuse et collante, marbrures et lignes blanches. <b>Remèdes</b> : maîtriser la température des bonbons, des locaux d'enrobage et de stockage, éviter les gros écarts thermiques.</p>`
+  },
+  {
+    id: "conservation",
+    title: "Quelles sont les conditions idéales de conservation du chocolat, et quelle est sa durée de vie selon le type ?",
+    points: "d'après le cours et la banque de questions",
+    hints: [
+      "Cite les 3 ennemis du chocolat en conservation, puis les paramètres de stockage recommandés (température, hygrométrie).",
+      "Termine par les 3 durées de conservation à retenir selon le type de produit."
+    ],
+    answerHtml: `
+      <h4>Ce que le chocolat craint</h4>
+      <ul><li>L'humidité → blanchiment cristallin</li><li>La chaleur → blanchiment gras</li><li>La lumière → oxydation et rancissement</li></ul>
+      <h4>Conditions de stockage idéales</h4>
+      <p>Locaux entre 15 et 18°C, hygroscopie constante à 70-75%, à l'abri des odeurs (la matière grasse les fixe), à l'abri de la lumière, emballage hermétique contre l'humidité.</p>
+      <h4>Durées de conservation</h4>
+      <ul>
+        <li>Chocolat noir en tablette : jusqu'à <b>1 an</b></li>
+        <li>Chocolat au lait ou fourré : <b>6 à 8 mois</b></li>
+        <li>Confiseries avec produits laitiers (ganaches, truffes, pralinés) : <b>1 mois</b> maximum sans conservateur</li>
+      </ul>`
+  }
+];
+
+/* =========================================================
+   QUIZ LOGIC
+   ========================================================= */
+let quizOrder = [];
+let quizIndex = 0;
+let quizScore = 0;
+
+function shuffle(arr){
+  const a = arr.slice();
+  for(let i=a.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]]=[a[j],a[i]];
+  }
+  return a;
+}
+
+function startQuiz(){
+  quizOrder = shuffle(QUESTIONS.map((_,i)=>i));
+  quizIndex = 0;
+  quizScore = 0;
+  renderQuizQuestion();
+}
+
+function renderQuizQuestion(){
+  const card = document.getElementById('quizCard');
+  if(quizIndex >= quizOrder.length){
+    renderQuizResult();
+    return;
+  }
+  const q = QUESTIONS[quizOrder[quizIndex]];
+  const pct = Math.round((quizIndex/quizOrder.length)*100);
+  card.innerHTML = `
+    <div class="quiz-progress-wrap">
+      <div class="quiz-progress-bar"><div class="quiz-progress-fill" style="width:${pct}%"></div></div>
+      <div class="quiz-progress-label">${quizIndex+1} / ${quizOrder.length}</div>
+    </div>
+    <p class="quiz-q">${q.q}</p>
+    <div class="quiz-options" id="quizOptions">
+      ${q.options.map((o,i)=>`<button class="quiz-opt" data-i="${i}">${o}</button>`).join('')}
+    </div>
+    <div class="quiz-explain" id="quizExplain"></div>
+    <button class="btn quiz-next" id="quizNextBtn">Question suivante</button>
+  `;
+  document.querySelectorAll('#quizOptions .quiz-opt').forEach(btn=>{
+    btn.addEventListener('click', ()=>answerQuiz(parseInt(btn.dataset.i), q));
+  });
+  document.getElementById('quizNextBtn').addEventListener('click', ()=>{
+    quizIndex++;
+    renderQuizQuestion();
+  });
+}
+
+function answerQuiz(i, q){
+  const opts = document.querySelectorAll('#quizOptions .quiz-opt');
+  opts.forEach(o=>o.disabled=true);
+  if(i === q.correct){
+    opts[i].classList.add('correct');
+    quizScore++;
+  } else {
+    opts[i].classList.add('incorrect');
+    opts[q.correct].classList.add('correct');
+  }
+  const ex = document.getElementById('quizExplain');
+  ex.innerHTML = q.explain;
+  ex.classList.add('show');
+  document.getElementById('quizNextBtn').classList.add('show');
+}
+
+function renderQuizResult(){
+  const card = document.getElementById('quizCard');
+  const pct = Math.round((quizScore/quizOrder.length)*100);
+  let tier = 'bronze', label = 'Bronze';
+  if(pct >= 85){ tier='or'; label='Or'; }
+  else if(pct >= 65){ tier='argent'; label='Argent'; }
+  card.innerHTML = `
+    <div class="quiz-result">
+      <div class="badge ${tier}">${label}</div>
+      <h3>${quizScore} / ${quizOrder.length} bonnes réponses</h3>
+      <p>${pct}% de réussite sur le module « Le beurre de cacao & la cristallisation »</p>
+      <button class="btn" id="quizRestart">Recommencer le quiz</button>
+    </div>
+  `;
+  document.getElementById('quizRestart').addEventListener('click', startQuiz);
+}
+
+/* =========================================================
+   TUTEUR IA — appel direct à l'API Groq (gratuite), fonctionne
+   dans n'importe quel navigateur, sans compte ni autorisation
+   ========================================================= */
+const SUGGESTED_QUESTIONS = [
+  "Pourquoi seuls les cristaux bêta sont-ils recherchés au tempérage ?",
+  "Quelle est la différence entre blanchiment gras et blanchiment sucrier ?",
+  "Comment corriger une couverture sur-cristallisée ?"
+];
+
+const GROQ_MODEL = "llama-3.3-70b-versatile";
+const RELAY_URL = "/.netlify/functions/chat";
+
+let chatHistory = [];
+
+function renderChatSuggestions(){
+  const wrap = document.getElementById('chatSuggestions');
+  wrap.innerHTML = SUGGESTED_QUESTIONS.map(s=>`<button class="suggestion-chip">${s}</button>`).join('');
+  wrap.querySelectorAll('.suggestion-chip').forEach(chip=>{
+    chip.addEventListener('click', ()=>{
+      document.getElementById('chatInput').value = chip.textContent;
+      sendChat();
+    });
+  });
+}
+
+function addMsg(text, cls){
+  const log = document.getElementById('chatLog');
+  const div = document.createElement('div');
+  div.className = 'msg ' + cls;
+  div.textContent = text;
+  log.appendChild(div);
+  log.scrollTop = log.scrollHeight;
+  return div;
+}
+
+async function askTuteur(systemPrompt, messages){
+  const response = await fetch(RELAY_URL, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      model: GROQ_MODEL,
+      messages: [{role: "system", content: systemPrompt}, ...messages],
+      temperature: 0.4
+    })
+  });
+  if(!response.ok){
+    const errBody = await response.text().catch(()=>"");
+    const err = new Error("HTTP " + response.status);
+    err.status = response.status;
+    err.body = errBody;
+    throw err;
+  }
+  const data = await response.json();
+  return data.choices[0].message.content;
+}
+
+async function sendChat(){
+  const inputEl = document.getElementById('chatInput');
+  const text = inputEl.value.trim();
+  if(!text) return;
+  inputEl.value = '';
+  addMsg(text, 'user');
+  chatHistory.push({role:'user', content:text});
+  const loadingDiv = addMsg('Le tuteur réfléchit…', 'bot loading');
+
+  const RULES = "Tu es un tuteur pour des élèves en BTM Chocolatier-Confiseur. Tu réponds UNIQUEMENT à partir du texte de cours suivant, sur le module 'Le beurre de cacao & la cristallisation'. Si la question sort de ce cours (autre module), dis poliment que ce sujet est traité dans un autre module et invite l'élève à s'y rendre. Réponds de façon claire, pédagogique, avec des exemples concrets d'atelier quand c'est pertinent. Ne mentionne jamais quel modèle d'IA tu es : reste dans ton rôle de tuteur du module.\n\nCOURS :\n" + COURSE_TEXT;
+
+  const recentHistory = chatHistory.slice(-10);
+
+  try{
+    const answer = await askTuteur(RULES, recentHistory);
+    loadingDiv.classList.remove('loading');
+    loadingDiv.textContent = answer;
+    chatHistory.push({role:'assistant', content: answer});
+  } catch(err){
+    loadingDiv.classList.remove('loading');
+    loadingDiv.textContent = err.status === 429
+      ? "Trop de questions envoyées d'un coup : attends un instant avant de réessayer."
+      : "Une erreur est survenue en contactant le tuteur. Réessaie dans un instant.";
+    console.error(err);
+  }
+}
+
+/* =========================================================
+   QUESTION D'EXAMEN — cheminement guidé
+   ========================================================= */
+let currentExamId = EXAM_QUESTIONS[0].id;
+let examStepIndex = {};
+
+function renderExamPills(){
+  const wrap = document.getElementById('examPills');
+  wrap.innerHTML = EXAM_QUESTIONS.map(q=>`<button class="exam-pill${q.id===currentExamId?' active':''}" data-id="${q.id}">${q.title.length>38?q.title.slice(0,38)+'…':q.title}</button>`).join('');
+  wrap.querySelectorAll('.exam-pill').forEach(p=>{
+    p.addEventListener('click', ()=>{
+      currentExamId = p.dataset.id;
+      renderExamPills();
+      renderExamQuestion();
+    });
+  });
+}
+
+function renderExamQuestion(){
+  const q = EXAM_QUESTIONS.find(e=>e.id===currentExamId);
+  if(!(currentExamId in examStepIndex)) examStepIndex[currentExamId] = 0;
+  const step = examStepIndex[currentExamId];
+  const card = document.getElementById('examCard');
+
+  let stepsHtml = '';
+  for(let i=0;i<step;i++){
+    stepsHtml += `<div class="step hint"><div class="step-label">Indice ${i+1}</div>${q.hints[i]}</div>`;
+  }
+
+  let controlsHtml = '';
+  if(step < q.hints.length){
+    controlsHtml += `<button class="btn" id="examHintBtn">Indice ${step+1}</button>`;
+  }
+  if(step > 0 || q.hints.length===0){
+    controlsHtml += `<button class="btn ghost" id="examAnswerBtn">Voir la réponse assemblée</button>`;
+  }
+  controlsHtml += `<button class="btn ghost" id="examResetBtn">Recommencer cette question</button>`;
+
+  card.innerHTML = `
+    <p class="exam-q-title">${q.title}</p>
+    <p class="exam-q-points">${q.points}</p>
+    ${stepsHtml}
+    <div class="exam-controls">${controlsHtml}</div>
+    <div class="exam-answer" id="examAnswer">${q.answerHtml}</div>
+    <p class="exam-note">Corrigé reconstitué à partir des sources internes du module (banque de questions, évaluations, corrigés officiels) — à relire avant diffusion en cas d'écart avec le cours.</p>
+  `;
+
+  const hintBtn = document.getElementById('examHintBtn');
+  if(hintBtn) hintBtn.addEventListener('click', ()=>{
+    examStepIndex[currentExamId] = step+1;
+    renderExamQuestion();
+  });
+  const answerBtn = document.getElementById('examAnswerBtn');
+  if(answerBtn) answerBtn.addEventListener('click', ()=>{
+    document.getElementById('examAnswer').classList.add('show');
+    answerBtn.disabled = true;
+  });
+  document.getElementById('examResetBtn').addEventListener('click', ()=>{
+    examStepIndex[currentExamId] = 0;
+    renderExamQuestion();
+  });
+}
+
+/* =========================================================
+   EN BREF — schéma SVG + points clés
+   ========================================================= */
+function renderBrief(){
+  const svgWrap = document.getElementById('briefSvgWrap');
+  svgWrap.innerHTML = `
+  <svg viewBox="0 0 920 320" width="100%" style="min-width:680px;display:block;">
+    <defs>
+      <style>
+        .vt{font-family:'Merriweather',serif; font-weight:700; fill:var(--text-bright);}
+        .vs{font-family:'Inter',sans-serif; fill:var(--text-dim); font-size:11.5px;}
+        .vb{font-family:'Inter',sans-serif; fill:var(--text); font-size:13px; font-weight:600;}
+      </style>
+    </defs>
+    <rect x="0" y="0" width="920" height="320" fill="var(--surface)"/>
+    <text x="20" y="34" class="vt" font-size="16">La courbe de tempérage (couverture noire)</text>
+    <line x1="40" y1="220" x2="880" y2="220" stroke="var(--border)" stroke-width="2"/>
+    ${[
+      {x:90, temp:"50°C", label:"Fonte", desc:"Quasi-totalité liquide", h:80},
+      {x:290, temp:"26-28°C", label:"Refroidissement", desc:"Cristallisation (tous types)", h:190},
+      {x:490, temp:"31-32°C", label:"Travail", desc:"Ne garde que les β", h:140},
+      {x:690, temp:"16-17°C", label:"Refroidissement final", desc:"Cristaux β figés, stable", h:200}
+    ].map((s,i,arr) => `
+      <circle cx="${s.x}" cy="${220-s.h+140}" r="7" fill="var(--gold)"/>
+      <text x="${s.x}" y="${220-s.h+140-16}" text-anchor="middle" class="vb">${s.temp}</text>
+      <text x="${s.x}" y="255" text-anchor="middle" class="vs">${s.label}</text>
+      <text x="${s.x}" y="270" text-anchor="middle" class="vs">${s.desc}</text>
+      ${i>0?`<line x1="${arr[i-1].x}" y1="${220-arr[i-1].h+140}" x2="${s.x}" y2="${220-s.h+140}" stroke="var(--caramel-hi)" stroke-width="2"/>`:''}
+    `).join('')}
+    <text x="20" y="300" class="vs">Cristaux β (31-35°C) = seuls stables → brillant, cassant, fondant, retarde le blanchiment gras</text>
+  </svg>`;
+
+  const points = document.getElementById('briefPoints');
+  const data = [
+  {h:"5 formes de cristaux", p:"Gamma, alpha, bêta seconde, bêta prime (instables) et bêta, seul stable (31-35°C)."},
+  {h:"Composition", p:"61% acides gras saturés (stéarique, palmitique), 38% insaturés (oléique, linoléique). Tocophérol = antioxydant naturel."},
+  {h:"3 facteurs de pré-cristallisation", p:"Température, friction (mouvement), vitesse. Objectif : min. 5% de cristaux β."},
+  {h:"3 méthodes de tempérage", p:"Tablage (marbre), par le froid (bain-marie froid), par ensemencement (palets stabilisés)."},
+  {h:"Décristallisation", p:"Dépassement de 35°C : tous les cristaux fondent, il faut recommencer la courbe."},
+  {h:"Sur/sous-cristallisation", p:"Sur- : couverture vaseline (trop froide). Sous- : reste fluide (température de travail non atteinte)."},
+  {h:"2 blanchiments", p:"Gras (fatbloom) = MG remonte, fond au toucher. Sucrier (sugarbloom) = sucre remonte, rugueux et collant."},
+  {h:"Conservation", p:"15-18°C, 70-75% hygrométrie. Noir : 1 an. Lait/fourré : 6-8 mois. Ganaches/truffes : 1 mois."}
+];
+  points.innerHTML = data.map(d=>`<div class="brief-point"><h4>${d.h}</h4><p>${d.p}</p></div>`).join('');
+}
+
+/* =========================================================
+   NAVIGATION + THEME
+   ========================================================= */
+document.querySelectorAll('.navbtn[data-tab]').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    document.querySelectorAll('.navbtn[data-tab]').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('panel-'+btn.dataset.tab).classList.add('active');
+  });
+});
+
+const themeToggle = document.getElementById('themeToggle');
+const themeLabel = document.getElementById('themeLabel');
+themeToggle.addEventListener('click', () => {
+  const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+  document.documentElement.setAttribute('data-theme', isLight ? 'dark' : 'light');
+  themeLabel.textContent = isLight ? 'Mode clair' : 'Mode sombre';
+});
+
+/* ===== Init ===== */
+startQuiz();
+renderChatSuggestions();
+document.getElementById('chatSend').addEventListener('click', sendChat);
+document.getElementById('chatInput').addEventListener('keydown', e=>{ if(e.key==='Enter') sendChat(); });
+renderExamPills();
+renderExamQuestion();
+renderBrief();
+</script>
+
+</body>
+</html>

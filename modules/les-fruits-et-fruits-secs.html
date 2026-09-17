@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Les fruits & fruits secs — BTM Chocolatier</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #20110a;
+    --surface: #2b1810;
+    --surface-alt: #3d2416;
+    --border: rgba(242,232,216,0.14);
+    --text: #f2e8d8;
+    --text-bright: #faf4e9;
+    --text-dim: rgba(242,232,216,0.62);
+    --caramel: #b8783a;
+    --caramel-hi: #cf9455;
+    --gold: #d8b66e;
+    --error: #7a2e2a;
+    --error-text: #e2a29d;
+    --success: #4c7a3a;
+    --success-text: #b7dba0;
+    --shadow: rgba(0,0,0,0.35);
+  }
+  [data-theme="light"]{
+    --bg: #f7efdf;
+    --surface: #fffaf0;
+    --surface-alt: #efe0c4;
+    --border: rgba(61,36,22,0.16);
+    --text: #3a2415;
+    --text-bright: #241207;
+    --text-dim: rgba(58,36,21,0.62);
+    --caramel: #a8632b;
+    --caramel-hi: #94551f;
+    --gold: #93701f;
+    --error: #a13d34;
+    --error-text: #7c2b25;
+    --success: #3d6b2c;
+    --success-text: #2c4f20;
+    --shadow: rgba(58,36,21,0.12);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--bg); color:var(--text); font-family:'Inter',sans-serif;
+    min-height:100vh; -webkit-font-smoothing:antialiased;
+    transition:background .35s ease, color .35s ease;
+  }
+  h1,h2,h3{font-family:'Merriweather',serif; font-weight:700; letter-spacing:-0.005em;}
+  a{color:var(--caramel-hi);}
+  ::-webkit-scrollbar{width:10px;height:10px;}
+  ::-webkit-scrollbar-thumb{background:var(--surface-alt); border-radius:8px;}
+
+  .app{display:flex; min-height:100vh;}
+
+  /* ===== Sidebar ===== */
+  .sidebar{
+    width:230px; flex-shrink:0; background:var(--surface); border-right:1px solid var(--border);
+    display:flex; flex-direction:column; padding:24px 16px; gap:6px;
+    position:sticky; top:0; height:100vh;
+  }
+  .sidebar .brand{padding:4px 10px 20px;}
+  .sidebar .brand .kicker{color:var(--caramel-hi); font-size:11.5px; font-weight:600; text-transform:uppercase; letter-spacing:.06em; margin:0 0 4px;}
+  .sidebar .brand h1{font-size:20px; margin:0; color:var(--text-bright); line-height:1.25;}
+  .navbtn{
+    display:flex; align-items:center; gap:10px; text-align:left; width:100%;
+    background:transparent; border:none; border-radius:10px; padding:11px 12px;
+    color:var(--text-dim); font-family:'Inter',sans-serif; font-size:14px; font-weight:500;
+    cursor:pointer; transition:background .2s ease, color .2s ease;
+  }
+  .navbtn svg{width:17px; height:17px; flex-shrink:0;}
+  .navbtn:hover{background:var(--surface-alt); color:var(--text);}
+  .navbtn.active{background:linear-gradient(155deg, var(--caramel-hi), var(--caramel) 65%); color:var(--bg); font-weight:600;}
+  .sidebar-spacer{flex:1;}
+  .theme-toggle{
+    display:flex; align-items:center; gap:8px; background:var(--surface-alt); border:1px solid var(--border);
+    color:var(--text-dim); padding:10px 12px; border-radius:10px; font-size:13px; cursor:pointer;
+  }
+  .theme-toggle:hover{color:var(--text);}
+  .theme-toggle svg{width:15px;height:15px;}
+  .back-link{display:block; font-size:12.5px; color:var(--text-dim); text-decoration:none; padding:8px 12px 2px;}
+  .back-link:hover{color:var(--text);}
+
+  /* ===== Main ===== */
+  .main{flex:1; min-width:0; padding:40px 44px 80px;}
+  .panel{display:none; max-width:820px; margin:0 auto;}
+  .panel.active{display:block;}
+  .panel-head{margin-bottom:28px;}
+  .panel-head .kicker{color:var(--caramel-hi); font-size:12.5px; font-weight:600; margin:0 0 6px;}
+  .panel-head h2{font-size:26px; margin:0 0 8px; color:var(--text-bright);}
+  .panel-head p{color:var(--text-dim); font-size:14px; margin:0; line-height:1.55; max-width:60ch;}
+
+  .card{
+    background:var(--surface); border:1px solid var(--border); border-radius:16px;
+    padding:26px; box-shadow:0 8px 24px var(--shadow); margin-bottom:18px;
+  }
+
+  /* ===== Quiz ===== */
+  .quiz-progress-wrap{display:flex; align-items:center; gap:12px; margin-bottom:22px;}
+  .quiz-progress-bar{flex:1; height:8px; border-radius:99px; background:var(--surface-alt); overflow:hidden;}
+  .quiz-progress-fill{height:100%; background:linear-gradient(90deg, var(--caramel), var(--gold)); border-radius:99px; transition:width .3s ease;}
+  .quiz-progress-label{font-size:12.5px; color:var(--text-dim); white-space:nowrap;}
+  .quiz-q{font-size:17px; line-height:1.5; color:var(--text-bright); margin:0 0 20px; font-family:'Merriweather',serif; font-weight:700;}
+  .quiz-options{display:flex; flex-direction:column; gap:10px;}
+  .quiz-opt{
+    text-align:left; padding:13px 16px; border-radius:11px; border:1px solid var(--border);
+    background:var(--surface-alt); color:var(--text); font-family:'Inter',sans-serif; font-size:14.5px;
+    cursor:pointer; transition:border-color .15s ease, background .15s ease;
+  }
+  .quiz-opt:hover{border-color:var(--caramel-hi);}
+  .quiz-opt.correct{background:color-mix(in srgb, var(--success) 30%, var(--surface-alt)); border-color:var(--success);}
+  .quiz-opt.incorrect{background:color-mix(in srgb, var(--error) 30%, var(--surface-alt)); border-color:var(--error);}
+  .quiz-opt[disabled]{cursor:default;}
+  .quiz-explain{
+    margin-top:18px; padding:16px 18px; border-radius:12px; background:var(--surface-alt);
+    border-left:3px solid var(--gold); font-size:13.5px; line-height:1.6; color:var(--text); display:none;
+  }
+  .quiz-explain.show{display:block;}
+  .quiz-explain b{color:var(--text-bright);}
+  .quiz-next{margin-top:18px; display:none;}
+  .quiz-next.show{display:inline-flex;}
+  .quiz-result{text-align:center; padding:20px 0;}
+  .badge{
+    width:110px; height:110px; border-radius:50%; margin:0 auto 18px; display:flex; align-items:center;
+    justify-content:center; font-family:'Merriweather',serif; font-weight:900; font-size:15px; text-align:center;
+    box-shadow:inset 0 2px 6px rgba(0,0,0,0.25), 0 6px 18px var(--shadow); color:#2a1a0a;
+  }
+  .badge.bronze{background:linear-gradient(155deg,#d3925a,#9a5a2c);}
+  .badge.argent{background:linear-gradient(155deg,#e6e6e6,#a8a8a8); color:#2a2a2a;}
+  .badge.or{background:linear-gradient(155deg,#f2d27a,#c99a2e);}
+  .quiz-result h3{margin:0 0 6px; color:var(--text-bright); font-size:20px;}
+  .quiz-result p{color:var(--text-dim); font-size:14px; margin:0 0 22px;}
+
+  .btn{
+    display:inline-flex; align-items:center; justify-content:center; gap:8px; border:none; border-radius:11px;
+    font-family:'Inter',sans-serif; font-weight:600; font-size:14px; padding:11px 20px; cursor:pointer;
+    color:var(--bg); text-decoration:none; background:linear-gradient(155deg, var(--caramel-hi), var(--caramel) 60%, #8a5427);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,0.25), 0 3px 10px var(--shadow); transition:transform .15s ease;
+  }
+  .btn:hover{transform:translateY(-1px);}
+  .btn.ghost{background:transparent; color:var(--text); border:1px solid var(--border); box-shadow:none;}
+
+  /* ===== Tuteur ===== */
+  .chat-wrap{display:flex; flex-direction:column; height:64vh;}
+  .chat-log{flex:1; overflow-y:auto; padding:4px 2px 12px; display:flex; flex-direction:column; gap:14px;}
+  .msg{max-width:88%; padding:12px 15px; border-radius:14px; font-size:14px; line-height:1.55;}
+  .msg.user{align-self:flex-end; background:linear-gradient(155deg, var(--caramel-hi), var(--caramel)); color:var(--bg); border-bottom-right-radius:4px;}
+  .msg.bot{align-self:flex-start; background:var(--surface-alt); border:1px solid var(--border); color:var(--text); border-bottom-left-radius:4px; white-space:pre-wrap;}
+  .msg.bot.loading{color:var(--text-dim); font-style:italic;}
+  .suggestions{display:flex; flex-wrap:wrap; gap:8px; margin:6px 0 16px;}
+  .suggestion-chip{
+    background:var(--surface-alt); border:1px solid var(--border); color:var(--text-dim); font-size:12.5px;
+    padding:8px 13px; border-radius:99px; cursor:pointer; text-align:left;
+  }
+  .suggestion-chip:hover{border-color:var(--caramel-hi); color:var(--text);}
+  .chat-input-row{display:flex; gap:10px; margin-top:8px;}
+  .chat-input-row input{
+    flex:1; background:var(--surface-alt); border:1px solid var(--border); border-radius:11px; color:var(--text);
+    font-family:'Inter',sans-serif; font-size:14px; padding:12px 15px;
+  }
+  .chat-input-row input:focus{outline:none; border-color:var(--caramel-hi);}
+
+  /* ===== Question d'examen ===== */
+  .exam-pills{display:flex; flex-wrap:wrap; gap:8px; margin-bottom:22px;}
+  .exam-pill{
+    background:var(--surface-alt); border:1px solid var(--border); color:var(--text-dim); font-size:13px;
+    padding:9px 15px; border-radius:99px; cursor:pointer; font-family:'Inter',sans-serif;
+  }
+  .exam-pill.active{background:linear-gradient(155deg, var(--caramel-hi), var(--caramel)); color:var(--bg); border-color:transparent; font-weight:600;}
+  .exam-q-title{font-size:17px; font-family:'Merriweather',serif; font-weight:700; color:var(--text-bright); margin:0 0 6px;}
+  .exam-q-points{font-size:12px; color:var(--text-dim); margin:0 0 20px;}
+  .step{
+    background:var(--surface-alt); border-radius:12px; padding:14px 16px; margin-bottom:12px;
+    font-size:13.5px; line-height:1.6; border-left:3px solid var(--border);
+  }
+  .step.hint{border-left-color:var(--gold);}
+  .step-label{font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:.05em; color:var(--caramel-hi); margin-bottom:5px;}
+  .exam-answer{
+    display:none; margin-top:16px; padding:18px; border-radius:12px; background:var(--surface-alt);
+    border-left:3px solid var(--success); font-size:13.5px; line-height:1.65;
+  }
+  .exam-answer.show{display:block;}
+  .exam-answer h4{margin:14px 0 6px; font-size:13.5px; color:var(--text-bright); font-family:'Inter',sans-serif;}
+  .exam-answer h4:first-child{margin-top:0;}
+  .exam-answer ul{margin:4px 0; padding-left:18px;}
+  .exam-controls{display:flex; gap:10px; flex-wrap:wrap; margin-top:6px;}
+  .exam-note{font-size:11.5px; color:var(--text-dim); margin-top:14px; font-style:italic;}
+
+  /* ===== En bref ===== */
+  .brief-svg-wrap{background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:18px; margin-bottom:18px; overflow-x:auto;}
+  .brief-points{display:grid; grid-template-columns:repeat(auto-fit, minmax(230px,1fr)); gap:14px;}
+  .brief-point{background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:16px 18px;}
+  .brief-point h4{margin:0 0 6px; font-size:14px; color:var(--gold); font-family:'Inter',sans-serif;}
+  .brief-point p{margin:0; font-size:13px; line-height:1.55; color:var(--text-dim);}
+
+  @media (max-width: 860px){
+    .app{flex-direction:column;}
+    .sidebar{width:100%; height:auto; position:relative; flex-direction:row; overflow-x:auto; padding:14px 12px; align-items:center;}
+    .sidebar .brand{padding:0 12px 0 4px; flex-shrink:0;}
+    .sidebar-spacer{display:none;}
+    .navbtn{flex-shrink:0; width:auto;}
+    .theme-toggle{flex-shrink:0;}
+    .main{padding:26px 18px 60px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="app">
+  <nav class="sidebar">
+    <div class="brand">
+      <p class="kicker">BTM Chocolatier</p>
+      <h1>Les fruits & fruits secs</h1>
+    </div>
+    <button class="navbtn active" data-tab="quiz">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+      Quiz
+    </button>
+    <button class="navbtn" data-tab="tuteur">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      Poser une question
+    </button>
+    <button class="navbtn" data-tab="examen">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M9 13h6M9 17h6M9 9h1"/></svg>
+      Question d'examen
+    </button>
+    <button class="navbtn" data-tab="brief">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+      En bref
+    </button>
+    <div class="sidebar-spacer"></div>
+    <a class="back-link" href="../index.html">← Retour au hub</a>
+    <button class="theme-toggle" id="themeToggle">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4.5"/><path d="M12 2.5v2M12 19.5v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M2.5 12h2M19.5 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4"/></svg>
+      <span id="themeLabel">Mode clair</span>
+    </button>
+  </nav>
+
+  <main class="main">
+
+    <!-- ===== QUIZ ===== -->
+    <section class="panel active" id="panel-quiz">
+      <div class="panel-head">
+        <p class="kicker">Quiz — Les fruits & fruits secs</p>
+        <h2>Teste tes connaissances</h2>
+        <p>Classification des fruits, fruits secs à coque, conservation et rancissement.</p>
+      </div>
+      <div class="card" id="quizCard"></div>
+    </section>
+
+    <!-- ===== TUTEUR ===== -->
+    <section class="panel" id="panel-tuteur">
+      <div class="panel-head">
+        <p class="kicker">Tuteur IA — Les fruits & fruits secs</p>
+        <h2>Poser une question</h2>
+        <p>Le tuteur répond uniquement à partir du cours de ce module. Pour les autres sujets, utilise le module concerné.</p>
+      </div>
+      <div class="card chat-wrap">
+        <div class="chat-log" id="chatLog"></div>
+        <div class="suggestions" id="chatSuggestions"></div>
+        <div class="chat-input-row">
+          <input type="text" id="chatInput" placeholder="Écris ta question sur le cacao…">
+          <button class="btn" id="chatSend">Envoyer</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== EXAMEN ===== -->
+    <section class="panel" id="panel-examen">
+      <div class="panel-head">
+        <p class="kicker">Question d'examen — Les fruits & fruits secs</p>
+        <h2>Cheminement guidé</h2>
+        <p>Choisis une question, avance indice par indice, puis assemble ta réponse avant de découvrir le corrigé.</p>
+      </div>
+      <div class="exam-pills" id="examPills"></div>
+      <div class="card" id="examCard"></div>
+    </section>
+
+    <!-- ===== EN BREF ===== -->
+    <section class="panel" id="panel-brief">
+      <div class="panel-head">
+        <p class="kicker">En bref — Les fruits & fruits secs</p>
+        <h2>Récapitulatif visuel</h2>
+        <p>Les 4 grandes variétés et l'essentiel à retenir avant l'épreuve.</p>
+      </div>
+      <div class="brief-svg-wrap" id="briefSvgWrap"></div>
+      <div class="brief-points" id="briefPoints"></div>
+    </section>
+
+  </main>
+</div>
+
+
+<script>
+/* =========================================================
+   COURSE_TEXT — synthèse fidèle du cours "Les fruits & fruits secs"
+   (source du tuteur IA — ne répond qu'à partir de ce texte)
+   ========================================================= */
+const COURSE_TEXT = `
+
+MODULE : LES FRUITS & FRUITS SECS — BTM Chocolatier Confiseur (Bloc 4)
+
+PARTIE 1 — LES FRUITS
+
+1/ Fruit et légume, quelle différence ?
+Le fruit est l'organe comestible des plantes à fleurs, contenant les graines, succédant à la fleur (fructification issue de la transformation d'un ou plusieurs ovules). Le légume est la partie d'une plante potagère qui se consomme : cela peut être un fruit, mais aussi la graine, la fleur, la tige, le bulbe, la feuille, le tubercule, le germe ou la racine. Donc les fruits sont des légumes, mais les légumes ne sont pas tous des fruits — cette différenciation n'a rien à voir avec l'usage sucré/salé (l'aubergine, le concombre, la tomate sont des fruits ; la rhubarbe, la canne à sucre sont des légumes).
+En chocolaterie, on les retrouve rarement à l'état frais, plus généralement transformés en pulpe, marmelade, confiture, confits.
+
+2/ Classification
+Deux grandes catégories : les fruits charnus et les fruits secs. Commercialisés à l'état naturel, séchés/déshydratés, transformés, ou conservés.
+Coupe d'un fruit (exemple de l'abricot) : épicarpe (peau veloutée), mésocarpe (la chair), endocarpe (dur et ligneux, renferme le noyau).
+
+3/ Les fruits charnus
+Comestibles, gros, juteux, colorés. 4 groupes :
+- Les drupes : contiennent un noyau renfermant la graine (« amande »), indéhiscentes, endocarpe lignifié, généralement un seul ovaire. Exemples : mirabelle, pêche, prune, cerise, abricot. La mûre et la framboise sont des amas de petites drupes.
+- Les baies : fruits à pépins, indéhiscentes, sans endocarpe lignifié, exocarpe mince, mésocarpe et endocarpe charnus (libèrent la graine dans la chair), souvent plusieurs ovaires (polysperme). Exemples : figue, poire, pomme, raisin, groseille, cassis.
+- Les agrumes : famille des rutacées, sous-catégorie des baies. Acides, riches en vitamine C, peau épaisse, odeur due à l'huile essentielle du zeste, pulpe divisée en 8-15 quartiers. Exemples : orange, orange amère, citron, pamplemousse, mandarine, bergamote, cédrat, kumquat, combava, yuzu.
+- Les fruits exotiques : poussent en régions équatoriales chaudes et humides, supportent mal le froid. Marché en constante évolution (transport, conservation). Exemples : ananas, mangue, datte, café, banane, grenade, fruit de la passion, papaye, kaki, carambole.
+
+4/ Les fruits secs (au sens botanique)
+Dotés d'une protection résistante. Déhiscence = ouverture automatique du fruit à maturité pour libérer les graines — critère qui distingue fruits déhiscents et indéhiscents. Fruits indéhiscents : si le péricarpe est soudé à la graine, c'est un caryopse ; sinon, un akène.
+
+PARTIE 2 — LES FRUITS SECS OLÉAGINEUX (fruits à coque)
+
+Définition : fruits récoltés secs, utilisables tels quels en décoration/garniture, mais principalement transformés en pâtes, poudres ou masses pour l'aromatisation ou les intérieurs de chocolat. Très riches en matières grasses, ils ont l'inconvénient de rancir rapidement : conservation limitée.
+
+L'amande : originaire d'Asie centrale, très utilisée au Moyen-Orient. Amère à l'état sauvage (amande sauvage), l'amande douce vient d'Arménie ; exploitée dans l'alimentation par les Grecs, développée autour de la Méditerranée puis en Amérique. Régions françaises : Provence, Corse, Rhône-Alpes. Producteurs étrangers : Italie, Espagne, Tunisie, USA (80%), Australie (7%). De forme ovoïde, peau veloutée, coque épaisse renfermant 1-2 graines (l'amande) — c'est une drupe. Les amandes amères séchées sont toxiques en grande quantité (acide cyanhydrique), utilisées à faible dose seulement. Contiennent 54 à 56% de matière grasse. Variétés selon usage : l'Avola (dragées), la California ou la Ferrastar (masses de praliné, plus goûteuses). Principales variétés françaises : Ferragnès, Aï de Provence, Ardéchoise, Ferrastar, Lauranne, Sultane, Ferraduel.
+
+La noisette : très riche en oméga 9 (contre le cholestérol) et vitamine E (anti-vieillissement cellulaire), issue du noisetier (arbuste de 2-4m). Floraison en février, récolte fin septembre-octobre. Contient 60% de matières grasses. Régions françaises : Corse, Pyrénées-Orientales, Aquitaine, Alpes-Maritimes, Lot-et-Garonne (98% de la production française). Producteurs étrangers : Turquie (70%), Espagne, Italie (13%), USA (5%). Variétés notables : La Tonda Gentile (Italie, « ronde du Piémont », meilleure noisette mondiale) ; La Tonda Romana (Italie, idéale pour le praliné, émondage difficile) ; Ennis (Amérique, émondage difficile) ; Corabel (France, bonne qualité, émondage facile).
+
+La noix : drupe à coque originaire d'Eurasie. Le brou (chair) sert de teinture (inconsommable) ; c'est le noyau sec (cerneau) ou son huile qui sont utilisés. Riche en lipides (60%), intéressante contre les maladies cardio-vasculaires. Régions françaises : Isère, Périgord, Corrèze, Lot, Aveyron. Deux AOC françaises : Grenoble (Franquette, Mayette, Parisienne — Savoie, Drôme, Isère) et Périgord (Franquette, Corne, Grandjean, Marbot — Dordogne, Lot, Corrèze, Charente). Producteurs étrangers : Chine (45%, consommation domestique), USA (14%, variétés Hartley/Franquette/Howard), Iran (14%), Turquie (5,5%).
+
+La pistache : fruit oléagineux (54-58% de matière grasse), petit arbuste méditerranéen originaire du Moyen-Orient. Amande ovoïde sous une peau fine brun violacé, pistache jaunâtre à verte selon la variété. Arrivée en France au XVIIe siècle sous le nom « Amande de Perse ».
+
+Conservation des fruits secs : le principal danger est le rancissement. Pour les préserver : à l'abri de la lumière, au sec, à température stable (~15°C), à l'abri de la poussière/insectes/mauvaises odeurs. La chambre chocolat (température et hygrométrie régulées) est une bonne solution. Le froid positif est utile mais attention à l'humidité et aux captations d'odeurs ; le froid négatif est très efficace sur quelques semaines, mais attention à la condensation lors de la remise en température.
+
+Qu'est-ce que le rancissement ? Oxydation (parfois enzymatique pour les graisses laitières) des acides gras, formant de l'acide butyrique et des radicaux libres qui s'attaquent directement aux acides gras. Ce phénomène ne touche que les acides gras insaturés, au niveau des doubles liaisons carbone-carbone — plus le corps gras est insaturé, plus l'attaque est facile. Entraîne la rupture des chaînes de carbone et libère des aldéhydes : non toxiques, mais au goût et à l'odeur très désagréables, rendant la matière impropre à la consommation. Accéléré par l'exposition à l'oxygène, à la lumière, à la chaleur. Les matières sensibles sont souvent protégées par un antioxydant.
+
+`;
+
+/* =========================================================
+   QUESTIONS — Quiz (QCM)
+   ========================================================= */
+const QUESTIONS = [
+  {
+    q: "Quelle est la vraie différence entre un fruit et un légume, botaniquement ?",
+    options: [
+      "Le fruit est toujours sucré, le légume toujours salé",
+      "Le fruit contient les graines et succède à la fleur ; le légume est une partie comestible d'une plante potagère (pas forcément un fruit)",
+      "Il n'y a aucune différence",
+      "Le légume pousse toujours sous terre"
+    ],
+    correct: 1,
+    explain: "Le fruit est l'organe qui contient les graines et succède à la fleur. Le légume est simplement la partie comestible d'une plante potagère — qui peut être un fruit, mais aussi une racine, une feuille, une tige, etc. <b>L'aubergine, le concombre et la tomate sont donc botaniquement des fruits</b>, tandis que la rhubarbe est un légume."
+  },
+  {
+    q: "Quelles sont les deux grandes catégories de fruits selon le cours ?",
+    options: ["Sucrés et acides", "Les fruits charnus et les fruits secs", "Rouges et verts", "Tropicaux et tempérés"],
+    correct: 1,
+    explain: "<b>Les fruits charnus</b> (drupes, baies, agrumes, fruits exotiques) et <b>les fruits secs</b>, dotés d'une protection résistante et distingués selon leur déhiscence (ouverture automatique à maturité ou non)."
+  },
+  {
+    q: "Qu'est-ce qui caractérise une drupe, comme la cerise ou l'abricot ?",
+    options: [
+      "Un fruit à pépins sans noyau",
+      "Un noyau renfermant la graine (l'amande), généralement un seul ovaire",
+      "Une peau épaisse riche en vitamine C",
+      "Une absence totale de chair"
+    ],
+    correct: 1,
+    explain: "Une drupe contient un <b>noyau à l'intérieur duquel se trouve la graine</b>, appelée « amande » (comme dans l'abricot). Elle est indéhiscente et se caractérise généralement par un seul ovaire — la mûre et la framboise sont des amas de petites drupes."
+  },
+  {
+    q: "Les agrumes sont une sous-catégorie de quel groupe de fruits charnus ?",
+    options: ["Les drupes", "Les baies", "Les fruits exotiques", "Aucun groupe particulier"],
+    correct: 1,
+    explain: "Les agrumes (famille des rutacées) font partie des <b>baies</b> : fruits à pépins, indéhiscents, riches en vitamine C, caractérisés par une peau épaisse et une pulpe divisée en 8 à 15 quartiers."
+  },
+  {
+    q: "Pourquoi les fruits secs oléagineux (amande, noisette, noix) rancissent-ils rapidement ?",
+    options: [
+      "Parce qu'ils contiennent beaucoup d'eau",
+      "Parce qu'ils sont très riches en matières grasses",
+      "Parce qu'ils sont toujours conservés au chaud",
+      "Ils ne rancissent jamais"
+    ],
+    correct: 1,
+    explain: "Étant <b>très riches en matières grasses</b> (54 à 60% selon le fruit), les fruits secs oléagineux ont l'inconvénient de rancir rapidement — d'où l'importance d'une conservation adaptée pour limiter ce phénomène."
+  },
+  {
+    q: "Quelle est la teneur en matière grasse de l'amande ?",
+    options: ["10-15%", "30-35%", "54-56%", "80-85%"],
+    correct: 2,
+    explain: "L'amande contient <b>54 à 56% de matière grasse</b>. Elle est classée botaniquement comme une drupe (le fruit contient chair et noyau)."
+  },
+  {
+    q: "Pourquoi les amandes amères séchées doivent-elles être utilisées à faible dose ?",
+    options: [
+      "Elles sont trop chères",
+      "Elles contiennent de l'acide cyanhydrique, toxique en grande quantité",
+      "Elles sont périmées rapidement",
+      "Elles n'ont aucun goût"
+    ],
+    correct: 1,
+    explain: "Les amandes amères séchées contiennent de l'<b>acide cyanhydrique</b>, toxique en grande quantité — elles s'utilisent donc uniquement à faible dose, contrairement aux amandes douces qui composent la majorité des amandes commercialisées."
+  },
+  {
+    q: "Quel pourcentage de la production mondiale de noisettes la Turquie représente-t-elle ?",
+    options: ["10%", "30%", "70%", "98%"],
+    correct: 2,
+    explain: "La <b>Turquie</b> représente environ <b>70%</b> de la production mondiale de noisettes. En France, c'est le Lot-et-Garonne et les régions voisines (Corse, Pyrénées-Orientales, Aquitaine, Alpes-Maritimes) qui concentrent 98% de la production française."
+  },
+  {
+    q: "Quelle variété de noisette italienne est réputée « meilleure noisette mondiale » ?",
+    options: ["Ennis", "Corabel", "La Tonda Gentile", "Segorbe"],
+    correct: 2,
+    explain: "<b>La Tonda Gentile</b>, dite « ronde du Piémont », est réputée comme la meilleure noisette mondiale en goût, avec un émondage simple. La Tonda Romana, elle, est particulièrement recherchée pour le praliné malgré un émondage plus difficile."
+  },
+  {
+    q: "Quelle partie de la noix, inconsommable, sert traditionnellement de teinture ?",
+    options: ["Le cerneau", "Le brou (la chair)", "La coque", "L'huile"],
+    correct: 1,
+    explain: "Le <b>brou</b>, qui est la chair de la noix, est inconsommable et utilisé comme teinture. C'est le <b>noyau sec</b> (sous forme de cerneau) ou son huile qui sont consommés — la noix est une drupe riche en lipides (60%)."
+  },
+  {
+    q: "Combien d'AOC françaises existe-t-il pour la noix, et lesquelles ?",
+    options: ["Aucune", "Une seule : Grenoble", "Deux : Grenoble et Périgord", "Quatre"],
+    correct: 2,
+    explain: "Il existe <b>2 AOC françaises</b> pour la noix : <b>Grenoble</b> (Franquette, Mayette, Parisienne, dans la Savoie/Drôme/Isère) et <b>Périgord</b> (Franquette, Corne, Grandjean, Marbot, dans la Dordogne/Lot/Corrèze/Charente)."
+  },
+  {
+    q: "D'où la pistache tire-t-elle son ancien nom français « Amande de Perse » ?",
+    options: [
+      "Elle vient uniquement de Perse aujourd'hui",
+      "Elle est arrivée en France au XVIIe siècle en provenance du Moyen-Orient",
+      "Elle ressemble à l'amande d'un point de vue botanique uniquement",
+      "C'est une erreur de traduction moderne"
+    ],
+    correct: 1,
+    explain: "La pistache, originaire du Moyen-Orient, est arrivée en France au <b>XVIIe siècle</b> sous le nom « Amande de Perse ». Elle contient 54 à 58% de matière grasse, comme l'amande."
+  },
+  {
+    q: "Quel est le principal danger pour la conservation des fruits secs oléagineux ?",
+    options: ["La fermentation", "Le rancissement", "La caramélisation", "La cristallisation"],
+    correct: 1,
+    explain: "Le <b>rancissement</b> est le principal danger. Pour le limiter : conservation à l'abri de la lumière, au sec, à température stable (~15°C), à l'abri de la poussière, des insectes et des mauvaises odeurs — la chambre chocolat est une bonne solution."
+  },
+  {
+    q: "Sur quels acides gras le rancissement agit-il exclusivement ?",
+    options: ["Les acides gras saturés uniquement", "Les acides gras insaturés, au niveau des doubles liaisons carbone-carbone", "Tous les acides gras de façon identique", "Uniquement les protéines"],
+    correct: 1,
+    explain: "Le rancissement (oxydation) ne touche que les <b>acides gras insaturés</b>, au niveau de leurs doubles liaisons carbone-carbone — plus un corps gras est insaturé, plus l'attaque des radicaux libres est facile."
+  },
+  {
+    q: "Que produit le rancissement, responsable du goût et de l'odeur désagréables des matières grasses rances ?",
+    options: ["Du sucre inverti", "Des aldéhydes (non toxiques mais très désagréables)", "De la théobromine", "Du beurre de cacao"],
+    correct: 1,
+    explain: "Le rancissement libère des <b>aldéhydes</b> par rupture des chaînes de carbone — non toxiques, mais au goût et à l'odeur très désagréables, ce qui rend la matière grasse impropre à la consommation."
+  }
+];
+
+/* =========================================================
+   EXAM_QUESTIONS — cheminements guidés
+   ========================================================= */
+const EXAM_QUESTIONS = [
+  {
+    id: "groupe-famille",
+    title: "De quel groupe et de quelle famille font partie la noisette et l'amande ? Donnez trois variétés de chaque et identifiez une variété française",
+    points: "d'après la banque de questions techno (fruits secs)",
+    hints: [
+      "L'amande et la noisette appartiennent toutes deux au même grand groupe botanique de fruits charnus — lequel ?",
+      "Cite au moins 3 variétés pour chacune, en identifiant clairement celle(s) d'origine française."
+    ],
+    answerHtml: `
+      <h4>Groupe et famille</h4>
+      <p>L'amande et la noisette sont toutes deux des <b>drupes</b> (fruits charnus à noyau renfermant la graine).</p>
+      <h4>Variétés d'amande</h4>
+      <p>Ferragnès, Ferrastar, Ardéchoise (françaises) ; Avola (Italie, dragées) ; California (USA, praliné).</p>
+      <h4>Variétés de noisette</h4>
+      <p>Corabel, Fertil de Coutard (françaises) ; La Tonda Gentile (Italie, meilleure noisette mondiale) ; La Tonda Romana (Italie, idéale pour le praliné).</p>`
+  },
+  {
+    id: "stockage-fruits-secs",
+    title: "Quelles sont les conditions de stockage à respecter pour les fruits secs (amandes, noisettes...) ?",
+    points: "d'après la banque de questions techno",
+    hints: [
+      "Il y a 5 conditions environnementales de base à respecter.",
+      "Ajoute une précision sur le froid positif et le froid négatif, chacun avec sa limite."
+    ],
+    answerHtml: `
+      <h4>Conditions de base</h4>
+      <ul>
+        <li>À l'abri de la lumière</li>
+        <li>Au sec</li>
+        <li>À une température stable (environ 15°C)</li>
+        <li>À l'abri de la poussière et des insectes</li>
+        <li>À l'abri des mauvaises odeurs</li>
+      </ul>
+      <h4>Solutions au froid</h4>
+      <p>La chambre chocolat (température et hygrométrie régulées) est une bonne solution. Le froid positif est utile mais attention à l'humidité et aux captations d'odeurs. Le froid négatif est très efficace sur quelques semaines, mais attention à la condensation lors de la remise en température.</p>`
+  },
+  {
+    id: "rancissement",
+    title: "Quelle est la principale altération de conservation que risque un fruit sec ? Quelle en est la cause ?",
+    points: "d'après la banque de questions techno",
+    hints: [
+      "C'est le même phénomène qui touche aussi les matières grasses laitières.",
+      "Explique le mécanisme chimique précis (quel type d'acide gras, quelle réaction, quel produit final)."
+    ],
+    answerHtml: `
+      <h4>L'altération : le rancissement</h4>
+      <p>C'est une <b>oxydation</b> (parfois enzymatique) des acides gras <b>insaturés</b>, au niveau de leurs doubles liaisons carbone-carbone. Des radicaux libres s'attaquent aux acides gras, entraînant la rupture des chaînes de carbone et libérant des <b>aldéhydes</b> — non toxiques, mais au goût et à l'odeur très désagréables.</p>
+      <h4>Facteurs aggravants</h4>
+      <p>Le phénomène est accéléré par l'exposition à l'<b>oxygène</b> de l'air, à la <b>lumière</b> et à la <b>chaleur</b>. Plus le corps gras est insaturé, plus l'attaque est facile — c'est pourquoi les matières sensibles sont souvent protégées par un antioxydant.</p>`
+  }
+];
+
+/* =========================================================
+   QUIZ LOGIC
+   ========================================================= */
+let quizOrder = [];
+let quizIndex = 0;
+let quizScore = 0;
+
+function shuffle(arr){
+  const a = arr.slice();
+  for(let i=a.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]]=[a[j],a[i]];
+  }
+  return a;
+}
+
+function startQuiz(){
+  quizOrder = shuffle(QUESTIONS.map((_,i)=>i));
+  quizIndex = 0;
+  quizScore = 0;
+  renderQuizQuestion();
+}
+
+function renderQuizQuestion(){
+  const card = document.getElementById('quizCard');
+  if(quizIndex >= quizOrder.length){
+    renderQuizResult();
+    return;
+  }
+  const q = QUESTIONS[quizOrder[quizIndex]];
+  const pct = Math.round((quizIndex/quizOrder.length)*100);
+  card.innerHTML = `
+    <div class="quiz-progress-wrap">
+      <div class="quiz-progress-bar"><div class="quiz-progress-fill" style="width:${pct}%"></div></div>
+      <div class="quiz-progress-label">${quizIndex+1} / ${quizOrder.length}</div>
+    </div>
+    <p class="quiz-q">${q.q}</p>
+    <div class="quiz-options" id="quizOptions">
+      ${q.options.map((o,i)=>`<button class="quiz-opt" data-i="${i}">${o}</button>`).join('')}
+    </div>
+    <div class="quiz-explain" id="quizExplain"></div>
+    <button class="btn quiz-next" id="quizNextBtn">Question suivante</button>
+  `;
+  document.querySelectorAll('#quizOptions .quiz-opt').forEach(btn=>{
+    btn.addEventListener('click', ()=>answerQuiz(parseInt(btn.dataset.i), q));
+  });
+  document.getElementById('quizNextBtn').addEventListener('click', ()=>{
+    quizIndex++;
+    renderQuizQuestion();
+  });
+}
+
+function answerQuiz(i, q){
+  const opts = document.querySelectorAll('#quizOptions .quiz-opt');
+  opts.forEach(o=>o.disabled=true);
+  if(i === q.correct){
+    opts[i].classList.add('correct');
+    quizScore++;
+  } else {
+    opts[i].classList.add('incorrect');
+    opts[q.correct].classList.add('correct');
+  }
+  const ex = document.getElementById('quizExplain');
+  ex.innerHTML = q.explain;
+  ex.classList.add('show');
+  document.getElementById('quizNextBtn').classList.add('show');
+}
+
+function renderQuizResult(){
+  const card = document.getElementById('quizCard');
+  const pct = Math.round((quizScore/quizOrder.length)*100);
+  let tier = 'bronze', label = 'Bronze';
+  if(pct >= 85){ tier='or'; label='Or'; }
+  else if(pct >= 65){ tier='argent'; label='Argent'; }
+  card.innerHTML = `
+    <div class="quiz-result">
+      <div class="badge ${tier}">${label}</div>
+      <h3>${quizScore} / ${quizOrder.length} bonnes réponses</h3>
+      <p>${pct}% de réussite sur le module « Les fruits & fruits secs »</p>
+      <button class="btn" id="quizRestart">Recommencer le quiz</button>
+    </div>
+  `;
+  document.getElementById('quizRestart').addEventListener('click', startQuiz);
+}
+
+/* =========================================================
+   TUTEUR IA — appel direct à l'API Groq (gratuite), fonctionne
+   dans n'importe quel navigateur, sans compte ni autorisation
+   ========================================================= */
+const SUGGESTED_QUESTIONS = [
+  "Pourquoi les fruits secs rancissent-ils, et comment l'éviter ?",
+  "Quelle est la différence entre une drupe et une baie ?",
+  "Quelles sont les meilleures variétés de noisette pour le praliné ?"
+];
+
+const GROQ_MODEL = "llama-3.3-70b-versatile";
+const RELAY_URL = "/.netlify/functions/chat";
+
+let chatHistory = [];
+
+function renderChatSuggestions(){
+  const wrap = document.getElementById('chatSuggestions');
+  wrap.innerHTML = SUGGESTED_QUESTIONS.map(s=>`<button class="suggestion-chip">${s}</button>`).join('');
+  wrap.querySelectorAll('.suggestion-chip').forEach(chip=>{
+    chip.addEventListener('click', ()=>{
+      document.getElementById('chatInput').value = chip.textContent;
+      sendChat();
+    });
+  });
+}
+
+function addMsg(text, cls){
+  const log = document.getElementById('chatLog');
+  const div = document.createElement('div');
+  div.className = 'msg ' + cls;
+  div.textContent = text;
+  log.appendChild(div);
+  log.scrollTop = log.scrollHeight;
+  return div;
+}
+
+async function askTuteur(systemPrompt, messages){
+  const response = await fetch(RELAY_URL, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      model: GROQ_MODEL,
+      messages: [{role: "system", content: systemPrompt}, ...messages],
+      temperature: 0.4
+    })
+  });
+  if(!response.ok){
+    const errBody = await response.text().catch(()=>"");
+    const err = new Error("HTTP " + response.status);
+    err.status = response.status;
+    err.body = errBody;
+    throw err;
+  }
+  const data = await response.json();
+  return data.choices[0].message.content;
+}
+
+async function sendChat(){
+  const inputEl = document.getElementById('chatInput');
+  const text = inputEl.value.trim();
+  if(!text) return;
+  inputEl.value = '';
+  addMsg(text, 'user');
+  chatHistory.push({role:'user', content:text});
+  const loadingDiv = addMsg('Le tuteur réfléchit…', 'bot loading');
+
+  const RULES = "Tu es un tuteur pour des élèves en BTM Chocolatier-Confiseur. Tu réponds UNIQUEMENT à partir du texte de cours suivant, sur le module 'Les fruits & fruits secs'. Si la question sort de ce cours (autre module), dis poliment que ce sujet est traité dans un autre module et invite l'élève à s'y rendre. Réponds de façon claire, pédagogique, avec des exemples concrets d'atelier quand c'est pertinent. Ne mentionne jamais quel modèle d'IA tu es : reste dans ton rôle de tuteur du module.\n\nCOURS :\n" + COURSE_TEXT;
+
+  const recentHistory = chatHistory.slice(-10);
+
+  try{
+    const answer = await askTuteur(RULES, recentHistory);
+    loadingDiv.classList.remove('loading');
+    loadingDiv.textContent = answer;
+    chatHistory.push({role:'assistant', content: answer});
+  } catch(err){
+    loadingDiv.classList.remove('loading');
+    loadingDiv.textContent = err.status === 429
+      ? "Trop de questions envoyées d'un coup : attends un instant avant de réessayer."
+      : "Une erreur est survenue en contactant le tuteur. Réessaie dans un instant.";
+    console.error(err);
+  }
+}
+
+/* =========================================================
+   QUESTION D'EXAMEN — cheminement guidé
+   ========================================================= */
+let currentExamId = EXAM_QUESTIONS[0].id;
+let examStepIndex = {};
+
+function renderExamPills(){
+  const wrap = document.getElementById('examPills');
+  wrap.innerHTML = EXAM_QUESTIONS.map(q=>`<button class="exam-pill${q.id===currentExamId?' active':''}" data-id="${q.id}">${q.title.length>38?q.title.slice(0,38)+'…':q.title}</button>`).join('');
+  wrap.querySelectorAll('.exam-pill').forEach(p=>{
+    p.addEventListener('click', ()=>{
+      currentExamId = p.dataset.id;
+      renderExamPills();
+      renderExamQuestion();
+    });
+  });
+}
+
+function renderExamQuestion(){
+  const q = EXAM_QUESTIONS.find(e=>e.id===currentExamId);
+  if(!(currentExamId in examStepIndex)) examStepIndex[currentExamId] = 0;
+  const step = examStepIndex[currentExamId];
+  const card = document.getElementById('examCard');
+
+  let stepsHtml = '';
+  for(let i=0;i<step;i++){
+    stepsHtml += `<div class="step hint"><div class="step-label">Indice ${i+1}</div>${q.hints[i]}</div>`;
+  }
+
+  let controlsHtml = '';
+  if(step < q.hints.length){
+    controlsHtml += `<button class="btn" id="examHintBtn">Indice ${step+1}</button>`;
+  }
+  if(step > 0 || q.hints.length===0){
+    controlsHtml += `<button class="btn ghost" id="examAnswerBtn">Voir la réponse assemblée</button>`;
+  }
+  controlsHtml += `<button class="btn ghost" id="examResetBtn">Recommencer cette question</button>`;
+
+  card.innerHTML = `
+    <p class="exam-q-title">${q.title}</p>
+    <p class="exam-q-points">${q.points}</p>
+    ${stepsHtml}
+    <div class="exam-controls">${controlsHtml}</div>
+    <div class="exam-answer" id="examAnswer">${q.answerHtml}</div>
+    <p class="exam-note">Corrigé reconstitué à partir des sources internes du module (banque de questions, évaluations, corrigés officiels) — à relire avant diffusion en cas d'écart avec le cours.</p>
+  `;
+
+  const hintBtn = document.getElementById('examHintBtn');
+  if(hintBtn) hintBtn.addEventListener('click', ()=>{
+    examStepIndex[currentExamId] = step+1;
+    renderExamQuestion();
+  });
+  const answerBtn = document.getElementById('examAnswerBtn');
+  if(answerBtn) answerBtn.addEventListener('click', ()=>{
+    document.getElementById('examAnswer').classList.add('show');
+    answerBtn.disabled = true;
+  });
+  document.getElementById('examResetBtn').addEventListener('click', ()=>{
+    examStepIndex[currentExamId] = 0;
+    renderExamQuestion();
+  });
+}
+
+/* =========================================================
+   EN BREF — schéma SVG + points clés
+   ========================================================= */
+function renderBrief(){
+  const svgWrap = document.getElementById('briefSvgWrap');
+  svgWrap.innerHTML = `
+  <svg viewBox="0 0 900 280" width="100%" style="min-width:640px;display:block;">
+    <defs>
+      <style>
+        .vt{font-family:'Merriweather',serif; font-weight:700; fill:var(--text-bright); font-size:14px;}
+        .vs{font-family:'Inter',sans-serif; fill:var(--text-dim); font-size:11px;}
+        .vb{font-family:'Inter',sans-serif; fill:var(--gold); font-size:18px; font-weight:700;}
+      </style>
+    </defs>
+    <rect x="0" y="0" width="900" height="280" fill="var(--surface)"/>
+    ${[
+      {x:15, w:205, name:"Amande", pct:"54-56% MG", origin:"USA 80%, Provence"},
+      {x:235, w:205, name:"Noisette", pct:"60% MG", origin:"Turquie 70%, Lot-et-G."},
+      {x:455, w:205, name:"Noix", pct:"60% MG", origin:"Chine 45%, Grenoble/Périgord"},
+      {x:675, w:210, name:"Pistache", pct:"54-58% MG", origin:"Moyen-Orient"}
+    ].map(c => `
+      <rect x="${c.x}" y="20" width="${c.w}" height="220" rx="14" fill="var(--surface-alt)" stroke="var(--border)"/>
+      <text x="${c.x+c.w/2}" y="55" text-anchor="middle" class="vt">${c.name}</text>
+      <text x="${c.x+c.w/2}" y="88" text-anchor="middle" class="vb">${c.pct}</text>
+      <text x="${c.x+c.w/2}" y="115" text-anchor="middle" class="vs">${c.origin}</text>
+    `).join('')}
+    <text x="15" y="265" class="vs">Tous riches en matières grasses insaturées → risque de rancissement, conservation limitée</text>
+  </svg>`;
+
+  const points = document.getElementById('briefPoints');
+  const data = [
+  {h:"Fruit vs légume", p:"Le fruit contient les graines et succède à la fleur. Tomate/aubergine = fruits botaniquement."},
+  {h:"4 groupes de fruits charnus", p:"Drupes (noyau), baies (pépins), agrumes (sous-groupe de baies), fruits exotiques."},
+  {h:"4 fruits à coque clés", p:"Amande (54-56% MG), noisette (60%), noix (60%), pistache (54-58%)."},
+  {h:"2 AOC noix françaises", p:"Grenoble (Franquette, Mayette, Parisienne) et Périgord (Franquette, Corne, Grandjean, Marbot)."},
+  {h:"Meilleure noisette", p:"La Tonda Gentile (Italie, Piémont) ; La Tonda Romana idéale pour le praliné."},
+  {h:"Rancissement", p:"Oxydation des acides gras insaturés → aldéhydes désagréables. Accéléré par O2, lumière, chaleur."},
+  {h:"Conservation", p:"À l'abri lumière/humidité, ~15°C stable, chambre chocolat idéale."},
+  {h:"Amande amère", p:"Contient de l'acide cyanhydrique, toxique en grande quantité, dose faible uniquement."}
+];
+  points.innerHTML = data.map(d=>`<div class="brief-point"><h4>${d.h}</h4><p>${d.p}</p></div>`).join('');
+}
+
+/* =========================================================
+   NAVIGATION + THEME
+   ========================================================= */
+document.querySelectorAll('.navbtn[data-tab]').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    document.querySelectorAll('.navbtn[data-tab]').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('panel-'+btn.dataset.tab).classList.add('active');
+  });
+});
+
+const themeToggle = document.getElementById('themeToggle');
+const themeLabel = document.getElementById('themeLabel');
+themeToggle.addEventListener('click', () => {
+  const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+  document.documentElement.setAttribute('data-theme', isLight ? 'dark' : 'light');
+  themeLabel.textContent = isLight ? 'Mode clair' : 'Mode sombre';
+});
+
+/* ===== Init ===== */
+startQuiz();
+renderChatSuggestions();
+document.getElementById('chatSend').addEventListener('click', sendChat);
+document.getElementById('chatInput').addEventListener('keydown', e=>{ if(e.key==='Enter') sendChat(); });
+renderExamPills();
+renderExamQuestion();
+renderBrief();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,950 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>La transformation du cacao — BTM Chocolatier</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #20110a;
+    --surface: #2b1810;
+    --surface-alt: #3d2416;
+    --border: rgba(242,232,216,0.14);
+    --text: #f2e8d8;
+    --text-bright: #faf4e9;
+    --text-dim: rgba(242,232,216,0.62);
+    --caramel: #b8783a;
+    --caramel-hi: #cf9455;
+    --gold: #d8b66e;
+    --error: #7a2e2a;
+    --error-text: #e2a29d;
+    --success: #4c7a3a;
+    --success-text: #b7dba0;
+    --shadow: rgba(0,0,0,0.35);
+  }
+  [data-theme="light"]{
+    --bg: #f7efdf;
+    --surface: #fffaf0;
+    --surface-alt: #efe0c4;
+    --border: rgba(61,36,22,0.16);
+    --text: #3a2415;
+    --text-bright: #241207;
+    --text-dim: rgba(58,36,21,0.62);
+    --caramel: #a8632b;
+    --caramel-hi: #94551f;
+    --gold: #93701f;
+    --error: #a13d34;
+    --error-text: #7c2b25;
+    --success: #3d6b2c;
+    --success-text: #2c4f20;
+    --shadow: rgba(58,36,21,0.12);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--bg); color:var(--text); font-family:'Inter',sans-serif;
+    min-height:100vh; -webkit-font-smoothing:antialiased;
+    transition:background .35s ease, color .35s ease;
+  }
+  h1,h2,h3{font-family:'Merriweather',serif; font-weight:700; letter-spacing:-0.005em;}
+  a{color:var(--caramel-hi);}
+  ::-webkit-scrollbar{width:10px;height:10px;}
+  ::-webkit-scrollbar-thumb{background:var(--surface-alt); border-radius:8px;}
+
+  .app{display:flex; min-height:100vh;}
+
+  /* ===== Sidebar ===== */
+  .sidebar{
+    width:230px; flex-shrink:0; background:var(--surface); border-right:1px solid var(--border);
+    display:flex; flex-direction:column; padding:24px 16px; gap:6px;
+    position:sticky; top:0; height:100vh;
+  }
+  .sidebar .brand{padding:4px 10px 20px;}
+  .sidebar .brand .kicker{color:var(--caramel-hi); font-size:11.5px; font-weight:600; text-transform:uppercase; letter-spacing:.06em; margin:0 0 4px;}
+  .sidebar .brand h1{font-size:20px; margin:0; color:var(--text-bright); line-height:1.25;}
+  .navbtn{
+    display:flex; align-items:center; gap:10px; text-align:left; width:100%;
+    background:transparent; border:none; border-radius:10px; padding:11px 12px;
+    color:var(--text-dim); font-family:'Inter',sans-serif; font-size:14px; font-weight:500;
+    cursor:pointer; transition:background .2s ease, color .2s ease;
+  }
+  .navbtn svg{width:17px; height:17px; flex-shrink:0;}
+  .navbtn:hover{background:var(--surface-alt); color:var(--text);}
+  .navbtn.active{background:linear-gradient(155deg, var(--caramel-hi), var(--caramel) 65%); color:var(--bg); font-weight:600;}
+  .sidebar-spacer{flex:1;}
+  .theme-toggle{
+    display:flex; align-items:center; gap:8px; background:var(--surface-alt); border:1px solid var(--border);
+    color:var(--text-dim); padding:10px 12px; border-radius:10px; font-size:13px; cursor:pointer;
+  }
+  .theme-toggle:hover{color:var(--text);}
+  .theme-toggle svg{width:15px;height:15px;}
+  .back-link{display:block; font-size:12.5px; color:var(--text-dim); text-decoration:none; padding:8px 12px 2px;}
+  .back-link:hover{color:var(--text);}
+
+  /* ===== Main ===== */
+  .main{flex:1; min-width:0; padding:40px 44px 80px;}
+  .panel{display:none; max-width:820px; margin:0 auto;}
+  .panel.active{display:block;}
+  .panel-head{margin-bottom:28px;}
+  .panel-head .kicker{color:var(--caramel-hi); font-size:12.5px; font-weight:600; margin:0 0 6px;}
+  .panel-head h2{font-size:26px; margin:0 0 8px; color:var(--text-bright);}
+  .panel-head p{color:var(--text-dim); font-size:14px; margin:0; line-height:1.55; max-width:60ch;}
+
+  .card{
+    background:var(--surface); border:1px solid var(--border); border-radius:16px;
+    padding:26px; box-shadow:0 8px 24px var(--shadow); margin-bottom:18px;
+  }
+
+  /* ===== Quiz ===== */
+  .quiz-progress-wrap{display:flex; align-items:center; gap:12px; margin-bottom:22px;}
+  .quiz-progress-bar{flex:1; height:8px; border-radius:99px; background:var(--surface-alt); overflow:hidden;}
+  .quiz-progress-fill{height:100%; background:linear-gradient(90deg, var(--caramel), var(--gold)); border-radius:99px; transition:width .3s ease;}
+  .quiz-progress-label{font-size:12.5px; color:var(--text-dim); white-space:nowrap;}
+  .quiz-q{font-size:17px; line-height:1.5; color:var(--text-bright); margin:0 0 20px; font-family:'Merriweather',serif; font-weight:700;}
+  .quiz-options{display:flex; flex-direction:column; gap:10px;}
+  .quiz-opt{
+    text-align:left; padding:13px 16px; border-radius:11px; border:1px solid var(--border);
+    background:var(--surface-alt); color:var(--text); font-family:'Inter',sans-serif; font-size:14.5px;
+    cursor:pointer; transition:border-color .15s ease, background .15s ease;
+  }
+  .quiz-opt:hover{border-color:var(--caramel-hi);}
+  .quiz-opt.correct{background:color-mix(in srgb, var(--success) 30%, var(--surface-alt)); border-color:var(--success);}
+  .quiz-opt.incorrect{background:color-mix(in srgb, var(--error) 30%, var(--surface-alt)); border-color:var(--error);}
+  .quiz-opt[disabled]{cursor:default;}
+  .quiz-explain{
+    margin-top:18px; padding:16px 18px; border-radius:12px; background:var(--surface-alt);
+    border-left:3px solid var(--gold); font-size:13.5px; line-height:1.6; color:var(--text); display:none;
+  }
+  .quiz-explain.show{display:block;}
+  .quiz-explain b{color:var(--text-bright);}
+  .quiz-next{margin-top:18px; display:none;}
+  .quiz-next.show{display:inline-flex;}
+  .quiz-result{text-align:center; padding:20px 0;}
+  .badge{
+    width:110px; height:110px; border-radius:50%; margin:0 auto 18px; display:flex; align-items:center;
+    justify-content:center; font-family:'Merriweather',serif; font-weight:900; font-size:15px; text-align:center;
+    box-shadow:inset 0 2px 6px rgba(0,0,0,0.25), 0 6px 18px var(--shadow); color:#2a1a0a;
+  }
+  .badge.bronze{background:linear-gradient(155deg,#d3925a,#9a5a2c);}
+  .badge.argent{background:linear-gradient(155deg,#e6e6e6,#a8a8a8); color:#2a2a2a;}
+  .badge.or{background:linear-gradient(155deg,#f2d27a,#c99a2e);}
+  .quiz-result h3{margin:0 0 6px; color:var(--text-bright); font-size:20px;}
+  .quiz-result p{color:var(--text-dim); font-size:14px; margin:0 0 22px;}
+
+  .btn{
+    display:inline-flex; align-items:center; justify-content:center; gap:8px; border:none; border-radius:11px;
+    font-family:'Inter',sans-serif; font-weight:600; font-size:14px; padding:11px 20px; cursor:pointer;
+    color:var(--bg); text-decoration:none; background:linear-gradient(155deg, var(--caramel-hi), var(--caramel) 60%, #8a5427);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,0.25), 0 3px 10px var(--shadow); transition:transform .15s ease;
+  }
+  .btn:hover{transform:translateY(-1px);}
+  .btn.ghost{background:transparent; color:var(--text); border:1px solid var(--border); box-shadow:none;}
+
+  /* ===== Tuteur ===== */
+  .chat-wrap{display:flex; flex-direction:column; height:64vh;}
+  .chat-log{flex:1; overflow-y:auto; padding:4px 2px 12px; display:flex; flex-direction:column; gap:14px;}
+  .msg{max-width:88%; padding:12px 15px; border-radius:14px; font-size:14px; line-height:1.55;}
+  .msg.user{align-self:flex-end; background:linear-gradient(155deg, var(--caramel-hi), var(--caramel)); color:var(--bg); border-bottom-right-radius:4px;}
+  .msg.bot{align-self:flex-start; background:var(--surface-alt); border:1px solid var(--border); color:var(--text); border-bottom-left-radius:4px; white-space:pre-wrap;}
+  .msg.bot.loading{color:var(--text-dim); font-style:italic;}
+  .suggestions{display:flex; flex-wrap:wrap; gap:8px; margin:6px 0 16px;}
+  .suggestion-chip{
+    background:var(--surface-alt); border:1px solid var(--border); color:var(--text-dim); font-size:12.5px;
+    padding:8px 13px; border-radius:99px; cursor:pointer; text-align:left;
+  }
+  .suggestion-chip:hover{border-color:var(--caramel-hi); color:var(--text);}
+  .chat-input-row{display:flex; gap:10px; margin-top:8px;}
+  .chat-input-row input{
+    flex:1; background:var(--surface-alt); border:1px solid var(--border); border-radius:11px; color:var(--text);
+    font-family:'Inter',sans-serif; font-size:14px; padding:12px 15px;
+  }
+  .chat-input-row input:focus{outline:none; border-color:var(--caramel-hi);}
+
+  /* ===== Question d'examen ===== */
+  .exam-pills{display:flex; flex-wrap:wrap; gap:8px; margin-bottom:22px;}
+  .exam-pill{
+    background:var(--surface-alt); border:1px solid var(--border); color:var(--text-dim); font-size:13px;
+    padding:9px 15px; border-radius:99px; cursor:pointer; font-family:'Inter',sans-serif;
+  }
+  .exam-pill.active{background:linear-gradient(155deg, var(--caramel-hi), var(--caramel)); color:var(--bg); border-color:transparent; font-weight:600;}
+  .exam-q-title{font-size:17px; font-family:'Merriweather',serif; font-weight:700; color:var(--text-bright); margin:0 0 6px;}
+  .exam-q-points{font-size:12px; color:var(--text-dim); margin:0 0 20px;}
+  .step{
+    background:var(--surface-alt); border-radius:12px; padding:14px 16px; margin-bottom:12px;
+    font-size:13.5px; line-height:1.6; border-left:3px solid var(--border);
+  }
+  .step.hint{border-left-color:var(--gold);}
+  .step-label{font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:.05em; color:var(--caramel-hi); margin-bottom:5px;}
+  .exam-answer{
+    display:none; margin-top:16px; padding:18px; border-radius:12px; background:var(--surface-alt);
+    border-left:3px solid var(--success); font-size:13.5px; line-height:1.65;
+  }
+  .exam-answer.show{display:block;}
+  .exam-answer h4{margin:14px 0 6px; font-size:13.5px; color:var(--text-bright); font-family:'Inter',sans-serif;}
+  .exam-answer h4:first-child{margin-top:0;}
+  .exam-answer ul{margin:4px 0; padding-left:18px;}
+  .exam-controls{display:flex; gap:10px; flex-wrap:wrap; margin-top:6px;}
+  .exam-note{font-size:11.5px; color:var(--text-dim); margin-top:14px; font-style:italic;}
+
+  /* ===== En bref ===== */
+  .brief-svg-wrap{background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:18px; margin-bottom:18px; overflow-x:auto;}
+  .brief-points{display:grid; grid-template-columns:repeat(auto-fit, minmax(230px,1fr)); gap:14px;}
+  .brief-point{background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:16px 18px;}
+  .brief-point h4{margin:0 0 6px; font-size:14px; color:var(--gold); font-family:'Inter',sans-serif;}
+  .brief-point p{margin:0; font-size:13px; line-height:1.55; color:var(--text-dim);}
+
+  @media (max-width: 860px){
+    .app{flex-direction:column;}
+    .sidebar{width:100%; height:auto; position:relative; flex-direction:row; overflow-x:auto; padding:14px 12px; align-items:center;}
+    .sidebar .brand{padding:0 12px 0 4px; flex-shrink:0;}
+    .sidebar-spacer{display:none;}
+    .navbtn{flex-shrink:0; width:auto;}
+    .theme-toggle{flex-shrink:0;}
+    .main{padding:26px 18px 60px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="app">
+  <nav class="sidebar">
+    <div class="brand">
+      <p class="kicker">BTM Chocolatier</p>
+      <h1>La transformation du cacao</h1>
+    </div>
+    <button class="navbtn active" data-tab="quiz">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+      Quiz
+    </button>
+    <button class="navbtn" data-tab="tuteur">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      Poser une question
+    </button>
+    <button class="navbtn" data-tab="examen">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M9 13h6M9 17h6M9 9h1"/></svg>
+      Question d'examen
+    </button>
+    <button class="navbtn" data-tab="brief">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+      En bref
+    </button>
+    <div class="sidebar-spacer"></div>
+    <a class="back-link" href="../index.html">← Retour au hub</a>
+    <button class="theme-toggle" id="themeToggle">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4.5"/><path d="M12 2.5v2M12 19.5v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M2.5 12h2M19.5 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4"/></svg>
+      <span id="themeLabel">Mode clair</span>
+    </button>
+  </nav>
+
+  <main class="main">
+
+    <!-- ===== QUIZ ===== -->
+    <section class="panel active" id="panel-quiz">
+      <div class="panel-head">
+        <p class="kicker">Quiz — La transformation du cacao</p>
+        <h2>Teste tes connaissances</h2>
+        <p>De la récolte à la tablette : fermentation, séchage, torréfaction, conchage. Le moindre geste a une importance.</p>
+      </div>
+      <div class="card" id="quizCard"></div>
+    </section>
+
+    <!-- ===== TUTEUR ===== -->
+    <section class="panel" id="panel-tuteur">
+      <div class="panel-head">
+        <p class="kicker">Tuteur IA — La transformation du cacao</p>
+        <h2>Poser une question</h2>
+        <p>Le tuteur répond uniquement à partir du cours de ce module. Pour les autres sujets, utilise le module concerné.</p>
+      </div>
+      <div class="card chat-wrap">
+        <div class="chat-log" id="chatLog"></div>
+        <div class="suggestions" id="chatSuggestions"></div>
+        <div class="chat-input-row">
+          <input type="text" id="chatInput" placeholder="Écris ta question sur le cacao…">
+          <button class="btn" id="chatSend">Envoyer</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== EXAMEN ===== -->
+    <section class="panel" id="panel-examen">
+      <div class="panel-head">
+        <p class="kicker">Question d'examen — La transformation du cacao</p>
+        <h2>Cheminement guidé</h2>
+        <p>Choisis une question, avance indice par indice, puis assemble ta réponse avant de découvrir le corrigé.</p>
+      </div>
+      <div class="exam-pills" id="examPills"></div>
+      <div class="card" id="examCard"></div>
+    </section>
+
+    <!-- ===== EN BREF ===== -->
+    <section class="panel" id="panel-brief">
+      <div class="panel-head">
+        <p class="kicker">En bref — La transformation du cacao</p>
+        <h2>Récapitulatif visuel</h2>
+        <p>Les 4 grandes variétés et l'essentiel à retenir avant l'épreuve.</p>
+      </div>
+      <div class="brief-svg-wrap" id="briefSvgWrap"></div>
+      <div class="brief-points" id="briefPoints"></div>
+    </section>
+
+  </main>
+</div>
+
+
+<script>
+/* =========================================================
+   COURSE_TEXT — synthèse fidèle du cours "La transformation du cacao"
+   (source du tuteur IA — ne répond qu'à partir de ce texte)
+   ========================================================= */
+const COURSE_TEXT = `
+
+MODULE : LA TRANSFORMATION DU CACAO — BTM Chocolatier Confiseur (Bloc 4 — Choix des matières premières de fabrication)
+« Le moindre geste a une importance »
+
+1/ SUR LE LIEU DE PRODUCTION
+
+La récolte : se fait toute l'année dans les régions très humides sans saisonnalité marquée, mais il existe souvent deux pics de production : novembre-janvier et mai-juillet. Un mois et demi après la floraison commence le développement du fruit, qui arrive à maturité après 5 à 7 semaines selon les variétés. La maturité d'une cabosse se juge à son changement de couleur (les vertes deviennent jaunes, les rouges deviennent orange) et au son sourd qu'elle rend quand on la tapote. Les cabosses sont coupées soigneusement au niveau du pédoncule à la machette ou à la faucille, sans altérer les bourgeons dormants. Un cueilleur habile ramasse environ 1500 cabosses/jour.
+- Cabosses immatures : formation de matière grasse non terminée (cacao moins riche en beurre de cacao) ; pulpe insuffisamment développée qui emprisonne les graines, entraînant une mauvaise fermentation, peu d'arôme, astringence et amertume végétale désagréable.
+- Cabosses trop mûres : risque de graines noires (beurre de cacao déstructuré de mauvaise qualité) ; pulpe à sécher conduisant à une mauvaise fermentation ; graines qui commencent à germer, ouverture propice aux moisissures et à la sécrétion de toxines.
+
+L'écabossage : opération manuelle (gourdin ou machette, 80% du temps), réalisable jusqu'à 5 jours après la récolte. La cabosse est fendue soigneusement dans sa longueur pour ne pas endommager les graines. Toute graine endommagée devient propice aux micro-organismes (fèves moisies), avec un risque de toxines. On extrait les graines à la main, séparées du rachi : entre 30 et 80 graines en moyenne, noyées dans le mucilage. Il faut bien séparer les fèves pour favoriser la circulation de l'air durant la fermentation, et les trier pour détecter les graines défectueuses (le plus souvent noires, agressées par des insectes). Cabosse fermée = milieu stérile ; une fois ouverte, exposition à l'air et aux manipulations, milieu favorable aux levures (2 à 30 millions de cellules/gramme dès leur introduction). Il faut donc être rapide car la transformation biochimique commence dès cet instant.
+
+2/ LA FERMENTATION
+Les graines (2 cotylédons + un germe) sont enveloppées d'un tégument riche en tanin (la coque), entourées de la pulpe mucilagineuse (30 à 40% du poids de la fève), sucrée, acide, milieu favorable aux moisissures à l'air libre. Les graines sont placées dans des bacs en bois, rotin ou ciment (100 kg à 1 tonne), recouvertes de feuilles de bananier (isolation thermique), brassées et aérées régulièrement. En dessous de 80 kg, l'effet de « masse » est insuffisant ; au-dessus d'une tonne, l'homogénéité n'est plus assurée. La fermentation dure en moyenne 5 à 7 jours.
+
+Elle se déroule en 2 phases :
+- Phase alcoolique anaérobie (24 à 48h) : la pulpe forme un « ciment » de pectines isolant les graines de l'oxygène. L'acidité (pH 3-3,5), le sucre (12-15%) et l'humidité (80%) favorisent les levures. Les sucres du mucilage sont transformés en éthanol et CO2 ; l'acide citrique est consommé (pH monte à 4,5) ; les pectines sont dégradées par des enzymes pectinolytiques, formant du jus qui laisse entrer l'air, ce qui met fin à cette phase.
+- Phase acétique aérobie : des bactéries acétiques transforment l'éthanol en acide acétique (évacué au séchage, torréfaction, conchage). Réaction très exothermique, température jusqu'à 50°C, ce qui tue le germe (perte du pouvoir germinatif) et provoque une réaction de Maillard (changement de couleur). Brassages réguliers nécessaires (24h pour le premier, puis toutes les 48h) sans faire baisser la température. La graine gonfle, son contenu diffuse à l'extérieur. Les substances amères et polyphénols responsables de l'astringence migrent hors des fèves et sont éliminés par écoulement ; certains polyphénols s'associent aux protéines pour former des tannins (brunissement). Transformations : protéines → acides aminés (hydrolyse enzymatique) ; sucres complexes → sucres simples ; polyphénols hydrolysés et rendus inactifs (sinon ils gêneraient la réaction de Maillard à la torréfaction). Tous ces composés formés sont les « précurseurs d'arômes », qui réagiront à la torréfaction. Le terroir (bactéries locales, nutriments du sol, climat) rend chaque fermentation unique — comparaison souvent faite avec le vin ou le café.
+
+Causes et conséquences d'une mauvaise fermentation : brassage trop rapide, délai trop long entre écabossage et mise en fermentation, jus mal évacué, caisses mal adaptées, bâche plastique, remplissage différé → fermentation lactique (arômes désagréables, mauvaise conservation) ou fermentation propionique/butyrique (notes de beurre rance, voire purin).
+
+Contrôle (« cut test ») : échantillon d'une centaine de fèves coupées à la guillotine, examen de texture et couleur. 5 états : fèves non fermentées (gris ardoise, lisse, très astringentes/amères) ; insuffisamment fermentées (violettes, peu d'arôme, astringence, odeur d'alcool) ; trop fermentées (dégradées, goût de pourri/moisi, très acides) ; bien fermentées (brunes, aspect craquelé) ; défectueuses (noirâtres, endommagées ou germées).
+Normes de qualité : Grade 1 (max 3% moisies, 3% ardoisées, 3% défectueuses) ; Grade 2 (max 4% moisies, 8% ardoisées, 6% défectueuses) ; hors grade au-delà.
+
+Le lavage (facultatif, ex. Madagascar) : avantages — séchage plus court, bel aspect, fèves lisses et propres ; inconvénients — fèves fragiles, brisures, perte de poids. Aucune influence décelée sur les qualités organoleptiques.
+
+3/ LE SÉCHAGE
+Débute immédiatement après la fermentation (ou le lavage) pour éviter des fermentations involontaires. 5-7 objectifs : stopper la fermentation en douceur ; diminuer l'amertume ; assurer une bonne conservation en réduisant l'humidité de 55% à 7% ; éliminer une partie de l'acide acétique résiduel (40%) ; enrichir les précurseurs d'arômes par oxydation ; stopper l'oxydation des polyphénols ; débarrasser les fèves des résidus de mucilage.
+
+Séchage naturel (95% de la production) : sur claies au soleil, 5 à 20 jours, couche mince (3-4 cm), brassage régulier. Poursuite des réactions biochimiques les premiers jours et achèvement de la fermentation. Modes : tables de séchage (couvertes la nuit/pluie), séchoir tunnel ventilé, feu de bois (cacao de basse qualité, goût fumé, souvent pour la poudre), à même le sol (basse qualité), sur nattes (excellent) ou aire cimentée.
+Avantages : bonne qualité, bonne évaporation de l'acide acétique, réaction d'oxydation favorisant l'arôme, énergie gratuite. Inconvénients : 5 à 20 jours, grande surface nécessaire, main-d'œuvre, risque de reprise d'humidité.
+
+Séchage artificiel (5% de la production) : 15 à 36 heures, brassage régulier sans dépasser 55°C. Deux systèmes : séchoir à air chaud (claies alimentées en air chaud pulsé par-dessous) ou séchoir mécanique (tunnels rotatifs chauffés).
+Avantages : beaucoup plus rapide (1-2 jours), peu de main-d'œuvre, pas de risque de reprise d'humidité, produit plus homogène. Inconvénients : consommation d'énergie, machine coûteuse, aucune réaction d'oxydation, label BIO impossible, cacao de qualité inférieure, acide acétique mal éliminé.
+
+Stockage et contrôle qualité : humidité des fèves ne doit pas excéder 7%. Modes de stockage : en sac (toile de jute 60-90 kg, laisse circuler l'air — le plus répandu) ; en silo (sous gaz inerte, expérimental) ; sous vide (protège des insectes, stoppe les micro-organismes). Un mauvais stockage peut communiquer un goût étranger (la MG capte les odeurs), développer des moisissures toxiques, dégrader le beurre de cacao (mou et acide par hydrolyse). Contrôle qualité des lots : sans odeur/saveur étrangère, sans corps indésirable, homogènes, humidité < 7%, respect des critères de fèves défectueuses.
+
+4/ DE LA FÈVE À LA PÂTE DE CACAO
+
+Contrôle qualité et stockage à l'arrivée : triple examen — coupe des fèves (défauts), test olfactif sur échantillon torréfié, test gustatif sur échantillon transformé en chocolat. Les fèves sont ensuite stockées dans des locaux propres, désinfectés, secs et frais (12-14°C, 65% hygrométrie), classées par flaveur ou provenance.
+
+Nettoyage et pré-séchage : élimination des corps étrangers (poussières, pierres, résidus de bois, fibres de jute, sable) par ventilation, brossage, tamisage, aimants. Le pré-séchage (lampes infrarouges) abaisse l'humidité et fragilise la coque, utile en cas de broyage modifié.
+
+Torréfaction : opération cruciale, intensité et durée réglées selon les fèves. Rôle : abaisser l'humidité à 2,5%, développer les précurseurs d'arômes obtenus en fermentation, évaporer les odeurs indésirables (acide acétique résiduel), fragiliser la pelure entourant l'amande. C'est ici que le couverturier apporte sa signature — pas de règles universelles. Mal conduite, elle produit des arômes mal développés, effacés ou trop marqués (amertume, astringence).
+En moyenne : 15 à 40 minutes, 110 à 150°C, perte de 5 à 10% du poids initial. Paramètres dépendants : du matériel utilisé, de la variété de la fève, de l'objectif du torréfacteur. Cylindre rotatif à double enveloppe chauffée ; réaction de Maillard entre protéines et sucres (contrariée si les polyphénols sont encore actifs, d'où l'importance de la fermentation). Les grains chauds sont ensuite refroidis (cuve hermétique ventilée à l'air froid) avant le concassage. Environ 500 composés volatils se créent durant cette étape, ainsi que des composés colorés bruns. Assemblages (blends) possibles de variétés ou torréfactions différentes.
+3 types de torréfaction : basse (60-100°C), moyenne (100-125°C), haute (125-150°C).
+Constitution de l'arôme chocolat : environ 500 arômes identifiés, provenant de 3 sources principales ; le potentiel de qualité vient du terroir (sol, climat, altitude) et de la variété — le traitement peut le valoriser ou le dégrader.
+
+Concassage : sépare amande, germe et coques par broyage et ventilation. Fèves réduites en particules de 2-3 mm, amande séparée par ventilation et tamisages successifs. La coque représente 10 à 12% du poids de la fève. Opération réalisée au « casse-cacao » ou « tarare ». Les fèves concassées débarrassées de leur pelure s'appellent « grué » ou « nibs ».
+
+Pré-broyage : les grués (assemblés ou non selon l'objectif : pure origine, pure plantation, assemblage) sont finement broyés entre cylindres d'acier, robot-coupe ou meule de pierre. Sous l'effet du broyage et de la chaleur, le grué devient une pâte liquide : la pâte de cacao (masse de cacao, liqueur de cacao), rendue liquide par le rejet partiel de son beurre de cacao (qui véhicule les arômes). Granulométrie à ce stade : 80 à 100 microns. Cette pâte peut prendre 2 chemins : celui du chocolat, ou celui de la poudre de cacao et du beurre de cacao.
+
+5/ MÉLANGE, AFFINAGE ET CONCHAGE
+
+Mélange et affinage : la masse de cacao est additionnée de sucre (broyé ou non) dans des pétrins, donnant une masse encore grossière. Broyée pour une granulation très fine, elle nécessite le plus souvent l'ajout de beurre de cacao pour homogénéiser le broyage. Réalisé dans des broyeurs à 3 ou 5 cylindres montés verticalement, rouleaux en acier inoxydable de plus en plus serrés et légèrement chauffés. Granulométrie finale en fin d'affinage : environ 18-20 microns.
+
+Conchage : étape essentielle pour parfaire le goût et la texture. Inventé par Rodolphe Lindt en 1879 (découverte accidentelle : sa conche resta en marche, le chocolat obtenu était meilleur en bouche et plus facile à travailler). Effets mécaniques (libère du beurre de cacao, donne finesse et velouté, diminue viscosité et limite d'écoulement), physiques (homogénéise la pâte, abaisse le taux d'humidité), chimiques (élimine des acides volatils, transforme les tanins). Permet : élimination de l'humidité résiduelle, évacuation de l'acidité et de l'amertume, évacuation des odeurs désagréables, exhalation des arômes, obtention de l'onctuosité, développement de la flaveur, assimilation totale du beurre de cacao, changement de couleur de la pâte. Dure généralement 8 à 72h, en 2 temps :
+- Conchage à sec : la masse affinée encore épaisse est brassée, malaxée, cisaillée dans les conches. La friction élève la température (45-50°C) et parfait le rejet de la matière grasse disponible ; les particules s'arrondissent, texture plus onctueuse. L'humidité résiduelle s'évapore, les derniers grains de sucre s'intègrent et participent à fixer les arômes.
+- Conchage liquide : le beurre de cacao (à l'état de globules depuis la fermentation) doit retrouver sa structure de film continu, possible seulement à 35% minimum de matière grasse. Du beurre de cacao est ajouté, favorisant l'homogénéisation et la dispersion des particules, liant matières sèches (cacao, lait) et matière grasse. En fin de conchage, la lécithine E322 est ajoutée (0,3 à 0,7%) : elle stabilise le beurre de cacao, diminue la viscosité (impacte la rhéologie), diminue l'apport nécessaire en beurre de cacao, affine la texture. Facultative : inutile pour les tablettes, indispensable pour l'enrobage mécanique (bien que les progrès de l'enrobage permettent aujourd'hui de s'en passer).
+
+6/ CRISTALLISATION, MISE EN FORME ET CONDITIONNEMENT
+Le chocolat de couverture est ensuite pré-cristallisé, moulé puis réfrigéré sous différentes formes : pistoles, pains, tablettes.
+Conditionnement hermétique, à l'abri de la lumière, des insectes et de la poussière. Stockage dans un environnement : température stable (15 à 20°C), hygrométrie contrôlée (50-60%), à l'abri des odeurs fortes, propre et aéré.
+
+`;
+
+/* =========================================================
+   QUESTIONS — Quiz (QCM)
+   ========================================================= */
+const QUESTIONS = [
+  {
+    q: "Combien de cabosses un cueilleur habile peut-il récolter par jour en moyenne ?",
+    options: ["150", "500", "1500", "5000"],
+    correct: 2,
+    explain: "Environ <b>1500 cabosses/jour</b>. La récolte se fait à la main, avec deux pics de production dans de nombreux pays : novembre-janvier et mai-juillet."
+  },
+  {
+    q: "Quel est le principal risque d'une cabosse récoltée trop mûre ?",
+    options: [
+      "Un manque de beurre de cacao",
+      "Des graines noires germées et un risque de moisissures/toxines",
+      "Une fève trop claire",
+      "Aucun risque particulier"
+    ],
+    correct: 1,
+    explain: "Une cabosse trop mûre présente un risque de <b>graines noires</b> (beurre de cacao déstructuré) et de <b>germination</b>, qui crée une ouverture propice aux moisissures pouvant sécréter des toxines. À l'inverse, une cabosse immature manque surtout de matière grasse et de mucilage bien développé."
+  },
+  {
+    q: "Combien de temps après la récolte peut-on encore écabosser ?",
+    options: ["Immédiatement uniquement", "Jusqu'à 5 jours", "Jusqu'à 1 mois", "Aucune limite"],
+    correct: 1,
+    explain: "L'écabossage peut se faire jusqu'à <b>5 jours</b> après la récolte, réalisé manuellement (gourdin ou machette) dans 80% des cas. Au-delà, la qualité des fèves se dégrade."
+  },
+  {
+    q: "Que représente le mucilage par rapport au poids de la fève ?",
+    options: ["5 à 10%", "30 à 40%", "60 à 70%", "90%"],
+    correct: 1,
+    explain: "Le mucilage représente <b>30 à 40%</b> du poids de la fève : très sucré, il est un milieu favorable aux moisissures s'il est laissé à l'air libre, d'où l'urgence de mettre les fèves en fermentation rapidement après l'écabossage."
+  },
+  {
+    q: "Combien de temps dure en moyenne la fermentation du cacao ?",
+    options: ["1 à 2 jours", "5 à 7 jours", "1 mois", "3 mois"],
+    correct: 1,
+    explain: "En moyenne <b>5 à 7 jours</b>, en 2 phases : la phase alcoolique anaérobie (24-48h) puis la phase acétique aérobie (le reste de la durée), avec des brassages réguliers pour homogénéiser."
+  },
+  {
+    q: "Quelle est la conséquence de la phase acétique aérobie sur le germe de la fève ?",
+    options: [
+      "Il germe et se développe",
+      "Il est tué par la montée de température (jusqu'à 50°C)",
+      "Il devient plus résistant",
+      "Aucun effet"
+    ],
+    correct: 1,
+    explain: "La réaction exothermique de la phase acétique fait grimper la température jusqu'à <b>50°C</b>, ce qui <b>tue le germe</b> (perte du pouvoir germinatif). C'est aussi durant cette phase que se produit une réaction de Maillard qui change la couleur de la fève."
+  },
+  {
+    q: "Quel est le nom du test qui consiste à couper une centaine de fèves pour juger la qualité de la fermentation ?",
+    options: ["Le test de Maillard", "Le cut test", "Le test HRE", "Le test de torréfaction"],
+    correct: 1,
+    explain: "Le <b>« cut test »</b> : on coupe un échantillon d'une centaine de fèves à la guillotine pour examiner leur texture et leur couleur, et déterminer parmi 5 états (non fermentées, insuffisamment, trop, bien fermentées, défectueuses) lequel domine dans le lot."
+  },
+  {
+    q: "À quel taux d'humidité doit-on ramener les fèves lors du séchage ?",
+    options: ["De 55% à 7%", "De 30% à 15%", "De 90% à 50%", "De 7% à 2%"],
+    correct: 0,
+    explain: "Le séchage ramène l'humidité des fèves <b>de 55% à 7%</b>, ce qui assure leur bonne conservation. C'est l'un des 5 objectifs majeurs du séchage, avec l'arrêt en douceur de la fermentation et l'évacuation d'une partie de l'acide acétique."
+  },
+  {
+    q: "Quel pourcentage de la production mondiale de cacao est séché naturellement (au soleil) ?",
+    options: ["5%", "50%", "95%", "100%"],
+    correct: 2,
+    explain: "<b>95%</b> de la production est séchée naturellement (solaire), contre seulement 5% en séchage artificiel. Le séchage naturel dure 5 à 20 jours mais donne une meilleure qualité (bonne évaporation de l'acide acétique, réactions d'oxydation favorables aux arômes)."
+  },
+  {
+    q: "Quel est le principal inconvénient du séchage artificiel par rapport au séchage naturel ?",
+    options: [
+      "Il est plus lent",
+      "L'acide acétique est mal éliminé et il n'y a aucune réaction d'oxydation, donnant un cacao de qualité inférieure",
+      "Il coûte moins cher",
+      "Il nécessite plus de main-d'œuvre"
+    ],
+    correct: 1,
+    explain: "Bien que rapide (15-36h) et économe en main-d'œuvre, le séchage artificiel <b>élimine mal l'acide acétique</b> et ne permet <b>aucune réaction d'oxydation</b>, ce qui donne un cacao de qualité inférieure et rend le label BIO impossible."
+  },
+  {
+    q: "Quel est le rôle principal de la torréfaction dans le développement de l'arôme chocolat ?",
+    options: [
+      "Elle crée le cacao à partir de rien",
+      "Elle développe les précurseurs d'arômes formés pendant la fermentation",
+      "Elle remplace la fermentation",
+      "Elle n'a aucun rôle aromatique"
+    ],
+    correct: 1,
+    explain: "La torréfaction <b>développe les précurseurs d'arômes</b> obtenus durant la fermentation, via une réaction de Maillard entre protéines et sucres. Sans une bonne fermentation au préalable, la torréfaction ne peut pas produire l'arôme chocolat — les deux étapes sont indissociables."
+  },
+  {
+    q: "Entre quelles températures se situe en moyenne la torréfaction du cacao ?",
+    options: ["30 à 50°C", "60 à 80°C", "110 à 150°C", "200 à 250°C"],
+    correct: 2,
+    explain: "En moyenne entre <b>110 et 150°C</b>, pendant 15 à 40 minutes, avec une perte de poids de 5 à 10%. On distingue 3 intensités : basse (60-100°C), moyenne (100-125°C), haute (125-150°C)."
+  },
+  {
+    q: "Comment appelle-t-on les fèves concassées et débarrassées de leur pelure ?",
+    options: ["La liqueur", "Le grué (ou nibs)", "Le tourteau", "Le rachi"],
+    correct: 1,
+    explain: "On les appelle le <b>« grué »</b> ou <b>« nibs »</b>. Le concassage sépare l'amande, le germe et les coques (qui représentent 10 à 12% du poids de la fève) par broyage et ventilation, à l'aide d'un « casse-cacao » ou « tarare »."
+  },
+  {
+    q: "Comment obtient-on la pâte de cacao (masse ou liqueur de cacao) à partir du grué ?",
+    options: [
+      "Par simple mélange avec du sucre",
+      "Par pré-broyage fin, qui libère le beurre de cacao et rend la pâte liquide",
+      "Par fermentation prolongée",
+      "Par ajout direct de lécithine"
+    ],
+    correct: 1,
+    explain: "Le grué est finement broyé (cylindres d'acier, robot-coupe ou meule de pierre) : sous l'effet du broyage et de la chaleur, il libère partiellement son beurre de cacao et devient liquide — c'est la <b>pâte de cacao</b>, avec une granulométrie de 80 à 100 microns à ce stade."
+  },
+  {
+    q: "Qui est à l'origine du procédé de conchage, et en quelle année ?",
+    options: ["Rodolphe Lindt, en 1879", "Milton Hershey, en 1900", "Coenraad van Houten, en 1828", "Michel Barel, en 1950"],
+    correct: 0,
+    explain: "<b>Rodolphe Lindt</b>, en <b>1879</b>, a découvert accidentellement le conchage : après avoir oublié sa conche en marche, il constata que le chocolat obtenu était meilleur en bouche et plus facile à travailler."
+  },
+  {
+    q: "Combien de temps dure généralement un conchage ?",
+    options: ["1 à 2 heures", "8 à 72 heures", "1 semaine", "1 mois"],
+    correct: 1,
+    explain: "Généralement de <b>8 à 72 heures</b>, en deux temps : le conchage à sec (température 45-50°C, arrondi des particules) puis le conchage liquide (ajout de beurre de cacao et de lécithine en fin de cycle)."
+  },
+  {
+    q: "Pourquoi le conchage liquide nécessite-t-il au minimum 35% de matière grasse ?",
+    options: [
+      "Pour respecter une norme de coloration",
+      "Pour que le beurre de cacao retrouve sa structure de film continu, indispensable à l'homogénéisation",
+      "Pour accélérer la fermentation",
+      "Ce taux n'a aucune importance"
+    ],
+    correct: 1,
+    explain: "Depuis la fermentation, le beurre de cacao est à l'état de globules ; il doit retrouver sa structure de <b>film continu</b>, ce qui n'est possible qu'à partir de <b>35% de matière grasse minimum</b>. C'est pourquoi du beurre de cacao est spécifiquement ajouté à ce stade."
+  },
+  {
+    q: "À quel moment et à quel taux la lécithine est-elle ajoutée lors du conchage ?",
+    options: [
+      "En début de conchage à sec, à 5%",
+      "En fin de conchage liquide, à 0,3-0,7%",
+      "Jamais pendant le conchage",
+      "Au moment de la fermentation, à 10%"
+    ],
+    correct: 1,
+    explain: "La lécithine (E322) est ajoutée en <b>fin de conchage liquide</b>, à hauteur de <b>0,3 à 0,7%</b>. Elle stabilise le beurre de cacao, diminue la viscosité, réduit le besoin en beurre de cacao et affine la texture — mais reste facultative selon l'usage final (indispensable pour l'enrobage mécanique, inutile pour une tablette)."
+  },
+  {
+    q: "Dans quelles conditions le chocolat de couverture doit-il être conditionné et stocké après fabrication ?",
+    options: [
+      "N'importe où, sans précaution particulière",
+      "Hermétiquement, à température stable 15-20°C et hygrométrie contrôlée 50-60%",
+      "À température ambiante non contrôlée, en plein soleil",
+      "Uniquement au congélateur"
+    ],
+    correct: 1,
+    explain: "Conditionnement <b>hermétique</b>, à l'abri de la lumière, des insectes et de la poussière, dans un environnement à <b>température stable (15-20°C)</b> et <b>hygrométrie contrôlée (50-60%)</b>, à l'abri des odeurs fortes, propre et aéré."
+  }
+];
+
+/* =========================================================
+   EXAM_QUESTIONS — cheminements guidés
+   ========================================================= */
+const EXAM_QUESTIONS = [
+  {
+    id: "recolte",
+    title: "Indiquez et commentez toutes les étapes de la récolte de la cabosse sur le lieu de la plantation",
+    points: "d'après la banque de questions et les corrigés officiels 1102-2017 / 1103-2016",
+    hints: [
+      "Commence par le jugement de la maturité (deux critères), puis la coupe proprement dite.",
+      "Termine par l'écabossage : outil utilisé, délai maximum, et pourquoi la rapidité est essentielle une fois la cabosse ouverte."
+    ],
+    answerHtml: `
+      <h4>Jugement de la maturité et coupe</h4>
+      <p>La maturité se juge au <b>changement de couleur</b> (les vertes deviennent jaunes, les rouges deviennent orange) et au <b>son sourd</b> produit en tapotant la cabosse. Les cabosses sont coupées soigneusement au niveau du pédoncule à la machette ou à la faucille, sans endommager les bourgeons dormants.</p>
+      <h4>L'écabossage</h4>
+      <p>Réalisé manuellement (gourdin ou machette, 80% du temps) jusqu'à <b>5 jours</b> après la récolte. La cabosse est fendue soigneusement dans sa longueur pour ne pas endommager les graines. On extrait 30 à 80 graines noyées dans le mucilage, séparées du rachi et triées.</p>
+      <h4>Pourquoi la rapidité est essentielle</h4>
+      <p>La cabosse fermée est un milieu stérile. Une fois ouverte, les graines sont exposées à l'air et aux manipulations : la pauvreté en oxygène, la présence du mucilage et le pH bas forment un milieu favorable aux levures (2 à 30 millions de cellules/gramme dès leur introduction) — la transformation biochimique commence dès cet instant.</p>`
+  },
+  {
+    id: "fermentation-torrefaction",
+    title: "Après la récolte des cabosses, citez les 2 opérations les plus importantes dans le développement de l'arôme (but, durée, températures)",
+    points: "30 pts — d'après le corrigé officiel 1103-2023",
+    hints: [
+      "Ces deux opérations sont la fermentation et la torréfaction. Développe d'abord la fermentation : ses 2 phases, leurs durées et températures.",
+      "Puis développe la torréfaction : ses 3 intensités, sa durée moyenne et son but."
+    ],
+    answerHtml: `
+      <h4>La fermentation (5 à 7 jours)</h4>
+      <p><b>Phase alcoolique anaérobie</b> (24-48h) : les sucres du mucilage sont transformés en éthanol et CO2 par les levures. <b>Phase acétique aérobie</b> (le reste de la durée) : des bactéries transforment l'éthanol en acide acétique, réaction exothermique qui élève la température jusqu'à 50°C, tue le germe et déclenche une réaction de Maillard. Elle élimine le mucilage et développe les précurseurs d'arômes.</p>
+      <h4>La torréfaction (15 à 40 min, 110-150°C)</h4>
+      <p>3 intensités : basse (60-100°C), moyenne (100-125°C), haute (125-150°C). Elle développe les précurseurs d'arômes formés en fermentation via une réaction de Maillard entre protéines et sucres, abaisse l'humidité à 2,5%, évapore l'acide acétique résiduel et fragilise la pelure de l'amande.</p>`
+  },
+  {
+    id: "fermentation-mal-conduite",
+    title: "Une fermentation mal conduite peut entraîner quelles conséquences ?",
+    points: "d'après la banque de questions et l'évaluation N°1 (V4)",
+    hints: [
+      "Distingue les causes possibles (au moins 3) des conséquences sur le goût du cacao final.",
+      "Précise aussi l'impact sur la qualité commerciale du lot (classement, valeur)."
+    ],
+    answerHtml: `
+      <h4>Causes possibles</h4>
+      <ul><li>Brassage trop rapide ou délai trop long entre écabossage et fermentation</li><li>Jus mal évacué, caisses mal adaptées, utilisation de bâche plastique</li></ul>
+      <h4>Conséquences sur le goût</h4>
+      <ul>
+        <li>Mauvaise formation des arômes : cacao amer, astringent, peu aromatique</li>
+        <li>Apparition de goûts indésirables : acide, végétal, moisi ; notes de beurre rance voire de purin (fermentation propionique/butyrique)</li>
+        <li>Dégradation incomplète du mucilage, séchage difficile, risque accru de moisissures</li>
+        <li>Défauts physiques : fèves violettes ou ardoisées, texture irrégulière</li>
+      </ul>
+      <h4>Impact commercial</h4>
+      <p>Les fèves sont déclassées lors de la coupe de contrôle (cut test), la valeur marchande baisse, le cacao est moins apprécié par les transformateurs.</p>`
+  },
+  {
+    id: "sechage",
+    title: "Quels types de séchage existent-ils ? Citez leurs avantages et leurs inconvénients",
+    points: "d'après la banque de questions et les évaluations 2 / N°1 (V4)",
+    hints: [
+      "Il existe 2 grands types de séchage, avec une répartition très inégale de la production mondiale entre les deux.",
+      "Pour chacun, donne au moins 2 avantages et 2 inconvénients."
+    ],
+    answerHtml: `
+      <h4>Séchage naturel (95% de la production)</h4>
+      <p>Sur claies au soleil, 5 à 20 jours. <b>Avantages</b> : bonne qualité, bonne évaporation de l'acide acétique, réaction d'oxydation favorable à l'arôme, énergie gratuite. <b>Inconvénients</b> : durée longue, grande surface nécessaire, main-d'œuvre importante, risque de reprise d'humidité.</p>
+      <h4>Séchage artificiel (5% de la production)</h4>
+      <p>15 à 36 heures, sans dépasser 55°C. <b>Avantages</b> : très rapide, peu de main-d'œuvre, pas de risque de reprise d'humidité, produit homogène. <b>Inconvénients</b> : consommation d'énergie, machine coûteuse, aucune réaction d'oxydation, label BIO impossible, cacao de qualité inférieure (acide acétique mal éliminé).</p>`
+  },
+  {
+    id: "conchage",
+    title: "Pourquoi le conchage est-il une étape importante dans la fabrication du chocolat ?",
+    points: "d'après la banque de questions et le corrigé officiel 1102-2017",
+    hints: [
+      "Le conchage a 3 types d'effets, classés par nature (mécanique, physique, chimique).",
+      "Termine en listant au moins 5 bénéfices concrets sur le produit fini."
+    ],
+    answerHtml: `
+      <h4>3 types d'effets</h4>
+      <ul>
+        <li><b>Mécaniques</b> : libère du beurre de cacao, donne finesse et velouté, diminue la viscosité et la limite d'écoulement</li>
+        <li><b>Physiques</b> : homogénéise la pâte, abaisse le taux d'humidité</li>
+        <li><b>Chimiques</b> : élimine des acides volatils, transforme les tanins</li>
+      </ul>
+      <h4>Bénéfices sur le produit</h4>
+      <p>Élimination de l'humidité résiduelle, évacuation de l'acidité et de l'amertume, évacuation des odeurs désagréables, exhalation des arômes, obtention de l'onctuosité, développement de la flaveur, assimilation totale du beurre de cacao avec la matière sèche, changement de couleur de la pâte.</p>`
+  },
+  {
+    id: "lecithine",
+    title: "Qu'est-ce que la lécithine ? Quel est son rôle dans le chocolat de couverture, et à quel moment est-elle incorporée ?",
+    points: "d'après la banque de questions et le corrigé officiel 1103-2023",
+    hints: [
+      "Précise d'abord son origine et son statut réglementaire (additif alimentaire, code E).",
+      "Puis détaille ses rôles et le moment précis de son incorporation dans le processus de fabrication."
+    ],
+    answerHtml: `
+      <h4>Origine et statut</h4>
+      <p>La lécithine est un additif alimentaire (<b>E322</b>) de la famille des émulsifiants, produit oléagineux extrait des graines de soja ou de tournesol. C'est le seul agent émulsifiant autorisé dans le chocolat.</p>
+      <h4>Rôle</h4>
+      <p>Elle stabilise une émulsion entre matières sèches (sucre, cacao, éventuellement lait en poudre) et matières grasses (beurre de cacao), apporte fluidité, onctuosité et homogénéité, et permet d'influer sur la rhéologie (viscosité).</p>
+      <h4>Moment d'incorporation</h4>
+      <p>Elle est ajoutée en <b>fin de conchage liquide</b>, à un dosage de <b>0,3 à 0,7%</b>.</p>`
+  }
+];
+
+/* =========================================================
+   QUIZ LOGIC
+   ========================================================= */
+let quizOrder = [];
+let quizIndex = 0;
+let quizScore = 0;
+
+function shuffle(arr){
+  const a = arr.slice();
+  for(let i=a.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]]=[a[j],a[i]];
+  }
+  return a;
+}
+
+function startQuiz(){
+  quizOrder = shuffle(QUESTIONS.map((_,i)=>i));
+  quizIndex = 0;
+  quizScore = 0;
+  renderQuizQuestion();
+}
+
+function renderQuizQuestion(){
+  const card = document.getElementById('quizCard');
+  if(quizIndex >= quizOrder.length){
+    renderQuizResult();
+    return;
+  }
+  const q = QUESTIONS[quizOrder[quizIndex]];
+  const pct = Math.round((quizIndex/quizOrder.length)*100);
+  card.innerHTML = `
+    <div class="quiz-progress-wrap">
+      <div class="quiz-progress-bar"><div class="quiz-progress-fill" style="width:${pct}%"></div></div>
+      <div class="quiz-progress-label">${quizIndex+1} / ${quizOrder.length}</div>
+    </div>
+    <p class="quiz-q">${q.q}</p>
+    <div class="quiz-options" id="quizOptions">
+      ${q.options.map((o,i)=>`<button class="quiz-opt" data-i="${i}">${o}</button>`).join('')}
+    </div>
+    <div class="quiz-explain" id="quizExplain"></div>
+    <button class="btn quiz-next" id="quizNextBtn">Question suivante</button>
+  `;
+  document.querySelectorAll('#quizOptions .quiz-opt').forEach(btn=>{
+    btn.addEventListener('click', ()=>answerQuiz(parseInt(btn.dataset.i), q));
+  });
+  document.getElementById('quizNextBtn').addEventListener('click', ()=>{
+    quizIndex++;
+    renderQuizQuestion();
+  });
+}
+
+function answerQuiz(i, q){
+  const opts = document.querySelectorAll('#quizOptions .quiz-opt');
+  opts.forEach(o=>o.disabled=true);
+  if(i === q.correct){
+    opts[i].classList.add('correct');
+    quizScore++;
+  } else {
+    opts[i].classList.add('incorrect');
+    opts[q.correct].classList.add('correct');
+  }
+  const ex = document.getElementById('quizExplain');
+  ex.innerHTML = q.explain;
+  ex.classList.add('show');
+  document.getElementById('quizNextBtn').classList.add('show');
+}
+
+function renderQuizResult(){
+  const card = document.getElementById('quizCard');
+  const pct = Math.round((quizScore/quizOrder.length)*100);
+  let tier = 'bronze', label = 'Bronze';
+  if(pct >= 85){ tier='or'; label='Or'; }
+  else if(pct >= 65){ tier='argent'; label='Argent'; }
+  card.innerHTML = `
+    <div class="quiz-result">
+      <div class="badge ${tier}">${label}</div>
+      <h3>${quizScore} / ${quizOrder.length} bonnes réponses</h3>
+      <p>${pct}% de réussite sur le module « La transformation du cacao »</p>
+      <button class="btn" id="quizRestart">Recommencer le quiz</button>
+    </div>
+  `;
+  document.getElementById('quizRestart').addEventListener('click', startQuiz);
+}
+
+/* =========================================================
+   TUTEUR IA — appel direct à l'API Groq (gratuite), fonctionne
+   dans n'importe quel navigateur, sans compte ni autorisation
+   ========================================================= */
+const SUGGESTED_QUESTIONS = [
+  "Pourquoi la fermentation est-elle indispensable avant la torréfaction ?",
+  "Quelle est la différence entre séchage naturel et artificiel ?",
+  "À quoi sert le conchage et combien de temps dure-t-il ?"
+];
+
+const GROQ_MODEL = "llama-3.3-70b-versatile";
+const RELAY_URL = "/.netlify/functions/chat";
+
+let chatHistory = [];
+
+function renderChatSuggestions(){
+  const wrap = document.getElementById('chatSuggestions');
+  wrap.innerHTML = SUGGESTED_QUESTIONS.map(s=>`<button class="suggestion-chip">${s}</button>`).join('');
+  wrap.querySelectorAll('.suggestion-chip').forEach(chip=>{
+    chip.addEventListener('click', ()=>{
+      document.getElementById('chatInput').value = chip.textContent;
+      sendChat();
+    });
+  });
+}
+
+function addMsg(text, cls){
+  const log = document.getElementById('chatLog');
+  const div = document.createElement('div');
+  div.className = 'msg ' + cls;
+  div.textContent = text;
+  log.appendChild(div);
+  log.scrollTop = log.scrollHeight;
+  return div;
+}
+
+async function askTuteur(systemPrompt, messages){
+  const response = await fetch(RELAY_URL, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      model: GROQ_MODEL,
+      messages: [{role: "system", content: systemPrompt}, ...messages],
+      temperature: 0.4
+    })
+  });
+  if(!response.ok){
+    const errBody = await response.text().catch(()=>"");
+    const err = new Error("HTTP " + response.status);
+    err.status = response.status;
+    err.body = errBody;
+    throw err;
+  }
+  const data = await response.json();
+  return data.choices[0].message.content;
+}
+
+async function sendChat(){
+  const inputEl = document.getElementById('chatInput');
+  const text = inputEl.value.trim();
+  if(!text) return;
+  inputEl.value = '';
+  addMsg(text, 'user');
+  chatHistory.push({role:'user', content:text});
+  const loadingDiv = addMsg('Le tuteur réfléchit…', 'bot loading');
+
+  const RULES = "Tu es un tuteur pour des élèves en BTM Chocolatier-Confiseur. Tu réponds UNIQUEMENT à partir du texte de cours suivant, sur le module 'La transformation du cacao'. Si la question sort de ce cours (autre module), dis poliment que ce sujet est traité dans un autre module et invite l'élève à s'y rendre. Réponds de façon claire, pédagogique, avec des exemples concrets d'atelier quand c'est pertinent. Ne mentionne jamais quel modèle d'IA tu es : reste dans ton rôle de tuteur du module.\n\nCOURS :\n" + COURSE_TEXT;
+
+  const recentHistory = chatHistory.slice(-10);
+
+  try{
+    const answer = await askTuteur(RULES, recentHistory);
+    loadingDiv.classList.remove('loading');
+    loadingDiv.textContent = answer;
+    chatHistory.push({role:'assistant', content: answer});
+  } catch(err){
+    loadingDiv.classList.remove('loading');
+    loadingDiv.textContent = err.status === 429
+      ? "Trop de questions envoyées d'un coup : attends un instant avant de réessayer."
+      : "Une erreur est survenue en contactant le tuteur. Réessaie dans un instant.";
+    console.error(err);
+  }
+}
+
+/* =========================================================
+   QUESTION D'EXAMEN — cheminement guidé
+   ========================================================= */
+let currentExamId = EXAM_QUESTIONS[0].id;
+let examStepIndex = {};
+
+function renderExamPills(){
+  const wrap = document.getElementById('examPills');
+  wrap.innerHTML = EXAM_QUESTIONS.map(q=>`<button class="exam-pill${q.id===currentExamId?' active':''}" data-id="${q.id}">${q.title.length>38?q.title.slice(0,38)+'…':q.title}</button>`).join('');
+  wrap.querySelectorAll('.exam-pill').forEach(p=>{
+    p.addEventListener('click', ()=>{
+      currentExamId = p.dataset.id;
+      renderExamPills();
+      renderExamQuestion();
+    });
+  });
+}
+
+function renderExamQuestion(){
+  const q = EXAM_QUESTIONS.find(e=>e.id===currentExamId);
+  if(!(currentExamId in examStepIndex)) examStepIndex[currentExamId] = 0;
+  const step = examStepIndex[currentExamId];
+  const card = document.getElementById('examCard');
+
+  let stepsHtml = '';
+  for(let i=0;i<step;i++){
+    stepsHtml += `<div class="step hint"><div class="step-label">Indice ${i+1}</div>${q.hints[i]}</div>`;
+  }
+
+  let controlsHtml = '';
+  if(step < q.hints.length){
+    controlsHtml += `<button class="btn" id="examHintBtn">Indice ${step+1}</button>`;
+  }
+  if(step > 0 || q.hints.length===0){
+    controlsHtml += `<button class="btn ghost" id="examAnswerBtn">Voir la réponse assemblée</button>`;
+  }
+  controlsHtml += `<button class="btn ghost" id="examResetBtn">Recommencer cette question</button>`;
+
+  card.innerHTML = `
+    <p class="exam-q-title">${q.title}</p>
+    <p class="exam-q-points">${q.points}</p>
+    ${stepsHtml}
+    <div class="exam-controls">${controlsHtml}</div>
+    <div class="exam-answer" id="examAnswer">${q.answerHtml}</div>
+    <p class="exam-note">Corrigé reconstitué à partir des sources internes du module (banque de questions, évaluations, corrigés officiels) — à relire avant diffusion en cas d'écart avec le cours.</p>
+  `;
+
+  const hintBtn = document.getElementById('examHintBtn');
+  if(hintBtn) hintBtn.addEventListener('click', ()=>{
+    examStepIndex[currentExamId] = step+1;
+    renderExamQuestion();
+  });
+  const answerBtn = document.getElementById('examAnswerBtn');
+  if(answerBtn) answerBtn.addEventListener('click', ()=>{
+    document.getElementById('examAnswer').classList.add('show');
+    answerBtn.disabled = true;
+  });
+  document.getElementById('examResetBtn').addEventListener('click', ()=>{
+    examStepIndex[currentExamId] = 0;
+    renderExamQuestion();
+  });
+}
+
+/* =========================================================
+   EN BREF — schéma SVG + points clés
+   ========================================================= */
+function renderBrief(){
+  const svgWrap = document.getElementById('briefSvgWrap');
+  svgWrap.innerHTML = `
+  <svg viewBox="0 0 940 260" width="100%" style="min-width:760px;display:block;">
+    <defs>
+      <style>
+        .vt{font-family:'Inter',sans-serif; font-weight:600; fill:var(--text-bright); font-size:12.5px;}
+        .vs{font-family:'Inter',sans-serif; fill:var(--text-dim); font-size:10.5px;}
+      </style>
+    </defs>
+    <rect x="0" y="0" width="940" height="260" fill="var(--surface)"/>
+    ${[
+      {label:"Récolte", sub:"Maturité: couleur + son sourd"},
+      {label:"Écabossage", sub:"≤5 jours, machette/gourdin"},
+      {label:"Fermentation", sub:"5-7j, alcoolique puis acétique"},
+      {label:"Séchage", sub:"55%→7% d'humidité"},
+      {label:"Torréfaction", sub:"110-150°C, 15-40min"},
+      {label:"Concassage", sub:"→ grué / nibs"},
+      {label:"Pré-broyage", sub:"→ pâte de cacao"},
+      {label:"Conchage", sub:"8-72h, sec puis liquide"}
+    ].map((s,i) => {
+      const x = 30 + i*114;
+      return `
+      <rect x="${x}" y="60" width="98" height="98" rx="12" fill="var(--surface-alt)" stroke="var(--border)"/>
+      <text x="${x+49}" y="40" text-anchor="middle" class="vs" fill="var(--gold)">ÉTAPE ${i+1}</text>
+      <text x="${x+49}" y="100" text-anchor="middle" class="vt">${s.label}</text>
+      <foreignObject x="${x+8}" y="112" width="82" height="42">
+        <div xmlns="http://www.w3.org/1999/xhtml" style="font-family:'Inter',sans-serif;font-size:10px;line-height:1.3;color:var(--text-dim);text-align:center;">${s.sub}</div>
+      </foreignObject>
+      ${i<7?`<line x1="${x+98}" y1="109" x2="${x+114}" y2="109" stroke="var(--caramel-hi)" stroke-width="2"/>`:''}
+      `;
+    }).join('')}
+    <text x="30" y="200" class="vs">« Le moindre geste a une importance » — chaque étape influence directement l'arôme final du chocolat.</text>
+  </svg>`;
+
+  const points = document.getElementById('briefPoints');
+  const data = [
+  {h:"Récolte", p:"Maturité jugée à la couleur et au son sourd. ~1500 cabosses/jour par cueilleur."},
+  {h:"Fermentation (5-7j)", p:"Phase alcoolique anaérobie (24-48h) puis acétique aérobie. Détruit le germe, crée les précurseurs d'arômes."},
+  {h:"Cut test", p:"Contrôle qualité sur 100 fèves coupées : non fermentées, insuff., trop, bien fermentées, défectueuses."},
+  {h:"Séchage", p:"55% → 7% d'humidité. 95% naturel (5-20j, meilleure qualité), 5% artificiel (15-36h, qualité inférieure)."},
+  {h:"Torréfaction", p:"110-150°C, 15-40min, perte 5-10% du poids. Développe l'arôme via la réaction de Maillard."},
+  {h:"Concassage", p:"Sépare amande/germe/coque (10-12% du poids). Résultat : le grué ou nibs."},
+  {h:"Pré-broyage", p:"Grué broyé finement → pâte de cacao liquide (80-100 microns), chemin chocolat ou poudre/beurre."},
+  {h:"Conchage", p:"8-72h. À sec (45-50°C) puis liquide (+beurre de cacao, lécithine 0,3-0,7% en fin de cycle)."}
+];
+  points.innerHTML = data.map(d=>`<div class="brief-point"><h4>${d.h}</h4><p>${d.p}</p></div>`).join('');
+}
+
+/* =========================================================
+   NAVIGATION + THEME
+   ========================================================= */
+document.querySelectorAll('.navbtn[data-tab]').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    document.querySelectorAll('.navbtn[data-tab]').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('panel-'+btn.dataset.tab).classList.add('active');
+  });
+});
+
+const themeToggle = document.getElementById('themeToggle');
+const themeLabel = document.getElementById('themeLabel');
+themeToggle.addEventListener('click', () => {
+  const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+  document.documentElement.setAttribute('data-theme', isLight ? 'dark' : 'light');
+  themeLabel.textContent = isLight ? 'Mode clair' : 'Mode sombre';
+});
+
+/* ===== Init ===== */
+startQuiz();
+renderChatSuggestions();
+document.getElementById('chatSend').addEventListener('click', sendChat);
+document.getElementById('chatInput').addEventListener('keydown', e=>{ if(e.key==='Enter') sendChat(); });
+renderExamPills();
+renderExamQuestion();
+renderBrief();
+</script>
+
+</body>
+</html>

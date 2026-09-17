@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Les additifs — BTM Chocolatier</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #20110a;
+    --surface: #2b1810;
+    --surface-alt: #3d2416;
+    --border: rgba(242,232,216,0.14);
+    --text: #f2e8d8;
+    --text-bright: #faf4e9;
+    --text-dim: rgba(242,232,216,0.62);
+    --caramel: #b8783a;
+    --caramel-hi: #cf9455;
+    --gold: #d8b66e;
+    --error: #7a2e2a;
+    --error-text: #e2a29d;
+    --success: #4c7a3a;
+    --success-text: #b7dba0;
+    --shadow: rgba(0,0,0,0.35);
+  }
+  [data-theme="light"]{
+    --bg: #f7efdf;
+    --surface: #fffaf0;
+    --surface-alt: #efe0c4;
+    --border: rgba(61,36,22,0.16);
+    --text: #3a2415;
+    --text-bright: #241207;
+    --text-dim: rgba(58,36,21,0.62);
+    --caramel: #a8632b;
+    --caramel-hi: #94551f;
+    --gold: #93701f;
+    --error: #a13d34;
+    --error-text: #7c2b25;
+    --success: #3d6b2c;
+    --success-text: #2c4f20;
+    --shadow: rgba(58,36,21,0.12);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--bg); color:var(--text); font-family:'Inter',sans-serif;
+    min-height:100vh; -webkit-font-smoothing:antialiased;
+    transition:background .35s ease, color .35s ease;
+  }
+  h1,h2,h3{font-family:'Merriweather',serif; font-weight:700; letter-spacing:-0.005em;}
+  a{color:var(--caramel-hi);}
+  ::-webkit-scrollbar{width:10px;height:10px;}
+  ::-webkit-scrollbar-thumb{background:var(--surface-alt); border-radius:8px;}
+
+  .app{display:flex; min-height:100vh;}
+
+  /* ===== Sidebar ===== */
+  .sidebar{
+    width:230px; flex-shrink:0; background:var(--surface); border-right:1px solid var(--border);
+    display:flex; flex-direction:column; padding:24px 16px; gap:6px;
+    position:sticky; top:0; height:100vh;
+  }
+  .sidebar .brand{padding:4px 10px 20px;}
+  .sidebar .brand .kicker{color:var(--caramel-hi); font-size:11.5px; font-weight:600; text-transform:uppercase; letter-spacing:.06em; margin:0 0 4px;}
+  .sidebar .brand h1{font-size:20px; margin:0; color:var(--text-bright); line-height:1.25;}
+  .navbtn{
+    display:flex; align-items:center; gap:10px; text-align:left; width:100%;
+    background:transparent; border:none; border-radius:10px; padding:11px 12px;
+    color:var(--text-dim); font-family:'Inter',sans-serif; font-size:14px; font-weight:500;
+    cursor:pointer; transition:background .2s ease, color .2s ease;
+  }
+  .navbtn svg{width:17px; height:17px; flex-shrink:0;}
+  .navbtn:hover{background:var(--surface-alt); color:var(--text);}
+  .navbtn.active{background:linear-gradient(155deg, var(--caramel-hi), var(--caramel) 65%); color:var(--bg); font-weight:600;}
+  .sidebar-spacer{flex:1;}
+  .theme-toggle{
+    display:flex; align-items:center; gap:8px; background:var(--surface-alt); border:1px solid var(--border);
+    color:var(--text-dim); padding:10px 12px; border-radius:10px; font-size:13px; cursor:pointer;
+  }
+  .theme-toggle:hover{color:var(--text);}
+  .theme-toggle svg{width:15px;height:15px;}
+  .back-link{display:block; font-size:12.5px; color:var(--text-dim); text-decoration:none; padding:8px 12px 2px;}
+  .back-link:hover{color:var(--text);}
+
+  /* ===== Main ===== */
+  .main{flex:1; min-width:0; padding:40px 44px 80px;}
+  .panel{display:none; max-width:820px; margin:0 auto;}
+  .panel.active{display:block;}
+  .panel-head{margin-bottom:28px;}
+  .panel-head .kicker{color:var(--caramel-hi); font-size:12.5px; font-weight:600; margin:0 0 6px;}
+  .panel-head h2{font-size:26px; margin:0 0 8px; color:var(--text-bright);}
+  .panel-head p{color:var(--text-dim); font-size:14px; margin:0; line-height:1.55; max-width:60ch;}
+
+  .card{
+    background:var(--surface); border:1px solid var(--border); border-radius:16px;
+    padding:26px; box-shadow:0 8px 24px var(--shadow); margin-bottom:18px;
+  }
+
+  /* ===== Quiz ===== */
+  .quiz-progress-wrap{display:flex; align-items:center; gap:12px; margin-bottom:22px;}
+  .quiz-progress-bar{flex:1; height:8px; border-radius:99px; background:var(--surface-alt); overflow:hidden;}
+  .quiz-progress-fill{height:100%; background:linear-gradient(90deg, var(--caramel), var(--gold)); border-radius:99px; transition:width .3s ease;}
+  .quiz-progress-label{font-size:12.5px; color:var(--text-dim); white-space:nowrap;}
+  .quiz-q{font-size:17px; line-height:1.5; color:var(--text-bright); margin:0 0 20px; font-family:'Merriweather',serif; font-weight:700;}
+  .quiz-options{display:flex; flex-direction:column; gap:10px;}
+  .quiz-opt{
+    text-align:left; padding:13px 16px; border-radius:11px; border:1px solid var(--border);
+    background:var(--surface-alt); color:var(--text); font-family:'Inter',sans-serif; font-size:14.5px;
+    cursor:pointer; transition:border-color .15s ease, background .15s ease;
+  }
+  .quiz-opt:hover{border-color:var(--caramel-hi);}
+  .quiz-opt.correct{background:color-mix(in srgb, var(--success) 30%, var(--surface-alt)); border-color:var(--success);}
+  .quiz-opt.incorrect{background:color-mix(in srgb, var(--error) 30%, var(--surface-alt)); border-color:var(--error);}
+  .quiz-opt[disabled]{cursor:default;}
+  .quiz-explain{
+    margin-top:18px; padding:16px 18px; border-radius:12px; background:var(--surface-alt);
+    border-left:3px solid var(--gold); font-size:13.5px; line-height:1.6; color:var(--text); display:none;
+  }
+  .quiz-explain.show{display:block;}
+  .quiz-explain b{color:var(--text-bright);}
+  .quiz-next{margin-top:18px; display:none;}
+  .quiz-next.show{display:inline-flex;}
+  .quiz-result{text-align:center; padding:20px 0;}
+  .badge{
+    width:110px; height:110px; border-radius:50%; margin:0 auto 18px; display:flex; align-items:center;
+    justify-content:center; font-family:'Merriweather',serif; font-weight:900; font-size:15px; text-align:center;
+    box-shadow:inset 0 2px 6px rgba(0,0,0,0.25), 0 6px 18px var(--shadow); color:#2a1a0a;
+  }
+  .badge.bronze{background:linear-gradient(155deg,#d3925a,#9a5a2c);}
+  .badge.argent{background:linear-gradient(155deg,#e6e6e6,#a8a8a8); color:#2a2a2a;}
+  .badge.or{background:linear-gradient(155deg,#f2d27a,#c99a2e);}
+  .quiz-result h3{margin:0 0 6px; color:var(--text-bright); font-size:20px;}
+  .quiz-result p{color:var(--text-dim); font-size:14px; margin:0 0 22px;}
+
+  .btn{
+    display:inline-flex; align-items:center; justify-content:center; gap:8px; border:none; border-radius:11px;
+    font-family:'Inter',sans-serif; font-weight:600; font-size:14px; padding:11px 20px; cursor:pointer;
+    color:var(--bg); text-decoration:none; background:linear-gradient(155deg, var(--caramel-hi), var(--caramel) 60%, #8a5427);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,0.25), 0 3px 10px var(--shadow); transition:transform .15s ease;
+  }
+  .btn:hover{transform:translateY(-1px);}
+  .btn.ghost{background:transparent; color:var(--text); border:1px solid var(--border); box-shadow:none;}
+
+  /* ===== Tuteur ===== */
+  .chat-wrap{display:flex; flex-direction:column; height:64vh;}
+  .chat-log{flex:1; overflow-y:auto; padding:4px 2px 12px; display:flex; flex-direction:column; gap:14px;}
+  .msg{max-width:88%; padding:12px 15px; border-radius:14px; font-size:14px; line-height:1.55;}
+  .msg.user{align-self:flex-end; background:linear-gradient(155deg, var(--caramel-hi), var(--caramel)); color:var(--bg); border-bottom-right-radius:4px;}
+  .msg.bot{align-self:flex-start; background:var(--surface-alt); border:1px solid var(--border); color:var(--text); border-bottom-left-radius:4px; white-space:pre-wrap;}
+  .msg.bot.loading{color:var(--text-dim); font-style:italic;}
+  .suggestions{display:flex; flex-wrap:wrap; gap:8px; margin:6px 0 16px;}
+  .suggestion-chip{
+    background:var(--surface-alt); border:1px solid var(--border); color:var(--text-dim); font-size:12.5px;
+    padding:8px 13px; border-radius:99px; cursor:pointer; text-align:left;
+  }
+  .suggestion-chip:hover{border-color:var(--caramel-hi); color:var(--text);}
+  .chat-input-row{display:flex; gap:10px; margin-top:8px;}
+  .chat-input-row input{
+    flex:1; background:var(--surface-alt); border:1px solid var(--border); border-radius:11px; color:var(--text);
+    font-family:'Inter',sans-serif; font-size:14px; padding:12px 15px;
+  }
+  .chat-input-row input:focus{outline:none; border-color:var(--caramel-hi);}
+
+  /* ===== Question d'examen ===== */
+  .exam-pills{display:flex; flex-wrap:wrap; gap:8px; margin-bottom:22px;}
+  .exam-pill{
+    background:var(--surface-alt); border:1px solid var(--border); color:var(--text-dim); font-size:13px;
+    padding:9px 15px; border-radius:99px; cursor:pointer; font-family:'Inter',sans-serif;
+  }
+  .exam-pill.active{background:linear-gradient(155deg, var(--caramel-hi), var(--caramel)); color:var(--bg); border-color:transparent; font-weight:600;}
+  .exam-q-title{font-size:17px; font-family:'Merriweather',serif; font-weight:700; color:var(--text-bright); margin:0 0 6px;}
+  .exam-q-points{font-size:12px; color:var(--text-dim); margin:0 0 20px;}
+  .step{
+    background:var(--surface-alt); border-radius:12px; padding:14px 16px; margin-bottom:12px;
+    font-size:13.5px; line-height:1.6; border-left:3px solid var(--border);
+  }
+  .step.hint{border-left-color:var(--gold);}
+  .step-label{font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:.05em; color:var(--caramel-hi); margin-bottom:5px;}
+  .exam-answer{
+    display:none; margin-top:16px; padding:18px; border-radius:12px; background:var(--surface-alt);
+    border-left:3px solid var(--success); font-size:13.5px; line-height:1.65;
+  }
+  .exam-answer.show{display:block;}
+  .exam-answer h4{margin:14px 0 6px; font-size:13.5px; color:var(--text-bright); font-family:'Inter',sans-serif;}
+  .exam-answer h4:first-child{margin-top:0;}
+  .exam-answer ul{margin:4px 0; padding-left:18px;}
+  .exam-controls{display:flex; gap:10px; flex-wrap:wrap; margin-top:6px;}
+  .exam-note{font-size:11.5px; color:var(--text-dim); margin-top:14px; font-style:italic;}
+
+  /* ===== En bref ===== */
+  .brief-svg-wrap{background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:18px; margin-bottom:18px; overflow-x:auto;}
+  .brief-points{display:grid; grid-template-columns:repeat(auto-fit, minmax(230px,1fr)); gap:14px;}
+  .brief-point{background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:16px 18px;}
+  .brief-point h4{margin:0 0 6px; font-size:14px; color:var(--gold); font-family:'Inter',sans-serif;}
+  .brief-point p{margin:0; font-size:13px; line-height:1.55; color:var(--text-dim);}
+
+  @media (max-width: 860px){
+    .app{flex-direction:column;}
+    .sidebar{width:100%; height:auto; position:relative; flex-direction:row; overflow-x:auto; padding:14px 12px; align-items:center;}
+    .sidebar .brand{padding:0 12px 0 4px; flex-shrink:0;}
+    .sidebar-spacer{display:none;}
+    .navbtn{flex-shrink:0; width:auto;}
+    .theme-toggle{flex-shrink:0;}
+    .main{padding:26px 18px 60px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="app">
+  <nav class="sidebar">
+    <div class="brand">
+      <p class="kicker">BTM Chocolatier</p>
+      <h1>Les additifs</h1>
+    </div>
+    <button class="navbtn active" data-tab="quiz">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+      Quiz
+    </button>
+    <button class="navbtn" data-tab="tuteur">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      Poser une question
+    </button>
+    <button class="navbtn" data-tab="examen">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M9 13h6M9 17h6M9 9h1"/></svg>
+      Question d'examen
+    </button>
+    <button class="navbtn" data-tab="brief">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+      En bref
+    </button>
+    <div class="sidebar-spacer"></div>
+    <a class="back-link" href="../index.html">← Retour au hub</a>
+    <button class="theme-toggle" id="themeToggle">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4.5"/><path d="M12 2.5v2M12 19.5v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M2.5 12h2M19.5 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4"/></svg>
+      <span id="themeLabel">Mode clair</span>
+    </button>
+  </nav>
+
+  <main class="main">
+
+    <!-- ===== QUIZ ===== -->
+    <section class="panel active" id="panel-quiz">
+      <div class="panel-head">
+        <p class="kicker">Quiz — Les additifs</p>
+        <h2>Teste tes connaissances</h2>
+        <p>Colorants, conservateurs, antioxydants, gélifiants, acidifiants : réglementation et rôles.</p>
+      </div>
+      <div class="card" id="quizCard"></div>
+    </section>
+
+    <!-- ===== TUTEUR ===== -->
+    <section class="panel" id="panel-tuteur">
+      <div class="panel-head">
+        <p class="kicker">Tuteur IA — Les additifs</p>
+        <h2>Poser une question</h2>
+        <p>Le tuteur répond uniquement à partir du cours de ce module. Pour les autres sujets, utilise le module concerné.</p>
+      </div>
+      <div class="card chat-wrap">
+        <div class="chat-log" id="chatLog"></div>
+        <div class="suggestions" id="chatSuggestions"></div>
+        <div class="chat-input-row">
+          <input type="text" id="chatInput" placeholder="Écris ta question sur le cacao…">
+          <button class="btn" id="chatSend">Envoyer</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== EXAMEN ===== -->
+    <section class="panel" id="panel-examen">
+      <div class="panel-head">
+        <p class="kicker">Question d'examen — Les additifs</p>
+        <h2>Cheminement guidé</h2>
+        <p>Choisis une question, avance indice par indice, puis assemble ta réponse avant de découvrir le corrigé.</p>
+      </div>
+      <div class="exam-pills" id="examPills"></div>
+      <div class="card" id="examCard"></div>
+    </section>
+
+    <!-- ===== EN BREF ===== -->
+    <section class="panel" id="panel-brief">
+      <div class="panel-head">
+        <p class="kicker">En bref — Les additifs</p>
+        <h2>Récapitulatif visuel</h2>
+        <p>Les 4 grandes variétés et l'essentiel à retenir avant l'épreuve.</p>
+      </div>
+      <div class="brief-svg-wrap" id="briefSvgWrap"></div>
+      <div class="brief-points" id="briefPoints"></div>
+    </section>
+
+  </main>
+</div>
+
+
+<script>
+/* =========================================================
+   COURSE_TEXT — synthèse fidèle du cours "Les additifs"
+   (source du tuteur IA — ne répond qu'à partir de ce texte)
+   ========================================================= */
+const COURSE_TEXT = `
+
+MODULE : LES ADDITIFS — BTM Chocolatier Confiseur (Bloc 4)
+
+1/ DÉFINITION
+Les additifs alimentaires sont des matières possédant des propriétés particulières qui, ajoutées aux aliments, améliorent leur qualité, leur protection et leur conservation. Consommés en forte dose, ils sont nocifs pour la santé, d'où une DJA (Dose Journalière Autorisée) : quantité qu'un individu peut ingérer chaque jour, durant toute sa vie, sans danger. Déterminée après tests en laboratoire révélant une toxicité à forte dose.
+Depuis le 6 août 1979, les additifs sont codifiés par une lettre E suivie de 3 chiffres. 4 catégories principales : colorants (E1XX), conservateurs (E2XX), antioxydants (E300-E321), agents de texture (E322-E495). Sous-catégories : édulcorants, stabilisants, émulsifiants, épaississants, gélifiants, acidifiants, antiagglomérants, exhausteurs de goût, agents d'enrobage, poudres à lever, agents divers.
+
+2/ LES COLORANTS
+Améliorent l'esthétique, permettent de distinguer les parfums. 2 catégories :
+Colorants naturels : origine animale (le rouge carmin E120, seul employé en pâtisserie/chocolaterie, issu de la cochenille, petit insecte du Mexique) ; origine végétale, la plus nombreuse (jaune : graine de roucouyer ; jaune/orange : carotène de la carotte ; vert : chlorophylle ; rouge « bétanine » : betterave rouge ; brun caramel : à partir du saccharose ; bleu : indigotier) ; origine minérale (aluminium, or, argent — coloration de surface).
+Colorants synthétiques : entièrement fabriqués en laboratoire, sur modèle chimique des naturels ou entièrement conçus (azoïques). Exemples : carotène de synthèse, azorubine/carmoisine, bleu patenté.
+Solubilité : hydrosolubles (sucre d'art, pâte d'amande) ou liposolubles (couvertures, beurre de cacao).
+
+3/ LES AGENTS CONSERVATEURS
+Protègent des micro-organismes, retardent/empêchent les modifications bactériologiques. Rarement utilisés directement : ce sont souvent les matières premières elles-mêmes qui jouent ce rôle (« adjuvants naturels ») : le sel (attire l'eau, entrave les microbes), l'alcool (antiseptique), le sucre (antiseptique), le vinaigre (stoppe la multiplication sans détruire), la graisse (barrière étanche). Conservateurs chimiques : acide sorbique (sorbier), acide propionique (fermentation), acide acétique (distillation du vinaigre), nitrate de sodium (salpêtre).
+
+4/ LES AGENTS ANTIOXYDANTS
+Empêchent l'influence de l'oxygène de l'air : évitent le noircissement des fruits (comme le jus de citron) et le rancissement des matières grasses, protègent les vitamines liposolubles (A, D, E, K). Exemples : acide ascorbique, ascorbate de sodium, acide palmityl ascorbique.
+
+5/ LES AGENTS ÉMULSIFIANTS
+Facilitent et stabilisent le mélange de deux matières non miscibles (eau/matière grasse). Le plus utilisé : la lécithine, riche en phosphore, présente dans l'huile de soja et le jaune d'œuf. Entre fréquemment dans le chocolat, diminue l'apport de beurre de cacao nécessaire ; compliquée à garantir sans OGM, sans solution de remplacement complète actuellement. Autres : phosphate d'ammonium, monostéarate de glycérol, lactylate de sodium.
+
+6/ LES AGENTS STABILISANTS
+(à ne pas confondre avec les stabilisateurs, utilisés en glacerie pour retarder la cristallisation hydrique). Permettent la conservation d'une consistance ou texture acquise en fabrication. En chocolaterie, surtout dans les fourrages et confiseries : le sorbitol (voir cours édulcorants) est le plus utilisé, comme stabilisateur d'humidité dans ganaches, fondants, pâtes de fruits, gélifiés. Aussi : mannitol, agar-agar.
+
+7/ LES AGENTS ÉPAISSISSANTS ET GÉLIFIANTS
+Retiennent l'eau, maintiennent en suspension des particules solides dans les liquides (épaississement ou gélification). Réguliers : pectine, gélatine, agar-agar. Plus rares : gomme adragante, gomme arabique (dragées, brillantage des turbinés, gommes).
+
+La pectine : extraite de la peau des agrumes, des pépins de pommes, des groseilles ou des coings. Ne gélifie qu'en milieu acide (d'où l'ajout d'acide pour les pâtes de fruits). Précautions : dispersion parfaite dans la masse, pH maîtrisé (3,5-3,8), milieu riche en extrait sec (75% minimum), température adéquate. Principe : emprisonner l'eau restante en fin de cuisson, donc réservée à des produits pauvres en eau (riches en sucre). Types : pectine avec sels retardateurs = pectine jaune (pâtes de fruits) ; pectine avec phosphates de calcium = pectine NH (nappages, thermoréversible) ; pectine poudre seule (confitures, gelées) ; sucre gélifiant (mélange sucre+pectine+acide, confitures).
+
+Autres gélifiants : la gélatine (issue du collagène de peau de porc, os, cartilages, ligaments, ou d'arêtes de poisson) — en feuilles, granulés ou poudre, puissance mesurée en bloom (50 à 300, mesurée au gelmètre : force nécessaire pour enfoncer un piston). Gélatine or 200-210 bloom, argent 180 bloom, bronze 150 bloom. Employée pour sa thermoréversibilité (gélifié, moulage), comme agent aérateur (guimauve, nougat, mousse) et stabilisant (caramels mous). Les carraghénanes (algues marines, mousse du Danemark/Irlandaises, culture bretonne) : stables à 50-60°C, présentes dans crème/lait comme stabilisant. L'agar-agar : algue rouge d'Indonésie, alternative végétarienne, pouvoir gélifiant très élevé et propriétés laxatives — dosage à respecter. Utilisé en confitures, gélifiés, gelées, pâtes de fruits.
+
+8/ LES ACIDIFIANTS
+Renforcent l'action anti-oxygène, apportent une saveur acidulée, rehaussent l'arôme des fruits, accélèrent la gélification de la pectine, favorisent la production de sucre inverti en cuisson, graissent les sucres cuits (sucre d'art). Les plus fréquents : acide citrique, acide lactique, crème de tartre.
+E334 — Acide tartrique (pH 3,2) : principal acide du vin, obtenu par fermentation du moût de raisin, des tartres viticoles ou des lies ; aussi synthétisable. Anti-oxydant, régulateur de pH, stabilisateur ; accentue l'acidulé, graisse les sucres cuits.
+E330 — Acide citrique (pH 3,5) : présent dans le citron, aussi obtenu par fermentation des mélasses. Acidifiant/correcteur d'acidité, catalyseur avec les gélifiants (pâtes de fruits).
+E270 — Acide lactique : naturel, présent dans le lait mais aussi le pain, le vin, certains fruits/légumes, les muscles. Antioxygène, acidifiant, exhausteur de goût, très miscible dans l'eau, saveur douce (gélifiés, gommes).
+E336 — Crème de tartre (pH 3,7) : sel de l'acide tartrique, cristaux formés sur les parois des barils de fermentation du vin.
+
+9/ AUTRES ADDITIFS
+Antiagglomérants : évitent la prise en blocs (sucre glace/silice, sel/silicates). Exhausteurs de goût : relèvent le goût (glutamates, maltol).
+
+`;
+
+/* =========================================================
+   QUESTIONS — Quiz (QCM)
+   ========================================================= */
+const QUESTIONS = [
+  {
+    q: "Depuis quand les additifs alimentaires sont-ils codifiés par une lettre E suivie de 3 chiffres ?",
+    options: ["1945", "1979", "2003", "2011"],
+    correct: 1,
+    explain: "Depuis le <b>6 août 1979</b>. Ce système aide les consommateurs à identifier les additifs et à connaître leur catégorie (colorants E1XX, conservateurs E2XX, antioxydants E300-321, agents de texture E322-495)."
+  },
+  {
+    q: "Que signifie DJA ?",
+    options: [
+      "Dose Journalière Admissible pour l'industrie",
+      "Dose Journalière Autorisée, quantité qu'un individu peut ingérer chaque jour toute sa vie sans danger",
+      "Durée Journalière d'Absorption",
+      "Directive Juridique Alimentaire"
+    ],
+    correct: 1,
+    explain: "La <b>DJA (Dose Journalière Autorisée)</b> représente la quantité de produit qu'un individu peut ingérer chaque jour, durant toute sa vie, sans risque pour sa santé — déterminée après des tests en laboratoire révélant une toxicité à forte dose."
+  },
+  {
+    q: "Quel est le seul colorant d'origine animale employé en pâtisserie-chocolaterie, et de quel insecte est-il issu ?",
+    options: [
+      "Le carotène, de la carotte",
+      "Le rouge carmin (E120), de la cochenille",
+      "La chlorophylle, d'une plante",
+      "L'indigo, d'un insecte européen"
+    ],
+    correct: 1,
+    explain: "Le <b>rouge carmin (E120)</b> est le seul colorant d'origine animale employé en pâtisserie-chocolaterie, extrait de <b>la cochenille</b>, un petit insecte originaire du Mexique."
+  },
+  {
+    q: "Quels ingrédients courants jouent naturellement un rôle de conservateur (« adjuvants naturels ») ?",
+    options: [
+      "Le lait et la farine",
+      "Le sel, l'alcool, le sucre, le vinaigre, la graisse",
+      "Uniquement les colorants",
+      "Aucun ingrédient courant n'a ce rôle"
+    ],
+    correct: 1,
+    explain: "Le <b>sel</b> (attire l'eau), <b>l'alcool</b> (antiseptique), <b>le sucre</b> (antiseptique), <b>le vinaigre</b> (stoppe la multiplication microbienne) et <b>la graisse</b> (barrière étanche) sont des « adjuvants naturels » qui jouent un rôle conservateur sans être des additifs chimiques ajoutés spécifiquement."
+  },
+  {
+    q: "Quel est l'additif émulsifiant le plus utilisé en chocolaterie ?",
+    options: ["Le sorbitol", "La lécithine", "La pectine", "L'agar-agar"],
+    correct: 1,
+    explain: "La <b>lécithine</b>, riche en phosphore et présente dans l'huile de soja et le jaune d'œuf, est l'émulsifiant le plus utilisé. Elle diminue l'apport nécessaire en beurre de cacao dans le chocolat, mais reste compliquée à garantir sans OGM."
+  },
+  {
+    q: "Dans quelles conditions la pectine gélifie-t-elle ?",
+    options: [
+      "Uniquement en milieu très sucré, sans acidité",
+      "En milieu acide (pH 3,5-3,8), avec un extrait sec d'au moins 75%",
+      "Uniquement à froid, sans cuisson",
+      "En présence de sel uniquement"
+    ],
+    correct: 1,
+    explain: "La pectine ne gélifie qu'en <b>milieu acide</b> (pH maîtrisé entre 3,5 et 3,8), avec un <b>extrait sec d'au moins 75%</b>, une dispersion parfaite dans la masse et une température adéquate — c'est pourquoi on ajoute de l'acide dans les pâtes de fruits."
+  },
+  {
+    q: "Quelle est la différence entre la pectine jaune et la pectine NH ?",
+    options: [
+      "Aucune différence, ce sont les mêmes",
+      "La pectine jaune (sels retardateurs) sert aux pâtes de fruits, la pectine NH (phosphates de calcium) est thermoréversible et sert aux nappages",
+      "La pectine jaune est pour les nappages, la NH pour les pâtes de fruits",
+      "La pectine NH ne gélifie jamais"
+    ],
+    correct: 1,
+    explain: "La <b>pectine jaune</b> (avec sels retardateurs) est utilisée pour les <b>pâtes de fruits</b>. La <b>pectine NH</b> (avec phosphates de calcium) est <b>thermoréversible</b> (peut refondre et regélifier) et sert pour les <b>nappages</b>."
+  },
+  {
+    q: "Qu'est-ce que le « bloom » d'une gélatine mesure-t-il ?",
+    options: [
+      "Sa couleur",
+      "Son pouvoir gélifiant (élasticité mécanique du gel)",
+      "Son taux de sucre",
+      "Sa température de fusion uniquement"
+    ],
+    correct: 1,
+    explain: "Le bloom indique le <b>pouvoir gélifiant</b>, c'est-à-dire l'élasticité mécanique d'un gel, mesuré au gelmètre (force nécessaire pour enfoncer un piston). Il varie de 50 à 300 : plus il est élevé, plus la gélatine est puissante."
+  },
+  {
+    q: "D'où est extrait le collagène qui compose la gélatine alimentaire classique ?",
+    options: [
+      "Des algues marines",
+      "De la peau, des os, des cartilages et des ligaments de porc (ou d'arêtes de poisson)",
+      "Des fruits secs",
+      "Du beurre de cacao"
+    ],
+    correct: 1,
+    explain: "La gélatine est issue du <b>collagène de la peau, des os, des cartilages et des ligaments de porc</b>, ou parfois extraite <b>d'arêtes de poisson</b>. C'est un gélifiant d'origine animale, à distinguer de l'agar-agar ou des carraghénanes, d'origine végétale/marine."
+  },
+  {
+    q: "Quelle est la particularité de l'agar-agar par rapport à la gélatine ?",
+    options: [
+      "Il est moins puissant et non végétal",
+      "C'est une alternative végétarienne (algue rouge), au pouvoir gélifiant très élevé avec des propriétés laxatives à forte dose",
+      "Il ne gélifie jamais",
+      "Il est identique en tous points à la gélatine"
+    ],
+    correct: 1,
+    explain: "L'agar-agar, extrait d'une <b>algue rouge</b> originaire d'Indonésie, est une <b>alternative végétarienne</b> à la gélatine. Son pouvoir gélifiant est <b>très élevé</b>, avec des propriétés <b>laxatives</b>, d'où l'importance de respecter le dosage."
+  },
+  {
+    q: "Quel est l'acide principal du vin de raisin, utilisé aussi pour graisser les sucres cuits ?",
+    options: ["L'acide citrique (E330)", "L'acide tartrique (E334)", "L'acide lactique (E270)", "L'acide ascorbique"],
+    correct: 1,
+    explain: "L'<b>acide tartrique (E334)</b>, à pH 3,2, est le principal acide du vin de raisin. Antioxydant, régulateur de pH et stabilisateur, il est aussi utilisé pour accentuer le côté acidulé et pour graisser les sucres cuits en confiserie."
+  },
+  {
+    q: "Quel acidifiant est principalement issu du citron et sert de catalyseur avec les gélifiants dans les pâtes de fruits ?",
+    options: ["E334 acide tartrique", "E330 acide citrique", "E336 crème de tartre", "E270 acide lactique"],
+    correct: 1,
+    explain: "L'<b>acide citrique (E330)</b>, présent en grande quantité dans le citron (aussi obtenu par fermentation des mélasses), agit comme catalyseur avec les gélifiants, notamment dans la fabrication des pâtes de fruits."
+  },
+  {
+    q: "Qu'est-ce que la crème de tartre (E336) ?",
+    options: [
+      "Un colorant naturel",
+      "Un sel de l'acide tartrique, cristaux formés sur les parois des barils de fermentation du vin",
+      "Un type de gélatine",
+      "Un émulsifiant de synthèse"
+    ],
+    correct: 1,
+    explain: "La crème de tartre (E336), aussi appelée tartrate de potassium, est un <b>sel de l'acide tartrique</b> qui se forme en cristaux sur les parois des barils de fermentation du vin. Elle sert notamment d'anti-cristallisant lors de la cuisson du sucre."
+  },
+  {
+    q: "Quel est le rôle d'un antiagglomérant comme la silice dans le sucre glace ?",
+    options: [
+      "Le colorer",
+      "Éviter la prise en blocs",
+      "Le rendre plus sucré",
+      "Accélérer sa cristallisation"
+    ],
+    correct: 1,
+    explain: "L'antiagglomérant (silice dans le sucre glace, silicates dans le sel) <b>évite la prise en blocs</b> du produit en poudre, en absorbant l'humidité résiduelle et en empêchant les particules de coller entre elles."
+  }
+];
+
+/* =========================================================
+   EXAM_QUESTIONS — cheminements guidés
+   ========================================================= */
+const EXAM_QUESTIONS = [
+  {
+    id: "pectine-nh-jaune",
+    title: "Quelle différence y a-t-il entre une pectine NH et une pectine jaune ? Précisez les conditions de gélification et un exemple d'utilisation pour chacune",
+    points: "d'après la banque de questions techno",
+    hints: [
+      "L'une contient des sels retardateurs, l'autre des phosphates de calcium — cette différence détermine leur propriété clé (réversibilité ou non).",
+      "Associe chaque pectine à son usage principal en atelier."
+    ],
+    answerHtml: `
+      <h4>Pectine jaune</h4>
+      <p>Contient des sels retardateurs, permettant une cuisson suffisante et de la tenue. Gélifie en milieu acide (pH 3,5-3,8), extrait sec ≥75%. <b>Utilisation</b> : pâtes de fruits.</p>
+      <h4>Pectine NH</h4>
+      <p>Contient des phosphates de calcium, ce qui la rend <b>thermoréversible</b> : elle peut refondre puis regélifier. <b>Utilisation</b> : nappages.</p>`
+  },
+  {
+    id: "gelifiant-thermoreversible",
+    title: "Qu'est-ce qu'un gélifiant thermoréversible ? Citez 2 exemples et leurs rôles en confiserie",
+    points: "d'après la banque de questions techno",
+    hints: [
+      "Un gélifiant thermoréversible peut repasser à l'état liquide puis regélifier — contrairement à un gel classique fixé définitivement.",
+      "La gélatine et une pectine spécifique répondent à ce critère."
+    ],
+    answerHtml: `
+      <h4>Définition</h4>
+      <p>Un gélifiant thermoréversible peut être fondu (réchauffé) puis regélifier en refroidissant, contrairement à un gel « fixé » de façon définitive.</p>
+      <h4>Deux exemples</h4>
+      <ul>
+        <li><b>La gélatine</b> : employée pour sa thermoréversibilité en gélifiés et moulages, mais aussi comme agent aérateur (guimauve, nougat, mousse) et stabilisant (caramels mous).</li>
+        <li><b>La pectine NH</b> (avec phosphates de calcium) : utilisée pour les nappages, précisément pour cette capacité à refondre et regélifier.</li>
+      </ul>`
+  },
+  {
+    id: "trois-acides",
+    title: "Quels sont les trois acides les plus utilisés en confiserie ? De quels produits naturels sont-ils issus ?",
+    points: "d'après la banque de questions techno",
+    hints: [
+      "Les 3 acides principaux sont E330, E334 et E270 — pense à leurs sources naturelles respectives.",
+      "Un vient du citron, un autre du raisin/vin, le dernier est présent dans le lait mais aussi le pain, le vin et les muscles."
+    ],
+    answerHtml: `
+      <ul>
+        <li><b>L'acide citrique (E330)</b> — issu du citron (aussi par fermentation des mélasses en sucreries).</li>
+        <li><b>L'acide tartrique (E334)</b> — principal acide du vin de raisin, obtenu par fermentation du moût, des tartres viticoles ou des lies.</li>
+        <li><b>L'acide lactique (E270)</b> — acide organique naturel, présent dans le lait mais aussi le pain, le vin, certains fruits/légumes et les muscles.</li>
+      </ul>`
+  },
+  {
+    id: "citrique-vs-tartrique",
+    title: "Quelle est la différence entre l'acide citrique et l'acide tartrique ?",
+    points: "d'après la banque de questions techno",
+    hints: [
+      "Compare leur origine naturelle et leur pH respectif.",
+      "Compare aussi leur usage privilégié en confiserie/chocolaterie."
+    ],
+    answerHtml: `
+      <h4>Acide citrique (E330, pH 3,5)</h4>
+      <p>Issu du citron. Utilisé comme acidifiant et correcteur d'acidité, surtout en lien avec les gélifiants comme catalyseur dans les pâtes de fruits.</p>
+      <h4>Acide tartrique (E334, pH 3,2, donc plus acide)</h4>
+      <p>Principal acide du vin de raisin. C'est aussi un antioxydant, un régulateur de pH et un stabilisateur — utilisé pour accentuer l'acidulé mais surtout pour <b>graisser les sucres cuits</b> (sucre d'art), un usage que l'acide citrique ne remplit pas de la même façon.</p>`
+  }
+];
+
+/* =========================================================
+   QUIZ LOGIC
+   ========================================================= */
+let quizOrder = [];
+let quizIndex = 0;
+let quizScore = 0;
+
+function shuffle(arr){
+  const a = arr.slice();
+  for(let i=a.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]]=[a[j],a[i]];
+  }
+  return a;
+}
+
+function startQuiz(){
+  quizOrder = shuffle(QUESTIONS.map((_,i)=>i));
+  quizIndex = 0;
+  quizScore = 0;
+  renderQuizQuestion();
+}
+
+function renderQuizQuestion(){
+  const card = document.getElementById('quizCard');
+  if(quizIndex >= quizOrder.length){
+    renderQuizResult();
+    return;
+  }
+  const q = QUESTIONS[quizOrder[quizIndex]];
+  const pct = Math.round((quizIndex/quizOrder.length)*100);
+  card.innerHTML = `
+    <div class="quiz-progress-wrap">
+      <div class="quiz-progress-bar"><div class="quiz-progress-fill" style="width:${pct}%"></div></div>
+      <div class="quiz-progress-label">${quizIndex+1} / ${quizOrder.length}</div>
+    </div>
+    <p class="quiz-q">${q.q}</p>
+    <div class="quiz-options" id="quizOptions">
+      ${q.options.map((o,i)=>`<button class="quiz-opt" data-i="${i}">${o}</button>`).join('')}
+    </div>
+    <div class="quiz-explain" id="quizExplain"></div>
+    <button class="btn quiz-next" id="quizNextBtn">Question suivante</button>
+  `;
+  document.querySelectorAll('#quizOptions .quiz-opt').forEach(btn=>{
+    btn.addEventListener('click', ()=>answerQuiz(parseInt(btn.dataset.i), q));
+  });
+  document.getElementById('quizNextBtn').addEventListener('click', ()=>{
+    quizIndex++;
+    renderQuizQuestion();
+  });
+}
+
+function answerQuiz(i, q){
+  const opts = document.querySelectorAll('#quizOptions .quiz-opt');
+  opts.forEach(o=>o.disabled=true);
+  if(i === q.correct){
+    opts[i].classList.add('correct');
+    quizScore++;
+  } else {
+    opts[i].classList.add('incorrect');
+    opts[q.correct].classList.add('correct');
+  }
+  const ex = document.getElementById('quizExplain');
+  ex.innerHTML = q.explain;
+  ex.classList.add('show');
+  document.getElementById('quizNextBtn').classList.add('show');
+}
+
+function renderQuizResult(){
+  const card = document.getElementById('quizCard');
+  const pct = Math.round((quizScore/quizOrder.length)*100);
+  let tier = 'bronze', label = 'Bronze';
+  if(pct >= 85){ tier='or'; label='Or'; }
+  else if(pct >= 65){ tier='argent'; label='Argent'; }
+  card.innerHTML = `
+    <div class="quiz-result">
+      <div class="badge ${tier}">${label}</div>
+      <h3>${quizScore} / ${quizOrder.length} bonnes réponses</h3>
+      <p>${pct}% de réussite sur le module « Les additifs »</p>
+      <button class="btn" id="quizRestart">Recommencer le quiz</button>
+    </div>
+  `;
+  document.getElementById('quizRestart').addEventListener('click', startQuiz);
+}
+
+/* =========================================================
+   TUTEUR IA — appel direct à l'API Groq (gratuite), fonctionne
+   dans n'importe quel navigateur, sans compte ni autorisation
+   ========================================================= */
+const SUGGESTED_QUESTIONS = [
+  "Quelle est la différence entre pectine jaune et pectine NH ?",
+  "Qu'est-ce que le bloom d'une gélatine ?",
+  "Pourquoi utilise-t-on de la lécithine dans le chocolat ?"
+];
+
+const GROQ_MODEL = "llama-3.3-70b-versatile";
+const RELAY_URL = "/.netlify/functions/chat";
+
+let chatHistory = [];
+
+function renderChatSuggestions(){
+  const wrap = document.getElementById('chatSuggestions');
+  wrap.innerHTML = SUGGESTED_QUESTIONS.map(s=>`<button class="suggestion-chip">${s}</button>`).join('');
+  wrap.querySelectorAll('.suggestion-chip').forEach(chip=>{
+    chip.addEventListener('click', ()=>{
+      document.getElementById('chatInput').value = chip.textContent;
+      sendChat();
+    });
+  });
+}
+
+function addMsg(text, cls){
+  const log = document.getElementById('chatLog');
+  const div = document.createElement('div');
+  div.className = 'msg ' + cls;
+  div.textContent = text;
+  log.appendChild(div);
+  log.scrollTop = log.scrollHeight;
+  return div;
+}
+
+async function askTuteur(systemPrompt, messages){
+  const response = await fetch(RELAY_URL, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      model: GROQ_MODEL,
+      messages: [{role: "system", content: systemPrompt}, ...messages],
+      temperature: 0.4
+    })
+  });
+  if(!response.ok){
+    const errBody = await response.text().catch(()=>"");
+    const err = new Error("HTTP " + response.status);
+    err.status = response.status;
+    err.body = errBody;
+    throw err;
+  }
+  const data = await response.json();
+  return data.choices[0].message.content;
+}
+
+async function sendChat(){
+  const inputEl = document.getElementById('chatInput');
+  const text = inputEl.value.trim();
+  if(!text) return;
+  inputEl.value = '';
+  addMsg(text, 'user');
+  chatHistory.push({role:'user', content:text});
+  const loadingDiv = addMsg('Le tuteur réfléchit…', 'bot loading');
+
+  const RULES = "Tu es un tuteur pour des élèves en BTM Chocolatier-Confiseur. Tu réponds UNIQUEMENT à partir du texte de cours suivant, sur le module 'Les additifs'. Si la question sort de ce cours (autre module), dis poliment que ce sujet est traité dans un autre module et invite l'élève à s'y rendre. Réponds de façon claire, pédagogique, avec des exemples concrets d'atelier quand c'est pertinent. Ne mentionne jamais quel modèle d'IA tu es : reste dans ton rôle de tuteur du module.\n\nCOURS :\n" + COURSE_TEXT;
+
+  const recentHistory = chatHistory.slice(-10);
+
+  try{
+    const answer = await askTuteur(RULES, recentHistory);
+    loadingDiv.classList.remove('loading');
+    loadingDiv.textContent = answer;
+    chatHistory.push({role:'assistant', content: answer});
+  } catch(err){
+    loadingDiv.classList.remove('loading');
+    loadingDiv.textContent = err.status === 429
+      ? "Trop de questions envoyées d'un coup : attends un instant avant de réessayer."
+      : "Une erreur est survenue en contactant le tuteur. Réessaie dans un instant.";
+    console.error(err);
+  }
+}
+
+/* =========================================================
+   QUESTION D'EXAMEN — cheminement guidé
+   ========================================================= */
+let currentExamId = EXAM_QUESTIONS[0].id;
+let examStepIndex = {};
+
+function renderExamPills(){
+  const wrap = document.getElementById('examPills');
+  wrap.innerHTML = EXAM_QUESTIONS.map(q=>`<button class="exam-pill${q.id===currentExamId?' active':''}" data-id="${q.id}">${q.title.length>38?q.title.slice(0,38)+'…':q.title}</button>`).join('');
+  wrap.querySelectorAll('.exam-pill').forEach(p=>{
+    p.addEventListener('click', ()=>{
+      currentExamId = p.dataset.id;
+      renderExamPills();
+      renderExamQuestion();
+    });
+  });
+}
+
+function renderExamQuestion(){
+  const q = EXAM_QUESTIONS.find(e=>e.id===currentExamId);
+  if(!(currentExamId in examStepIndex)) examStepIndex[currentExamId] = 0;
+  const step = examStepIndex[currentExamId];
+  const card = document.getElementById('examCard');
+
+  let stepsHtml = '';
+  for(let i=0;i<step;i++){
+    stepsHtml += `<div class="step hint"><div class="step-label">Indice ${i+1}</div>${q.hints[i]}</div>`;
+  }
+
+  let controlsHtml = '';
+  if(step < q.hints.length){
+    controlsHtml += `<button class="btn" id="examHintBtn">Indice ${step+1}</button>`;
+  }
+  if(step > 0 || q.hints.length===0){
+    controlsHtml += `<button class="btn ghost" id="examAnswerBtn">Voir la réponse assemblée</button>`;
+  }
+  controlsHtml += `<button class="btn ghost" id="examResetBtn">Recommencer cette question</button>`;
+
+  card.innerHTML = `
+    <p class="exam-q-title">${q.title}</p>
+    <p class="exam-q-points">${q.points}</p>
+    ${stepsHtml}
+    <div class="exam-controls">${controlsHtml}</div>
+    <div class="exam-answer" id="examAnswer">${q.answerHtml}</div>
+    <p class="exam-note">Corrigé reconstitué à partir des sources internes du module (banque de questions, évaluations, corrigés officiels) — à relire avant diffusion en cas d'écart avec le cours.</p>
+  `;
+
+  const hintBtn = document.getElementById('examHintBtn');
+  if(hintBtn) hintBtn.addEventListener('click', ()=>{
+    examStepIndex[currentExamId] = step+1;
+    renderExamQuestion();
+  });
+  const answerBtn = document.getElementById('examAnswerBtn');
+  if(answerBtn) answerBtn.addEventListener('click', ()=>{
+    document.getElementById('examAnswer').classList.add('show');
+    answerBtn.disabled = true;
+  });
+  document.getElementById('examResetBtn').addEventListener('click', ()=>{
+    examStepIndex[currentExamId] = 0;
+    renderExamQuestion();
+  });
+}
+
+/* =========================================================
+   EN BREF — schéma SVG + points clés
+   ========================================================= */
+function renderBrief(){
+  const svgWrap = document.getElementById('briefSvgWrap');
+  svgWrap.innerHTML = `
+  <svg viewBox="0 0 900 260" width="100%" style="min-width:600px;display:block;">
+    <defs>
+      <style>
+        .vt{font-family:'Inter',sans-serif; font-weight:700; fill:var(--text-bright); font-size:13px;}
+        .vs{font-family:'Inter',sans-serif; fill:var(--text-dim); font-size:11px;}
+      </style>
+    </defs>
+    <rect x="0" y="0" width="900" height="260" fill="var(--surface)"/>
+    ${[
+      {code:"E1XX", cat:"Colorants", ex:"Carmin, caramel, chlorophylle"},
+      {code:"E2XX", cat:"Conservateurs", ex:"Acide sorbique, nitrate"},
+      {code:"E300-321", cat:"Antioxydants", ex:"Acide ascorbique"},
+      {code:"E322-495", cat:"Agents de texture", ex:"Lécithine, pectine, gélatine"}
+    ].map((c,i) => `
+      <rect x="${20+i*220}" y="30" width="200" height="200" rx="14" fill="var(--surface-alt)" stroke="var(--border)"/>
+      <text x="${120+i*220}" y="70" text-anchor="middle" fill="var(--gold)" font-family="Merriweather,serif" font-weight="900" font-size="18">${c.code}</text>
+      <text x="${120+i*220}" y="100" text-anchor="middle" class="vt">${c.cat}</text>
+      <foreignObject x="${40+i*220}" y="120" width="160" height="90">
+        <div xmlns="http://www.w3.org/1999/xhtml" style="font-family:'Inter',sans-serif;font-size:11.5px;line-height:1.5;color:var(--text-dim);text-align:center;">${c.ex}</div>
+      </foreignObject>
+    `).join('')}
+  </svg>`;
+
+  const points = document.getElementById('briefPoints');
+  const data = [
+  {h:"Code E + 3 chiffres", p:"Depuis 1979. DJA = dose journalière autorisée sans danger, à vie."},
+  {h:"4 catégories", p:"Colorants E1XX, conservateurs E2XX, antioxydants E300-321, agents de texture E322-495."},
+  {h:"Lécithine", p:"Émulsifiant le plus utilisé en chocolaterie, issu du soja ou du jaune d'œuf."},
+  {h:"Pectine", p:"Gélifie en milieu acide (pH 3,5-3,8), extrait sec ≥75%. Jaune=pâtes de fruits, NH=nappages (thermoréversible)."},
+  {h:"Gélatine", p:"Collagène animal. Puissance mesurée en bloom (50-300). Aérateur (guimauve) et stabilisant."},
+  {h:"Agar-agar", p:"Algue rouge, alternative végétale, pouvoir gélifiant très fort, effet laxatif à forte dose."},
+  {h:"3 acidifiants clés", p:"E330 citrique (citron), E334 tartrique (raisin), E270 lactique (naturel, multi-sources)."},
+  {h:"Adjuvants naturels", p:"Sel, alcool, sucre, vinaigre, graisse jouent un rôle conservateur sans être des additifs ajoutés."}
+];
+  points.innerHTML = data.map(d=>`<div class="brief-point"><h4>${d.h}</h4><p>${d.p}</p></div>`).join('');
+}
+
+/* =========================================================
+   NAVIGATION + THEME
+   ========================================================= */
+document.querySelectorAll('.navbtn[data-tab]').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    document.querySelectorAll('.navbtn[data-tab]').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('panel-'+btn.dataset.tab).classList.add('active');
+  });
+});
+
+const themeToggle = document.getElementById('themeToggle');
+const themeLabel = document.getElementById('themeLabel');
+themeToggle.addEventListener('click', () => {
+  const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+  document.documentElement.setAttribute('data-theme', isLight ? 'dark' : 'light');
+  themeLabel.textContent = isLight ? 'Mode clair' : 'Mode sombre';
+});
+
+/* ===== Init ===== */
+startQuiz();
+renderChatSuggestions();
+document.getElementById('chatSend').addEventListener('click', sendChat);
+document.getElementById('chatInput').addEventListener('keydown', e=>{ if(e.key==='Enter') sendChat(); });
+renderExamPills();
+renderExamQuestion();
+renderBrief();
+</script>
+
+</body>
+</html>

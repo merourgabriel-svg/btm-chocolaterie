@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sucres & édulcorants — BTM Chocolatier</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #20110a;
+    --surface: #2b1810;
+    --surface-alt: #3d2416;
+    --border: rgba(242,232,216,0.14);
+    --text: #f2e8d8;
+    --text-bright: #faf4e9;
+    --text-dim: rgba(242,232,216,0.62);
+    --caramel: #b8783a;
+    --caramel-hi: #cf9455;
+    --gold: #d8b66e;
+    --error: #7a2e2a;
+    --error-text: #e2a29d;
+    --success: #4c7a3a;
+    --success-text: #b7dba0;
+    --shadow: rgba(0,0,0,0.35);
+  }
+  [data-theme="light"]{
+    --bg: #f7efdf;
+    --surface: #fffaf0;
+    --surface-alt: #efe0c4;
+    --border: rgba(61,36,22,0.16);
+    --text: #3a2415;
+    --text-bright: #241207;
+    --text-dim: rgba(58,36,21,0.62);
+    --caramel: #a8632b;
+    --caramel-hi: #94551f;
+    --gold: #93701f;
+    --error: #a13d34;
+    --error-text: #7c2b25;
+    --success: #3d6b2c;
+    --success-text: #2c4f20;
+    --shadow: rgba(58,36,21,0.12);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--bg); color:var(--text); font-family:'Inter',sans-serif;
+    min-height:100vh; -webkit-font-smoothing:antialiased;
+    transition:background .35s ease, color .35s ease;
+  }
+  h1,h2,h3{font-family:'Merriweather',serif; font-weight:700; letter-spacing:-0.005em;}
+  a{color:var(--caramel-hi);}
+  ::-webkit-scrollbar{width:10px;height:10px;}
+  ::-webkit-scrollbar-thumb{background:var(--surface-alt); border-radius:8px;}
+
+  .app{display:flex; min-height:100vh;}
+
+  /* ===== Sidebar ===== */
+  .sidebar{
+    width:230px; flex-shrink:0; background:var(--surface); border-right:1px solid var(--border);
+    display:flex; flex-direction:column; padding:24px 16px; gap:6px;
+    position:sticky; top:0; height:100vh;
+  }
+  .sidebar .brand{padding:4px 10px 20px;}
+  .sidebar .brand .kicker{color:var(--caramel-hi); font-size:11.5px; font-weight:600; text-transform:uppercase; letter-spacing:.06em; margin:0 0 4px;}
+  .sidebar .brand h1{font-size:20px; margin:0; color:var(--text-bright); line-height:1.25;}
+  .navbtn{
+    display:flex; align-items:center; gap:10px; text-align:left; width:100%;
+    background:transparent; border:none; border-radius:10px; padding:11px 12px;
+    color:var(--text-dim); font-family:'Inter',sans-serif; font-size:14px; font-weight:500;
+    cursor:pointer; transition:background .2s ease, color .2s ease;
+  }
+  .navbtn svg{width:17px; height:17px; flex-shrink:0;}
+  .navbtn:hover{background:var(--surface-alt); color:var(--text);}
+  .navbtn.active{background:linear-gradient(155deg, var(--caramel-hi), var(--caramel) 65%); color:var(--bg); font-weight:600;}
+  .sidebar-spacer{flex:1;}
+  .theme-toggle{
+    display:flex; align-items:center; gap:8px; background:var(--surface-alt); border:1px solid var(--border);
+    color:var(--text-dim); padding:10px 12px; border-radius:10px; font-size:13px; cursor:pointer;
+  }
+  .theme-toggle:hover{color:var(--text);}
+  .theme-toggle svg{width:15px;height:15px;}
+  .back-link{display:block; font-size:12.5px; color:var(--text-dim); text-decoration:none; padding:8px 12px 2px;}
+  .back-link:hover{color:var(--text);}
+
+  /* ===== Main ===== */
+  .main{flex:1; min-width:0; padding:40px 44px 80px;}
+  .panel{display:none; max-width:820px; margin:0 auto;}
+  .panel.active{display:block;}
+  .panel-head{margin-bottom:28px;}
+  .panel-head .kicker{color:var(--caramel-hi); font-size:12.5px; font-weight:600; margin:0 0 6px;}
+  .panel-head h2{font-size:26px; margin:0 0 8px; color:var(--text-bright);}
+  .panel-head p{color:var(--text-dim); font-size:14px; margin:0; line-height:1.55; max-width:60ch;}
+
+  .card{
+    background:var(--surface); border:1px solid var(--border); border-radius:16px;
+    padding:26px; box-shadow:0 8px 24px var(--shadow); margin-bottom:18px;
+  }
+
+  /* ===== Quiz ===== */
+  .quiz-progress-wrap{display:flex; align-items:center; gap:12px; margin-bottom:22px;}
+  .quiz-progress-bar{flex:1; height:8px; border-radius:99px; background:var(--surface-alt); overflow:hidden;}
+  .quiz-progress-fill{height:100%; background:linear-gradient(90deg, var(--caramel), var(--gold)); border-radius:99px; transition:width .3s ease;}
+  .quiz-progress-label{font-size:12.5px; color:var(--text-dim); white-space:nowrap;}
+  .quiz-q{font-size:17px; line-height:1.5; color:var(--text-bright); margin:0 0 20px; font-family:'Merriweather',serif; font-weight:700;}
+  .quiz-options{display:flex; flex-direction:column; gap:10px;}
+  .quiz-opt{
+    text-align:left; padding:13px 16px; border-radius:11px; border:1px solid var(--border);
+    background:var(--surface-alt); color:var(--text); font-family:'Inter',sans-serif; font-size:14.5px;
+    cursor:pointer; transition:border-color .15s ease, background .15s ease;
+  }
+  .quiz-opt:hover{border-color:var(--caramel-hi);}
+  .quiz-opt.correct{background:color-mix(in srgb, var(--success) 30%, var(--surface-alt)); border-color:var(--success);}
+  .quiz-opt.incorrect{background:color-mix(in srgb, var(--error) 30%, var(--surface-alt)); border-color:var(--error);}
+  .quiz-opt[disabled]{cursor:default;}
+  .quiz-explain{
+    margin-top:18px; padding:16px 18px; border-radius:12px; background:var(--surface-alt);
+    border-left:3px solid var(--gold); font-size:13.5px; line-height:1.6; color:var(--text); display:none;
+  }
+  .quiz-explain.show{display:block;}
+  .quiz-explain b{color:var(--text-bright);}
+  .quiz-next{margin-top:18px; display:none;}
+  .quiz-next.show{display:inline-flex;}
+  .quiz-result{text-align:center; padding:20px 0;}
+  .badge{
+    width:110px; height:110px; border-radius:50%; margin:0 auto 18px; display:flex; align-items:center;
+    justify-content:center; font-family:'Merriweather',serif; font-weight:900; font-size:15px; text-align:center;
+    box-shadow:inset 0 2px 6px rgba(0,0,0,0.25), 0 6px 18px var(--shadow); color:#2a1a0a;
+  }
+  .badge.bronze{background:linear-gradient(155deg,#d3925a,#9a5a2c);}
+  .badge.argent{background:linear-gradient(155deg,#e6e6e6,#a8a8a8); color:#2a2a2a;}
+  .badge.or{background:linear-gradient(155deg,#f2d27a,#c99a2e);}
+  .quiz-result h3{margin:0 0 6px; color:var(--text-bright); font-size:20px;}
+  .quiz-result p{color:var(--text-dim); font-size:14px; margin:0 0 22px;}
+
+  .btn{
+    display:inline-flex; align-items:center; justify-content:center; gap:8px; border:none; border-radius:11px;
+    font-family:'Inter',sans-serif; font-weight:600; font-size:14px; padding:11px 20px; cursor:pointer;
+    color:var(--bg); text-decoration:none; background:linear-gradient(155deg, var(--caramel-hi), var(--caramel) 60%, #8a5427);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,0.25), 0 3px 10px var(--shadow); transition:transform .15s ease;
+  }
+  .btn:hover{transform:translateY(-1px);}
+  .btn.ghost{background:transparent; color:var(--text); border:1px solid var(--border); box-shadow:none;}
+
+  /* ===== Tuteur ===== */
+  .chat-wrap{display:flex; flex-direction:column; height:64vh;}
+  .chat-log{flex:1; overflow-y:auto; padding:4px 2px 12px; display:flex; flex-direction:column; gap:14px;}
+  .msg{max-width:88%; padding:12px 15px; border-radius:14px; font-size:14px; line-height:1.55;}
+  .msg.user{align-self:flex-end; background:linear-gradient(155deg, var(--caramel-hi), var(--caramel)); color:var(--bg); border-bottom-right-radius:4px;}
+  .msg.bot{align-self:flex-start; background:var(--surface-alt); border:1px solid var(--border); color:var(--text); border-bottom-left-radius:4px; white-space:pre-wrap;}
+  .msg.bot.loading{color:var(--text-dim); font-style:italic;}
+  .suggestions{display:flex; flex-wrap:wrap; gap:8px; margin:6px 0 16px;}
+  .suggestion-chip{
+    background:var(--surface-alt); border:1px solid var(--border); color:var(--text-dim); font-size:12.5px;
+    padding:8px 13px; border-radius:99px; cursor:pointer; text-align:left;
+  }
+  .suggestion-chip:hover{border-color:var(--caramel-hi); color:var(--text);}
+  .chat-input-row{display:flex; gap:10px; margin-top:8px;}
+  .chat-input-row input{
+    flex:1; background:var(--surface-alt); border:1px solid var(--border); border-radius:11px; color:var(--text);
+    font-family:'Inter',sans-serif; font-size:14px; padding:12px 15px;
+  }
+  .chat-input-row input:focus{outline:none; border-color:var(--caramel-hi);}
+
+  /* ===== Question d'examen ===== */
+  .exam-pills{display:flex; flex-wrap:wrap; gap:8px; margin-bottom:22px;}
+  .exam-pill{
+    background:var(--surface-alt); border:1px solid var(--border); color:var(--text-dim); font-size:13px;
+    padding:9px 15px; border-radius:99px; cursor:pointer; font-family:'Inter',sans-serif;
+  }
+  .exam-pill.active{background:linear-gradient(155deg, var(--caramel-hi), var(--caramel)); color:var(--bg); border-color:transparent; font-weight:600;}
+  .exam-q-title{font-size:17px; font-family:'Merriweather',serif; font-weight:700; color:var(--text-bright); margin:0 0 6px;}
+  .exam-q-points{font-size:12px; color:var(--text-dim); margin:0 0 20px;}
+  .step{
+    background:var(--surface-alt); border-radius:12px; padding:14px 16px; margin-bottom:12px;
+    font-size:13.5px; line-height:1.6; border-left:3px solid var(--border);
+  }
+  .step.hint{border-left-color:var(--gold);}
+  .step-label{font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:.05em; color:var(--caramel-hi); margin-bottom:5px;}
+  .exam-answer{
+    display:none; margin-top:16px; padding:18px; border-radius:12px; background:var(--surface-alt);
+    border-left:3px solid var(--success); font-size:13.5px; line-height:1.65;
+  }
+  .exam-answer.show{display:block;}
+  .exam-answer h4{margin:14px 0 6px; font-size:13.5px; color:var(--text-bright); font-family:'Inter',sans-serif;}
+  .exam-answer h4:first-child{margin-top:0;}
+  .exam-answer ul{margin:4px 0; padding-left:18px;}
+  .exam-controls{display:flex; gap:10px; flex-wrap:wrap; margin-top:6px;}
+  .exam-note{font-size:11.5px; color:var(--text-dim); margin-top:14px; font-style:italic;}
+
+  /* ===== En bref ===== */
+  .brief-svg-wrap{background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:18px; margin-bottom:18px; overflow-x:auto;}
+  .brief-points{display:grid; grid-template-columns:repeat(auto-fit, minmax(230px,1fr)); gap:14px;}
+  .brief-point{background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:16px 18px;}
+  .brief-point h4{margin:0 0 6px; font-size:14px; color:var(--gold); font-family:'Inter',sans-serif;}
+  .brief-point p{margin:0; font-size:13px; line-height:1.55; color:var(--text-dim);}
+
+  @media (max-width: 860px){
+    .app{flex-direction:column;}
+    .sidebar{width:100%; height:auto; position:relative; flex-direction:row; overflow-x:auto; padding:14px 12px; align-items:center;}
+    .sidebar .brand{padding:0 12px 0 4px; flex-shrink:0;}
+    .sidebar-spacer{display:none;}
+    .navbtn{flex-shrink:0; width:auto;}
+    .theme-toggle{flex-shrink:0;}
+    .main{padding:26px 18px 60px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="app">
+  <nav class="sidebar">
+    <div class="brand">
+      <p class="kicker">BTM Chocolatier</p>
+      <h1>Sucres & édulcorants</h1>
+    </div>
+    <button class="navbtn active" data-tab="quiz">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+      Quiz
+    </button>
+    <button class="navbtn" data-tab="tuteur">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      Poser une question
+    </button>
+    <button class="navbtn" data-tab="examen">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M9 13h6M9 17h6M9 9h1"/></svg>
+      Question d'examen
+    </button>
+    <button class="navbtn" data-tab="brief">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+      En bref
+    </button>
+    <div class="sidebar-spacer"></div>
+    <a class="back-link" href="../index.html">← Retour au hub</a>
+    <button class="theme-toggle" id="themeToggle">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4.5"/><path d="M12 2.5v2M12 19.5v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M2.5 12h2M19.5 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4"/></svg>
+      <span id="themeLabel">Mode clair</span>
+    </button>
+  </nav>
+
+  <main class="main">
+
+    <!-- ===== QUIZ ===== -->
+    <section class="panel active" id="panel-quiz">
+      <div class="panel-head">
+        <p class="kicker">Quiz — Sucres & édulcorants</p>
+        <h2>Teste tes connaissances</h2>
+        <p>Saccharose, fabrication du sucre, sirops de glucose, polyols et édulcorants intenses.</p>
+      </div>
+      <div class="card" id="quizCard"></div>
+    </section>
+
+    <!-- ===== TUTEUR ===== -->
+    <section class="panel" id="panel-tuteur">
+      <div class="panel-head">
+        <p class="kicker">Tuteur IA — Sucres & édulcorants</p>
+        <h2>Poser une question</h2>
+        <p>Le tuteur répond uniquement à partir du cours de ce module. Pour les autres sujets, utilise le module concerné.</p>
+      </div>
+      <div class="card chat-wrap">
+        <div class="chat-log" id="chatLog"></div>
+        <div class="suggestions" id="chatSuggestions"></div>
+        <div class="chat-input-row">
+          <input type="text" id="chatInput" placeholder="Écris ta question sur le cacao…">
+          <button class="btn" id="chatSend">Envoyer</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== EXAMEN ===== -->
+    <section class="panel" id="panel-examen">
+      <div class="panel-head">
+        <p class="kicker">Question d'examen — Sucres & édulcorants</p>
+        <h2>Cheminement guidé</h2>
+        <p>Choisis une question, avance indice par indice, puis assemble ta réponse avant de découvrir le corrigé.</p>
+      </div>
+      <div class="exam-pills" id="examPills"></div>
+      <div class="card" id="examCard"></div>
+    </section>
+
+    <!-- ===== EN BREF ===== -->
+    <section class="panel" id="panel-brief">
+      <div class="panel-head">
+        <p class="kicker">En bref — Sucres & édulcorants</p>
+        <h2>Récapitulatif visuel</h2>
+        <p>Les 4 grandes variétés et l'essentiel à retenir avant l'épreuve.</p>
+      </div>
+      <div class="brief-svg-wrap" id="briefSvgWrap"></div>
+      <div class="brief-points" id="briefPoints"></div>
+    </section>
+
+  </main>
+</div>
+
+
+<script>
+/* =========================================================
+   COURSE_TEXT — synthèse fidèle du cours "Sucres & édulcorants"
+   (source du tuteur IA — ne répond qu'à partir de ce texte)
+   ========================================================= */
+const COURSE_TEXT = `
+
+MODULE : SUCRES & ÉDULCORANTS — BTM Chocolatier Confiseur (Bloc 4)
+
+PARTIE 1 — LE SACCHAROSE
+
+1/ Définition et composition
+Le saccharose est le nom scientifique du sucre, produit par les plantes saccharifères (canne à sucre, betterave sucrière) par photosynthèse. C'est une molécule organique (carbone, hydrogène, oxygène), un sucre double (diholoside) formé de l'union de deux oses : glucose et fructose, via une réaction de condensation (formation d'une molécule d'eau). L'inverse est une hydrolyse.
+
+2/ La photosynthèse
+Phénomène produisant de la matière organique à partir du CO2 capté dans l'air, de l'eau puisée dans le sol et de l'énergie lumineuse du soleil. La chlorophylle fixe le carbone et capte la lumière. Deux phases : phase diurne/claire (emmagasine l'énergie), phase nocturne/sombre (fixation du carbone, libération d'oxygène, synthèse du sucre selon le cycle de Calvin, 1961).
+
+3/ De la betterave au sucre
+Lavage et épierrage (séparation terre/pierres) → découpage en cossettes → diffusion (extraction du jus sucré par osmose, cossettes épuisées = « pulpes ») → filtration (épuration calco-carbonique : lait de chaux + gaz carbonique) → évaporation (jus filtré à 15% sucre/85% eau devient sirop à 65-70% de saccharose) → cristallisation (ensemencement de fins cristaux dans des chaudières sous vide, obtention de la « masse cuite ») → essorage (turbines/essoreuses, force centrifuge, sucre blanc de 1er jet ; les jets suivants donnent sucres blonds/bruns ; la mélasse du 3e jet contient encore 40-50% de sucre) → séchage (air chaud) → conditionnement.
+
+4/ De la canne à sucre
+Principe identique sauf l'extraction : récolte-dépaillage (coupe et retrait des feuilles, seule la tige est conservée) → broyage (technique « pression-imbibition », obtention du « vesou », jus à 10-18% de sucre, et de « la bagasse », résidu fibreux utilisé comme combustible) → puis filtration, évaporation, cristallisation, essorage, séchage, conditionnement identiques. Le sucre obtenu est le « sucre roux », qui doit être raffiné pour devenir blanc. Le sirop résiduel (mélasse) sert notamment à confectionner du rhum.
+
+5/ Le raffinage
+Transforme les sucres roux de canne en sucre blanc (le sucre de betterave est naturellement blanc). Ne modifie pas chimiquement le sucre, élimine impuretés et pigments colorants. Étapes : malaxage/empâtage (sucres roux malaxés avec un sirop chaud saturé, essorage par centrifugation → sucre d'affinage) → clarification (dissolution dans l'eau pure à 85°C, chaulage et carbonatation, filtration) → filtration (sirop chauffé à 70°C passé sur charbon actif puis résines décolorantes → sirop limpide et incolore : la « clairce ») → cristallisation et turbinage (sursaturation par évaporation sous vide, amorçage au sucre glace, turbinage → sucre blanc).
+
+6/ Les différentes formes du saccharose
+Sucre blanc (min. 99,8% saccharose pur) ; sucre glace/impalpable (moulu fin + amidon 3% ou silice 2%) ; sucre en morceaux ; sucre roux (canne brut ou raffiné recoloré à la mélasse) ; cassonade (cristallisation sous vide du sucre de canne roux) ; sucre blond (bio, non raffiné) ; sucre candi (cristallisation lente d'un sirop sursaturé) ; sucre gélifiant (saccharose + pectine + acide citrique) ; vergeoise blonde/brune (re-cuisson d'un sirop de betterave) ; sucre de canne complet/intégral (type Rapadura) ; sucre Muscovado (fort en mélasse, Philippines/Île Maurice) ; sucre neige/décor (saccharose + dextrose + végétaline + amidon + silice). Plus le sucre est foncé, plus il contient d'impuretés.
+
+7/ Les sirops de sucre
+Liquide visqueux obtenu par mélange eau/sucre porté à ébullition. Viscosité mesurée au densimètre, concentration au réfractomètre. Solubilité : à 0°C, l'eau contient 1,7 fois son poids en sucre (saturée) ; à 100°C, jusqu'à 3 fois son poids (devient sursaturée en refroidissant). Sous-saturation : plus de 6 molécules d'eau pour 1 molécule de sucre. Saturation : chaque molécule de saccharose entourée de 6 molécules d'eau (jusqu'à 1,9 kg de sucre/L à 10°C). Sursaturation : moins de 6 molécules d'eau pour 1 de sucre.
+Cuisson des sirops : matériel en cuivre de préférence, nettoyé au sel et vinaigre. Eau : 300-400g par kilo de sucre. Graissage (anti-cristallisant) : glucose (10-20% du poids du sucre), crème de tartre (2-3g/kg) ou acide tartrique (3-4 gouttes/kg). Éponger les parois à l'eau, ôter l'écume avant ébullition.
+
+Table des degrés de cuisson du sucre (repère à 100° C = 1er degré, dit « sirop », 33% d'eau) :
+- Petit lissé : 103°C — filet fin qui se rompt
+- Lissé/petit filet : 104°C — filet qui se maintient — sirop de sucre à conserver
+- Nappe : 105°C — petite nappe — gelées et confitures
+- Grand filet/petit perlé : 107°C (22% d'eau) — filet 2-3cm, petites perles — pâte de fruits (108,5°C)
+- Filet/grand perlé : 110°C — filet 4-5cm, grosse perle — fruits confits
+- Petit soufflé : 113°C — petites bulles en soufflant — glaçage
+- Grand soufflé/morve : 115°C (18% d'eau) — bulles qui restent sur l'écumoire — fondant pour intérieurs
+- Petit boulé : 117°C (12% d'eau) — boule très molle — fondant pour glaçage
+- Boulé : 120-124°C (8% d'eau) — boule molle — fondant confiseur
+- Grand boulé : 125-128°C — boule plus ferme
+- Petit cassé : 130-140°C (5% d'eau) — casse et colle aux dents — caramel dur
+- Grand cassé : 145-155°C (0% d'eau) — ne colle plus — sucre blanc décoration
+- Sucre d'orge : 155-160°C — prend de la couleur — glaçage
+- Caramel : 180°C — le sucre brunit — essence de café
+Plus l'intensité de cuisson est forte, meilleure est la plasticité. En altitude, la pression étant plus faible, le point d'ébullition est atteint plus vite : il faut baisser la température de cuisson en conséquence.
+
+8/ Propriétés du saccharose en chocolaterie
+Exhausteur de goût (augmente la saveur des autres ingrédients). Conservateur (hygroscopique, fixe l'eau, abaisse l'HR/AW). Agent de texture (retient l'eau, agit sur la viscosité). Caramélisation (à ne pas confondre avec Maillard, qui concerne sucre+protéines) : hydrolyse du saccharose en glucose et fructose, qui se condensent et se déshydratent avec la chaleur (dès 160°C), créant molécules colorées et aromatiques ; au-delà de 190°C, décomposition en carbone (couleur noire, fumées). Fermentescible : nourrit les micro-organismes (levures), dégagement de CO2 et d'alcool.
+
+PARTIE 2 — LES MATIÈRES ÉDULCORANTES
+
+1/ Classification
+Deux catégories : les édulcorants pondéreux (ou de masse), au pouvoir sucrant proche du saccharose — deux familles : les sucres (saccharose, glucose, sucre inverti, miel, fructose, maltose, isoglucose, galactose, lactose) et les polyols (xylitol, sorbitol, mannitol, maltitol, lactitol) ; et les édulcorants intenses (pouvoir sucrant très élevé, hypocalorique, utilisés en agroalimentaire/pharmacie, avec arrière-goût et coût élevé).
+Hygroscopicité décroissante : sorbitol/glycérol > fructose > SSI > sirops de glucose riche en fructose > dextrose > sirop de glucose DE élevé > sirop de glucose bas DE > saccharose.
+
+2/ Pouvoir sucrant (référence : saccharose = 1)
+Saccharine 300-400 ; Néotame 7000-13000 (édulcorant intense le plus puissant) ; Sucralose 500-600 ; Aspartame 100-200 ; Acésulfame K 100-200 ; Cyclamates 25-50 ; Fructose 1,3-1,8 ; Miel 1,2-1,3 ; Sucre inverti 1,25-1,27 ; Xylitol et saccharose 1 ; Maltitol 0,75-0,9 ; Dextrose 0,75 ; Sorbitol 0,55-0,6 ; Sirop de glucose 60DE 0,5-0,7 ; Mannitol 0,5 ; Isoglucose 0,4-0,6 ; Sirop de glucose 38DE 0,38-0,5 ; Lactitol 0,35 ; Maltose 0,32 ; Lactose 0,15-0,27.
+
+3/ Sucres simples et composés
+Sucres simples (« oses ») : une seule molécule, directement assimilables, non hydrolysables (glucose, dextrose, fructose, galactose). Sucres composés (« osides ») : plusieurs molécules, nécessitent une hydrolyse — dioses (2 oses) : saccharose (glucose+fructose), lactose (galactose+glucose), maltose (2 glucose) ; polyosides (+de 2 oses) : amidon, cellulose (chaînes de glucose).
+
+4/ L'hydrolyse
+Décomposition par l'eau, la chaleur et un catalyseur (acide, enzyme, ou courant électrique). Hydrolyse acide : en milieu aqueux avec chaleur et acide (chlorhydrique/citrique), le saccharose se dédouble en glucose et fructose = sucre inverti (utile pour la cuisson des pâtes de fruits). Hydrolyse enzymatique : catalysée par une enzyme (invertase, amylase, glucamylase) — ex. la digestion intestinale. Hydrolyse par résines échangeuses d'ions : permet de contrôler le pourcentage de sucre inverti obtenu.
+
+5/ Les sucres pondéreux — détails
+
+Le glucose : à l'état naturel dans les fruits, ou fabriqué par hydrolyse (acide ou enzymatique) d'une matière amylacée (maïs, pomme de terre, riz, manioc). L'amylase alpha sectionne au hasard (pouvoir liquéfiant) ; la bêta-amylase sectionne toutes les 2 unités (forme le maltose) ; la glucoamylase sectionne tous les maillons (forme le dextrose). Intensité mesurée par le DE (Dextrose Équivalence) : hydrolyse 0% = amidon ; 20-70% = sirop de glucose ; 95-99% = dextrose. Plus le DE est élevé, plus le sirop est fluide, plus son pouvoir sucrant et sa capacité de captation de l'eau (hygroscopicité) sont élevés, mais plus son HRE, son pouvoir liant/anti-cristallisant diminuent, et plus le brunissement (Maillard) augmente. Aspect : sirop visqueux, 78-80% de matière sèche. Bas DE (38) : sucre d'art, nougatine, berlingots, sucettes. Haut DE (60) : ganaches, pâtes de fruits, nougats, pâte d'amande. Rôles : anti-cristallisant, conservateur, hygroscopique, diminue l'HRE, liant. Le glucose atomisé est un sirop de glucose déshydraté sous forme de poudre.
+
+Le dextrose : glucose pur (DE 99,5), hydrolyse poussée au maximum. Pouvoir sucrant 0,75. Utilisations : ganaches, dragéifiés, chewing-gum, glaces. Rôles : modifie/assouplit/raccourcit la texture, antioxydant, anti-cristallisant, exhausteur d'arôme.
+
+Le sucre inverti : hydrolyse du saccharose en glucose+fructose. Doit contenir 62-81% de matière sèche (dont 50% minimum de sucre inverti). Se liquéfie à 35°C, fluide à 60°C. Pouvoir sucrant 1,27. Rôles : diminue l'élasticité (ganache plus fluide), exhausteur d'arômes, abaisse le point de congélation, abaisse l'HRE, agent de texture (moelleux), limite la dessiccation. Emploi recommandé à hauteur de 5%.
+
+Le miel : nectar transformé par l'invertase des abeilles (donc hydrolysé). Très proche du sucre inverti. Pouvoir sucrant 1,2-1,3. Mêmes rôles que le sucre inverti + apport aromatique selon l'origine florale (sainfoin, lavande, romarin, sapin, acacia, châtaignier...).
+
+Le fructose (lévulose) : présent dans fruits, légumes, fruits secs, miel. Pouvoir sucrant 1,3-1,8 (le plus puissant édulcorant pondéreux naturel). Rôles : principal sucre pour diabétiques, abaisse l'HRE, exhausteur de goût.
+
+Le lactose : issu du lait (dextrose + galactose). Fixe les arômes, saveur lactée. Pouvoir sucrant 0,15-0,27. Peu utilisé en chocolaterie (solubilité faible) bien qu'il abaisse l'HRE.
+
+La stévia : édulcorant intense naturel (Amérique du Sud), glucosides de stéviol (Rebaudioside A). Pouvoir sucrant environ 300, indice calorique 0. Supporte bien la chaleur, arrière-goût encore un frein.
+
+6/ Les polyols
+
+Le sorbitol E420 : naturel (sorbes, poires, cerises, abricots, prunes) ou par hydrolyse catalytique du glucose. Pouvoir sucrant 0,55-0,6. Rôles : anti-cristallisant, réduit l'HRE, limite levures/moisissures, stabilise l'humidité (très hygroscopique), antioxydant, sensation de fraîcheur (besoin de plus de chaleur pour se dissoudre). Stabilisateur d'humidité : cède/absorbe l'eau très lentement, précieux dans les fourrages liquides. Alcool par sa formule. Utilisation recommandée : 5%, jamais plus de 10% (effet laxatif).
+
+Le maltitol E965 : hydrogénation du maltose (ou hydrolyse enzymatique de l'amidon). N'existe pas dans la nature. Pouvoir sucrant proche du saccharose (0,75-0,9). Apport énergétique quasi nul, effet laxatif à forte dose. Utilisé pour les couvertures sans sucre (produits diabétiques).
+
+Le xylitol E967 : découvert en 1891, issu du xylane (fruits, légumes). Fabrication : hydrolyse du xylane → xylose → hydrogénation → xylitol. Pouvoir sucrant proche du glucose. Non fermentescible par les bactéries buccales : lutte contre les caries. Utilisé en chewing-gum, dragées, pharmaceutique.
+
+Le mannitol E421 : tiré de la manne (exsudat du frêne), présent aussi dans olives, figues, mélèze. Obtenu par hydrogénation du mannose ou réduction du sucre inverti. Pouvoir sucrant 0,5. Peu hygroscopique : utilisé en saupoudrage extérieur de confiserie (anti-collant).
+
+Le lactitol E966 : hydrogénation du lactose. Pouvoir sucrant 0,35. Utilisé en biscuiterie (peu hygroscopique), peut remplacer le sucre en chocolaterie/confiserie.
+
+7/ Les édulcorants intenses (créations chimiques, réglementation stricte)
+Aspartame E951 : DJA 40mg/kg. Pouvoir sucrant 200. Présent dans les produits « light ».
+Acésulfame K E962 : dérivé de sel de potassium. DJA 15mg/jour/kg. Pouvoir sucrant 200.
+Saccharine E954 : sel de sodium. DJA 370mg/jour (70kg). Pouvoir sucrant 300-400.
+Sucralose E955 : chloration du saccharose, non cariogène. DJA 10mg/jour/kg. Pouvoir sucrant 500-600.
+Néotame E961 : dérivé de l'aspartame, 40-60 fois plus sucré que lui. Pouvoir sucrant 7000-13000.
+Cyclamate E952 : valeur calorifique nulle, souvent combiné à la saccharine. DJA 7mg/kg. Pouvoir sucrant 30-50. Non autorisé partout.
+
+`;
+
+/* =========================================================
+   QUESTIONS — Quiz (QCM)
+   ========================================================= */
+const QUESTIONS = [
+  {
+    q: "Le saccharose est un mélange équimoléculaire de quelles deux molécules ?",
+    options: ["Amidon et cellulose", "Glucose et fructose", "Lactose et maltose", "Eau et carbone"],
+    correct: 1,
+    explain: "Le saccharose est un diholoside formé de <b>glucose et fructose</b>, unis par une réaction de condensation. L'hydrolyse (réaction inverse) sépare ces deux molécules pour donner le sucre inverti — un principe qu'on exploite volontairement en cuisson de pâte de fruits."
+  },
+  {
+    q: "Comment appelle-t-on le résidu fibreux obtenu après broyage de la canne à sucre ?",
+    options: ["La cossette", "La bagasse", "Le vesou", "La mélasse"],
+    correct: 1,
+    explain: "La <b>bagasse</b> est le résidu fibreux, souvent utilisé comme combustible directement dans la sucrerie. Le jus sucré obtenu, lui, s'appelle le « vesou » (10-18% de sucre). Pour la betterave, l'équivalent des tranches de départ s'appelle une « cossette »."
+  },
+  {
+    q: "À quelle température le jus filtré de betterave devient-il un sirop à 65-70% de saccharose ?",
+    options: ["Par simple filtration à froid", "Par évaporation (chaudières successives, température et pression décroissantes)", "Par ajout direct de sucre glace", "Par centrifugation seule"],
+    correct: 1,
+    explain: "C'est par <b>évaporation</b>, en série de chaudières où température et pression diminuent progressivement, que le jus filtré (15% sucre/85% eau) devient un sirop à 65-70% de saccharose, prêt pour la cristallisation."
+  },
+  {
+    q: "Le sucre de betterave est-il naturellement blanc ou doit-il être raffiné ?",
+    options: [
+      "Il est naturellement blanc, contrairement au sucre de canne qui doit être raffiné",
+      "Il doit toujours être raffiné comme le sucre de canne",
+      "Il est toujours roux",
+      "Aucun sucre n'a besoin de raffinage"
+    ],
+    correct: 0,
+    explain: "Le sucre de betterave est <b>naturellement blanc</b>. C'est le sucre de canne, coloré par des pigments propres à la plante, qui doit subir un <b>raffinage</b> pour devenir blanc — sauf certains sucres de 2e et 3e jet de betterave, parfois aussi traités."
+  },
+  {
+    q: "À combien de fois son poids en sucre l'eau peut-elle se saturer à 100°C ?",
+    options: ["1 fois", "1,7 fois", "3 fois", "10 fois"],
+    correct: 2,
+    explain: "À 100°C, l'eau peut dissoudre jusqu'à <b>3 fois son poids</b> en sucre, contre seulement 1,7 fois à 0°C. C'est cette différence qui explique pourquoi un sirop de sucre chaud devient sursaturé en refroidissant, provoquant la cristallisation."
+  },
+  {
+    q: "À quel degré de cuisson du sucre correspond le « petit boulé » (117°C) ?",
+    options: ["Pâte de fruits", "Fondant pour glaçage", "Caramel dur", "Sucre d'orge"],
+    correct: 1,
+    explain: "Le <b>petit boulé (117°C, 12% d'eau)</b> forme une boule très molle entre les doigts et sert pour le <b>fondant pour glaçage</b>. Le boulé (120-124°C) sert au fondant confiseur, et le grand perlé (110°C) aux fruits confits."
+  },
+  {
+    q: "Pourquoi ajoute-t-on du glucose lors de la cuisson d'un sirop de sucre ?",
+    options: [
+      "Pour accélérer la caramélisation",
+      "Pour graisser le sucre et éviter qu'il ne masse (anti-cristallisant)",
+      "Pour augmenter uniquement la couleur",
+      "Pour remplacer totalement le sucre"
+    ],
+    correct: 1,
+    explain: "Le glucose (10-20% du poids du sucre) sert d'<b>anti-cristallisant</b> : il se place à l'interface des molécules de sucre et limite la formation de cristaux indésirables. La crème de tartre ou l'acide tartrique jouent un rôle similaire à plus faible dose."
+  },
+  {
+    q: "À partir de quelle température la caramélisation du saccharose commence-t-elle, et en quoi consiste-t-elle ?",
+    options: [
+      "Dès 50°C, une simple fonte du sucre",
+      "Dès 160°C, une hydrolyse du saccharose en glucose et fructose qui se déshydratent",
+      "C'est identique à la réaction de Maillard",
+      "Uniquement à partir de 250°C"
+    ],
+    correct: 1,
+    explain: "La caramélisation débute autour de <b>160°C</b> : le saccharose s'hydrolyse en glucose et fructose, qui se condensent puis se déshydratent, créant des molécules colorées et aromatiques. Au-delà de 190°C, tout se décompose en carbone (noir, fumées) — à distinguer de la réaction de Maillard, qui implique sucres ET protéines."
+  },
+  {
+    q: "Quels sont les deux grandes catégories d'édulcorants ?",
+    options: [
+      "Les naturels et les artificiels uniquement",
+      "Les pondéreux (de masse) et les intenses",
+      "Les liquides et les solides",
+      "Les sucrés et les acides"
+    ],
+    correct: 1,
+    explain: "<b>Les édulcorants pondéreux</b> (ou de masse), au pouvoir sucrant proche du saccharose (sucres et polyols), et <b>les édulcorants intenses</b>, au pouvoir sucrant très élevé et hypocalorique, utilisés à très faible dose."
+  },
+  {
+    q: "Quel édulcorant pondéreux naturel a le pouvoir sucrant le plus élevé (1,3 à 1,8) ?",
+    options: ["Le lactose", "Le fructose", "Le sorbitol", "Le maltose"],
+    correct: 1,
+    explain: "Le <b>fructose</b>, avec un pouvoir sucrant de 1,3 à 1,8, est le plus puissant des édulcorants pondéreux naturels — supérieur même au sucre inverti (1,25-1,27) ou au miel (1,2-1,3)."
+  },
+  {
+    q: "Que signifie le DE (Dextrose Équivalent) d'un sirop de glucose ?",
+    options: [
+      "Le pourcentage d'eau du sirop",
+      "L'intensité de l'hydrolyse de l'amidon : plus il est élevé, plus l'hydrolyse est avancée",
+      "La couleur du sirop",
+      "Le prix du sirop"
+    ],
+    correct: 1,
+    explain: "Le DE mesure l'<b>intensité de l'hydrolyse</b> : un DE de 0 correspond à l'amidon non hydrolysé, un DE de 95-99% au dextrose (hydrolyse maximale). Plus le DE est élevé, plus le sirop est fluide, sucré et hygroscopique, mais moins il conserve l'humidité (HRE plus faible)."
+  },
+  {
+    q: "Pour quelle utilisation privilégie-t-on un sirop de glucose à bas DE (38), plutôt qu'à haut DE (60) ?",
+    options: ["Les ganaches", "Le sucre d'art, la nougatine, les berlingots", "Les pâtes de fruits", "Le nougat"],
+    correct: 1,
+    explain: "Un <b>bas DE (38)</b> est privilégié pour le <b>sucre d'art, la nougatine, les berlingots</b> — usages où l'on veut une texture plus épaisse et un pouvoir anti-cristallisant fort. Le haut DE (60), plus sucrant et fluide, sert plutôt aux ganaches, pâtes de fruits et nougats."
+  },
+  {
+    q: "Quel est le taux minimum de matière sèche que doit contenir le sucre inverti pour être commercialisé (selon la législation) ?",
+    options: ["10%", "30%", "62%", "95%"],
+    correct: 2,
+    explain: "Le sucre inverti doit contenir entre <b>62 et 81% de matières sèches</b> (dont au moins 50% de sucre inverti). Beaucoup de produits commerciaux contiennent 81% de matière sèche, inverti à 96-97%."
+  },
+  {
+    q: "Quel polyol est particulièrement recherché pour sa sensation de fraîcheur en bouche ?",
+    options: ["Le maltitol", "Le sorbitol", "Le mannitol", "Le lactitol"],
+    correct: 1,
+    explain: "Le <b>sorbitol</b> a besoin de plus de chaleur pour se dissoudre que les autres sucres, ce qui donne une <b>sensation de fraîcheur</b> en bouche. Il est aussi un excellent stabilisateur d'humidité — précieux dans les fourrages riches en liquide."
+  },
+  {
+    q: "Quel dosage maximal de sorbitol ne doit pas être dépassé, sous peine d'effet laxatif ?",
+    options: ["2%", "5%", "10%", "25%"],
+    correct: 2,
+    explain: "Le sorbitol est recommandé à 5%, et il ne faut <b>jamais dépasser 10%</b> sous peine d'effet laxatif. C'est un point de vigilance important lors de l'équilibrage d'une recette de ganache ou de confiserie."
+  },
+  {
+    q: "Quel édulcorant intense possède le pouvoir sucrant le plus élevé, jusqu'à 13 000 fois celui du saccharose ?",
+    options: ["L'aspartame", "La saccharine", "Le néotame", "Le sucralose"],
+    correct: 2,
+    explain: "Le <b>néotame</b>, dérivé de l'aspartame récemment autorisé en Europe, a un pouvoir sucrant de <b>7000 à 13000</b> — le plus élevé de tous les édulcorants intenses présentés dans le cours."
+  },
+  {
+    q: "Comment obtient-on le sucralose, et quelle est sa particularité par rapport aux caries ?",
+    options: [
+      "Par fermentation du miel ; il favorise les caries",
+      "Par chloration du saccharose ; il est non cariogène",
+      "Par hydrogénation du maltose ; il est laxatif",
+      "Par extraction directe de la canne ; il est très calorique"
+    ],
+    correct: 1,
+    explain: "Le sucralose est obtenu par <b>chloration du saccharose</b> et présente la particularité d'être <b>non cariogène</b>, avec un pouvoir calorique quasi nul — ce qui en fait un allié de poids pour les produits destinés aux diabétiques."
+  },
+  {
+    q: "Quelle est l'origine du pouvoir sucrant élevé (environ 300) de la stévia ?",
+    options: [
+      "Une molécule de synthèse chimique",
+      "Les glucosides de stéviol, notamment le Rebaudioside A, extraits de la plante",
+      "Une hydrogénation du glucose",
+      "Une fermentation bactérienne"
+    ],
+    correct: 1,
+    explain: "La stévia est un édulcorant intense <b>naturel</b> (contrairement à la plupart des autres édulcorants intenses) : on en extrait les <b>glucosides de stéviol</b>, notamment le Rebaudioside A, avec un pouvoir sucrant d'environ 300 et un indice calorique de 0."
+  }
+];
+
+/* =========================================================
+   EXAM_QUESTIONS — cheminements guidés
+   ========================================================= */
+const EXAM_QUESTIONS = [
+  {
+    id: "fabrication-betterave-canne",
+    title: "Citez et expliquez dans l'ordre chronologique les étapes de fabrication du sucre de betterave, puis du sucre de canne",
+    points: "d'après la banque de questions et le corrigé officiel 1102-2017",
+    hints: [
+      "Pour la betterave, il y a 7 grandes étapes, de la récolte au conditionnement.",
+      "Pour la canne, seule la première phase (l'extraction) change réellement : quels sont les 2 produits obtenus à cette étape ?"
+    ],
+    answerHtml: `
+      <h4>Sucre de betterave</h4>
+      <p>Lavage et épierrage → découpage en cossettes → diffusion (extraction du jus par osmose) → filtration (épuration calco-carbonique) → évaporation (jus à 15% de sucre devient sirop à 65-70%) → cristallisation (ensemencement, « masse cuite ») → essorage (centrifugation, sucre blanc de 1er jet ; la mélasse du 3e jet contient encore 40-50% de sucre) → séchage → conditionnement.</p>
+      <h4>Sucre de canne</h4>
+      <p>Récolte-dépaillage (seule la tige est gardée) → broyage par pression-imbibition, donnant le « vesou » (jus à 10-18% de sucre) et « la bagasse » (résidu fibreux, combustible) → puis les mêmes étapes que la betterave (filtration, évaporation, cristallisation, essorage, séchage, conditionnement). Le sucre obtenu, roux, doit être raffiné pour devenir blanc.</p>`
+  },
+  {
+    id: "raffinage",
+    title: "Expliquez et décrivez l'étape de « raffinage » du saccharose",
+    points: "d'après la banque de questions",
+    hints: [
+      "Précise d'abord le but du raffinage et ce qu'il ne fait PAS (il ne modifie pas chimiquement le sucre).",
+      "Détaille ensuite les 3-4 étapes du procédé, du malaxage au turbinage final."
+    ],
+    answerHtml: `
+      <h4>But</h4>
+      <p>Transformer les sucres roux de canne en sucre blanc, en éliminant impuretés et pigments colorants — sans modification chimique du sucre lui-même.</p>
+      <h4>Étapes</h4>
+      <ul>
+        <li><b>Malaxage (empâtage)</b> : les sucres roux sont malaxés avec un sirop chaud saturé, puis essorés par centrifugation → sucre d'affinage.</li>
+        <li><b>Clarification</b> : dissolution dans l'eau pure à 85°C, chaulage et carbonatation (épuration calco-carbonique), filtration.</li>
+        <li><b>Filtration sur charbon actif</b> : sirop chauffé à 70°C, passé sur charbon actif puis résines décolorantes → la « clairce », sirop limpide et incolore.</li>
+        <li><b>Cristallisation et turbinage</b> : sursaturation par évaporation sous vide, amorçage au sucre glace, turbinage → sucre blanc.</li>
+      </ul>`
+  },
+  {
+    id: "de-glucose",
+    title: "Que signifie DE ? À quoi correspondent les nombres qui le représentent (ex : DE 38 ou DE 70) ?",
+    points: "d'après la banque de questions et l'Évaluation N°4",
+    hints: [
+      "DE veut dire Dextrose Équivalent — relie-le au principe de l'hydrolyse de l'amidon.",
+      "Explique la relation entre un DE bas/élevé et la texture, le pouvoir sucrant et l'hygroscopicité du sirop obtenu."
+    ],
+    answerHtml: `
+      <h4>Définition</h4>
+      <p>DE = <b>Dextrose Équivalent</b>. Les sirops de glucose sont fabriqués par hydrolyse de l'amidon, une longue chaîne de molécules de glucose. Cette hydrolyse coupe la chaîne : l'amidon a un DE de 0 (aucune coupure), une molécule de glucose pur un DE de 100.</p>
+      <h4>Conséquences du DE</h4>
+      <p>Un sirop à <b>faible DE (25-30)</b>, peu coupé, a une texture épaisse et pâteuse. Un sirop à <b>DE élevé (70-80)</b>, aux chaînes plus courtes, est plus fluide, plus sucrant et plus hygroscopique, mais son pouvoir anti-cristallisant et son HRE diminuent. Le dextrose (DE ≥ 99,5) est le résultat d'une hydrolyse poussée au maximum.</p>`
+  },
+  {
+    id: "sorbitol",
+    title: "Qu'est-ce que le sorbitol ? Quel est son rôle ? À quelle dose et dans quels produits est-il utilisé ?",
+    points: "d'après la banque de questions et le corrigé officiel 1103-2023",
+    hints: [
+      "Précise l'origine du sorbitol (naturelle et industrielle) et sa famille chimique.",
+      "Liste ses rôles techniques (au moins 3) et le dosage à respecter."
+    ],
+    answerHtml: `
+      <h4>Origine</h4>
+      <p>Présent naturellement dans les sorbes et certains fruits (poires, cerises, abricots, prunes), il est aussi obtenu par hydrolyse catalytique (nickel) d'une solution de glucose. C'est un polyol (E420).</p>
+      <h4>Rôles</h4>
+      <p>Anti-cristallisant, réduit l'HRE, limite le développement des levures et moisissures, stabilise l'humidité (très hygroscopique), antioxydant (retarde l'oxydation des matières grasses), donne une sensation de fraîcheur en bouche.</p>
+      <h4>Dose et usages</h4>
+      <p>Utilisation recommandée : <b>5%</b>, jamais plus de <b>10%</b> (effet laxatif). Utilisé en chocolaterie pour les ganaches, et en confiserie pour les caramels, nougats et pâtes de fruits.</p>`
+  },
+  {
+    id: "acidifiants",
+    title: "Donnez le nom, l'origine et l'utilisation en confiserie des acidifiants E.330, E.334 et E.336",
+    points: "d'après la banque de questions",
+    hints: [
+      "Ce sont 3 acides très proches, souvent liés à la vigne/au raisin pour deux d'entre eux.",
+      "Précise le pH de chacun et un usage typique en confiserie/chocolaterie."
+    ],
+    answerHtml: `
+      <h4>E330 — Acide citrique (pH 3,5)</h4>
+      <p>Présent en grande quantité dans le citron, aussi obtenu par fermentation des mélasses en sucreries. Utilisé comme catalyseur avec les gélifiants, notamment dans les pâtes de fruits.</p>
+      <h4>E334 — Acide tartrique (pH 3,2)</h4>
+      <p>Principal acide du vin de raisin, obtenu par fermentation du moût, des tartres viticoles ou des lies. Antioxydant, régulateur de pH et stabilisateur ; utilisé pour accentuer l'acidulé et pour graisser les sucres cuits.</p>
+      <h4>E336 — Crème de tartre / tartrate de potassium (pH 3,7)</h4>
+      <p>Sel de l'acide tartrique, formé en cristaux sur les parois des barils de fermentation du vin. Utilisé comme anti-cristallisant lors de la cuisson des sucres.</p>`
+  }
+];
+
+/* =========================================================
+   QUIZ LOGIC
+   ========================================================= */
+let quizOrder = [];
+let quizIndex = 0;
+let quizScore = 0;
+
+function shuffle(arr){
+  const a = arr.slice();
+  for(let i=a.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]]=[a[j],a[i]];
+  }
+  return a;
+}
+
+function startQuiz(){
+  quizOrder = shuffle(QUESTIONS.map((_,i)=>i));
+  quizIndex = 0;
+  quizScore = 0;
+  renderQuizQuestion();
+}
+
+function renderQuizQuestion(){
+  const card = document.getElementById('quizCard');
+  if(quizIndex >= quizOrder.length){
+    renderQuizResult();
+    return;
+  }
+  const q = QUESTIONS[quizOrder[quizIndex]];
+  const pct = Math.round((quizIndex/quizOrder.length)*100);
+  card.innerHTML = `
+    <div class="quiz-progress-wrap">
+      <div class="quiz-progress-bar"><div class="quiz-progress-fill" style="width:${pct}%"></div></div>
+      <div class="quiz-progress-label">${quizIndex+1} / ${quizOrder.length}</div>
+    </div>
+    <p class="quiz-q">${q.q}</p>
+    <div class="quiz-options" id="quizOptions">
+      ${q.options.map((o,i)=>`<button class="quiz-opt" data-i="${i}">${o}</button>`).join('')}
+    </div>
+    <div class="quiz-explain" id="quizExplain"></div>
+    <button class="btn quiz-next" id="quizNextBtn">Question suivante</button>
+  `;
+  document.querySelectorAll('#quizOptions .quiz-opt').forEach(btn=>{
+    btn.addEventListener('click', ()=>answerQuiz(parseInt(btn.dataset.i), q));
+  });
+  document.getElementById('quizNextBtn').addEventListener('click', ()=>{
+    quizIndex++;
+    renderQuizQuestion();
+  });
+}
+
+function answerQuiz(i, q){
+  const opts = document.querySelectorAll('#quizOptions .quiz-opt');
+  opts.forEach(o=>o.disabled=true);
+  if(i === q.correct){
+    opts[i].classList.add('correct');
+    quizScore++;
+  } else {
+    opts[i].classList.add('incorrect');
+    opts[q.correct].classList.add('correct');
+  }
+  const ex = document.getElementById('quizExplain');
+  ex.innerHTML = q.explain;
+  ex.classList.add('show');
+  document.getElementById('quizNextBtn').classList.add('show');
+}
+
+function renderQuizResult(){
+  const card = document.getElementById('quizCard');
+  const pct = Math.round((quizScore/quizOrder.length)*100);
+  let tier = 'bronze', label = 'Bronze';
+  if(pct >= 85){ tier='or'; label='Or'; }
+  else if(pct >= 65){ tier='argent'; label='Argent'; }
+  card.innerHTML = `
+    <div class="quiz-result">
+      <div class="badge ${tier}">${label}</div>
+      <h3>${quizScore} / ${quizOrder.length} bonnes réponses</h3>
+      <p>${pct}% de réussite sur le module « Sucres & édulcorants »</p>
+      <button class="btn" id="quizRestart">Recommencer le quiz</button>
+    </div>
+  `;
+  document.getElementById('quizRestart').addEventListener('click', startQuiz);
+}
+
+/* =========================================================
+   TUTEUR IA — appel direct à l'API Groq (gratuite), fonctionne
+   dans n'importe quel navigateur, sans compte ni autorisation
+   ========================================================= */
+const SUGGESTED_QUESTIONS = [
+  "Quelle est la différence entre sucre inverti et sirop de glucose ?",
+  "Pourquoi le DE d'un sirop de glucose influence-t-il son usage ?",
+  "À quelle température obtient-on un fondant confiseur ?"
+];
+
+const GROQ_MODEL = "llama-3.3-70b-versatile";
+const RELAY_URL = "/.netlify/functions/chat";
+
+let chatHistory = [];
+
+function renderChatSuggestions(){
+  const wrap = document.getElementById('chatSuggestions');
+  wrap.innerHTML = SUGGESTED_QUESTIONS.map(s=>`<button class="suggestion-chip">${s}</button>`).join('');
+  wrap.querySelectorAll('.suggestion-chip').forEach(chip=>{
+    chip.addEventListener('click', ()=>{
+      document.getElementById('chatInput').value = chip.textContent;
+      sendChat();
+    });
+  });
+}
+
+function addMsg(text, cls){
+  const log = document.getElementById('chatLog');
+  const div = document.createElement('div');
+  div.className = 'msg ' + cls;
+  div.textContent = text;
+  log.appendChild(div);
+  log.scrollTop = log.scrollHeight;
+  return div;
+}
+
+async function askTuteur(systemPrompt, messages){
+  const response = await fetch(RELAY_URL, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      model: GROQ_MODEL,
+      messages: [{role: "system", content: systemPrompt}, ...messages],
+      temperature: 0.4
+    })
+  });
+  if(!response.ok){
+    const errBody = await response.text().catch(()=>"");
+    const err = new Error("HTTP " + response.status);
+    err.status = response.status;
+    err.body = errBody;
+    throw err;
+  }
+  const data = await response.json();
+  return data.choices[0].message.content;
+}
+
+async function sendChat(){
+  const inputEl = document.getElementById('chatInput');
+  const text = inputEl.value.trim();
+  if(!text) return;
+  inputEl.value = '';
+  addMsg(text, 'user');
+  chatHistory.push({role:'user', content:text});
+  const loadingDiv = addMsg('Le tuteur réfléchit…', 'bot loading');
+
+  const RULES = "Tu es un tuteur pour des élèves en BTM Chocolatier-Confiseur. Tu réponds UNIQUEMENT à partir du texte de cours suivant, sur le module 'Sucres & édulcorants'. Si la question sort de ce cours (autre module), dis poliment que ce sujet est traité dans un autre module et invite l'élève à s'y rendre. Réponds de façon claire, pédagogique, avec des exemples concrets d'atelier quand c'est pertinent. Ne mentionne jamais quel modèle d'IA tu es : reste dans ton rôle de tuteur du module.\n\nCOURS :\n" + COURSE_TEXT;
+
+  const recentHistory = chatHistory.slice(-10);
+
+  try{
+    const answer = await askTuteur(RULES, recentHistory);
+    loadingDiv.classList.remove('loading');
+    loadingDiv.textContent = answer;
+    chatHistory.push({role:'assistant', content: answer});
+  } catch(err){
+    loadingDiv.classList.remove('loading');
+    loadingDiv.textContent = err.status === 429
+      ? "Trop de questions envoyées d'un coup : attends un instant avant de réessayer."
+      : "Une erreur est survenue en contactant le tuteur. Réessaie dans un instant.";
+    console.error(err);
+  }
+}
+
+/* =========================================================
+   QUESTION D'EXAMEN — cheminement guidé
+   ========================================================= */
+let currentExamId = EXAM_QUESTIONS[0].id;
+let examStepIndex = {};
+
+function renderExamPills(){
+  const wrap = document.getElementById('examPills');
+  wrap.innerHTML = EXAM_QUESTIONS.map(q=>`<button class="exam-pill${q.id===currentExamId?' active':''}" data-id="${q.id}">${q.title.length>38?q.title.slice(0,38)+'…':q.title}</button>`).join('');
+  wrap.querySelectorAll('.exam-pill').forEach(p=>{
+    p.addEventListener('click', ()=>{
+      currentExamId = p.dataset.id;
+      renderExamPills();
+      renderExamQuestion();
+    });
+  });
+}
+
+function renderExamQuestion(){
+  const q = EXAM_QUESTIONS.find(e=>e.id===currentExamId);
+  if(!(currentExamId in examStepIndex)) examStepIndex[currentExamId] = 0;
+  const step = examStepIndex[currentExamId];
+  const card = document.getElementById('examCard');
+
+  let stepsHtml = '';
+  for(let i=0;i<step;i++){
+    stepsHtml += `<div class="step hint"><div class="step-label">Indice ${i+1}</div>${q.hints[i]}</div>`;
+  }
+
+  let controlsHtml = '';
+  if(step < q.hints.length){
+    controlsHtml += `<button class="btn" id="examHintBtn">Indice ${step+1}</button>`;
+  }
+  if(step > 0 || q.hints.length===0){
+    controlsHtml += `<button class="btn ghost" id="examAnswerBtn">Voir la réponse assemblée</button>`;
+  }
+  controlsHtml += `<button class="btn ghost" id="examResetBtn">Recommencer cette question</button>`;
+
+  card.innerHTML = `
+    <p class="exam-q-title">${q.title}</p>
+    <p class="exam-q-points">${q.points}</p>
+    ${stepsHtml}
+    <div class="exam-controls">${controlsHtml}</div>
+    <div class="exam-answer" id="examAnswer">${q.answerHtml}</div>
+    <p class="exam-note">Corrigé reconstitué à partir des sources internes du module (banque de questions, évaluations, corrigés officiels) — à relire avant diffusion en cas d'écart avec le cours.</p>
+  `;
+
+  const hintBtn = document.getElementById('examHintBtn');
+  if(hintBtn) hintBtn.addEventListener('click', ()=>{
+    examStepIndex[currentExamId] = step+1;
+    renderExamQuestion();
+  });
+  const answerBtn = document.getElementById('examAnswerBtn');
+  if(answerBtn) answerBtn.addEventListener('click', ()=>{
+    document.getElementById('examAnswer').classList.add('show');
+    answerBtn.disabled = true;
+  });
+  document.getElementById('examResetBtn').addEventListener('click', ()=>{
+    examStepIndex[currentExamId] = 0;
+    renderExamQuestion();
+  });
+}
+
+/* =========================================================
+   EN BREF — schéma SVG + points clés
+   ========================================================= */
+function renderBrief(){
+  const svgWrap = document.getElementById('briefSvgWrap');
+  svgWrap.innerHTML = `
+  <svg viewBox="0 0 940 340" width="100%" style="min-width:700px;display:block;">
+    <defs>
+      <style>
+        .vt{font-family:'Inter',sans-serif; font-weight:600; fill:var(--text-bright); font-size:11.5px;}
+        .vs{font-family:'Inter',sans-serif; fill:var(--text-dim); font-size:10px;}
+      </style>
+    </defs>
+    <rect x="0" y="0" width="940" height="340" fill="var(--surface)"/>
+    <text x="20" y="28" fill="var(--gold)" font-family="Merriweather,serif" font-weight="700" font-size="15">La cuisson du sucre : repères de température</text>
+    ${[
+      {t:"103°C", n:"Petit lissé", u:"—"},
+      {t:"105°C", n:"Nappe", u:"Gelées"},
+      {t:"110°C", n:"Grand perlé", u:"Fruits confits"},
+      {t:"115°C", n:"Grand soufflé", u:"Fondant intérieur"},
+      {t:"122°C", n:"Boulé", u:"Fondant confiseur"},
+      {t:"135°C", n:"Petit cassé", u:"Caramel dur"},
+      {t:"150°C", n:"Grand cassé", u:"Sucre décor"},
+      {t:"180°C", n:"Caramel", u:"Brunissement"}
+    ].map((s,i) => {
+      const x = 30 + i*112;
+      const h = 40 + i*22;
+      return `
+      <rect x="${x}" y="${300-h}" width="90" height="${h}" fill="var(--caramel)" opacity="0.85" rx="4"/>
+      <text x="${x+45}" y="${300-h-8}" text-anchor="middle" class="vt">${s.t}</text>
+      <text x="${x+45}" y="315" text-anchor="middle" class="vs">${s.n}</text>
+      <text x="${x+45}" y="328" text-anchor="middle" class="vs">${s.u}</text>
+      `;
+    }).join('')}
+  </svg>`;
+
+  const points = document.getElementById('briefPoints');
+  const data = [
+  {h:"Saccharose", p:"Diholoside = glucose + fructose. Photosynthèse dans la canne ou la betterave."},
+  {h:"2 filières", p:"Betterave : naturellement blanche. Canne : sucre roux, doit être raffiné."},
+  {h:"Cuisson du sucre", p:"Du sirop (100°C) au caramel (180°C), en passant par nappe, perlé, soufflé, boulé, cassé."},
+  {h:"Édulcorants pondéreux", p:"Sucres (glucose, fructose, sucre inverti...) et polyols (sorbitol, maltitol...), pouvoir sucrant proche du saccharose."},
+  {h:"Édulcorants intenses", p:"Créations chimiques (sauf stévia), pouvoir sucrant 25 à 13000 fois le saccharose, DJA réglementée."},
+  {h:"DE du glucose", p:"Mesure l'hydrolyse de l'amidon. Bas DE = épais, peu sucré. Haut DE = fluide, sucrant, hygroscopique."},
+  {h:"Sorbitol", p:"5% recommandé, jamais >10% (laxatif). Stabilisateur d'humidité, sensation de fraîcheur."},
+  {h:"3 acidifiants clés", p:"E330 citrique (citron), E334 tartrique (raisin), E336 crème de tartre (dérivé du E334)."}
+];
+  points.innerHTML = data.map(d=>`<div class="brief-point"><h4>${d.h}</h4><p>${d.p}</p></div>`).join('');
+}
+
+/* =========================================================
+   NAVIGATION + THEME
+   ========================================================= */
+document.querySelectorAll('.navbtn[data-tab]').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    document.querySelectorAll('.navbtn[data-tab]').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('panel-'+btn.dataset.tab).classList.add('active');
+  });
+});
+
+const themeToggle = document.getElementById('themeToggle');
+const themeLabel = document.getElementById('themeLabel');
+themeToggle.addEventListener('click', () => {
+  const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+  document.documentElement.setAttribute('data-theme', isLight ? 'dark' : 'light');
+  themeLabel.textContent = isLight ? 'Mode clair' : 'Mode sombre';
+});
+
+/* ===== Init ===== */
+startQuiz();
+renderChatSuggestions();
+document.getElementById('chatSend').addEventListener('click', sendChat);
+document.getElementById('chatInput').addEventListener('keydown', e=>{ if(e.key==='Enter') sendChat(); });
+renderExamPills();
+renderExamQuestion();
+renderBrief();
+</script>
+
+</body>
+</html>

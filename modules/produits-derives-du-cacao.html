@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Produits dérivés du cacao — BTM Chocolatier</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #20110a;
+    --surface: #2b1810;
+    --surface-alt: #3d2416;
+    --border: rgba(242,232,216,0.14);
+    --text: #f2e8d8;
+    --text-bright: #faf4e9;
+    --text-dim: rgba(242,232,216,0.62);
+    --caramel: #b8783a;
+    --caramel-hi: #cf9455;
+    --gold: #d8b66e;
+    --error: #7a2e2a;
+    --error-text: #e2a29d;
+    --success: #4c7a3a;
+    --success-text: #b7dba0;
+    --shadow: rgba(0,0,0,0.35);
+  }
+  [data-theme="light"]{
+    --bg: #f7efdf;
+    --surface: #fffaf0;
+    --surface-alt: #efe0c4;
+    --border: rgba(61,36,22,0.16);
+    --text: #3a2415;
+    --text-bright: #241207;
+    --text-dim: rgba(58,36,21,0.62);
+    --caramel: #a8632b;
+    --caramel-hi: #94551f;
+    --gold: #93701f;
+    --error: #a13d34;
+    --error-text: #7c2b25;
+    --success: #3d6b2c;
+    --success-text: #2c4f20;
+    --shadow: rgba(58,36,21,0.12);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--bg); color:var(--text); font-family:'Inter',sans-serif;
+    min-height:100vh; -webkit-font-smoothing:antialiased;
+    transition:background .35s ease, color .35s ease;
+  }
+  h1,h2,h3{font-family:'Merriweather',serif; font-weight:700; letter-spacing:-0.005em;}
+  a{color:var(--caramel-hi);}
+  ::-webkit-scrollbar{width:10px;height:10px;}
+  ::-webkit-scrollbar-thumb{background:var(--surface-alt); border-radius:8px;}
+
+  .app{display:flex; min-height:100vh;}
+
+  /* ===== Sidebar ===== */
+  .sidebar{
+    width:230px; flex-shrink:0; background:var(--surface); border-right:1px solid var(--border);
+    display:flex; flex-direction:column; padding:24px 16px; gap:6px;
+    position:sticky; top:0; height:100vh;
+  }
+  .sidebar .brand{padding:4px 10px 20px;}
+  .sidebar .brand .kicker{color:var(--caramel-hi); font-size:11.5px; font-weight:600; text-transform:uppercase; letter-spacing:.06em; margin:0 0 4px;}
+  .sidebar .brand h1{font-size:20px; margin:0; color:var(--text-bright); line-height:1.25;}
+  .navbtn{
+    display:flex; align-items:center; gap:10px; text-align:left; width:100%;
+    background:transparent; border:none; border-radius:10px; padding:11px 12px;
+    color:var(--text-dim); font-family:'Inter',sans-serif; font-size:14px; font-weight:500;
+    cursor:pointer; transition:background .2s ease, color .2s ease;
+  }
+  .navbtn svg{width:17px; height:17px; flex-shrink:0;}
+  .navbtn:hover{background:var(--surface-alt); color:var(--text);}
+  .navbtn.active{background:linear-gradient(155deg, var(--caramel-hi), var(--caramel) 65%); color:var(--bg); font-weight:600;}
+  .sidebar-spacer{flex:1;}
+  .theme-toggle{
+    display:flex; align-items:center; gap:8px; background:var(--surface-alt); border:1px solid var(--border);
+    color:var(--text-dim); padding:10px 12px; border-radius:10px; font-size:13px; cursor:pointer;
+  }
+  .theme-toggle:hover{color:var(--text);}
+  .theme-toggle svg{width:15px;height:15px;}
+  .back-link{display:block; font-size:12.5px; color:var(--text-dim); text-decoration:none; padding:8px 12px 2px;}
+  .back-link:hover{color:var(--text);}
+
+  /* ===== Main ===== */
+  .main{flex:1; min-width:0; padding:40px 44px 80px;}
+  .panel{display:none; max-width:820px; margin:0 auto;}
+  .panel.active{display:block;}
+  .panel-head{margin-bottom:28px;}
+  .panel-head .kicker{color:var(--caramel-hi); font-size:12.5px; font-weight:600; margin:0 0 6px;}
+  .panel-head h2{font-size:26px; margin:0 0 8px; color:var(--text-bright);}
+  .panel-head p{color:var(--text-dim); font-size:14px; margin:0; line-height:1.55; max-width:60ch;}
+
+  .card{
+    background:var(--surface); border:1px solid var(--border); border-radius:16px;
+    padding:26px; box-shadow:0 8px 24px var(--shadow); margin-bottom:18px;
+  }
+
+  /* ===== Quiz ===== */
+  .quiz-progress-wrap{display:flex; align-items:center; gap:12px; margin-bottom:22px;}
+  .quiz-progress-bar{flex:1; height:8px; border-radius:99px; background:var(--surface-alt); overflow:hidden;}
+  .quiz-progress-fill{height:100%; background:linear-gradient(90deg, var(--caramel), var(--gold)); border-radius:99px; transition:width .3s ease;}
+  .quiz-progress-label{font-size:12.5px; color:var(--text-dim); white-space:nowrap;}
+  .quiz-q{font-size:17px; line-height:1.5; color:var(--text-bright); margin:0 0 20px; font-family:'Merriweather',serif; font-weight:700;}
+  .quiz-options{display:flex; flex-direction:column; gap:10px;}
+  .quiz-opt{
+    text-align:left; padding:13px 16px; border-radius:11px; border:1px solid var(--border);
+    background:var(--surface-alt); color:var(--text); font-family:'Inter',sans-serif; font-size:14.5px;
+    cursor:pointer; transition:border-color .15s ease, background .15s ease;
+  }
+  .quiz-opt:hover{border-color:var(--caramel-hi);}
+  .quiz-opt.correct{background:color-mix(in srgb, var(--success) 30%, var(--surface-alt)); border-color:var(--success);}
+  .quiz-opt.incorrect{background:color-mix(in srgb, var(--error) 30%, var(--surface-alt)); border-color:var(--error);}
+  .quiz-opt[disabled]{cursor:default;}
+  .quiz-explain{
+    margin-top:18px; padding:16px 18px; border-radius:12px; background:var(--surface-alt);
+    border-left:3px solid var(--gold); font-size:13.5px; line-height:1.6; color:var(--text); display:none;
+  }
+  .quiz-explain.show{display:block;}
+  .quiz-explain b{color:var(--text-bright);}
+  .quiz-next{margin-top:18px; display:none;}
+  .quiz-next.show{display:inline-flex;}
+  .quiz-result{text-align:center; padding:20px 0;}
+  .badge{
+    width:110px; height:110px; border-radius:50%; margin:0 auto 18px; display:flex; align-items:center;
+    justify-content:center; font-family:'Merriweather',serif; font-weight:900; font-size:15px; text-align:center;
+    box-shadow:inset 0 2px 6px rgba(0,0,0,0.25), 0 6px 18px var(--shadow); color:#2a1a0a;
+  }
+  .badge.bronze{background:linear-gradient(155deg,#d3925a,#9a5a2c);}
+  .badge.argent{background:linear-gradient(155deg,#e6e6e6,#a8a8a8); color:#2a2a2a;}
+  .badge.or{background:linear-gradient(155deg,#f2d27a,#c99a2e);}
+  .quiz-result h3{margin:0 0 6px; color:var(--text-bright); font-size:20px;}
+  .quiz-result p{color:var(--text-dim); font-size:14px; margin:0 0 22px;}
+
+  .btn{
+    display:inline-flex; align-items:center; justify-content:center; gap:8px; border:none; border-radius:11px;
+    font-family:'Inter',sans-serif; font-weight:600; font-size:14px; padding:11px 20px; cursor:pointer;
+    color:var(--bg); text-decoration:none; background:linear-gradient(155deg, var(--caramel-hi), var(--caramel) 60%, #8a5427);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,0.25), 0 3px 10px var(--shadow); transition:transform .15s ease;
+  }
+  .btn:hover{transform:translateY(-1px);}
+  .btn.ghost{background:transparent; color:var(--text); border:1px solid var(--border); box-shadow:none;}
+
+  /* ===== Tuteur ===== */
+  .chat-wrap{display:flex; flex-direction:column; height:64vh;}
+  .chat-log{flex:1; overflow-y:auto; padding:4px 2px 12px; display:flex; flex-direction:column; gap:14px;}
+  .msg{max-width:88%; padding:12px 15px; border-radius:14px; font-size:14px; line-height:1.55;}
+  .msg.user{align-self:flex-end; background:linear-gradient(155deg, var(--caramel-hi), var(--caramel)); color:var(--bg); border-bottom-right-radius:4px;}
+  .msg.bot{align-self:flex-start; background:var(--surface-alt); border:1px solid var(--border); color:var(--text); border-bottom-left-radius:4px; white-space:pre-wrap;}
+  .msg.bot.loading{color:var(--text-dim); font-style:italic;}
+  .suggestions{display:flex; flex-wrap:wrap; gap:8px; margin:6px 0 16px;}
+  .suggestion-chip{
+    background:var(--surface-alt); border:1px solid var(--border); color:var(--text-dim); font-size:12.5px;
+    padding:8px 13px; border-radius:99px; cursor:pointer; text-align:left;
+  }
+  .suggestion-chip:hover{border-color:var(--caramel-hi); color:var(--text);}
+  .chat-input-row{display:flex; gap:10px; margin-top:8px;}
+  .chat-input-row input{
+    flex:1; background:var(--surface-alt); border:1px solid var(--border); border-radius:11px; color:var(--text);
+    font-family:'Inter',sans-serif; font-size:14px; padding:12px 15px;
+  }
+  .chat-input-row input:focus{outline:none; border-color:var(--caramel-hi);}
+
+  /* ===== Question d'examen ===== */
+  .exam-pills{display:flex; flex-wrap:wrap; gap:8px; margin-bottom:22px;}
+  .exam-pill{
+    background:var(--surface-alt); border:1px solid var(--border); color:var(--text-dim); font-size:13px;
+    padding:9px 15px; border-radius:99px; cursor:pointer; font-family:'Inter',sans-serif;
+  }
+  .exam-pill.active{background:linear-gradient(155deg, var(--caramel-hi), var(--caramel)); color:var(--bg); border-color:transparent; font-weight:600;}
+  .exam-q-title{font-size:17px; font-family:'Merriweather',serif; font-weight:700; color:var(--text-bright); margin:0 0 6px;}
+  .exam-q-points{font-size:12px; color:var(--text-dim); margin:0 0 20px;}
+  .step{
+    background:var(--surface-alt); border-radius:12px; padding:14px 16px; margin-bottom:12px;
+    font-size:13.5px; line-height:1.6; border-left:3px solid var(--border);
+  }
+  .step.hint{border-left-color:var(--gold);}
+  .step-label{font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:.05em; color:var(--caramel-hi); margin-bottom:5px;}
+  .exam-answer{
+    display:none; margin-top:16px; padding:18px; border-radius:12px; background:var(--surface-alt);
+    border-left:3px solid var(--success); font-size:13.5px; line-height:1.65;
+  }
+  .exam-answer.show{display:block;}
+  .exam-answer h4{margin:14px 0 6px; font-size:13.5px; color:var(--text-bright); font-family:'Inter',sans-serif;}
+  .exam-answer h4:first-child{margin-top:0;}
+  .exam-answer ul{margin:4px 0; padding-left:18px;}
+  .exam-controls{display:flex; gap:10px; flex-wrap:wrap; margin-top:6px;}
+  .exam-note{font-size:11.5px; color:var(--text-dim); margin-top:14px; font-style:italic;}
+
+  /* ===== En bref ===== */
+  .brief-svg-wrap{background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:18px; margin-bottom:18px; overflow-x:auto;}
+  .brief-points{display:grid; grid-template-columns:repeat(auto-fit, minmax(230px,1fr)); gap:14px;}
+  .brief-point{background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:16px 18px;}
+  .brief-point h4{margin:0 0 6px; font-size:14px; color:var(--gold); font-family:'Inter',sans-serif;}
+  .brief-point p{margin:0; font-size:13px; line-height:1.55; color:var(--text-dim);}
+
+  @media (max-width: 860px){
+    .app{flex-direction:column;}
+    .sidebar{width:100%; height:auto; position:relative; flex-direction:row; overflow-x:auto; padding:14px 12px; align-items:center;}
+    .sidebar .brand{padding:0 12px 0 4px; flex-shrink:0;}
+    .sidebar-spacer{display:none;}
+    .navbtn{flex-shrink:0; width:auto;}
+    .theme-toggle{flex-shrink:0;}
+    .main{padding:26px 18px 60px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="app">
+  <nav class="sidebar">
+    <div class="brand">
+      <p class="kicker">BTM Chocolatier</p>
+      <h1>Produits dérivés du cacao</h1>
+    </div>
+    <button class="navbtn active" data-tab="quiz">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+      Quiz
+    </button>
+    <button class="navbtn" data-tab="tuteur">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      Poser une question
+    </button>
+    <button class="navbtn" data-tab="examen">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M9 13h6M9 17h6M9 9h1"/></svg>
+      Question d'examen
+    </button>
+    <button class="navbtn" data-tab="brief">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+      En bref
+    </button>
+    <div class="sidebar-spacer"></div>
+    <a class="back-link" href="../index.html">← Retour au hub</a>
+    <button class="theme-toggle" id="themeToggle">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4.5"/><path d="M12 2.5v2M12 19.5v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M2.5 12h2M19.5 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4"/></svg>
+      <span id="themeLabel">Mode clair</span>
+    </button>
+  </nav>
+
+  <main class="main">
+
+    <!-- ===== QUIZ ===== -->
+    <section class="panel active" id="panel-quiz">
+      <div class="panel-head">
+        <p class="kicker">Quiz — Produits dérivés du cacao</p>
+        <h2>Teste tes connaissances</h2>
+        <p>Beurre de cacao (pression, extraction, polymorphisme) et poudre de cacao (alcalinisation, blutage).</p>
+      </div>
+      <div class="card" id="quizCard"></div>
+    </section>
+
+    <!-- ===== TUTEUR ===== -->
+    <section class="panel" id="panel-tuteur">
+      <div class="panel-head">
+        <p class="kicker">Tuteur IA — Produits dérivés du cacao</p>
+        <h2>Poser une question</h2>
+        <p>Le tuteur répond uniquement à partir du cours de ce module. Pour les autres sujets, utilise le module concerné.</p>
+      </div>
+      <div class="card chat-wrap">
+        <div class="chat-log" id="chatLog"></div>
+        <div class="suggestions" id="chatSuggestions"></div>
+        <div class="chat-input-row">
+          <input type="text" id="chatInput" placeholder="Écris ta question sur le cacao…">
+          <button class="btn" id="chatSend">Envoyer</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== EXAMEN ===== -->
+    <section class="panel" id="panel-examen">
+      <div class="panel-head">
+        <p class="kicker">Question d'examen — Produits dérivés du cacao</p>
+        <h2>Cheminement guidé</h2>
+        <p>Choisis une question, avance indice par indice, puis assemble ta réponse avant de découvrir le corrigé.</p>
+      </div>
+      <div class="exam-pills" id="examPills"></div>
+      <div class="card" id="examCard"></div>
+    </section>
+
+    <!-- ===== EN BREF ===== -->
+    <section class="panel" id="panel-brief">
+      <div class="panel-head">
+        <p class="kicker">En bref — Produits dérivés du cacao</p>
+        <h2>Récapitulatif visuel</h2>
+        <p>Les 4 grandes variétés et l'essentiel à retenir avant l'épreuve.</p>
+      </div>
+      <div class="brief-svg-wrap" id="briefSvgWrap"></div>
+      <div class="brief-points" id="briefPoints"></div>
+    </section>
+
+  </main>
+</div>
+
+
+<script>
+/* =========================================================
+   COURSE_TEXT — synthèse fidèle du cours "Produits dérivés du cacao"
+   (source du tuteur IA — ne répond qu'à partir de ce texte)
+   ========================================================= */
+const COURSE_TEXT = `
+
+MODULE : PRODUITS DÉRIVÉS DU CACAO — BTM Chocolatier Confiseur (Bloc 4)
+
+1/ LE BEURRE DE CACAO
+On l'obtient par pression de la pâte de cacao ou par extraction par solvant.
+
+Par pression : la pâte de cacao (alcalinisée ou non) est pressée mécaniquement (presses hydrauliques jusqu'à 600 kg/cm² soit 350-530 bars) ou par vis de compression (méthode Expeller). Le beurre obtenu est filtré, raffiné, désodorisé, puis moulé en plaques, blocs ou pistoles.
+Cette pression donne 2 produits : le beurre de cacao et le tourteau de cacao. Le tourteau contient encore 22-24% de matière grasse ; une pression plus poussée donne un tourteau plus pauvre, jusqu'à la poudre « maigre » (8% MG). Classification : poudre de cacao 22/24 (22-24% de BDC), poudre 10/12 (10-12% de BDC), poudre « maigre » (moins de 8% de BDC).
+Le beurre est ensuite filtré finement (élimine les particules solides), de couleur jaune pâle. Le raffinage élimine les dernières impuretés (lavage à l'eau, beurre clair et limpide). La désodorisation (injection de vapeur sous pression) est utile pour un beurre de cacao de rajout dans la fabrication de chocolats. Le beurre est ensuite tempéré, moulé, refroidi, stocké.
+
+Par extraction par solvant : dit « beurre d'extraction », obtenu à partir de la pâte de cacao, du tourteau ou de la poudre de cacao. Les solvants, dérivés du pétrole, dispersent le beurre de cacao pour l'extraire plus facilement ; ils nécessitent un raffinage et une désodorisation systématiques.
+Formes commerciales : en blocs (jusqu'à 25 kg), pistoles ou mini-grammes, liquide (industriels, camion-citerne), poudre (type My Cryo®).
+
+Caractéristiques du beurre de cacao : odeur similaire au cacao sauf désodorisation, ne rancit pas, point de fusion 34-35°C, polymorphe (plusieurs formes cristallines).
+Composition : 98% de triglycérides, 1% de diglycérides, 1% de monoglycérides/acides gras libres/phospholipides. Estérification : réaction entre un acide carboxylique (acide gras) et un alcool (glycérol) donnant un ester. Principaux acides gras : oléique (insaturé, 35%), stéarique (saturé, 34%), palmitique (saturé, 26%). Entre 85 et 95% du beurre de cacao est un mélange de 3 triglycérides : POS, SOS et POP. Matière grasse très stable grâce à sa teneur en antioxydants (polyphénols), qui empêche l'oxydation des acides gras (rancissement). Conservation très longue en bonnes conditions (à l'abri de l'humidité, température stable).
+
+Polymorphisme : 5 formes de cristaux, dont le point de fusion est le critère différenciant majeur : Gamma (13-17°C, instable), Alpha (17-20°C, instable), Bêta'' (22-24°C, instable), Bêta' (26-28°C, instable), Bêta (31-35°C, stable).
+
+Utilisations du beurre de cacao : fabrication du chocolat, recettes de pralinés ou de ganaches, décor bonbon ou artistique, pâtisserie (mousses, imperméabilisation de biscuits, décor), cuisine (cuissons), cosmétique, pharmacie.
+
+2/ LA POUDRE DE CACAO
+Issue du blutage du tourteau de cacao provenant de la pâte de cacao préalablement alcalinisée.
+
+Alcalinisation (ou solubilisation) : traite les fèves, la pâte, le grain ou la poudre de cacao (naturellement acides du fait de la fermentation) avec une liqueur alcaline (basique), le plus souvent du carbonate de potassium ou de magnésium (5% maximum du poids de matière sèche dégraissée). On dit qu'on « mouille le grain » avant séchage, torréfaction puis broyage. C'est le « Dutch Process ». Buts recherchés : modifier le pH (de 5 à 8 maximum, en moyenne 6), donner une couleur plus foncée (selon l'agent et la température), augmenter la dissolution (en réalité améliore surtout la mise en suspension dans un liquide, pas une vraie solubilité), modifier le goût, optimiser la durée de vie.
+
+Pressage : la pâte de cacao est pressée comme pour le beurre de cacao, donnant une partie liquide (beurre de cacao) et une partie solide (tourteau de cacao). Le degré de pression détermine la teneur en matière grasse de la poudre (20-22% pour un cacao gras, 8-10% pour un cacao maigre). Taux d'humidité : 3 à 5% maximum dans tous les cas.
+
+Blutage : le tourteau est pulvérisé dans des moulins à broches ou à marteaux, puis tamisé par soufflage d'air ou tamis, à 24°C. La poudre est ensuite conditionnée et conservée à l'abri de l'humidité, de la lumière, des insectes, idéalement entre 15 et 18°C.
+
+Critères de qualité de la poudre de cacao : teneur en matière grasse, pH, goût/arôme/couleur, taux d'humidité, état microbiologique, finesse.
+
+Utilisation : en chocolaterie, rarement en production (truffes ou produits similaires en finition). En pâtisserie : décor, biscuits, cakes, génoise, glaçages.
+
+Les poudres à petit déjeuner : caractérisées par la présence de farines (précuites, inutile de les recuire — bien que la cuisson leur donne plus d'onctuosité), ajoutées en plus ou moins grande quantité de cacao et de sucre. Souvent additionnées de poudre de lait, d'arômes (vanille) et d'émulsifiant comme la lécithine.
+
+`;
+
+/* =========================================================
+   QUESTIONS — Quiz (QCM)
+   ========================================================= */
+const QUESTIONS = [
+  {
+    q: "Par quels deux procédés obtient-on le beurre de cacao à partir de la pâte de cacao ?",
+    options: ["Fermentation et séchage", "Pression et extraction par solvant", "Torréfaction et concassage", "Broyage et conchage"],
+    correct: 1,
+    explain: "Par <b>pression</b> (presses hydrauliques jusqu'à 600 kg/cm² ou vis Expeller) ou par <b>extraction par solvant</b> (dérivés du pétrole, dispersant le beurre pour l'extraire plus facilement — nécessite un raffinage et une désodorisation systématiques)."
+  },
+  {
+    q: "Que reste-t-il après la pression de la pâte de cacao, en plus du beurre de cacao ?",
+    options: ["Le grué", "Le tourteau de cacao", "Le vesou", "La bagasse"],
+    correct: 1,
+    explain: "Le <b>tourteau de cacao</b>, qui contient encore 22-24% de matière grasse au 1er pressage. Une pression plus poussée donne un tourteau plus pauvre, jusqu'à la poudre « maigre » (moins de 8% de beurre de cacao résiduel)."
+  },
+  {
+    q: "Quelle est la teneur en matière grasse d'une poudre de cacao dite « maigre » ?",
+    options: ["Moins de 8%", "20 à 22%", "35%", "50%"],
+    correct: 0,
+    explain: "Une poudre « maigre » contient <b>moins de 8%</b> de beurre de cacao résiduel, obtenue par une pression très poussée du tourteau. À comparer avec la poudre 22/24 (22-24% de BDC) et la poudre 10/12 (10-12%)."
+  },
+  {
+    q: "À quoi sert la désodorisation du beurre de cacao ?",
+    options: [
+      "À le colorer",
+      "À éliminer les odeurs, utile pour un beurre de cacao de rajout dans la fabrication de chocolats",
+      "À augmenter sa teneur en MG",
+      "À accélérer sa cristallisation"
+    ],
+    correct: 1,
+    explain: "La désodorisation (injection de vapeur d'eau sous pression) élimine les odeurs du beurre de cacao — particulièrement utile pour un beurre de cacao <b>de rajout</b> destiné à la fabrication de chocolats, où l'on ne veut pas ajouter d'odeur parasite."
+  },
+  {
+    q: "Quel est le point de fusion du beurre de cacao ?",
+    options: ["17-20°C", "26-28°C", "34-35°C", "50°C"],
+    correct: 2,
+    explain: "Le point de fusion du beurre de cacao est de <b>34-35°C</b> — la plage de fusion des cristaux β (bêta), les seuls stables parmi les 5 formes polymorphes."
+  },
+  {
+    q: "Quels sont les 3 principaux acides gras du beurre de cacao et leurs proportions ?",
+    options: [
+      "Citrique 50%, lactique 30%, acétique 20%",
+      "Oléique 35% (insaturé), stéarique 34% (saturé), palmitique 26% (saturé)",
+      "Ascorbique, tartrique, tannique à parts égales",
+      "Uniquement de l'acide oléique à 100%"
+    ],
+    correct: 1,
+    explain: "<b>Oléique (35%, insaturé), stéarique (34%, saturé) et palmitique (26%, saturé)</b>. Entre 85 et 95% du beurre de cacao est un mélange de 3 triglycérides formés à partir de ces acides : POS, SOS et POP."
+  },
+  {
+    q: "Pourquoi le beurre de cacao est-il un corps gras particulièrement stable ?",
+    options: [
+      "Grâce à sa forte teneur en eau",
+      "Grâce à sa teneur en antioxydants naturels (polyphénols) qui empêche l'oxydation des acides gras",
+      "Parce qu'il ne contient aucun acide gras insaturé",
+      "Parce qu'il est toujours conservé congelé"
+    ],
+    correct: 1,
+    explain: "Le beurre de cacao contient des <b>antioxydants naturels (polyphénols)</b> qui empêchent l'oxydation de ses acides gras (rancissement), lui assurant une conservation très longue dans de bonnes conditions."
+  },
+  {
+    q: "Quel produit se forme après l'alcalinisation, le séchage et la torréfaction du tourteau de cacao, une fois pulvérisé et tamisé ?",
+    options: ["Le grué", "La poudre de cacao", "Le sucre inverti", "La pâte de cacao"],
+    correct: 1,
+    explain: "Après <b>blutage</b> (pulvérisation puis tamisage à 24°C) du tourteau alcalinisé, on obtient la <b>poudre de cacao</b>, conditionnée et conservée à l'abri de l'humidité, de la lumière et des insectes, idéalement entre 15 et 18°C."
+  },
+  {
+    q: "Qu'est-ce que l'alcalinisation (Dutch Process) du cacao ?",
+    options: [
+      "Un ajout de sucre pour adoucir le goût",
+      "Un traitement à la liqueur alcaline (carbonate de potassium ou magnésium) pour neutraliser l'acidité naturelle du cacao",
+      "Une seconde fermentation",
+      "Un procédé de conservation par le froid"
+    ],
+    correct: 1,
+    explain: "L'alcalinisation traite le cacao (naturellement acide du fait de la fermentation) avec une <b>liqueur alcaline</b>, le plus souvent du <b>carbonate de potassium ou de magnésium</b> (5% max du poids de matière sèche dégraissée). Elle modifie le pH (5 à 8, moyenne 6), fonce la couleur, améliore la mise en suspension et modifie le goût."
+  },
+  {
+    q: "Quel est le taux d'humidité maximal toléré pour la poudre de cacao ?",
+    options: ["1%", "3 à 5%", "10%", "20%"],
+    correct: 1,
+    explain: "Le taux d'humidité de la poudre de cacao doit rester entre <b>3 et 5% maximum</b>, quel que soit le degré de pression (cacao gras ou maigre), pour garantir sa bonne conservation."
+  },
+  {
+    q: "Quel est le degré de pression qui détermine la différence entre un cacao « gras » (20-22% MG) et un cacao « maigre » (8-10% MG) ?",
+    options: [
+      "La température de torréfaction",
+      "Le degré de pression exercé lors du pressage de la pâte de cacao",
+      "Le type de variété de cacaoyer",
+      "Le taux d'alcalinisation"
+    ],
+    correct: 1,
+    explain: "C'est le <b>degré de pression</b> exercé lors du pressage qui détermine la teneur en matière grasse restante dans la poudre : plus la pression est poussée, plus le tourteau (et donc la poudre) est pauvre en beurre de cacao."
+  },
+  {
+    q: "En chocolaterie artisanale, à quoi la poudre de cacao sert-elle le plus souvent ?",
+    options: [
+      "À la fabrication de la majorité des couvertures",
+      "Aux truffes ou produits similaires en finition",
+      "Au tempérage",
+      "Au conchage"
+    ],
+    correct: 1,
+    explain: "En chocolaterie, la poudre de cacao entre <b>rarement en production</b> : on la retrouve surtout pour la finition des <b>truffes</b> ou de produits similaires. En pâtisserie en revanche, elle est bien plus utilisée (décor, biscuits, génoise, glaçages)."
+  }
+];
+
+/* =========================================================
+   EXAM_QUESTIONS — cheminements guidés
+   ========================================================= */
+const EXAM_QUESTIONS = [
+  {
+    id: "obtention-beurre",
+    title: "À partir de quoi et comment obtient-on le beurre de cacao ?",
+    points: "d'après la banque de questions et l'Évaluation N°2",
+    hints: [
+      "Il existe 2 méthodes d'obtention distinctes, l'une mécanique, l'autre chimique.",
+      "Précise ensuite les 3 étapes de finition communes aux deux méthodes."
+    ],
+    answerHtml: `
+      <h4>Deux méthodes d'obtention</h4>
+      <p><b>Par pression</b> de la pâte de cacao : presses hydrauliques (jusqu'à 600 kg/cm²) ou vis de compression (méthode Expeller). Donne 2 produits : le beurre de cacao et le tourteau de cacao (qui deviendra la poudre de cacao).</p>
+      <p><b>Par extraction par solvant</b> : à partir de la pâte, du tourteau ou de la poudre de cacao, des solvants dérivés du pétrole dispersent le beurre pour l'extraire plus facilement. Nécessite systématiquement un raffinage et une désodorisation.</p>
+      <h4>Finition commune</h4>
+      <p>Le beurre obtenu est <b>filtré</b> (élimine les particules solides), <b>raffiné</b> (élimine les impuretés résiduelles, beurre clair et limpide) puis <b>désodorisé</b> (injection de vapeur sous pression), avant d'être tempéré, moulé, refroidi et stocké.</p>`
+  },
+  {
+    id: "tourteau-maigre",
+    title: "Qu'est-ce qu'un tourteau dit « maigre » ?",
+    points: "d'après la banque de questions et l'Évaluation N°2",
+    hints: [
+      "Précise d'où provient le tourteau et sa teneur en matière grasse au premier pressage.",
+      "Explique ensuite ce qui différencie un tourteau « maigre » d'un tourteau classique."
+    ],
+    answerHtml: `
+      <p>Le tourteau est issu du pressage de la pâte de cacao, qui donne également le beurre de cacao. Lors du <b>1er pressage</b>, le tourteau contient encore environ <b>20% de beurre de cacao</b> (contre 54-55% au départ dans la fève). Un tourteau dit « <b>maigre</b> » subit un pressage plus poussé, pour qu'il ne contienne plus au final que <b>10% de beurre de cacao</b> environ — voire moins de 8% pour la poudre la plus maigre.</p>`
+  },
+  {
+    id: "alcalinisation-interet",
+    title: "Dans la fabrication de la poudre de cacao, quel est l'intérêt de l'alcalinisation ?",
+    points: "d'après la banque de questions techno",
+    hints: [
+      "Précise d'abord pourquoi une neutralisation est nécessaire (état naturel du cacao après fermentation).",
+      "Liste ensuite les effets recherchés (au moins 3), en plus de la neutralisation du pH."
+    ],
+    answerHtml: `
+      <h4>Pourquoi neutraliser</h4>
+      <p>Les fèves, la pâte ou la poudre de cacao sont naturellement acides du fait de la fermentation. L'alcalinisation (« Dutch Process ») fait intervenir une liqueur alcaline, le plus souvent du carbonate de potassium ou de magnésium (5% max du poids de matière sèche dégraissée) : on « mouille le grain » avant séchage, torréfaction puis broyage.</p>
+      <h4>Effets recherchés</h4>
+      <ul>
+        <li>Modifier le pH (de 5 à 8 maximum, en moyenne 6)</li>
+        <li>Donner une couleur plus foncée</li>
+        <li>Augmenter la mise en suspension dans un liquide</li>
+        <li>Modifier le goût</li>
+        <li>Optimiser la durée de vie</li>
+      </ul>`
+  },
+  {
+    id: "poudre-fabrication",
+    title: "Expliquez la fabrication de la poudre de cacao",
+    points: "d'après la banque de questions et le corrigé officiel 1103-2023",
+    hints: [
+      "Il y a 3 grandes étapes : une chimique, une mécanique, une de finition.",
+      "Précise la teneur en MG possible selon le degré de pression, et le taux d'humidité final."
+    ],
+    answerHtml: `
+      <h4>1. Alcalinisation</h4>
+      <p>La pâte de cacao est traitée à la liqueur alcaline pour neutraliser son acidité naturelle (« Dutch Process »), modifier son pH, sa couleur et son goût.</p>
+      <h4>2. Pressage</h4>
+      <p>La pâte alcalinisée est pressée comme pour le beurre de cacao : on obtient une partie liquide (beurre de cacao) et une partie solide (tourteau). Le degré de pression détermine la teneur en MG de la poudre finale (20-22% pour un cacao gras, 8-10% pour un cacao maigre). Taux d'humidité final : 3 à 5% maximum.</p>
+      <h4>3. Blutage</h4>
+      <p>Le tourteau est pulvérisé (moulins à broches ou marteaux) puis tamisé par soufflage d'air ou tamis, à 24°C, pour obtenir la poudre de cacao, ensuite conditionnée à l'abri de l'humidité, de la lumière et des insectes (15-18°C idéalement).</p>`
+  }
+];
+
+/* =========================================================
+   QUIZ LOGIC
+   ========================================================= */
+let quizOrder = [];
+let quizIndex = 0;
+let quizScore = 0;
+
+function shuffle(arr){
+  const a = arr.slice();
+  for(let i=a.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]]=[a[j],a[i]];
+  }
+  return a;
+}
+
+function startQuiz(){
+  quizOrder = shuffle(QUESTIONS.map((_,i)=>i));
+  quizIndex = 0;
+  quizScore = 0;
+  renderQuizQuestion();
+}
+
+function renderQuizQuestion(){
+  const card = document.getElementById('quizCard');
+  if(quizIndex >= quizOrder.length){
+    renderQuizResult();
+    return;
+  }
+  const q = QUESTIONS[quizOrder[quizIndex]];
+  const pct = Math.round((quizIndex/quizOrder.length)*100);
+  card.innerHTML = `
+    <div class="quiz-progress-wrap">
+      <div class="quiz-progress-bar"><div class="quiz-progress-fill" style="width:${pct}%"></div></div>
+      <div class="quiz-progress-label">${quizIndex+1} / ${quizOrder.length}</div>
+    </div>
+    <p class="quiz-q">${q.q}</p>
+    <div class="quiz-options" id="quizOptions">
+      ${q.options.map((o,i)=>`<button class="quiz-opt" data-i="${i}">${o}</button>`).join('')}
+    </div>
+    <div class="quiz-explain" id="quizExplain"></div>
+    <button class="btn quiz-next" id="quizNextBtn">Question suivante</button>
+  `;
+  document.querySelectorAll('#quizOptions .quiz-opt').forEach(btn=>{
+    btn.addEventListener('click', ()=>answerQuiz(parseInt(btn.dataset.i), q));
+  });
+  document.getElementById('quizNextBtn').addEventListener('click', ()=>{
+    quizIndex++;
+    renderQuizQuestion();
+  });
+}
+
+function answerQuiz(i, q){
+  const opts = document.querySelectorAll('#quizOptions .quiz-opt');
+  opts.forEach(o=>o.disabled=true);
+  if(i === q.correct){
+    opts[i].classList.add('correct');
+    quizScore++;
+  } else {
+    opts[i].classList.add('incorrect');
+    opts[q.correct].classList.add('correct');
+  }
+  const ex = document.getElementById('quizExplain');
+  ex.innerHTML = q.explain;
+  ex.classList.add('show');
+  document.getElementById('quizNextBtn').classList.add('show');
+}
+
+function renderQuizResult(){
+  const card = document.getElementById('quizCard');
+  const pct = Math.round((quizScore/quizOrder.length)*100);
+  let tier = 'bronze', label = 'Bronze';
+  if(pct >= 85){ tier='or'; label='Or'; }
+  else if(pct >= 65){ tier='argent'; label='Argent'; }
+  card.innerHTML = `
+    <div class="quiz-result">
+      <div class="badge ${tier}">${label}</div>
+      <h3>${quizScore} / ${quizOrder.length} bonnes réponses</h3>
+      <p>${pct}% de réussite sur le module « Produits dérivés du cacao »</p>
+      <button class="btn" id="quizRestart">Recommencer le quiz</button>
+    </div>
+  `;
+  document.getElementById('quizRestart').addEventListener('click', startQuiz);
+}
+
+/* =========================================================
+   TUTEUR IA — appel direct à l'API Groq (gratuite), fonctionne
+   dans n'importe quel navigateur, sans compte ni autorisation
+   ========================================================= */
+const SUGGESTED_QUESTIONS = [
+  "Quelle est la différence entre le beurre de cacao par pression et par solvant ?",
+  "À quoi sert l'alcalinisation de la poudre de cacao ?",
+  "Qu'est-ce qu'un tourteau de cacao maigre ?"
+];
+
+const GROQ_MODEL = "llama-3.3-70b-versatile";
+const RELAY_URL = "/.netlify/functions/chat";
+
+let chatHistory = [];
+
+function renderChatSuggestions(){
+  const wrap = document.getElementById('chatSuggestions');
+  wrap.innerHTML = SUGGESTED_QUESTIONS.map(s=>`<button class="suggestion-chip">${s}</button>`).join('');
+  wrap.querySelectorAll('.suggestion-chip').forEach(chip=>{
+    chip.addEventListener('click', ()=>{
+      document.getElementById('chatInput').value = chip.textContent;
+      sendChat();
+    });
+  });
+}
+
+function addMsg(text, cls){
+  const log = document.getElementById('chatLog');
+  const div = document.createElement('div');
+  div.className = 'msg ' + cls;
+  div.textContent = text;
+  log.appendChild(div);
+  log.scrollTop = log.scrollHeight;
+  return div;
+}
+
+async function askTuteur(systemPrompt, messages){
+  const response = await fetch(RELAY_URL, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      model: GROQ_MODEL,
+      messages: [{role: "system", content: systemPrompt}, ...messages],
+      temperature: 0.4
+    })
+  });
+  if(!response.ok){
+    const errBody = await response.text().catch(()=>"");
+    const err = new Error("HTTP " + response.status);
+    err.status = response.status;
+    err.body = errBody;
+    throw err;
+  }
+  const data = await response.json();
+  return data.choices[0].message.content;
+}
+
+async function sendChat(){
+  const inputEl = document.getElementById('chatInput');
+  const text = inputEl.value.trim();
+  if(!text) return;
+  inputEl.value = '';
+  addMsg(text, 'user');
+  chatHistory.push({role:'user', content:text});
+  const loadingDiv = addMsg('Le tuteur réfléchit…', 'bot loading');
+
+  const RULES = "Tu es un tuteur pour des élèves en BTM Chocolatier-Confiseur. Tu réponds UNIQUEMENT à partir du texte de cours suivant, sur le module 'Produits dérivés du cacao'. Si la question sort de ce cours (autre module), dis poliment que ce sujet est traité dans un autre module et invite l'élève à s'y rendre. Réponds de façon claire, pédagogique, avec des exemples concrets d'atelier quand c'est pertinent. Ne mentionne jamais quel modèle d'IA tu es : reste dans ton rôle de tuteur du module.\n\nCOURS :\n" + COURSE_TEXT;
+
+  const recentHistory = chatHistory.slice(-10);
+
+  try{
+    const answer = await askTuteur(RULES, recentHistory);
+    loadingDiv.classList.remove('loading');
+    loadingDiv.textContent = answer;
+    chatHistory.push({role:'assistant', content: answer});
+  } catch(err){
+    loadingDiv.classList.remove('loading');
+    loadingDiv.textContent = err.status === 429
+      ? "Trop de questions envoyées d'un coup : attends un instant avant de réessayer."
+      : "Une erreur est survenue en contactant le tuteur. Réessaie dans un instant.";
+    console.error(err);
+  }
+}
+
+/* =========================================================
+   QUESTION D'EXAMEN — cheminement guidé
+   ========================================================= */
+let currentExamId = EXAM_QUESTIONS[0].id;
+let examStepIndex = {};
+
+function renderExamPills(){
+  const wrap = document.getElementById('examPills');
+  wrap.innerHTML = EXAM_QUESTIONS.map(q=>`<button class="exam-pill${q.id===currentExamId?' active':''}" data-id="${q.id}">${q.title.length>38?q.title.slice(0,38)+'…':q.title}</button>`).join('');
+  wrap.querySelectorAll('.exam-pill').forEach(p=>{
+    p.addEventListener('click', ()=>{
+      currentExamId = p.dataset.id;
+      renderExamPills();
+      renderExamQuestion();
+    });
+  });
+}
+
+function renderExamQuestion(){
+  const q = EXAM_QUESTIONS.find(e=>e.id===currentExamId);
+  if(!(currentExamId in examStepIndex)) examStepIndex[currentExamId] = 0;
+  const step = examStepIndex[currentExamId];
+  const card = document.getElementById('examCard');
+
+  let stepsHtml = '';
+  for(let i=0;i<step;i++){
+    stepsHtml += `<div class="step hint"><div class="step-label">Indice ${i+1}</div>${q.hints[i]}</div>`;
+  }
+
+  let controlsHtml = '';
+  if(step < q.hints.length){
+    controlsHtml += `<button class="btn" id="examHintBtn">Indice ${step+1}</button>`;
+  }
+  if(step > 0 || q.hints.length===0){
+    controlsHtml += `<button class="btn ghost" id="examAnswerBtn">Voir la réponse assemblée</button>`;
+  }
+  controlsHtml += `<button class="btn ghost" id="examResetBtn">Recommencer cette question</button>`;
+
+  card.innerHTML = `
+    <p class="exam-q-title">${q.title}</p>
+    <p class="exam-q-points">${q.points}</p>
+    ${stepsHtml}
+    <div class="exam-controls">${controlsHtml}</div>
+    <div class="exam-answer" id="examAnswer">${q.answerHtml}</div>
+    <p class="exam-note">Corrigé reconstitué à partir des sources internes du module (banque de questions, évaluations, corrigés officiels) — à relire avant diffusion en cas d'écart avec le cours.</p>
+  `;
+
+  const hintBtn = document.getElementById('examHintBtn');
+  if(hintBtn) hintBtn.addEventListener('click', ()=>{
+    examStepIndex[currentExamId] = step+1;
+    renderExamQuestion();
+  });
+  const answerBtn = document.getElementById('examAnswerBtn');
+  if(answerBtn) answerBtn.addEventListener('click', ()=>{
+    document.getElementById('examAnswer').classList.add('show');
+    answerBtn.disabled = true;
+  });
+  document.getElementById('examResetBtn').addEventListener('click', ()=>{
+    examStepIndex[currentExamId] = 0;
+    renderExamQuestion();
+  });
+}
+
+/* =========================================================
+   EN BREF — schéma SVG + points clés
+   ========================================================= */
+function renderBrief(){
+  const svgWrap = document.getElementById('briefSvgWrap');
+  svgWrap.innerHTML = `
+  <svg viewBox="0 0 900 260" width="100%" style="min-width:600px;display:block;">
+    <defs>
+      <style>
+        .vt{font-family:'Merriweather',serif; font-weight:700; fill:var(--text-bright); font-size:14px;}
+        .vs{font-family:'Inter',sans-serif; fill:var(--text-dim); font-size:11.5px;}
+      </style>
+    </defs>
+    <rect x="0" y="0" width="900" height="260" fill="var(--surface)"/>
+    <text x="30" y="40" fill="var(--gold)" font-family="Merriweather,serif" font-weight="900" font-size="16">Pâte de cacao</text>
+    <text x="180" y="40" class="vs">— pressage —</text>
+    <rect x="60" y="70" width="330" height="150" rx="14" fill="var(--surface-alt)" stroke="var(--border)"/>
+    <text x="225" y="105" text-anchor="middle" class="vt">Beurre de cacao</text>
+    <text x="225" y="130" text-anchor="middle" class="vs">Filtré → raffiné → désodorisé</text>
+    <text x="225" y="150" text-anchor="middle" class="vs">Point de fusion 34-35°C</text>
+    <text x="225" y="170" text-anchor="middle" class="vs">→ chocolat, ganaches, cosmétique</text>
+    <rect x="480" y="70" width="360" height="150" rx="14" fill="var(--surface-alt)" stroke="var(--border)"/>
+    <text x="660" y="105" text-anchor="middle" class="vt">Tourteau de cacao</text>
+    <text x="660" y="130" text-anchor="middle" class="vs">Alcalinisé → blutage</text>
+    <text x="660" y="150" text-anchor="middle" class="vs">22/24% MG · 10/12% MG · maigre &lt;8%</text>
+    <text x="660" y="170" text-anchor="middle" class="vs">→ poudre de cacao (3-5% humidité)</text>
+  </svg>`;
+
+  const points = document.getElementById('briefPoints');
+  const data = [
+  {h:"2 méthodes d'obtention", p:"Pression (Expeller) ou extraction par solvant (dérivés du pétrole, raffinage systématique)."},
+  {h:"Composition", p:"98% triglycérides. Oléique 35%, stéarique 34%, palmitique 26%. Antioxydants naturels = stable."},
+  {h:"Polymorphisme", p:"5 formes cristallines, point de fusion 34-35°C global (13-35°C selon la forme)."},
+  {h:"3 grades de poudre", p:"22/24 (gras), 10/12, maigre (<8% MG). Toujours 3-5% d'humidité max."},
+  {h:"Alcalinisation", p:"Dutch Process : liqueur alcaline (carbonate K/Mg), neutralise l'acidité, fonce la couleur, pH 5-8."},
+  {h:"Blutage", p:"Pulvérisation + tamisage à 24°C du tourteau alcalinisé → poudre de cacao."},
+  {h:"Usage limité en choco", p:"Poudre surtout pour truffes en finition ; bien plus utilisée en pâtisserie (décor, biscuits)."},
+  {h:"Conservation poudre", p:"À l'abri humidité/lumière/insectes, idéalement 15-18°C."}
+];
+  points.innerHTML = data.map(d=>`<div class="brief-point"><h4>${d.h}</h4><p>${d.p}</p></div>`).join('');
+}
+
+/* =========================================================
+   NAVIGATION + THEME
+   ========================================================= */
+document.querySelectorAll('.navbtn[data-tab]').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    document.querySelectorAll('.navbtn[data-tab]').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('panel-'+btn.dataset.tab).classList.add('active');
+  });
+});
+
+const themeToggle = document.getElementById('themeToggle');
+const themeLabel = document.getElementById('themeLabel');
+themeToggle.addEventListener('click', () => {
+  const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+  document.documentElement.setAttribute('data-theme', isLight ? 'dark' : 'light');
+  themeLabel.textContent = isLight ? 'Mode clair' : 'Mode sombre';
+});
+
+/* ===== Init ===== */
+startQuiz();
+renderChatSuggestions();
+document.getElementById('chatSend').addEventListener('click', sendChat);
+document.getElementById('chatInput').addEventListener('keydown', e=>{ if(e.key==='Enter') sendChat(); });
+renderExamPills();
+renderExamQuestion();
+renderBrief();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ancrage — révision par répétition espacée</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #20110a; --surface: #2b1810; --surface-alt: #3d2416;
+    --border: rgba(242,232,216,0.14); --text: #f2e8d8; --text-bright: #faf4e9;
+    --text-dim: rgba(242,232,216,0.62); --caramel: #b8783a; --caramel-hi: #cf9455;
+    --gold: #d8b66e; --shadow: rgba(0,0,0,0.35); --success: #4c7a3a; --success-text:#b7dba0;
+    --warn: #8a6a2a; --warn-text:#e0c98a; --error:#7a2e2a; --error-text:#e2a29d;
+  }
+  [data-theme="light"]{
+    --bg: #f7efdf; --surface: #fffaf0; --surface-alt: #efe0c4;
+    --border: rgba(61,36,22,0.16); --text: #3a2415; --text-bright: #241207;
+    --text-dim: rgba(58,36,21,0.62); --caramel: #a8632b; --caramel-hi: #94551f;
+    --gold: #93701f; --shadow: rgba(58,36,21,0.12); --success:#3d6b2c; --success-text:#2c4f20;
+    --warn:#8a6a2a; --warn-text:#6b4f14; --error:#a13d34; --error-text:#7c2b25;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--bg); color:var(--text); font-family:'Inter',sans-serif;
+    min-height:100vh; -webkit-font-smoothing:antialiased;
+    transition:background .35s ease, color .35s ease;
+  }
+  h1,h2,h3,h4{font-family:'Merriweather',serif; font-weight:700; letter-spacing:-0.005em;}
+  .wrap{max-width:760px; margin:0 auto; padding:40px 22px 90px;}
+
+  .hero{margin-bottom:26px; display:flex; justify-content:space-between; align-items:flex-start; gap:16px; flex-wrap:wrap;}
+  .hero .kicker{color:var(--caramel-hi); font-size:13px; font-weight:600; margin:0 0 8px;}
+  .hero h1{font-size:clamp(22px,3.4vw,29px); margin:0 0 8px; color:var(--text-bright); line-height:1.2;}
+  .hero p{color:var(--text-dim); font-size:14px; margin:0; max-width:60ch; line-height:1.6;}
+
+  .theme-toggle{
+    display:flex; align-items:center; gap:8px; background:var(--surface); border:1px solid var(--border);
+    color:var(--text-dim); padding:9px 14px; border-radius:10px; font-size:13px; cursor:pointer; white-space:nowrap;
+  }
+  .theme-toggle:hover{color:var(--text);}
+  .theme-toggle svg{width:15px; height:15px;}
+  .back-link{display:inline-block; font-size:12.5px; color:var(--text-dim); text-decoration:none; margin-bottom:16px;}
+  .back-link:hover{color:var(--text);}
+
+  .card{
+    background:var(--surface); border:1px solid var(--border); border-radius:16px;
+    padding:26px; box-shadow:0 8px 24px var(--shadow); margin-bottom:18px;
+  }
+
+  /* ===== Dashboard ===== */
+  .stat-row{display:flex; gap:14px; flex-wrap:wrap; margin-bottom:22px;}
+  .stat-box{flex:1; min-width:130px; background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:16px 18px;}
+  .stat-box .num{font-family:'Merriweather',serif; font-weight:900; font-size:26px; color:var(--gold); line-height:1;}
+  .stat-box .label{font-size:11.5px; color:var(--text-dim); margin-top:6px;}
+
+  .module-bar-row{display:flex; align-items:center; gap:10px; margin-bottom:10px; font-size:13px;}
+  .module-bar-name{flex:0 0 180px; color:var(--text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+  .module-bar-track{flex:1; height:9px; background:var(--surface-alt); border-radius:99px; overflow:hidden; display:flex;}
+  .module-bar-fill{height:100%;}
+  .module-bar-count{flex:0 0 56px; text-align:right; color:var(--text-dim); font-size:12px;}
+
+  .btn{
+    display:inline-flex; align-items:center; justify-content:center; gap:8px; border:none; border-radius:11px;
+    font-family:'Inter',sans-serif; font-weight:600; font-size:14px; padding:12px 22px; cursor:pointer;
+    color:var(--bg); text-decoration:none; background:linear-gradient(155deg, var(--caramel-hi), var(--caramel) 60%, #8a5427);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,0.25), 0 3px 10px var(--shadow); transition:transform .15s ease;
+  }
+  .btn:hover{transform:translateY(-1px);}
+  .btn:disabled{opacity:.5; cursor:default; transform:none;}
+  .btn.ghost{background:transparent; color:var(--text); border:1px solid var(--border); box-shadow:none;}
+  .btn.full{width:100%;}
+  .btn-row{display:flex; gap:10px; flex-wrap:wrap;}
+
+  /* ===== Session ===== */
+  .session-progress{display:flex; align-items:center; gap:12px; margin-bottom:20px;}
+  .session-bar{flex:1; height:8px; border-radius:99px; background:var(--surface-alt); overflow:hidden;}
+  .session-fill{height:100%; background:linear-gradient(90deg, var(--caramel), var(--gold)); border-radius:99px; transition:width .3s ease;}
+  .session-label{font-size:12.5px; color:var(--text-dim); white-space:nowrap;}
+
+  .card-module{font-size:11.5px; font-weight:600; text-transform:uppercase; letter-spacing:.05em; color:var(--caramel-hi); margin:0 0 10px;}
+  .card-question{font-size:17px; line-height:1.5; color:var(--text-bright); margin:0 0 18px; font-family:'Merriweather',serif; font-weight:700;}
+
+  textarea{
+    width:100%; min-height:120px; background:var(--surface-alt); border:1px solid var(--border); border-radius:11px;
+    color:var(--text); font-family:'Inter',sans-serif; font-size:14.5px; padding:14px 16px; line-height:1.5; resize:vertical;
+  }
+  textarea:focus{outline:none; border-color:var(--caramel-hi);}
+
+  .feedback-box{
+    margin-top:18px; padding:18px; border-radius:12px; background:var(--surface-alt);
+    border-left:3px solid var(--gold); font-size:13.5px; line-height:1.6; display:none;
+  }
+  .feedback-box.show{display:block;}
+  .feedback-box.loading{color:var(--text-dim); font-style:italic;}
+  .feedback-box h4{margin:10px 0 4px; font-size:13px; color:var(--text-bright); font-family:'Inter',sans-serif;}
+  .feedback-box h4:first-child{margin-top:0;}
+  .feedback-box p, .feedback-box ul{margin:0 0 8px;}
+
+  .verdict-row{display:flex; gap:10px; flex-wrap:wrap; margin-top:16px;}
+  .verdict-btn{
+    flex:1; min-width:150px; border:1px solid var(--border); border-radius:11px; padding:13px 14px; cursor:pointer;
+    font-family:'Inter',sans-serif; font-size:13px; font-weight:600; background:var(--surface-alt); color:var(--text);
+    text-align:left;
+  }
+  .verdict-btn .vb-title{display:block; margin-bottom:2px;}
+  .verdict-btn .vb-sub{display:block; font-size:11px; font-weight:400; color:var(--text-dim);}
+  .verdict-btn.acquis{border-color:var(--success);}
+  .verdict-btn.partiel{border-color:var(--warn);}
+  .verdict-btn.revoir{border-color:var(--error);}
+  .verdict-btn:hover{transform:translateY(-1px);}
+
+  .empty-state{text-align:center; padding:34px 20px;}
+  .empty-state .big-emoji{font-size:40px; margin-bottom:10px;}
+  .empty-state h3{color:var(--text-bright); margin:0 0 8px;}
+  .empty-state p{color:var(--text-dim); font-size:13.5px; margin:0 0 18px;}
+
+  .error-box{
+    background:color-mix(in srgb, #7a2e2a 25%, var(--surface)); border:1px solid #7a2e2a; border-radius:12px;
+    padding:14px 16px; font-size:13.5px; margin-top:14px; display:none;
+  }
+  .error-box.show{display:block;}
+
+  .panel{display:none;}
+  .panel.active{display:block;}
+
+  @media (max-width: 640px){
+    .wrap{padding:22px 16px 70px;}
+    .hero{flex-direction:column; align-items:stretch; gap:14px; margin-bottom:20px;}
+    .theme-toggle{align-self:flex-start;}
+    .card{padding:18px;}
+    .stat-row{gap:10px;}
+    .stat-box{min-width:100px; padding:13px 14px;}
+    .stat-box .num{font-size:21px;}
+    .module-bar-name{flex-basis:110px; font-size:12px;}
+    .verdict-row{flex-direction:column;}
+    .verdict-btn{min-width:0;}
+    .btn{width:100%; padding:14px 18px; font-size:15px;}
+    .btn-row{flex-direction:column;}
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <a class="back-link" href="../index.html">← Retour au hub</a>
+
+  <div class="hero">
+    <div>
+      <p class="kicker">Outil élève — BTM Chocolatier</p>
+      <h1>Ancrage — révision par répétition espacée</h1>
+      <p>101 questions rédigées, tirées de tous les modules. Écris ta réponse avant de voir la correction : le tuteur évalue si elle est juste ET assez développée, pas seulement si elle contient les bons mots.</p>
+    </div>
+    <button class="theme-toggle" id="themeToggle">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4.5"/><path d="M12 2.5v2M12 19.5v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M2.5 12h2M19.5 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4"/></svg>
+      <span id="themeLabel">Mode clair</span>
+    </button>
+  </div>
+
+  <!-- ===== DASHBOARD ===== -->
+  <section class="panel active" id="panel-dashboard">
+    <div class="stat-row">
+      <div class="stat-box"><div class="num" id="statDue">–</div><div class="label">à réviser aujourd'hui</div></div>
+      <div class="stat-box"><div class="num" id="statMastered">–</div><div class="label">bien ancrées</div></div>
+      <div class="stat-box"><div class="num" id="statTotal">–</div><div class="label">questions au total</div></div>
+    </div>
+
+    <div class="card">
+      <h3 style="margin:0 0 16px; font-size:15px;">Répartition par module</h3>
+      <div id="moduleBars"></div>
+    </div>
+
+    <button class="btn full" id="startSessionBtn" style="padding:15px;">Commencer une session de révision</button>
+    <p style="text-align:center; font-size:12px; color:var(--text-dim); margin-top:10px;">Ta progression est enregistrée uniquement sur cet appareil et ce navigateur.</p>
+    <div class="btn-row" style="margin-top:14px; justify-content:center;">
+      <button class="btn ghost" id="resetBtn" style="font-size:12.5px; padding:8px 16px;">Réinitialiser ma progression</button>
+    </div>
+  </section>
+
+  <!-- ===== SESSION ===== -->
+  <section class="panel" id="panel-session">
+    <div class="session-progress">
+      <div class="session-bar"><div class="session-fill" id="sessionFill" style="width:0%"></div></div>
+      <div class="session-label" id="sessionLabel">0 / 0</div>
+    </div>
+    <div class="card" id="sessionCard"></div>
+  </section>
+
+  <!-- ===== SESSION END ===== -->
+  <section class="panel" id="panel-end">
+    <div class="card empty-state">
+      <div class="big-emoji">✅</div>
+      <h3>Session terminée</h3>
+      <p id="endSummary"></p>
+      <button class="btn" id="backToDashboardBtn">Retour au tableau de bord</button>
+    </div>
+  </section>
+</div>
+
+<script>
+/* =========================================================
+   CARDS — 101 questions rédigées, issues des 13 modules
+   ========================================================= */
+const CARDS = [{"id": "c1", "module": "Le cacao", "q": "À quelle famille appartient le cacaoyer ? Citez les caractéristiques physiques de l'arbre et du fruit.", "a": "Malvacées. Arbre de 3-4m en plantation (10-12m à l'état sauvage), feuilles alternes de 20-30cm, fleurs minuscules sur le tronc. La cabosse mesure 10-30cm, pèse 300-500g, contient 35-50 fèves en 5 rangées."}, {"id": "c2", "module": "Le cacao", "q": "Décrire et commenter les conditions de culture / environnement du cacaoyer.", "a": "Climat équatorial : 26°C en moyenne, 75% d'hygrométrie, 1500mm de pluie, altitude 300-700m. Ne supporte que 50% de lumière directe, cultivé à l'ombre (agroforesterie), sol riche en azote et potasse."}, {"id": "c3", "module": "Le cacao", "q": "Citez 4 variétés de cacaoyers en précisant leur culture, leur différence et le pourcentage de production mondiale.", "a": "Criollo (5-10%, Mexique, fève blanche, luxe), Forastero (80%, Amazonie, robuste, corsé), Trinitario (10-15%, hybride Criollo×Forastero, Trinidad 1727), Nacional (<1%, Équateur, arômes floraux « Arriba »)."}, {"id": "c4", "module": "Le cacao", "q": "Citez les 3 maladies les plus connues du cacaoyer. Développez.", "a": "Moniliose (champignon, taches brunes/spores, graines inconsommables), phytophtora/pourriture des cabosses (champignon, cabosse molle et spongieuse), balai de sorcière (Amérique latine, attaque coussinets floraux, arbre stérile)."}, {"id": "c5", "module": "Le cacao", "q": "Quelles peuvent être les conséquences de la propagation des maladies du cacaoyer sur les lieux de plantation ?", "a": "Chute de production (ex. balai de sorcière : production brésilienne passée de 400 000 à 150 000 tonnes entre 1990-1998), fèves inconsommables, voire mort de l'arbre (swollen shoot en 2-3 ans)."}, {"id": "c6", "module": "Le cacao", "q": "Quelles sont les caractéristiques du cacaoyer (nom scientifique, durée de vie, reproduction) ?", "a": "Theobroma cacao L., famille des Malvacées, dicotylédone diploïde. Durée de vie 30 ans en plantation (40-50 à l'état sauvage). Reproduction par germination, bouturage ou greffage."}, {"id": "c7", "module": "Le cacao", "q": "De quelles conditions le cacaoyer a-t-il besoin pour bien se développer ?", "a": "Climat chaud et humide (26°C, 75% hygrométrie, 1500mm de pluie), ombrage (50% de lumière max), sol riche en azote et potasse, bien drainé, densité de 400-600 arbres/ha en culture naturelle."}, {"id": "c8", "module": "Le cacao", "q": "Une cabosse ramassée trop tôt entraînerait quelles conséquences ?", "a": "Formation de matière grasse (beurre de cacao) inachevée, et mucilage insuffisamment développé qui empêche une bonne fermentation : cacao astringent, amer et peu aromatique."}, {"id": "c9", "module": "Le cacao", "q": "La richesse du sol est importante pour le cacaoyer. Que doit-il idéalement contenir ? Pour quelles raisons ?", "a": "Azote (développement des tissus végétaux, croissance) et potasse (organes de réserve, résistance aux maladies). Un sol trop sollicité (agro-industrie) s'épuise et nécessite des engrais."}, {"id": "c10", "module": "Le cacao", "q": "Comment est fixé le prix du cacao ? Quels paramètres peuvent le faire évoluer ?", "a": "Par 5 marchés boursiers (New York, Londres, Amsterdam, Hambourg, Paris), loi de l'offre et de la demande. Fluctue selon la production, le climat, les maladies, la main-d'œuvre et les tensions diplomatiques."}, {"id": "c11", "module": "Le cacao", "q": "Quelles sont les caractéristiques du cacao dissident « Arriba » ou Nacional Équateur ?", "a": "Cultivé exclusivement en Équateur, moins de 1% de la production mondiale (rendement 30% du trinitario), arômes très floraux (jasmin, fleur d'oranger), cacao rare et très recherché."}, {"id": "c12", "module": "La transformation du cacao", "q": "Indiquez et commentez toutes les étapes de la récolte de la cabosse sur le lieu de la plantation.", "a": "Maturité jugée à la couleur (vert→jaune, rouge→orange) et au son sourd. Coupe au pédoncule à la machette/faucille. Écabossage sous 5 jours : fente soigneuse, extraction de 30-80 graines, tri, rapidité car la cabosse ouverte devient vite un milieu favorable aux levures."}, {"id": "c13", "module": "La transformation du cacao", "q": "Après la récolte, citez les 2 opérations les plus importantes dans le processus de développement de l'arôme (but, durée, températures).", "a": "Fermentation (5-7j : phase alcoolique anaérobie 24-48h puis phase acétique aérobie, jusqu'à 50°C, crée les précurseurs d'arômes) et torréfaction (110-150°C, 15-40 min, développe ces précurseurs via la réaction de Maillard)."}, {"id": "c14", "module": "La transformation du cacao", "q": "Indiquez et commentez toutes les étapes à partir de la fève de cacao jusqu'à la tablette.", "a": "Fermentation → séchage (55%→7% d'humidité) → torréfaction (110-150°C) → concassage (→grué) → pré-broyage (→pâte de cacao, 80-100 microns) → mélange/affinage avec le sucre (→18-20 microns) → conchage (8-72h, sec puis liquide) → tempérage → moulage."}, {"id": "c15", "module": "La transformation du cacao", "q": "A partir de quoi et comment obtient-on le beurre de cacao ?", "a": "À partir de la pâte de cacao (masse issue du pré-broyage du grué), par pressage : le beurre de cacao est extrait par pression hydraulique, laissant un tourteau (tourteau gras ou maigre selon le taux de MG résiduel)."}, {"id": "c16", "module": "La transformation du cacao", "q": "Une fermentation mal conduite peut entraîner quelles conséquences ?", "a": "Brassage trop rapide ou délai trop long avant fermentation → fermentation lactique, propionique ou butyrique : arômes désagréables (beurre rance, purin), mauvaise conservation, cacao déclassé au cut test."}, {"id": "c17", "module": "La transformation du cacao", "q": "Que se passe-t-il lors de la torréfaction des fèves de cacao ?", "a": "110-150°C pendant 15-40 min : abaisse l'humidité à 2,5%, développe les précurseurs d'arômes formés en fermentation (réaction de Maillard), évapore l'acide acétique résiduel, fragilise la pelure. Perte de 5-10% du poids."}, {"id": "c18", "module": "La transformation du cacao", "q": "Expliquez la fabrication de la poudre de cacao.", "a": "Après pressage du beurre de cacao, le tourteau restant est broyé et tamisé pour donner la poudre de cacao. Une alcalinisation (procédé hollandais) peut être appliquée pour adoucir le goût et foncer la couleur."}, {"id": "c19", "module": "La transformation du cacao", "q": "Quels types de séchage existent-ils ? Citez leurs avantages et leurs inconvénients.", "a": "Naturel (95% de la production, 5-20j au soleil : bonne qualité, évapore bien l'acide acétique, mais lent et main-d'œuvre importante) et artificiel (5%, 15-36h : rapide, homogène, mais acide acétique mal éliminé, qualité inférieure, label BIO impossible)."}, {"id": "c20", "module": "La transformation du cacao", "q": "Que provoquerait un séchage pas suffisamment poussé ou trop rapide ?", "a": "Humidité résiduelle trop élevée (>7%) : risque de moisissures et de dégradation du beurre de cacao au stockage. Un séchage trop rapide n'élimine pas assez l'acide acétique et ne permet pas la réaction d'oxydation qui enrichit l'arôme."}, {"id": "c21", "module": "La transformation du cacao", "q": "Pourquoi le conchage est-il une étape importante dans la fabrication du chocolat ?", "a": "Effets mécaniques (libère le beurre de cacao, finesse), physiques (homogénéise, abaisse l'humidité) et chimiques (élimine acides volatils, transforme les tanins) : élimine amertume/acidité, développe la flaveur, donne l'onctuosité."}, {"id": "c22", "module": "La transformation du cacao", "q": "Dans la fabrication de la poudre de cacao, quel est l'intérêt de l'alcalinisation ?", "a": "Adoucit l'amertume et l'acidité naturelle du cacao, fonce la couleur et améliore la dispersion de la poudre dans les liquides (procédé hollandais / dutching)."}, {"id": "c23", "module": "La transformation du cacao", "q": "Décrire l'étape de la fermentation, développez.", "a": "5-7 jours en bacs, 2 phases : alcoolique anaérobie (24-48h, sucres du mucilage → éthanol/CO2) puis acétique aérobie (éthanol → acide acétique, jusqu'à 50°C, tue le germe, crée les précurseurs d'arômes, migration des polyphénols amers)."}, {"id": "c24", "module": "La transformation du cacao", "q": "Décrire l'étape de la torréfaction, développez.", "a": "110-150°C, 15-40 min, en cylindre rotatif. Développe l'arôme (Maillard), abaisse l'humidité à 2,5%, fragilise la pelure, évapore l'acide acétique résiduel. 3 intensités : basse, moyenne, haute."}, {"id": "c25", "module": "La transformation du cacao", "q": "Décrire l'étape du conchage, développez.", "a": "8-72h en 2 temps : conchage à sec (45-50°C, arrondit les particules, évapore l'humidité) puis conchage liquide (ajout de beurre de cacao ≥35% pour reformer un film continu, puis lécithine 0,3-0,7% en fin de cycle)."}, {"id": "c26", "module": "Le beurre de cacao & la cristallisation", "q": "Expliquez le phénomène de pré-cristallisation du chocolat de couverture à un apprenti.", "a": "Le but est de créer un maximum de cristaux β (stables, 31-35°C), les seuls à donner brillant et cassant. 3 facteurs : température (courbe fonte→refroidissement→travail→refroidissement final), friction, et vitesse (trop lente = trop de cristaux instables)."}, {"id": "c27", "module": "Le beurre de cacao & la cristallisation", "q": "On distingue dans le beurre de cacao 5 grands types de cristaux. Nommez-les et indiquez leur point de fusion et leur stabilité.", "a": "Gamma (13-17°C, instable), Alpha (17-20°C, instable), Bêta seconde (22-24°C, instable), Bêta prime (26-28°C, instable), Bêta (31-35°C, seul STABLE)."}, {"id": "c28", "module": "Le beurre de cacao & la cristallisation", "q": "Le beurre de cacao est composé de différents acides gras. Citez-en trois.", "a": "Acide stéarique (~35%, saturé), acide palmitique (~26%, saturé), acide oléique (~34%, insaturé) — et acide linoléique (~3%, insaturé) pour le 4e."}, {"id": "c29", "module": "Le beurre de cacao & la cristallisation", "q": "Qu'est-ce que la viscosité d'un chocolat ? Avec quel instrument la mesure-t-on ? Quelles matières premières permettent de la modifier ?", "a": "Résistance à l'étalement du chocolat, mesurée au viscosimètre rotatif. Modifiable par la lécithine/PGPR (0,1-0,3%), le taux d'humidité, la granulométrie (affinage/conchage) et la température de travail."}, {"id": "c30", "module": "Le beurre de cacao & la cristallisation", "q": "Citez les 4 acides gras qui entrent dans la composition du beurre de cacao. Développez.", "a": "Stéarique (35%) et palmitique (26%), saturés — donnent la dureté à température ambiante ; oléique (34%) et linoléique (3%), insaturés — participent au fondant en bouche. Total : 61% saturés, 38% insaturés."}, {"id": "c31", "module": "Le beurre de cacao & la cristallisation", "q": "Donnez les propriétés du beurre de cacao. Cette matière grasse est polymorphe, expliquez.", "a": "Solide et cassant à température ambiante, fondant à température du corps, protégé du rancissement par le tocophérol (antioxydant naturel). Polymorphe : il cristallise sous 5 formes différentes (γ, α, β'', β', β) selon la température, dont une seule (β) est stable."}, {"id": "c32", "module": "La rhéologie du chocolat", "q": "Qu'est-ce que la rhéologie ? Comment la modifie-t-on ?", "a": "Étude de la déformation/écoulement de la matière sous contrainte : pour le chocolat, viscosité (Pa.s) et limite d'écoulement (Pa), mesurées au viscosimètre rotatif. Modifiable via la lécithine, l'humidité, la granulométrie, la température et le temps de conchage."}, {"id": "c33", "module": "Les ganaches", "q": "Qu'est-ce que la lécithine ? Quel est son rôle dans le chocolat de couverture ? À quel moment est-elle incorporée ?", "a": "Additif E322, émulsifiant extrait du soja/tournesol. Stabilise l'émulsion entre matières sèches et grasses, diminue la viscosité et le besoin en beurre de cacao. Incorporée en fin de conchage liquide, à 0,3-0,7%."}, {"id": "c34", "module": "Les ganaches", "q": "Dans la confection des ganaches, citez 5 règles d'hygiène de base.", "a": "Hygiène personnelle (tenue, lavage des mains), hygiène du matériel (nettoyage, désinfection), hygiène des matières premières (fraîcheur), respect de la température de coulage, conditions de stockage contrôlées (16-18°C, 60-70% hygrométrie)."}, {"id": "c35", "module": "Les ganaches", "q": "Lors de la confection d'une ganache framboise, la crème au contact de la purée a fait trancher le mélange. Expliquez et donnez la solution.", "a": "Déséquilibre eau/matière grasse ou mauvaise dispersion (émulsion rompue). Solution : incorporer de l'eau ou un ingrédient riche en eau (crème, sirop de glucose), ou reprendre la ganache au mixeur pour ré-homogénéiser."}, {"id": "c36", "module": "Les ganaches", "q": "Pour quelles raisons une ganache peut-elle trancher ? Quelles solutions pour éviter et corriger ce phénomène ?", "a": "Manque d'eau ou excès de MG, mauvaise dispersion (mélange trop court), température de travail trop élevée. Solutions : rééquilibrer eau/MG, reprendre au mixeur, contrôler la température de coulage (noire 33°C, lactée 31°C, ivoire 27°C)."}, {"id": "c37", "module": "Les ganaches", "q": "Expliquez le rôle de l'AW ou HRE sur les ganaches. Pourquoi est-ce important ? Citez 5 matières premières qui permettent d'influer sur ce paramètre.", "a": "Mesure la disponibilité de l'eau (et non sa teneur) : détermine la stabilité et la conservation. Au-delà de 0,86, prolifération bactérienne (conservation 2-3 semaines max). Matières influençant l'AW : sorbitol, sucre inverti, glucose, lécithine, sucre (saccharose)."}, {"id": "c38", "module": "Les ganaches", "q": "Quelles sont les règles d'hygiène à respecter pour la fabrication d'une ganache ? 4 réponses minimum.", "a": "Hygiène personnelle, hygiène du matériel (nettoyage/désinfection), hygiène des matières premières (fraîcheur), respect de la température de coulage et des conditions de stockage (16-18°C, 60-70% hygrométrie)."}, {"id": "c39", "module": "Les ganaches", "q": "Quelles sont les conditions idéales pour la conservation des bonbons de chocolat dans un point de vente ?", "a": "Entre 14 et 18°C, humidité relative de l'air entre 55 et 65%, de manière stable et sans variation. Pour les intérieurs praliné, l'idéal est 10°C pour freiner le blanchiment gras."}, {"id": "c40", "module": "Les ganaches", "q": "Pourquoi certaines ganaches moisissent-elles ? (au moins 5 causes)", "a": "Trop d'eau dans l'atmosphère de stockage, hygiène insuffisante (personnel, matériel, matières premières), AW trop élevée, chocs thermiques (point de rosée = condensation), mauvais respect de la température de coulage."}, {"id": "c41", "module": "Les ganaches", "q": "Quels sont les objectifs d'une bonne émulsion de ganache et citez deux composants favorisants ?", "a": "Obtenir une texture fondante et lisse, moins grasse en bouche, avec une bonne conservation et stabilité. Favorisée par la lécithine (lie MG au liquide) et les protéines (créent des ponts liquide-MG)."}, {"id": "c42", "module": "Les ganaches", "q": "Vous changez de couverture pour vos ganaches et la texture change : de quoi cela peut-il provenir ? Conduite à tenir ?", "a": "Différence de teneur en beurre de cacao/cacao sec entre couvertures, modifiant le rapport eau/MG de la recette. Il faut recalculer le poids de chocolat mis en œuvre (table analytique) pour chaque nouvelle couverture."}, {"id": "c43", "module": "Les ganaches", "q": "Quels sont les effets produits lorsque vous cadrez une ganache en température trop élevée et en température trop basse ?", "a": "Trop élevée : évaporation excessive, risque de rupture de l'émulsion. Trop basse : cristallisation prématurée du beurre de cacao, texture granuleuse (« graine »), mauvaise prise en masse."}, {"id": "c44", "module": "Sucres & édulcorants", "q": "À 0°C, l'eau peut contenir 1,7 fois son volume de sucre. Combien peut-elle en contenir à 100°C ?", "a": "Environ 5 fois son volume à 100°C (la solubilité du saccharose dans l'eau augmente fortement avec la température, permettant les cuissons de sucre à haute concentration)."}, {"id": "c45", "module": "Sucres & édulcorants", "q": "Citez et expliquez dans l'ordre chronologique les étapes de fabrication du sucre de betterave.", "a": "Lavage/découpage des betteraves → diffusion (extraction du jus sucré à l'eau chaude) → épuration (chaux + CO2) → évaporation/concentration → cuisson-cristallisation → turbinage (séparation cristaux/mélasse) → séchage → raffinage."}, {"id": "c46", "module": "Sucres & édulcorants", "q": "Citez et expliquez dans l'ordre chronologique les étapes de fabrication du sucre de canne.", "a": "Broyage des cannes → extraction du jus (pressage) → épuration/chaulage → évaporation → cuisson-cristallisation → turbinage → sucre roux (non raffiné) ou raffinage pour sucre blanc."}, {"id": "c47", "module": "Sucres & édulcorants", "q": "Dans quelles conditions la cristallisation du saccharose s'effectue-t-elle convenablement ? Citez 3 facteurs importants.", "a": "Sursaturation de la solution (au-delà du point de saturation), température de travail contrôlée, et présence d'agents d'amorçage (grainage) ou de mouvement (agitation) pour initier et répartir la cristallisation."}, {"id": "c48", "module": "Sucres & édulcorants", "q": "Expliquer et décrire l'étape de « raffinage » du saccharose.", "a": "Purification du sucre brut : dissolution, filtration, décoloration (charbon actif), recristallisation puis séchage, pour obtenir un sucre blanc pur, débarrassé des impuretés et de la mélasse résiduelle."}, {"id": "c49", "module": "Sucres & édulcorants", "q": "Quelles sont les 4 méthodes classiques de vérification de la cuisson d'un sirop de sucre ?", "a": "Le thermomètre à sucre (température), le densimètre/pèse-sirop (densité en degrés Baumé), le réfractomètre (indice de réfraction / % Brix), et le test manuel (boule molle, boule dure, cassant, au doigt trempé dans l'eau froide)."}, {"id": "c50", "module": "Sucres & édulcorants", "q": "Quelles sont les unités de mesure de ces appareils de vérification de cuisson des sirops de sucre ?", "a": "Thermomètre : degrés Celsius (°C). Densimètre : degrés Baumé (°Bé). Réfractomètre : degrés Brix (%Brix, indice de réfraction)."}, {"id": "c51", "module": "Sucres & édulcorants", "q": "Que faut-il faire pour ralentir la recristallisation d'un sirop de sucre cuit ?", "a": "Ajouter un agent anti-cristallisant (glucose, sucre inverti) qui perturbe l'organisation des molécules de saccharose et empêche leur réassemblage en cristaux."}, {"id": "c52", "module": "Sucres & édulcorants", "q": "Expliquer la sursaturation d'un sirop de sucre.", "a": "État où la solution contient plus de sucre dissous que ce que permettrait l'équilibre à cette température : état instable qui favorise la cristallisation dès qu'un germe ou un choc mécanique est introduit."}, {"id": "c53", "module": "Sucres & édulcorants", "q": "Expliquer l'action de « graisser » un sucre.", "a": "Travailler mécaniquement (spatule, mouvement circulaire) un sirop de sucre cuit et refroidi pour forcer sa cristallisation contrôlée en une masse fine et opaque (ex : fondant), en y incorporant de l'air et des germes cristallins."}, {"id": "c54", "module": "Sucres & édulcorants", "q": "Expliquer le procédé d'une cuisson de sucre, ainsi que les raisons pour lesquelles vous l'appliquez.", "a": "Chauffage progressif d'un sirop (eau + sucre + éventuellement glucose) jusqu'à une température/concentration cible, pour obtenir une texture précise (filé, boulé, cassant...) selon l'usage recherché (fondant, caramel, sucre tiré...)."}, {"id": "c55", "module": "Sucres & édulcorants", "q": "Pourquoi graisse-t-on un sucre, quelle est son utilité et quelles matières utilise-t-on ?", "a": "Pour obtenir une texture fine, opaque et onctueuse (fondant) par cristallisation contrôlée. On utilise un sirop de sucre cuit (souvent avec glucose comme anti-cristallisant), travaillé mécaniquement sur marbre ou en batteur."}, {"id": "c56", "module": "Sucres & édulcorants", "q": "À partir de quels produits sont extraits ou fabriqués : lactose, sorbitol, sucre inverti, dextrose, isomalt ?", "a": "Lactose : issu du lait (galactose+glucose). Sorbitol : naturel (sorbes, poires, prunes) ou hydrolyse catalytique du glucose. Sucre inverti : hydrolyse du saccharose (glucose+fructose). Dextrose : hydrolyse poussée de l'amidon (DE 99,5). Isomalt : non traité dans les cours disponibles."}, {"id": "c57", "module": "Sucres & édulcorants", "q": "Que signifie DE et à quoi correspondent les nombres le représentant (ex : DE 38 ou DE 70) ? Classez les édulcorants par hygroscopicité décroissante.", "a": "DE = Dextrose Équivalence, mesure l'intensité d'hydrolyse de l'amidon (0%=amidon, 20-70%=sirop de glucose, 95-99%=dextrose). Plus le DE est élevé, plus le sirop est fluide et hygroscopique. Ordre décroissant : sorbitol/glycérol > fructose > SSI > sirop de glucose riche en fructose > dextrose > sirop de glucose DE élevé > sirop de glucose bas DE > saccharose."}, {"id": "c58", "module": "Sucres & édulcorants", "q": "Comment est fabriqué le sirop de glucose ? Quel type utilisez-vous pour une ganache et pour un sucre cuit ?", "a": "Par hydrolyse (acide ou enzymatique) d'une matière amylacée (maïs, pomme de terre). Pour une ganache : DE élevé (60), plus hygroscopique et anti-cristallisant. Pour un sucre cuit/sucre d'art : DE bas (38), meilleur pouvoir liant et moins de brunissement."}, {"id": "c59", "module": "Sucres & édulcorants", "q": "Comment est fabriqué le sirop de sucre inverti ? Donnez ses propriétés physiques.", "a": "Par hydrolyse acide ou enzymatique du saccharose (glucose+fructose). 62-81% de matière sèche, se liquéfie à 35°C, fluide à 60°C. Pouvoir sucrant 1,27. Diminue l'élasticité, abaisse l'HRE, limite la dessiccation."}, {"id": "c60", "module": "Sucres & édulcorants", "q": "Qu'est-ce que le sorbitol ? Quel est son rôle ? À quelle dose et dans quel produit est-il utilisé ?", "a": "Polyol (E420) naturel ou obtenu par hydrolyse catalytique du glucose. Rôle : anti-cristallisant, réduit l'HRE, stabilise l'humidité, antioxydant. Utilisation recommandée 5% (jamais plus de 10%, effet laxatif), notamment dans les ganaches sans alcool."}, {"id": "c61", "module": "Sucres & édulcorants", "q": "Citez cinq édulcorants simples avec leur pouvoir sucrant.", "a": "Saccharose (1), fructose (1,3-1,8), sucre inverti (1,25-1,27), dextrose (0,75), sorbitol (0,55-0,6) — référence : saccharose = 1."}, {"id": "c62", "module": "Sucres & édulcorants", "q": "Qu'est-ce qu'un édulcorant ? Citez-en 3 avec leur provenance.", "a": "Substance qui donne une saveur sucrée. Ex : le sorbitol (fruits à noyau ou hydrolyse du glucose), le sucre inverti (hydrolyse du saccharose), le sirop de glucose (hydrolyse de l'amidon de maïs/pomme de terre)."}, {"id": "c63", "module": "Sucres & édulcorants", "q": "Expliquer le phénomène d'hydrolyse.", "a": "Décomposition d'une molécule par l'eau, la chaleur et un catalyseur (acide, enzyme ou courant électrique) : ex. le saccharose se dédouble en glucose et fructose (sucre inverti) sous l'effet de la chaleur et d'un acide."}, {"id": "c64", "module": "Sucres & édulcorants", "q": "Où trouve-t-on naturellement le lévulose ?", "a": "Le lévulose (fructose) se trouve naturellement dans les fruits, les légumes, les fruits secs et le miel."}, {"id": "c65", "module": "Les matières grasses", "q": "Citez les étapes de fabrication du beurre puis donnez la définition d'un beurre fin et d'un beurre extra fin.", "a": "Écrémage → pasteurisation → maturation → barattage → lavage/malaxage → conditionnement. Beurre fin : crème pasteurisée, jusqu'à 30% congelée, conservation 2 mois. Beurre extra-fin : crème pasteurisée ni congelée ni surgelée, fabriqué sous 72h après collecte et 48h après écrémage, meilleur goût."}, {"id": "c66", "module": "Les matières grasses", "q": "Expliquez le phénomène de la séparation spontanée sur le lait entier frais.", "a": "La matière grasse du lait, en suspension sous forme de gouttelettes (émulsion), moins dense que le reste du lait, remonte naturellement en surface au repos — c'est la « séparation spontanée », à l'origine historique de l'obtention de la crème."}, {"id": "c67", "module": "Les matières grasses", "q": "Quels types d'altération des matières grasses animales et végétales connaissez-vous ?", "a": "Le rancissement (oxydation des acides gras insaturés au contact de l'air/lumière/chaleur), l'hydrolyse (dégradation en présence d'eau, favorisée par la chaleur), et le brunissement/altération par contamination microbienne en cas de mauvais stockage."}, {"id": "c68", "module": "Les additifs", "q": "Voici le code de trois agents acidifiants (E.330, E.334 et E.336). Donnez leurs noms, origine et utilisation.", "a": "E330 acide citrique (citron ou fermentation de mélasses, catalyseur avec les gélifiants pour pâtes de fruits) ; E334 acide tartrique (moût de raisin/tartres viticoles, accentue l'acidulé, graisse les sucres cuits) ; E336 crème de tartre (sel de l'acide tartrique, cristaux des barils de fermentation du vin)."}, {"id": "c69", "module": "Les additifs", "q": "Quelle est la différence entre une pectine NH et une pectine jaune ? Conditions de gélification et exemples.", "a": "Pectine jaune : sels retardateurs, gélifie en milieu acide (pH 3,5-3,8), non thermoréversible — utilisée en pâtes de fruits. Pectine NH : phosphates de calcium, thermoréversible — utilisée en nappages."}, {"id": "c70", "module": "Les additifs", "q": "Qu'est-ce qu'un gélifiant thermoréversible ? Citez 2 exemples et leurs rôles en confiserie.", "a": "Un gélifiant qui refond à la chaleur et regélifie au refroidissement (réutilisable). Exemples : la pectine NH (nappages) et la gélatine (moulage, gélifiés) — pratique pour rattraper ou redonner forme à une préparation."}, {"id": "c71", "module": "Les additifs", "q": "Quels sont les 3 acides les plus utilisés en confiserie ? De quels produits naturels sont-ils issus ?", "a": "Acide citrique (citron, fermentation de mélasses), acide tartrique (moût de raisin, tartres viticoles) et acide lactique (naturellement présent dans le lait, le pain, le vin)."}, {"id": "c72", "module": "Les additifs", "q": "Quelle est la différence entre l'acide citrique et l'acide tartrique ?", "a": "Acide citrique (E330, pH 3,5) : issu du citron ou de fermentation de mélasses, sert de catalyseur avec les gélifiants. Acide tartrique (E334, pH 3,2) : issu du raisin/vin, plus acide, accentue l'acidulé et graisse les sucres cuits."}, {"id": "c73", "module": "Les additifs", "q": "Qu'appelle-t-on degré BLOOM ?", "a": "L'unité qui mesure la puissance/force gélifiante de la gélatine (50 à 300), mesurée au gelmètre (force nécessaire pour enfoncer un piston). Gélatine or : 200-210 bloom, argent : 180, bronze : 150."}, {"id": "c74", "module": "Les additifs", "q": "Quels sont les rôles d'un antioxydant ?", "a": "Empêche l'influence de l'oxygène de l'air : évite le noircissement des fruits, le rancissement des matières grasses, et protège les vitamines liposolubles (A, D, E, K)."}, {"id": "c75", "module": "Produits dérivés du cacao", "q": "Qu'est-ce qu'un tourteau dit « maigre » ?", "a": "Résidu solide obtenu après pressage de la pâte de cacao pour extraire le beurre de cacao, avec un taux de matière grasse résiduel faible (tourteau maigre) — servant de base à la poudre de cacao. Le tourteau « gras » conserve davantage de MG résiduelle."}, {"id": "c76", "module": "Arômes & spiritueux", "q": "Décrire les différentes variétés d'arômes et leur mode d'obtention.", "a": "Arômes naturels (extraits par distillation, pression à froid des zestes, ou macération/infusion de matières végétales), arômes identiques aux naturels (molécules identiques recréées par synthèse), et arômes artificiels (molécules n'existant pas à l'état naturel, entièrement de synthèse)."}, {"id": "c77", "module": "Les fruits & fruits secs", "q": "De quel groupe et de quelle famille font partie la noisette et l'amande ? 3 variétés de chaque, dont une française.", "a": "Fruits secs à coque (groupe des drupes/akènes). L'amande appartient à la famille des Rosacées (variétés : Ferragnès, Ferraduel, Lauranne — françaises du Sud-Est). La noisette à la famille des Bétulacées (variétés : Ennis, Fertille de Coutard — française du Sud-Ouest, Barcelona)."}, {"id": "c78", "module": "Les fruits & fruits secs", "q": "Quelles sont les conditions de stockage à respecter pour les fruits secs (amandes, noisettes) ?", "a": "Local frais, sec, à l'abri de la lumière et des odeurs (les fruits secs absorbent facilement les odeurs environnantes du fait de leur teneur en matière grasse), emballage hermétique pour limiter l'oxydation."}, {"id": "c79", "module": "Les fruits & fruits secs", "q": "Quelle est la principale altération de conservation que risque un fruit sec ? Quelle en est la cause ?", "a": "Le rancissement, causé par l'oxydation de la matière grasse (riche en acides gras insaturés) au contact de l'air, de la lumière et de la chaleur, donnant un goût âcre désagréable."}, {"id": "c80", "module": "Législation, réglementation & hygiène", "q": "Quelles sont les mentions obligatoires sur l'étiquette de ballotins de chocolat fermés préparés à l'avance ? Citez-en 5 et leur intérêt pour le client.", "a": "Dénomination de vente (identifie le produit), liste des ingrédients (transparence/allergènes), quantité nette (comparaison prix), date de consommation (sécurité), identification du fabricant (traçabilité/recours), allergènes mis en évidence (sécurité sanitaire)."}, {"id": "c81", "module": "Législation, réglementation & hygiène", "q": "Que signifie une confiture extra ? Différences entre confiture et marmelade ? Extrait sec requis ?", "a": "« Extra » impose un taux de fruits plus élevé que la confiture standard. La marmelade est réservée aux agrumes (avec écorces), la confiture à tous fruits. L'extrait sec minimum réglementaire d'une confiture est de 45% (55% pour l'extra)."}, {"id": "c82", "module": "Législation, réglementation & hygiène", "q": "La directive UE du 3 août 2003 autorise l'ajout de graisses végétales dans le chocolat en France. Citez les 6 autorisées et le pourcentage.", "a": "Illipé, huile de palme, karité, sal, noyau de mangue, kokum gurgi — 5% maximum du produit fini, à mentionner obligatoirement dans la liste des ingrédients."}, {"id": "c83", "module": "Législation, réglementation & hygiène", "q": "Quel pourcentage de miel un nougat doit-il contenir pour l'appellation « nougat au miel » ?", "a": "Selon le code d'usages nougat, le miel doit représenter au minimum 25% du poids de matière sèche des matières sucrantes pour les appellations protégées comme le nougat de Montélimar."}, {"id": "c84", "module": "Législation, réglementation & hygiène", "q": "Citez la réglementation pour l'appellation « nougat de Montélimar ».", "a": "Aération uniquement à l'albumine d'œuf/blanc d'œuf, miel ≥25% du poids de matière sèche des matières sucrantes, seule substance aromatisante autorisée = arôme naturel de vanille, garniture ≥30% du produit fini (min. 28% amandes + 2% pistaches, ou 30% amandes)."}, {"id": "c85", "module": "Législation, réglementation & hygiène", "q": "Quelle est la différence d'appellation entre du chocolat au lait et une couverture de chocolat au lait ?", "a": "Le « chocolat au lait » est la dénomination du produit fini destiné au consommateur (standards minimums de la directive chocolat). La « couverture » est un chocolat professionnel enrichi en beurre de cacao pour faciliter le tempérage, le moulage et l'enrobage en atelier."}, {"id": "c86", "module": "Législation, réglementation & hygiène", "q": "Sous quelles conditions peut-on utiliser la mention « au beurre » ou « à la crème » pour les caramels ?", "a": "Réservées aux caramels préparés exclusivement par cuisson de sucres/miel avec du lait, de la crème ou du beurre selon le cas, à l'exclusion de toute matière grasse non laitière, avec un minimum de 4,5% de matière sèche non grasse du lait et 3% de matières grasses d'origine lactique."}, {"id": "c87", "module": "Législation, réglementation & hygiène", "q": "Citez l'extrait sec d'une confiture pour être conforme à la législation.", "a": "Une confiture doit contenir un minimum de 45% d'extrait sec (55% pour l'appellation « extra »)."}, {"id": "c88", "module": "Législation, réglementation & hygiène", "q": "Expliquez le principe et la démarche HACCP.", "a": "Hazard Analysis Critical Control Point : méthode d'analyse des risques identifiant et maîtrisant les dangers à chaque étape (réception, stockage, fabrication, conditionnement, vente), en définissant des points critiques (CCP) avec limites, surveillance et actions correctives documentées."}, {"id": "c89", "module": "Législation, réglementation & hygiène", "q": "Quelle différence y a-t-il entre un produit vendu en « vrac » et un produit « préemballé » ?", "a": "Le vrac peut être modifié par le client sans altérer l'emballage (ex : bonbons choisis avant mise en sachet). Le préemballé est scellé (agrafe, autocollant) et ne peut plus être modifié : il est soumis à l'étiquetage réglementaire complet."}, {"id": "c90", "module": "Législation, réglementation & hygiène", "q": "Qu'est-ce que la traçabilité en chocolaterie, pourquoi est-elle obligatoire, comment est-elle mise en œuvre ?", "a": "Capacité à retracer à tout moment l'origine et le parcours d'un produit (matières premières → fabrication → vente). Obligatoire pour permettre un retrait rapide en cas de problème. Mise en œuvre via l'étiquetage des matières premières à réception, un numéro de lot par fabrication, et l'enregistrement des dates/quantités."}, {"id": "c91", "module": "Confiseries techniques", "q": "Indiquez les étapes de fabrication d'un bonbon liqueur avec robe de sucre. Expliquez le phénomène de cristallisation.", "a": "Empreintes dans l'amidon → cuisson eau/sucre → mélange sirop+alcool → coulage → obturation à l'amidon → repos 6-8h → cristallisation 12h → dépoussiérage. L'alcool ramène le sirop sursaturé à saturation ; en séchant, il repousse le saccharose en périphérie, qui cristallise au contact de l'amidon (robe de sucre)."}, {"id": "c92", "module": "Confiseries techniques", "q": "Quels facteurs accentuent la réaction d'hydrolyse lors de la confection d'une pâte de fruit ?", "a": "3 leviers : la chaleur (plus la cuisson est longue/intense, plus l'hydrolyse progresse), l'acidité (un acide comme le citrique catalyse la réaction), et les enzymes (invertase, hydrolyse à froid). Ces leviers scindent le saccharose en glucose+fructose (sucre inverti), anti-cristallisant."}, {"id": "c93", "module": "Confiseries techniques", "q": "Donnez la définition et les étapes de fabrication d'un fruit confit. Sur quel principe physique repose cette fabrication ?", "a": "Le confisage remplace l'eau de végétation du fruit par du sucre, par osmose (sortie d'eau/sucs, entrée du sirop). Étapes : préparation physique → blanchiment (2-3min à l'eau bouillante) → mise en sirop léger puis sirops de plus en plus concentrés sur plusieurs jours → ajout de glucose (anti-cristallisant) → glaçage éventuel."}, {"id": "c94", "module": "Confiseries techniques", "q": "Décrire la fabrication d'un fondant confiseur framboise, finition par candissage.", "a": "Cuisson du sucre au boulé (120-124°C) → refroidissement et travail mécanique (« graissage ») pour cristalliser finement en masse blanche et lisse → aromatisation framboise → moulage/détaillage → finition par candissage (trempage dans un sirop sursaturé qui forme une croûte de cristaux protectrice et brillante)."}, {"id": "c95", "module": "Confiseries techniques", "q": "Indiquez les étapes de fabrication artisanale d'un fondant framboise finition candi confiseur.", "a": "Cuisson du sucre au boulé, travail/graissage pour cristallisation fine, aromatisation et coloration framboise, détaillage en bonbons, puis candissage : trempage dans un sirop de sucre saturé qui, en refroidissant, forme une coque cristalline protectrice."}, {"id": "c96", "module": "Confiseries techniques", "q": "Expliquez le phénomène de candissage.", "a": "Un sirop de sucre saturé (72Bx) refroidi devient sursaturé ; versé sur un support à candir et laissé au repos 12h sans vibration, il recristallise en formant une couche de cristaux soudés (protection hermétique, finition brillante). Les vibrations donneraient une cristallisation irrégulière."}, {"id": "c97", "module": "Confiseries techniques", "q": "Quelles sont les causes et les défauts d'un caramel collant ?", "a": "Cuisson insuffisante (température trop basse, pas assez d'eau évaporée), taux de matières grasses ou de sucre inverti trop élevé, ou stockage dans un environnement trop humide qui fait reprendre l'humidité au caramel."}, {"id": "c98", "module": "Confiseries techniques", "q": "Lorsque vous fabriquez des berlingots, ils ont tendance à remouiller à la conservation. Expliquez les causes et solutions.", "a": "Causes : trop de sucre inverti formé (cuisson trop longue, glucose ajouté trop tôt, acide tartrique ajouté trop tôt), sucre inverti hygroscopique qui attire l'eau. Solutions : dissoudre lentement le saccharose, glucose à DE bas ajouté à 100-110°C, acide en toute fin de cuisson, refroidissement rapide, emballage étanche seulement une fois refroidi."}, {"id": "c99", "module": "Confiseries techniques", "q": "Pour les pâtes de fruits : importance du pH, pourcentage minimal de fruit, pourcentage d'extrait sec, rôle de l'acide en fin de cuisson.", "a": "Le pH doit être maîtrisé (milieu acide, ~3,5-3,8) pour permettre la gélification de la pectine. Minimum légal : 50% de fruit mis en œuvre (11% d'extrait sec). L'acide ajouté en fin de cuisson accélère la prise de la pectine et apporte l'acidulé caractéristique."}, {"id": "c100", "module": "Confiseries techniques", "q": "Qu'est-ce que le candissage confiseur ? But, méthode.", "a": "Procédé de conservation formant une couche de cristaux de sucre soudés en surface (protection hermétique + finition brillante). Méthode : sirop saturé à 72Bx, refroidi sans recristallisation prématurée, versé sur le support, repos 12h sans vibration pour une cristallisation fine et régulière."}, {"id": "c101", "module": "Confiseries techniques", "q": "Pour les pâtes de fruits à la pectine jaune : 3 particularités de cette pectine ; 3 causes si la pâte ne tient pas.", "a": "Particularités : gélifie uniquement en milieu acide (pH 3,5-3,8), utilise des sels retardateurs, non thermoréversible (contrairement à la NH). Causes d'une pâte qui ne tient pas : pH insuffisamment acide, extrait sec trop faible (moins de 75%), dispersion imparfaite de la pectine dans la masse."}];
+
+const STORAGE_KEY = 'ancrage-btm-progress-v1';
+
+/* Boîtes de Leitner : intervalle en jours avant la prochaine révision */
+const BOX_INTERVALS = [0, 1, 3, 7, 14, 30]; // index = numéro de boîte (0 à 5)
+const MAX_BOX = 5;
+
+const MODULE_COLORS = {};
+const PALETTE = ['#cf9455','#d8b66e','#a97c4f','#c68a5a','#e0a95f','#b8783a','#8a5427','#dbb877','#c9975f','#9c6b3e','#e3c27f','#b58b52','#d4a05e'];
+function moduleColor(mod){
+  const mods = [...new Set(CARDS.map(c=>c.module))];
+  if(!(mod in MODULE_COLORS)){
+    MODULE_COLORS[mod] = PALETTE[mods.indexOf(mod) % PALETTE.length];
+  }
+  return MODULE_COLORS[mod];
+}
+
+function todayStr(){
+  return new Date().toISOString().slice(0,10);
+}
+function addDays(dateStr, days){
+  const d = new Date(dateStr + 'T00:00:00');
+  d.setDate(d.getDate() + days);
+  return d.toISOString().slice(0,10);
+}
+
+function loadProgress(){
+  let stored = {};
+  try{ stored = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); } catch(e){ stored = {}; }
+  const today = todayStr();
+  CARDS.forEach(c => {
+    if(!stored[c.id]){
+      stored[c.id] = { box: 0, nextReview: today };
+    }
+  });
+  return stored;
+}
+function saveProgress(progress){
+  try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(progress)); } catch(e){ /* stockage indisponible, tant pis */ }
+}
+
+let progress = loadProgress();
+
+function dueCards(){
+  const today = todayStr();
+  return CARDS.filter(c => progress[c.id].nextReview <= today);
+}
+function masteredCount(){
+  return CARDS.filter(c => progress[c.id].box >= MAX_BOX).length;
+}
+
+function renderDashboard(){
+  const due = dueCards();
+  document.getElementById('statDue').textContent = due.length;
+  document.getElementById('statMastered').textContent = masteredCount();
+  document.getElementById('statTotal').textContent = CARDS.length;
+
+  const mods = [...new Set(CARDS.map(c=>c.module))];
+  const wrap = document.getElementById('moduleBars');
+  wrap.innerHTML = mods.map(mod => {
+    const modCards = CARDS.filter(c => c.module === mod);
+    const modMastered = modCards.filter(c => progress[c.id].box >= MAX_BOX).length;
+    const pct = Math.round((modMastered / modCards.length) * 100);
+    return `<div class="module-bar-row">
+      <span class="module-bar-name">${mod}</span>
+      <span class="module-bar-track"><span class="module-bar-fill" style="width:${pct}%; background:${moduleColor(mod)};"></span></span>
+      <span class="module-bar-count">${modMastered}/${modCards.length}</span>
+    </div>`;
+  }).join('');
+
+  document.getElementById('startSessionBtn').disabled = due.length === 0;
+  document.getElementById('startSessionBtn').textContent = due.length === 0
+    ? "Rien à réviser aujourd'hui \u2014 reviens plus tard"
+    : `Commencer une session (${due.length} question${due.length>1?'s':''})`;
+}
+
+/* =========================================================
+   SESSION
+   ========================================================= */
+let sessionQueue = [];
+let sessionIndex = 0;
+let sessionStats = { acquis: 0, partiel: 0, revoir: 0 };
+
+function switchPanel(id){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.getElementById('panel-'+id).classList.add('active');
+}
+
+function startSession(){
+  sessionQueue = shuffle(dueCards());
+  sessionIndex = 0;
+  sessionStats = { acquis: 0, partiel: 0, revoir: 0 };
+  switchPanel('session');
+  renderSessionCard();
+}
+function shuffle(arr){
+  const a = arr.slice();
+  for(let i=a.length-1;i>0;i--){ const j = Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; }
+  return a;
+}
+
+function renderSessionCard(){
+  if(sessionIndex >= sessionQueue.length){
+    endSession();
+    return;
+  }
+  const card = sessionQueue[sessionIndex];
+  document.getElementById('sessionFill').style.width = Math.round((sessionIndex/sessionQueue.length)*100) + '%';
+  document.getElementById('sessionLabel').textContent = (sessionIndex+1) + ' / ' + sessionQueue.length;
+
+  const sc = document.getElementById('sessionCard');
+  sc.innerHTML = `
+    <p class="card-module">${card.module}</p>
+    <p class="card-question">${card.q}</p>
+    <textarea id="answerInput" placeholder="Écris ta réponse ici, avec autant de détail que tu le peux…"></textarea>
+    <div class="btn-row" style="margin-top:14px;">
+      <button class="btn" id="submitAnswerBtn">Voir la correction</button>
+      <button class="btn ghost" id="skipBtn">Je ne sais pas / passer</button>
+    </div>
+    <div class="feedback-box" id="feedbackBox"></div>
+    <div class="error-box" id="sessionError"></div>
+  `;
+  document.getElementById('submitAnswerBtn').addEventListener('click', () => submitAnswer(card));
+  document.getElementById('skipBtn').addEventListener('click', () => submitAnswer(card, true));
+}
+
+const GROQ_MODEL = "llama-3.3-70b-versatile";
+const RELAY_URL = "/.netlify/functions/chat";
+
+async function askTuteur(userPrompt){
+  const response = await fetch(RELAY_URL, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      model: GROQ_MODEL,
+      messages: [{role: "user", content: userPrompt}],
+      temperature: 0.4
+    })
+  });
+  if(!response.ok){
+    const errBody = await response.text().catch(()=>"");
+    const err = new Error("HTTP " + response.status);
+    err.status = response.status;
+    err.body = errBody;
+    throw err;
+  }
+  const data = await response.json();
+  return data.choices[0].message.content;
+}
+
+async function submitAnswer(card, skipped){
+  const submitBtn = document.getElementById('submitAnswerBtn');
+  const skipBtn = document.getElementById('skipBtn');
+  const errorBox = document.getElementById('sessionError');
+  const feedbackBox = document.getElementById('feedbackBox');
+  const userAnswer = skipped ? '(pas de réponse)' : (document.getElementById('answerInput').value.trim() || '(réponse vide)');
+
+  submitBtn.disabled = true; skipBtn.disabled = true;
+  errorBox.classList.remove('show');
+  feedbackBox.classList.add('show', 'loading');
+  feedbackBox.innerHTML = 'Le tuteur corrige ta réponse…';
+
+  const prompt = `Tu es un correcteur pour un élève en BTM Chocolatier-Confiseur qui s'entraîne avec des flashcards à réponse rédigée.
+
+Question posée : "${card.q}"
+Réponse de référence (fidèle au cours) : "${card.a}"
+Réponse rédigée par l'élève : "${userAnswer}"
+
+Compare la réponse de l'élève à la réponse de référence, sur 2 plans distincts :
+1. EXACTITUDE : est-ce que ce qu'il a écrit est factuellement juste (même partiellement) ?
+2. DÉVELOPPEMENT : est-ce que sa réponse est assez développée/complète, ou trop courte/superficielle même si l'idée générale est juste ?
+
+Réponds en HTML simple (des balises <h4> et <p> seulement, rien d'autre) avec :
+- Un <h4>Verdict</h4> et une phrase franche et bienveillante disant si c'est acquis, partiellement acquis, ou à revoir — en insistant particulièrement si la réponse est juste mais trop peu développée.
+- Un <h4>Ce qui manque ou pourrait être précisé</h4> avec 1-3 points concrets (ou "Rien à ajouter, réponse complète" si c'est le cas).
+- Un <h4>Réponse de référence</h4> reprenant la réponse de référence fournie ci-dessus telle quelle.
+
+Sois direct mais encourageant, comme un formateur qui veut vraiment que l'élève progresse.`;
+
+  try{
+    const answer = await askTuteur(prompt);
+    feedbackBox.classList.remove('loading');
+    feedbackBox.innerHTML = answer;
+  } catch(err){
+    feedbackBox.classList.remove('loading');
+    feedbackBox.innerHTML = `<h4>Réponse attendue</h4><p>${card.a}</p><p style="font-size:12px; color:var(--text-dim); font-style:italic; margin-top:10px;">(La correction automatique n'a pas pu se faire cette fois — compare simplement ta réponse à celle-ci.)</p>`;
+    errorBox.textContent = err.status === 429
+      ? "Trop de corrections envoyées d'un coup : attends un instant avant de réessayer."
+      : "La correction automatique n'a pas pu se faire, voici directement la réponse attendue.";
+    errorBox.classList.add('show');
+    console.error(err);
+  }
+
+  showVerdictButtons(card);
+  submitBtn.disabled = false; skipBtn.disabled = false;
+}
+
+function showVerdictButtons(card){
+  const sc = document.getElementById('sessionCard');
+  if(document.getElementById('verdictRow')) return;
+  const row = document.createElement('div');
+  row.className = 'verdict-row';
+  row.id = 'verdictRow';
+  row.innerHTML = `
+    <button class="verdict-btn acquis" data-v="acquis"><span class="vb-title">✅ Acquis</span><span class="vb-sub">Je reverrai cette question plus tard</span></button>
+    <button class="verdict-btn partiel" data-v="partiel"><span class="vb-title">🟡 Partiellement</span><span class="vb-sub">À revoir bientôt</span></button>
+    <button class="verdict-btn revoir" data-v="revoir"><span class="vb-title">🔴 À revoir</span><span class="vb-sub">Je reverrai cette question demain</span></button>
+  `;
+  sc.appendChild(row);
+  row.querySelectorAll('.verdict-btn').forEach(btn => {
+    btn.addEventListener('click', () => applyVerdict(card, btn.dataset.v));
+  });
+}
+
+function applyVerdict(card, verdict){
+  const p = progress[card.id];
+  if(verdict === 'acquis'){
+    p.box = Math.min(MAX_BOX, p.box + 1);
+    sessionStats.acquis++;
+  } else if(verdict === 'partiel'){
+    // niveau de boîte inchangé, mais on la revoit vite (intervalle court ci-dessous)
+    sessionStats.partiel++;
+  } else {
+    p.box = 0;
+    sessionStats.revoir++;
+  }
+  const interval = verdict === 'partiel' ? 2 : BOX_INTERVALS[p.box];
+  p.nextReview = addDays(todayStr(), interval);
+  progress[card.id] = p;
+  saveProgress(progress);
+
+  sessionIndex++;
+  renderSessionCard();
+}
+
+function endSession(){
+  switchPanel('end');
+  const total = sessionStats.acquis + sessionStats.partiel + sessionStats.revoir;
+  document.getElementById('endSummary').textContent =
+    `${total} question${total>1?'s':''} revue${total>1?'s':''} — ${sessionStats.acquis} acquise${sessionStats.acquis>1?'s':''}, ${sessionStats.partiel} partielle${sessionStats.partiel>1?'s':''}, ${sessionStats.revoir} à revoir.`;
+  renderDashboard();
+}
+
+document.getElementById('startSessionBtn').addEventListener('click', startSession);
+document.getElementById('backToDashboardBtn').addEventListener('click', () => { switchPanel('dashboard'); renderDashboard(); });
+document.getElementById('resetBtn').addEventListener('click', () => {
+  if(confirm("Remettre toutes tes questions à zéro (comme si tu n'avais jamais commencé) ?")){
+    try{ localStorage.removeItem(STORAGE_KEY); } catch(e){}
+    progress = loadProgress();
+    renderDashboard();
+  }
+});
+
+const themeToggle = document.getElementById('themeToggle');
+const themeLabel = document.getElementById('themeLabel');
+themeToggle.addEventListener('click', () => {
+  const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+  document.documentElement.setAttribute('data-theme', isLight ? 'dark' : 'light');
+  themeLabel.textContent = isLight ? 'Mode clair' : 'Mode sombre';
+});
+
+renderDashboard();
+</script>
+</body>
+</html>

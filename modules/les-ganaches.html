@@ -1,0 +1,961 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Les ganaches — BTM Chocolatier</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #20110a;
+    --surface: #2b1810;
+    --surface-alt: #3d2416;
+    --border: rgba(242,232,216,0.14);
+    --text: #f2e8d8;
+    --text-bright: #faf4e9;
+    --text-dim: rgba(242,232,216,0.62);
+    --caramel: #b8783a;
+    --caramel-hi: #cf9455;
+    --gold: #d8b66e;
+    --error: #7a2e2a;
+    --error-text: #e2a29d;
+    --success: #4c7a3a;
+    --success-text: #b7dba0;
+    --shadow: rgba(0,0,0,0.35);
+  }
+  [data-theme="light"]{
+    --bg: #f7efdf;
+    --surface: #fffaf0;
+    --surface-alt: #efe0c4;
+    --border: rgba(61,36,22,0.16);
+    --text: #3a2415;
+    --text-bright: #241207;
+    --text-dim: rgba(58,36,21,0.62);
+    --caramel: #a8632b;
+    --caramel-hi: #94551f;
+    --gold: #93701f;
+    --error: #a13d34;
+    --error-text: #7c2b25;
+    --success: #3d6b2c;
+    --success-text: #2c4f20;
+    --shadow: rgba(58,36,21,0.12);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--bg); color:var(--text); font-family:'Inter',sans-serif;
+    min-height:100vh; -webkit-font-smoothing:antialiased;
+    transition:background .35s ease, color .35s ease;
+  }
+  h1,h2,h3{font-family:'Merriweather',serif; font-weight:700; letter-spacing:-0.005em;}
+  a{color:var(--caramel-hi);}
+  ::-webkit-scrollbar{width:10px;height:10px;}
+  ::-webkit-scrollbar-thumb{background:var(--surface-alt); border-radius:8px;}
+
+  .app{display:flex; min-height:100vh;}
+
+  /* ===== Sidebar ===== */
+  .sidebar{
+    width:230px; flex-shrink:0; background:var(--surface); border-right:1px solid var(--border);
+    display:flex; flex-direction:column; padding:24px 16px; gap:6px;
+    position:sticky; top:0; height:100vh;
+  }
+  .sidebar .brand{padding:4px 10px 20px;}
+  .sidebar .brand .kicker{color:var(--caramel-hi); font-size:11.5px; font-weight:600; text-transform:uppercase; letter-spacing:.06em; margin:0 0 4px;}
+  .sidebar .brand h1{font-size:20px; margin:0; color:var(--text-bright); line-height:1.25;}
+  .navbtn{
+    display:flex; align-items:center; gap:10px; text-align:left; width:100%;
+    background:transparent; border:none; border-radius:10px; padding:11px 12px;
+    color:var(--text-dim); font-family:'Inter',sans-serif; font-size:14px; font-weight:500;
+    cursor:pointer; transition:background .2s ease, color .2s ease;
+  }
+  .navbtn svg{width:17px; height:17px; flex-shrink:0;}
+  .navbtn:hover{background:var(--surface-alt); color:var(--text);}
+  .navbtn.active{background:linear-gradient(155deg, var(--caramel-hi), var(--caramel) 65%); color:var(--bg); font-weight:600;}
+  .sidebar-spacer{flex:1;}
+  .theme-toggle{
+    display:flex; align-items:center; gap:8px; background:var(--surface-alt); border:1px solid var(--border);
+    color:var(--text-dim); padding:10px 12px; border-radius:10px; font-size:13px; cursor:pointer;
+  }
+  .theme-toggle:hover{color:var(--text);}
+  .theme-toggle svg{width:15px;height:15px;}
+  .back-link{display:block; font-size:12.5px; color:var(--text-dim); text-decoration:none; padding:8px 12px 2px;}
+  .back-link:hover{color:var(--text);}
+
+  /* ===== Main ===== */
+  .main{flex:1; min-width:0; padding:40px 44px 80px;}
+  .panel{display:none; max-width:820px; margin:0 auto;}
+  .panel.active{display:block;}
+  .panel-head{margin-bottom:28px;}
+  .panel-head .kicker{color:var(--caramel-hi); font-size:12.5px; font-weight:600; margin:0 0 6px;}
+  .panel-head h2{font-size:26px; margin:0 0 8px; color:var(--text-bright);}
+  .panel-head p{color:var(--text-dim); font-size:14px; margin:0; line-height:1.55; max-width:60ch;}
+
+  .card{
+    background:var(--surface); border:1px solid var(--border); border-radius:16px;
+    padding:26px; box-shadow:0 8px 24px var(--shadow); margin-bottom:18px;
+  }
+
+  /* ===== Quiz ===== */
+  .quiz-progress-wrap{display:flex; align-items:center; gap:12px; margin-bottom:22px;}
+  .quiz-progress-bar{flex:1; height:8px; border-radius:99px; background:var(--surface-alt); overflow:hidden;}
+  .quiz-progress-fill{height:100%; background:linear-gradient(90deg, var(--caramel), var(--gold)); border-radius:99px; transition:width .3s ease;}
+  .quiz-progress-label{font-size:12.5px; color:var(--text-dim); white-space:nowrap;}
+  .quiz-q{font-size:17px; line-height:1.5; color:var(--text-bright); margin:0 0 20px; font-family:'Merriweather',serif; font-weight:700;}
+  .quiz-options{display:flex; flex-direction:column; gap:10px;}
+  .quiz-opt{
+    text-align:left; padding:13px 16px; border-radius:11px; border:1px solid var(--border);
+    background:var(--surface-alt); color:var(--text); font-family:'Inter',sans-serif; font-size:14.5px;
+    cursor:pointer; transition:border-color .15s ease, background .15s ease;
+  }
+  .quiz-opt:hover{border-color:var(--caramel-hi);}
+  .quiz-opt.correct{background:color-mix(in srgb, var(--success) 30%, var(--surface-alt)); border-color:var(--success);}
+  .quiz-opt.incorrect{background:color-mix(in srgb, var(--error) 30%, var(--surface-alt)); border-color:var(--error);}
+  .quiz-opt[disabled]{cursor:default;}
+  .quiz-explain{
+    margin-top:18px; padding:16px 18px; border-radius:12px; background:var(--surface-alt);
+    border-left:3px solid var(--gold); font-size:13.5px; line-height:1.6; color:var(--text); display:none;
+  }
+  .quiz-explain.show{display:block;}
+  .quiz-explain b{color:var(--text-bright);}
+  .quiz-next{margin-top:18px; display:none;}
+  .quiz-next.show{display:inline-flex;}
+  .quiz-result{text-align:center; padding:20px 0;}
+  .badge{
+    width:110px; height:110px; border-radius:50%; margin:0 auto 18px; display:flex; align-items:center;
+    justify-content:center; font-family:'Merriweather',serif; font-weight:900; font-size:15px; text-align:center;
+    box-shadow:inset 0 2px 6px rgba(0,0,0,0.25), 0 6px 18px var(--shadow); color:#2a1a0a;
+  }
+  .badge.bronze{background:linear-gradient(155deg,#d3925a,#9a5a2c);}
+  .badge.argent{background:linear-gradient(155deg,#e6e6e6,#a8a8a8); color:#2a2a2a;}
+  .badge.or{background:linear-gradient(155deg,#f2d27a,#c99a2e);}
+  .quiz-result h3{margin:0 0 6px; color:var(--text-bright); font-size:20px;}
+  .quiz-result p{color:var(--text-dim); font-size:14px; margin:0 0 22px;}
+
+  .btn{
+    display:inline-flex; align-items:center; justify-content:center; gap:8px; border:none; border-radius:11px;
+    font-family:'Inter',sans-serif; font-weight:600; font-size:14px; padding:11px 20px; cursor:pointer;
+    color:var(--bg); text-decoration:none; background:linear-gradient(155deg, var(--caramel-hi), var(--caramel) 60%, #8a5427);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,0.25), 0 3px 10px var(--shadow); transition:transform .15s ease;
+  }
+  .btn:hover{transform:translateY(-1px);}
+  .btn.ghost{background:transparent; color:var(--text); border:1px solid var(--border); box-shadow:none;}
+
+  /* ===== Tuteur ===== */
+  .chat-wrap{display:flex; flex-direction:column; height:64vh;}
+  .chat-log{flex:1; overflow-y:auto; padding:4px 2px 12px; display:flex; flex-direction:column; gap:14px;}
+  .msg{max-width:88%; padding:12px 15px; border-radius:14px; font-size:14px; line-height:1.55;}
+  .msg.user{align-self:flex-end; background:linear-gradient(155deg, var(--caramel-hi), var(--caramel)); color:var(--bg); border-bottom-right-radius:4px;}
+  .msg.bot{align-self:flex-start; background:var(--surface-alt); border:1px solid var(--border); color:var(--text); border-bottom-left-radius:4px; white-space:pre-wrap;}
+  .msg.bot.loading{color:var(--text-dim); font-style:italic;}
+  .suggestions{display:flex; flex-wrap:wrap; gap:8px; margin:6px 0 16px;}
+  .suggestion-chip{
+    background:var(--surface-alt); border:1px solid var(--border); color:var(--text-dim); font-size:12.5px;
+    padding:8px 13px; border-radius:99px; cursor:pointer; text-align:left;
+  }
+  .suggestion-chip:hover{border-color:var(--caramel-hi); color:var(--text);}
+  .chat-input-row{display:flex; gap:10px; margin-top:8px;}
+  .chat-input-row input{
+    flex:1; background:var(--surface-alt); border:1px solid var(--border); border-radius:11px; color:var(--text);
+    font-family:'Inter',sans-serif; font-size:14px; padding:12px 15px;
+  }
+  .chat-input-row input:focus{outline:none; border-color:var(--caramel-hi);}
+
+  /* ===== Question d'examen ===== */
+  .exam-pills{display:flex; flex-wrap:wrap; gap:8px; margin-bottom:22px;}
+  .exam-pill{
+    background:var(--surface-alt); border:1px solid var(--border); color:var(--text-dim); font-size:13px;
+    padding:9px 15px; border-radius:99px; cursor:pointer; font-family:'Inter',sans-serif;
+  }
+  .exam-pill.active{background:linear-gradient(155deg, var(--caramel-hi), var(--caramel)); color:var(--bg); border-color:transparent; font-weight:600;}
+  .exam-q-title{font-size:17px; font-family:'Merriweather',serif; font-weight:700; color:var(--text-bright); margin:0 0 6px;}
+  .exam-q-points{font-size:12px; color:var(--text-dim); margin:0 0 20px;}
+  .step{
+    background:var(--surface-alt); border-radius:12px; padding:14px 16px; margin-bottom:12px;
+    font-size:13.5px; line-height:1.6; border-left:3px solid var(--border);
+  }
+  .step.hint{border-left-color:var(--gold);}
+  .step-label{font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:.05em; color:var(--caramel-hi); margin-bottom:5px;}
+  .exam-answer{
+    display:none; margin-top:16px; padding:18px; border-radius:12px; background:var(--surface-alt);
+    border-left:3px solid var(--success); font-size:13.5px; line-height:1.65;
+  }
+  .exam-answer.show{display:block;}
+  .exam-answer h4{margin:14px 0 6px; font-size:13.5px; color:var(--text-bright); font-family:'Inter',sans-serif;}
+  .exam-answer h4:first-child{margin-top:0;}
+  .exam-answer ul{margin:4px 0; padding-left:18px;}
+  .exam-controls{display:flex; gap:10px; flex-wrap:wrap; margin-top:6px;}
+  .exam-note{font-size:11.5px; color:var(--text-dim); margin-top:14px; font-style:italic;}
+
+  /* ===== En bref ===== */
+  .brief-svg-wrap{background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:18px; margin-bottom:18px; overflow-x:auto;}
+  .brief-points{display:grid; grid-template-columns:repeat(auto-fit, minmax(230px,1fr)); gap:14px;}
+  .brief-point{background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:16px 18px;}
+  .brief-point h4{margin:0 0 6px; font-size:14px; color:var(--gold); font-family:'Inter',sans-serif;}
+  .brief-point p{margin:0; font-size:13px; line-height:1.55; color:var(--text-dim);}
+
+  @media (max-width: 860px){
+    .app{flex-direction:column;}
+    .sidebar{width:100%; height:auto; position:relative; flex-direction:row; overflow-x:auto; padding:14px 12px; align-items:center;}
+    .sidebar .brand{padding:0 12px 0 4px; flex-shrink:0;}
+    .sidebar-spacer{display:none;}
+    .navbtn{flex-shrink:0; width:auto;}
+    .theme-toggle{flex-shrink:0;}
+    .main{padding:26px 18px 60px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="app">
+  <nav class="sidebar">
+    <div class="brand">
+      <p class="kicker">BTM Chocolatier</p>
+      <h1>Les ganaches</h1>
+    </div>
+    <button class="navbtn active" data-tab="quiz">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+      Quiz
+    </button>
+    <button class="navbtn" data-tab="tuteur">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      Poser une question
+    </button>
+    <button class="navbtn" data-tab="examen">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M9 13h6M9 17h6M9 9h1"/></svg>
+      Question d'examen
+    </button>
+    <button class="navbtn" data-tab="brief">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+      En bref
+    </button>
+    <div class="sidebar-spacer"></div>
+    <a class="back-link" href="../index.html">← Retour au hub</a>
+    <button class="theme-toggle" id="themeToggle">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4.5"/><path d="M12 2.5v2M12 19.5v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M2.5 12h2M19.5 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4"/></svg>
+      <span id="themeLabel">Mode clair</span>
+    </button>
+  </nav>
+
+  <main class="main">
+
+    <!-- ===== QUIZ ===== -->
+    <section class="panel active" id="panel-quiz">
+      <div class="panel-head">
+        <p class="kicker">Quiz — Les ganaches</p>
+        <h2>Teste tes connaissances</h2>
+        <p>Émulsion, AW/HRE, hygiène, défauts et conservation des ganaches.</p>
+      </div>
+      <div class="card" id="quizCard"></div>
+    </section>
+
+    <!-- ===== TUTEUR ===== -->
+    <section class="panel" id="panel-tuteur">
+      <div class="panel-head">
+        <p class="kicker">Tuteur IA — Les ganaches</p>
+        <h2>Poser une question</h2>
+        <p>Le tuteur répond uniquement à partir du cours de ce module. Pour les autres sujets, utilise le module concerné.</p>
+      </div>
+      <div class="card chat-wrap">
+        <div class="chat-log" id="chatLog"></div>
+        <div class="suggestions" id="chatSuggestions"></div>
+        <div class="chat-input-row">
+          <input type="text" id="chatInput" placeholder="Écris ta question sur le cacao…">
+          <button class="btn" id="chatSend">Envoyer</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== EXAMEN ===== -->
+    <section class="panel" id="panel-examen">
+      <div class="panel-head">
+        <p class="kicker">Question d'examen — Les ganaches</p>
+        <h2>Cheminement guidé</h2>
+        <p>Choisis une question, avance indice par indice, puis assemble ta réponse avant de découvrir le corrigé.</p>
+      </div>
+      <div class="exam-pills" id="examPills"></div>
+      <div class="card" id="examCard"></div>
+    </section>
+
+    <!-- ===== EN BREF ===== -->
+    <section class="panel" id="panel-brief">
+      <div class="panel-head">
+        <p class="kicker">En bref — Les ganaches</p>
+        <h2>Récapitulatif visuel</h2>
+        <p>Les 4 grandes variétés et l'essentiel à retenir avant l'épreuve.</p>
+      </div>
+      <div class="brief-svg-wrap" id="briefSvgWrap"></div>
+      <div class="brief-points" id="briefPoints"></div>
+    </section>
+
+  </main>
+</div>
+
+
+<script>
+/* =========================================================
+   COURSE_TEXT — synthèse fidèle du cours "Les ganaches"
+   (source du tuteur IA — ne répond qu'à partir de ce texte)
+   ========================================================= */
+const COURSE_TEXT = `
+
+MODULE : TECHNOLOGIE DES GANACHES — BTM Chocolatier Confiseur (Bloc 4)
+
+1/ INTRODUCTION
+La ganache est omniprésente dans les gammes de bonbons de chocolat, plébiscitée par toutes les générations : onctueuse, douce, amère, parfumée, infusée, foisonnée, liquide, ferme... elle offre de vastes possibilités de création (cadrage, moulage, coulage, dressage).
+Sa recette de base est simple (chocolat additionné de crème), mais sa forte teneur en humidité en fait un produit sensible dont il faut maîtriser l'évolution pour garantir qualité et conservation selon les objectifs de production. Pour cela, il faut connaître les matières qui la composent et leurs impacts sur le produit. Pour optimiser sa conservation (bactériologique et organoleptique), les recettes doivent être équilibrées : cet équilibrage consiste à répartir les différents éléments pour atteindre les objectifs fixés.
+
+2/ DÉFINITION D'UNE GANACHE
+Les ganaches sont des préparations plus ou moins tendres destinées à la réalisation de fourrages ou de bonbons de chocolat. Très fragiles à cause de leur forte teneur en humidité, elles s'altèrent rapidement.
+Une ganache est une émulsion composée principalement de 2 corps :
+- Un corps aqueux : eau, liquide, crème, lait
+- Un corps gras : matière grasse, huile
+D'autres ingrédients jouent un rôle important : agent de texture (sucre inverti, glucose), agent de conservation (sorbitol), agent aromatique (parfums, pulpes, essences).
+Le but de l'émulsion est d'obtenir des textures les plus fondantes et lisses possibles, avec une perception moins grasse en bouche. Une émulsion mal aboutie conduit à une texture granuleuse (cristaux de beurre de cacao séparés de la phase liquide), une conservation plus courte et une mauvaise stabilité.
+
+3/ QU'ENTEND-ON PAR ÉMULSION ?
+Le principe de l'émulsion est d'assembler et de stabiliser deux corps non miscibles : après l'émulsion, la phase grasse est sous forme de particules très fines en suspension dans la phase aqueuse. Elle est favorisée principalement par deux produits : la lécithine (présente dans le chocolat) et les protéines (présentes dans les produits laitiers, le chocolat).
+
+La lécithine E322 : composant du chocolat (moins de 0,5%), elle a plusieurs propriétés : stabilisation des émulsions, abaissement de l'AW (ou HR), régulation de la viscosité. Elle a pour mission de lier la phase aqueuse à la phase grasse. Les molécules tensioactives (la lécithine) entourent les gouttelettes d'eau, plaçant leur queue au contact du corps gras et leur tête au contact du liquide. La taille moyenne des gouttelettes dépend beaucoup de l'énergie d'agitation lors du mélange.
+
+Les protéines : propriétés similaires à la lécithine, mais elles créent des ponts pour lier le liquide à la matière grasse (alors que la lécithine lie la matière grasse au liquide). C'est l'ensemble lécithine/protéines qui permet la stabilité d'une émulsion.
+En résumé : la ganache est une émulsion résultant d'un mélange de deux corps qui, normalement, ne peuvent pas se lier naturellement. Grâce à la lécithine et aux protéines, ce mélange devient possible.
+
+4/ COMMENT OBTENIR UNE BONNE ÉMULSION STABLE ?
+- Une bonne agitation : une ganache insuffisamment mélangée peut contenir des gouttes de matière grasse non émulsionnées, causant un dessèchement plus rapide et une sensation plus grasse en bouche. Un mélange trop important peut provoquer la rupture de la chaîne moléculaire obtenue avec l'émulsion, causant la séparation de la matière grasse.
+- Éviter de casser la couche entre le liquide et la matière grasse : éviter une température trop élevée (évaporation), une température trop basse (cristallisation du beurre de cacao), trop d'alcool (rupture de la caséine).
+- Maintenir un équilibrage précis du rapport eau/matière grasse : recalculer le poids de chocolat à mettre en œuvre lors d'une modification de recette (en tenant compte du % de cacao et de beurre de cacao) ; adapter le matériel utilisé (des casseroles trop grandes/larges provoquent une évaporation excessive qui déséquilibre le rapport eau/matière grasse).
+
+Recommandations : en laboratoire, on utilise fréquemment des Stéphan® (sous vide ou non), des mixeurs, des robots coupe... pour optimiser la réussite et la stabilité de l'émulsion. Pour les ganaches au batteur ou réalisées manuellement, il est conseillé de mixer en fin de mélange. Plus la friction (frottement) de l'eau et des matières grasses est importante, plus l'émulsion sera fine grâce à une meilleure dispersion des particules (fractionnement de la MG) : meilleure texture (plus élastique), meilleure conservation, meilleure sensation de fraîcheur en bouche.
+
+Température de coulage des ganaches :
+- Ganache noire : 32-35°C, idéalement 33°C
+- Ganache lactée : 29-33°C, idéalement 31°C
+- Ganache ivoire : 26-28°C, idéalement 27°C
+Il est recommandé de ne pas incorporer d'air (risque de développement microbiologique non maîtrisé et d'oxydation des matières grasses), et d'adapter le matériel aux fabrications (casseroles adaptées pour éviter une évaporation trop importante).
+
+5/ AW OU HRE (Activity Water / Humidité Relative à l'Équilibre)
+Chaque produit contient de l'eau plus ou moins disponible ou fixée : on distingue « l'eau libre » et « l'eau liée ». Ces 2 termes désignent la disponibilité de l'eau (et non sa teneur), un paramètre majeur de la conservation. Les micro-organismes ont besoin d'eau disponible pour proliférer.
+L'HRE s'exprime en pourcentage (100% pour l'eau pure) ; l'AW s'exprime en coefficient (1 pour l'eau pure). Plus l'activité de l'eau est grande, plus la quantité d'eau libre est élevée, plus les micro-organismes se développeront. Pour diminuer cette activité, on peut sécher le produit ou ajouter un soluté qui fixe l'eau et la rend indisponible pour les micro-organismes (principe du salage en charcuterie, du sucrage des confitures ; pour les ganaches, c'est surtout la lécithine et les sucres qui jouent ce rôle).
+Lorsque l'HRE d'un produit est plus importante que celle de son milieu, le produit se dessèche (il perd son humidité). Si l'HRE diminue, l'hygroscopie augmente, le produit fixe l'eau et se ramollit (devient plastique et collant). Cette mesure prédit la stabilité de la durée de vie d'un produit. Les sucres ont une influence directe sur l'eau liée.
+Réactions selon l'HRE : 0,25 à 0,45 = développement des réactions chimiques ; 0,60 à 0,75 = réactions enzymatiques ; 0,65 et plus = prolifération des levures et moisissures ; 0,86 et plus = prolifération des bactéries.
+Cet équilibre doit être en adéquation avec l'hygrométrie de l'environnement de production, de stockage ou de vente pour déterminer la durée de vie du produit — la durée de vie ne s'évalue pas qu'en magasin, mais doit s'anticiper aussi chez le client. La couverture d'enrobage n'est pas étanche : des échanges se font entre l'intérieur d'un bonbon et son environnement de stockage.
+
+6/ L'IMPORTANCE DE L'HYGIÈNE
+Un bon équilibrage et une bonne technique sont importants mais ne servent à rien sans une bonne hygiène. Règles de base :
+- Hygiène personnelle (tenue, nettoyage des mains, analyses...)
+- Hygiène du matériel (nettoyage, désinfection, contrôles lames...)
+- Hygiène des matières premières (saines et fraîches)
+- Émulsion maîtrisée (ordre du mélange)
+- Respect de la température de coulage
+- Conditions de stockage (16-18°C, 60-70% hygrométrie, locaux propres)
+- Pas de chocs thermiques (éviter le point de rosée)
+
+7/ LES DIFFÉRENTES ALTÉRATIONS
+Dégradation de la texture (transformation physique) : l'AW du produit doit être en lien avec celui de son milieu, sinon l'eau libre migre vers l'extérieur (effet plus important sur les intérieurs non enrobés ; l'enrobage constitue une barrière partielle). Lors du séchage, on peut rencontrer une cristallisation du sucre (passage d'une solution sous-saturée à sursaturée), donnant une texture désagréable.
+Dégradation du goût (transformation chimique et enzymatique) : les réactions chimiques (oxydations, rancissement) sont favorisées par le temps, la chaleur et la lumière. Réactions enzymatiques : la « lipolyse » (dégradation des matières grasses, saponification, mauvais goûts) et la fermentation des sucres par les levures (goût d'alcool indésirable).
+Transformation bactériologique : facteurs favorisants — température, pH (milieu peu acide, 6-8, favorise le développement), présence d'oxygène, teneur en eau (AW/HR). Les 2 critères majeurs pour les ganaches : la température (conserver entre 14 et 18°C) et l'AW (au-delà de 0,86, tous les micro-organismes se développent, en particulier les bactéries — la conservation ne dépassera pas 2 à 3 semaines).
+
+8/ COMMENT RATTRAPER UNE GANACHE TRANCHÉE ?
+- Déséquilibre entre quantité de matière grasse et d'eau → incorporer de l'eau ou un ingrédient riche en eau (lait, crème, sirop de glucose).
+- Mauvaise dispersion des matières dans la masse (mélange trop court et/ou agitation trop faible, les matières grasses cristallisent séparément) → reprendre la ganache au mixeur pour obtenir une bonne homogénéité.
+- Température de travail trop élevée → reprendre la ganache au mixeur à bonne température.
+
+9/ LES PRINCIPAUX DÉFAUTS DES GANACHES
+- La ganache tranche (synérèse) : manque d'eau ou excès de matières grasses.
+- Présence de moisissures : problème au niveau des conditions d'entreposage (trop d'eau dans l'atmosphère).
+- La ganache rancit : problème d'interaction entre les matières grasses (surtout le beurre) et l'eau.
+- La ganache s'oxyde : problème d'interaction entre les matières grasses et l'air.
+- La ganache prend un goût de savon : problème de pH (pas assez acide), entraînant une saponification des matières grasses.
+- La ganache « perce » les coquilles de chocolat : problème de réglage de la formule (contraction insuffisante des éléments).
+- La ganache fermente : problème d'hygiène au niveau des matières premières.
+- La ganache paraît rugueuse : trop de chocolat.
+- La ganache « graine » : mauvaise cristallisation du beurre de cacao.
+- La ganache sèche ou « remouille » : mauvais réglage de la formule par rapport à l'hygrométrie ambiante.
+- La ganache « colle » au palais : trop de sirop de glucose.
+
+10/ LA CONSERVATION DES BONBONS DE CHOCOLAT
+Idéalement, chocolat et bonbons de chocolat se conservent entre 14 et 18°C, avec une humidité relative de l'air entre 55 et 65%, de manière stable et sans variation.
+Pour les intérieurs praliné, l'idéal est 10°C, pour freiner le blanchiment gras (migration des MG du fruit sec vers l'extérieur) ; l'enrobage lacté limite aussi ce phénomène.
+La congélation à -18/-20°C, sous protection hermétique, est possible mais un bonbon décongelé ne se conserve pas aussi longtemps qu'un bonbon « frais » conservé à température positive. Les absorbeurs d'oxygène sont efficaces avec la congélation : ils permettent une mise en « inertie » du produit pendant 3 mois.
+La décongélation doit s'effectuer par palier inférieur à 7°C, écart correspondant au « point de rosée », qui provoquerait une condensation d'eau sur les bonbons.
+
+`;
+
+/* =========================================================
+   QUESTIONS — Quiz (QCM)
+   ========================================================= */
+const QUESTIONS = [
+  {
+    q: "Une ganache est une émulsion composée principalement de quels deux corps ?",
+    options: ["Sucre et sel", "Un corps aqueux et un corps gras", "Deux corps gras différents", "Alcool et sucre"],
+    correct: 1,
+    explain: "Un <b>corps aqueux</b> (eau, liquide, crème, lait) et un <b>corps gras</b> (matière grasse, huile). C'est l'assemblage stable de ces deux corps normalement non miscibles qui fait la texture fondante et lisse d'une ganache réussie."
+  },
+  {
+    q: "Quels sont les deux principaux agents qui favorisent l'émulsion d'une ganache ?",
+    options: ["Le sucre et le sel", "La lécithine et les protéines", "L'eau et l'huile", "Le sorbitol et le glucose"],
+    correct: 1,
+    explain: "<b>La lécithine</b> (présente dans le chocolat) et <b>les protéines</b> (produits laitiers, chocolat). La lécithine lie la matière grasse au liquide (molécule tensioactive), les protéines créent des ponts pour lier le liquide à la matière grasse — leur combinaison stabilise l'émulsion."
+  },
+  {
+    q: "Que se passe-t-il si une ganache est insuffisamment mélangée ?",
+    options: [
+      "Elle devient plus stable",
+      "Elle peut contenir des gouttes de MG non émulsionnées, causant dessèchement rapide et sensation grasse",
+      "Elle se conserve plus longtemps",
+      "Aucune conséquence"
+    ],
+    correct: 1,
+    explain: "Une agitation insuffisante laisse des gouttes de <b>matière grasse non émulsionnée</b>, ce qui entraîne un <b>dessèchement plus rapide</b> et une <b>sensation plus grasse</b> en bouche. À l'inverse, un mélange trop important peut rompre la chaîne moléculaire de l'émulsion et provoquer une séparation."
+  },
+  {
+    q: "Quelle est la température de coulage idéale d'une ganache noire ?",
+    options: ["20°C", "27°C", "33°C", "45°C"],
+    correct: 2,
+    explain: "Idéalement <b>33°C</b> (plage 32-35°C) pour une ganache noire. Pour comparaison : 31°C pour une ganache lactée (29-33°C) et 27°C pour une ganache ivoire (26-28°C) — des températures plus basses car ces couvertures contiennent moins de cacao sec et plus de matière grasse laitière."
+  },
+  {
+    q: "Que signifie AW (ou HRE) ?",
+    options: [
+      "Le taux de sucre total d'un produit",
+      "La disponibilité de l'eau dans un produit (eau libre vs eau liée)",
+      "L'acidité d'un produit",
+      "Le taux de matière grasse"
+    ],
+    correct: 1,
+    explain: "L'AW (Activity Water) ou HRE (Humidité Relative à l'Équilibre) mesure la <b>disponibilité de l'eau</b> dans un produit — et non sa teneur totale. C'est ce paramètre, pas la quantité d'eau brute, qui prédit la stabilité et la durée de vie d'une ganache."
+  },
+  {
+    q: "Comment l'AW et l'HRE sont-elles respectivement exprimées ?",
+    options: [
+      "AW en pourcentage, HRE en coefficient",
+      "AW en coefficient (eau pure = 1), HRE en pourcentage (eau pure = 100%)",
+      "Les deux en degrés Celsius",
+      "Les deux sont identiques en unité"
+    ],
+    correct: 1,
+    explain: "<b>L'AW s'exprime en coefficient</b> (eau pure = 1), <b>l'HRE en pourcentage</b> (eau pure = 100%). Ce sont deux façons d'exprimer la même notion de disponibilité de l'eau."
+  },
+  {
+    q: "Au-delà de quelle valeur d'AW tous les types de micro-organismes se développent-ils, en particulier les bactéries ?",
+    options: ["0,25", "0,45", "0,65", "0,86"],
+    correct: 3,
+    explain: "Au-delà de <b>0,86 d'AW</b>, tous les micro-organismes se développent, en particulier les bactéries : une ganache à cette AW ne dépassera pas 2 à 3 semaines de conservation. Entre 0,65 et 0,86, ce sont surtout les levures et moisissures qui prolifèrent."
+  },
+  {
+    q: "Quels sont les 2 critères majeurs de transformation bactériologique à surveiller pour une ganache ?",
+    options: ["Le pH et la couleur", "La température et l'AW", "Le sucre et le sel", "La lumière et le bruit"],
+    correct: 1,
+    explain: "<b>La température</b> (conserver entre 14 et 18°C) et <b>l'AW</b> (attention au-delà de 0,86). Ce sont ces deux paramètres qui déterminent le risque de développement bactériologique dans une ganache."
+  },
+  {
+    q: "Quelle est la cause la plus courante du tranchage (synérèse) d'une ganache ?",
+    options: [
+      "Trop de sucre",
+      "Un manque d'eau ou un excès de matières grasses",
+      "Une température trop basse du chocolat de couverture uniquement",
+      "Un excès de lécithine"
+    ],
+    correct: 1,
+    explain: "Une ganache tranche par <b>manque d'eau ou excès de matières grasses</b> (déséquilibre du rapport eau/MG), une mauvaise dispersion (mélange trop court, agitation trop faible) ou une température de travail trop élevée."
+  },
+  {
+    q: "Comment rattraper une ganache tranchée par déséquilibre eau/matière grasse ?",
+    options: [
+      "Ajouter du chocolat fondu",
+      "Incorporer de l'eau ou un ingrédient riche en eau (lait, crème, sirop de glucose)",
+      "La laisser reposer 24h sans intervenir",
+      "Ajouter du sel"
+    ],
+    correct: 1,
+    explain: "On incorpore <b>de l'eau ou un ingrédient riche en eau</b> (lait, crème, sirop de glucose) pour rééquilibrer le rapport eau/matière grasse. Si la cause est une mauvaise dispersion, on reprend plutôt la ganache au mixeur."
+  },
+  {
+    q: "Quel défaut de ganache est dû à une saponification des matières grasses (pH pas assez acide) ?",
+    options: ["Le rancissement", "Le goût de savon", "Le graine", "Le collant au palais"],
+    correct: 1,
+    explain: "Le <b>goût de savon</b> vient d'un pH insuffisamment acide, provoquant la saponification des matières grasses. C'est un défaut distinct du rancissement (interaction MG/eau) ou de l'oxydation (interaction MG/air)."
+  },
+  {
+    q: "Quel défaut de ganache est causé par une mauvaise cristallisation du beurre de cacao ?",
+    options: ["La ganache « graine »", "La ganache « colle » au palais", "La ganache fermente", "La ganache paraît rugueuse"],
+    correct: 0,
+    explain: "La ganache « <b>graine</b> » est due à une mauvaise cristallisation du beurre de cacao. Le « collant au palais » vient d'un excès de sirop de glucose, la fermentation d'un problème d'hygiène, et la rugosité d'un excès de chocolat dans la recette."
+  },
+  {
+    q: "Que provoque un excès de sirop de glucose dans une ganache ?",
+    options: ["Elle tranche", "Elle « colle » au palais", "Elle rancit", "Elle fermente"],
+    correct: 1,
+    explain: "Un excès de sirop de glucose fait que la ganache <b>« colle » au palais</b>. C'est un défaut de texture distinct du tranchage (rapport eau/MG) ou du « graine » (cristallisation du beurre de cacao)."
+  },
+  {
+    q: "Pourquoi ne faut-il pas incorporer d'air lors de la réalisation d'une ganache ?",
+    options: [
+      "Cela n'a aucun effet",
+      "Cela favorise un développement microbiologique non maîtrisé et un risque d'oxydation des matières grasses",
+      "Cela accélère uniquement le refroidissement",
+      "Cela améliore la conservation"
+    ],
+    correct: 1,
+    explain: "Incorporer de l'air favorise un <b>développement microbiologique non maîtrisé</b> et un <b>risque d'oxydation</b> des matières grasses (rancissement). C'est pourquoi on mixe en fin de mélange plutôt que de fouetter énergiquement dès le début."
+  },
+  {
+    q: "Quelles sont les conditions de température et d'humidité idéales de conservation des bonbons de chocolat ?",
+    options: [
+      "0-5°C, 90% d'humidité",
+      "14-18°C, 55-65% d'humidité relative, de manière stable",
+      "25-30°C, sans contrôle d'humidité",
+      "-18°C en permanence"
+    ],
+    correct: 1,
+    explain: "Entre <b>14 et 18°C</b>, avec une humidité relative de l'air entre <b>55 et 65%</b>, de manière stable et sans variation. Pour les intérieurs praliné, on descend idéalement à 10°C pour freiner le blanchiment gras."
+  },
+  {
+    q: "Combien de temps un absorbeur d'oxygène permet-il de mettre un produit congelé « en inertie » ?",
+    options: ["1 semaine", "1 mois", "3 mois", "1 an"],
+    correct: 2,
+    explain: "Les absorbeurs d'oxygène permettent une mise en <b>« inertie » pendant 3 mois</b>, en complément de la congélation à -18/-20°C. Attention cependant : un bonbon décongelé ne se conserve pas aussi longtemps qu'un bonbon frais conservé à température positive."
+  },
+  {
+    q: "En dessous de quel écart de température doit s'effectuer la décongélation d'un bonbon, pour éviter le « point de rosée » ?",
+    options: ["3°C", "7°C", "15°C", "20°C"],
+    correct: 1,
+    explain: "La décongélation doit se faire par palier <b>inférieur à 7°C</b> d'écart, le « point de rosée » au-delà provoquant une condensation d'eau sur les bonbons — un risque direct de blanchiment sucrier ou de développement de moisissures."
+  },
+  {
+    q: "Citez une règle d'hygiène de base incontournable dans la confection d'une ganache.",
+    options: [
+      "Travailler sans tenue spécifique",
+      "Respecter l'hygiène personnelle, du matériel, des matières premières et la température de coulage",
+      "Ne jamais nettoyer le matériel entre deux fabrications",
+      "Aucune règle d'hygiène spécifique aux ganaches"
+    ],
+    correct: 1,
+    explain: "Hygiène personnelle (tenue, lavage des mains), hygiène du matériel (nettoyage, désinfection), hygiène des matières premières (fraîcheur), et respect de la température de coulage sont les règles de base — un bon équilibrage sans bonne hygiène ne sert à rien."
+  }
+];
+
+/* =========================================================
+   EXAM_QUESTIONS — cheminements guidés
+   ========================================================= */
+const EXAM_QUESTIONS = [
+  {
+    id: "emulsion",
+    title: "Quels sont les objectifs d'une bonne émulsion de ganache, et citez deux composants qui la favorisent ?",
+    points: "d'après la banque de questions techno",
+    hints: [
+      "L'objectif principal concerne la texture et la perception en bouche — précise ce qui se passe si l'émulsion échoue.",
+      "Les deux composants favorisant l'émulsion agissent différemment : l'un lie la MG au liquide, l'autre crée des ponts liquide-MG."
+    ],
+    answerHtml: `
+      <h4>Objectifs d'une bonne émulsion</h4>
+      <p>Obtenir une texture la plus <b>fondante et lisse possible</b>, avec une perception moins grasse en bouche. Une émulsion mal aboutie donne une texture granuleuse (cristaux de beurre de cacao séparés de la phase liquide), une conservation plus courte et une mauvaise stabilité.</p>
+      <h4>Deux composants favorisants</h4>
+      <p><b>La lécithine</b> (molécule tensioactive qui lie la matière grasse au liquide) et <b>les protéines</b> (qui créent des ponts liant le liquide à la matière grasse). C'est leur action combinée qui stabilise l'émulsion.</p>`
+  },
+  {
+    id: "hygiene",
+    title: "Citez 5 règles d'hygiène de base à respecter dans la confection d'une ganache",
+    points: "d'après la banque de questions et l'Évaluation N°2",
+    hints: [
+      "Les règles se répartissent sur 5 domaines distincts : personnel, matériel, matières premières, procédé, stockage.",
+      "Pour chaque domaine, donne un exemple concret."
+    ],
+    answerHtml: `
+      <ul>
+        <li><b>Hygiène personnelle</b> : tenue adaptée, lavage des mains, analyses médicales si besoin.</li>
+        <li><b>Hygiène du matériel</b> : nettoyage, désinfection, entretien régulier.</li>
+        <li><b>Hygiène des matières premières</b> : produits sains et frais, respect des DLC, rotation des stocks.</li>
+        <li><b>Respect du procédé de fabrication</b> : température de coulage, ordre du mélange pour une émulsion maîtrisée.</li>
+        <li><b>Conditions de stockage</b> : locaux propres, température (16-18°C) et hygrométrie (60-70%) contrôlées, pas de chocs thermiques (éviter le point de rosée).</li>
+      </ul>`
+  },
+  {
+    id: "aw-hre",
+    title: "Qu'entend-on par AW ou HRE ? Développez et citez des matières premières qui permettent d'influer sur ce paramètre",
+    points: "d'après la banque de questions et l'Évaluation N°2",
+    hints: [
+      "Explique d'abord la distinction entre eau libre et eau liée, et pourquoi ce paramètre prédit la conservation.",
+      "Termine en citant des ingrédients qui permettent de fixer l'eau (donc de la rendre indisponible aux micro-organismes)."
+    ],
+    answerHtml: `
+      <h4>Définition</h4>
+      <p>L'AW (Activity Water) ou HRE (Humidité Relative à l'Équilibre) mesure la <b>disponibilité de l'eau</b> dans un produit — l'eau « libre », capable de s'échapper ou d'être utilisée par les micro-organismes — et non sa teneur totale. L'HRE s'exprime en %, l'AW en coefficient (eau pure = 1). Plus l'AW est élevée, plus les micro-organismes se développent.</p>
+      <h4>Matières premières qui influent sur ce paramètre</h4>
+      <p>Le <b>sorbitol</b>, le <b>sucre inverti</b>, le <b>glucose</b>, la <b>lécithine</b> et les <b>sucres</b> en général permettent de fixer l'eau et donc de la rendre indisponible pour les micro-organismes — un rôle proche de celui du sel en charcuterie ou du sucre dans les confitures.</p>`
+  },
+  {
+    id: "ganache-tranche",
+    title: "Pour quelles raisons une ganache peut-elle trancher ? Quelles solutions apporter pour éviter et corriger ce phénomène ?",
+    points: "d'après la banque de questions et le corrigé officiel 1102-2017",
+    hints: [
+      "Distingue les causes liées à la recette (déséquilibre) de celles liées à la technique (mélange, température).",
+      "Propose ensuite des solutions préventives ET des solutions de rattrapage, séparément."
+    ],
+    answerHtml: `
+      <h4>Causes</h4>
+      <p>Recette mal équilibrée (trop de matières grasses ou manque de sucre), mauvais mélange entre matière grasse et chocolat, mauvais rapport de températures lors du mélange.</p>
+      <h4>Pour éviter</h4>
+      <ul><li>Rééquilibrer la recette</li><li>Vérifier la température des ingrédients</li><li>Vérifier le % de matière grasse et de sucre</li></ul>
+      <h4>Pour corriger</h4>
+      <ul>
+        <li>Rajouter de la matière grasse pour réamorcer l'émulsion</li>
+        <li>Rajouter des édulcorants pour rééquilibrer la recette</li>
+        <li>Réchauffer la masse en émulsionnant au mixeur</li>
+        <li>Faire un bain-marie froid en cas de température trop élevée</li>
+        <li>Incorporer de la lécithine liquide pour stabiliser l'émulsion</li>
+      </ul>`
+  },
+  {
+    id: "conservation-sans-alcool",
+    title: "Pour une bonne conservation des ganaches sans alcool (émulsionnées, coulées ou abaissées), que faut-il respecter pour éviter moisissures, rancissement et dessiccation ?",
+    points: "30 pts — d'après le corrigé officiel 1103-2023",
+    hints: [
+      "Regroupe les points en 3 familles : hygiène, équilibrage de la recette, et conditions de production/stockage.",
+      "Pour l'équilibrage, précise un ingrédient spécifique utile contre les moisissures."
+    ],
+    answerHtml: `
+      <h4>Hygiène</h4>
+      <p>Hygiène du personnel (tenue, lavage des mains), du matériel (nettoyage, désinfection), des matières premières (saines et fraîches).</p>
+      <h4>Équilibrage de la recette</h4>
+      <p>Table analytique de ganache respectée, taux de matières sucrantes maîtrisé, incorporation de <b>sorbitol</b> (agent de conservation).</p>
+      <h4>Conditions de production et de stockage</h4>
+      <p>Ébullition des liquides, pas d'incorporation d'air dans le mélange, respect de la température de coulage, conditions de stockage (16-17°C, 55-60% hygrométrie), pas de chocs thermiques (éviter le point de rosée), respect des délais de conservation.</p>`
+  },
+  {
+    id: "defauts-liste",
+    title: "Citez et expliquez au moins 5 défauts courants d'une ganache",
+    points: "d'après le cours « Technologie des ganaches »",
+    hints: [
+      "Le cours liste 11 défauts distincts — choisis-en au moins 5 en variant les causes (recette, hygiène, cristallisation, pH, réglage).",
+      "Pour chaque défaut choisi, indique sa cause précise."
+    ],
+    answerHtml: `
+      <ul>
+        <li><b>La ganache tranche (synérèse)</b> : manque d'eau ou excès de matières grasses.</li>
+        <li><b>Présence de moisissures</b> : problème d'entreposage, trop d'eau dans l'atmosphère.</li>
+        <li><b>La ganache rancit</b> : interaction entre matières grasses (surtout le beurre) et eau.</li>
+        <li><b>La ganache s'oxyde</b> : interaction entre matières grasses et air.</li>
+        <li><b>Goût de savon</b> : pH pas assez acide, saponification des matières grasses.</li>
+        <li><b>La ganache « graine »</b> : mauvaise cristallisation du beurre de cacao.</li>
+        <li><b>La ganache sèche ou « remouille »</b> : mauvais réglage de la formule par rapport à l'hygrométrie ambiante.</li>
+        <li><b>La ganache « colle » au palais</b> : excès de sirop de glucose.</li>
+      </ul>`
+  }
+];
+
+/* =========================================================
+   QUIZ LOGIC
+   ========================================================= */
+let quizOrder = [];
+let quizIndex = 0;
+let quizScore = 0;
+
+function shuffle(arr){
+  const a = arr.slice();
+  for(let i=a.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]]=[a[j],a[i]];
+  }
+  return a;
+}
+
+function startQuiz(){
+  quizOrder = shuffle(QUESTIONS.map((_,i)=>i));
+  quizIndex = 0;
+  quizScore = 0;
+  renderQuizQuestion();
+}
+
+function renderQuizQuestion(){
+  const card = document.getElementById('quizCard');
+  if(quizIndex >= quizOrder.length){
+    renderQuizResult();
+    return;
+  }
+  const q = QUESTIONS[quizOrder[quizIndex]];
+  const pct = Math.round((quizIndex/quizOrder.length)*100);
+  card.innerHTML = `
+    <div class="quiz-progress-wrap">
+      <div class="quiz-progress-bar"><div class="quiz-progress-fill" style="width:${pct}%"></div></div>
+      <div class="quiz-progress-label">${quizIndex+1} / ${quizOrder.length}</div>
+    </div>
+    <p class="quiz-q">${q.q}</p>
+    <div class="quiz-options" id="quizOptions">
+      ${q.options.map((o,i)=>`<button class="quiz-opt" data-i="${i}">${o}</button>`).join('')}
+    </div>
+    <div class="quiz-explain" id="quizExplain"></div>
+    <button class="btn quiz-next" id="quizNextBtn">Question suivante</button>
+  `;
+  document.querySelectorAll('#quizOptions .quiz-opt').forEach(btn=>{
+    btn.addEventListener('click', ()=>answerQuiz(parseInt(btn.dataset.i), q));
+  });
+  document.getElementById('quizNextBtn').addEventListener('click', ()=>{
+    quizIndex++;
+    renderQuizQuestion();
+  });
+}
+
+function answerQuiz(i, q){
+  const opts = document.querySelectorAll('#quizOptions .quiz-opt');
+  opts.forEach(o=>o.disabled=true);
+  if(i === q.correct){
+    opts[i].classList.add('correct');
+    quizScore++;
+  } else {
+    opts[i].classList.add('incorrect');
+    opts[q.correct].classList.add('correct');
+  }
+  const ex = document.getElementById('quizExplain');
+  ex.innerHTML = q.explain;
+  ex.classList.add('show');
+  document.getElementById('quizNextBtn').classList.add('show');
+}
+
+function renderQuizResult(){
+  const card = document.getElementById('quizCard');
+  const pct = Math.round((quizScore/quizOrder.length)*100);
+  let tier = 'bronze', label = 'Bronze';
+  if(pct >= 85){ tier='or'; label='Or'; }
+  else if(pct >= 65){ tier='argent'; label='Argent'; }
+  card.innerHTML = `
+    <div class="quiz-result">
+      <div class="badge ${tier}">${label}</div>
+      <h3>${quizScore} / ${quizOrder.length} bonnes réponses</h3>
+      <p>${pct}% de réussite sur le module « Les ganaches »</p>
+      <button class="btn" id="quizRestart">Recommencer le quiz</button>
+    </div>
+  `;
+  document.getElementById('quizRestart').addEventListener('click', startQuiz);
+}
+
+/* =========================================================
+   TUTEUR IA — appel direct à l'API Groq (gratuite), fonctionne
+   dans n'importe quel navigateur, sans compte ni autorisation
+   ========================================================= */
+const SUGGESTED_QUESTIONS = [
+  "Pourquoi une ganache peut-elle trancher et comment la rattraper ?",
+  "Quelle est la différence entre AW et HRE ?",
+  "Quelles sont les règles d'hygiène essentielles pour une ganache ?"
+];
+
+const GROQ_MODEL = "llama-3.3-70b-versatile";
+const RELAY_URL = "/.netlify/functions/chat";
+
+let chatHistory = [];
+
+function renderChatSuggestions(){
+  const wrap = document.getElementById('chatSuggestions');
+  wrap.innerHTML = SUGGESTED_QUESTIONS.map(s=>`<button class="suggestion-chip">${s}</button>`).join('');
+  wrap.querySelectorAll('.suggestion-chip').forEach(chip=>{
+    chip.addEventListener('click', ()=>{
+      document.getElementById('chatInput').value = chip.textContent;
+      sendChat();
+    });
+  });
+}
+
+function addMsg(text, cls){
+  const log = document.getElementById('chatLog');
+  const div = document.createElement('div');
+  div.className = 'msg ' + cls;
+  div.textContent = text;
+  log.appendChild(div);
+  log.scrollTop = log.scrollHeight;
+  return div;
+}
+
+async function askTuteur(systemPrompt, messages){
+  const response = await fetch(RELAY_URL, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      model: GROQ_MODEL,
+      messages: [{role: "system", content: systemPrompt}, ...messages],
+      temperature: 0.4
+    })
+  });
+  if(!response.ok){
+    const errBody = await response.text().catch(()=>"");
+    const err = new Error("HTTP " + response.status);
+    err.status = response.status;
+    err.body = errBody;
+    throw err;
+  }
+  const data = await response.json();
+  return data.choices[0].message.content;
+}
+
+async function sendChat(){
+  const inputEl = document.getElementById('chatInput');
+  const text = inputEl.value.trim();
+  if(!text) return;
+  inputEl.value = '';
+  addMsg(text, 'user');
+  chatHistory.push({role:'user', content:text});
+  const loadingDiv = addMsg('Le tuteur réfléchit…', 'bot loading');
+
+  const RULES = "Tu es un tuteur pour des élèves en BTM Chocolatier-Confiseur. Tu réponds UNIQUEMENT à partir du texte de cours suivant, sur le module 'Les ganaches'. Si la question sort de ce cours (autre module), dis poliment que ce sujet est traité dans un autre module et invite l'élève à s'y rendre. Réponds de façon claire, pédagogique, avec des exemples concrets d'atelier quand c'est pertinent. Ne mentionne jamais quel modèle d'IA tu es : reste dans ton rôle de tuteur du module.\n\nCOURS :\n" + COURSE_TEXT;
+
+  const recentHistory = chatHistory.slice(-10);
+
+  try{
+    const answer = await askTuteur(RULES, recentHistory);
+    loadingDiv.classList.remove('loading');
+    loadingDiv.textContent = answer;
+    chatHistory.push({role:'assistant', content: answer});
+  } catch(err){
+    loadingDiv.classList.remove('loading');
+    loadingDiv.textContent = err.status === 429
+      ? "Trop de questions envoyées d'un coup : attends un instant avant de réessayer."
+      : "Une erreur est survenue en contactant le tuteur. Réessaie dans un instant.";
+    console.error(err);
+  }
+}
+
+/* =========================================================
+   QUESTION D'EXAMEN — cheminement guidé
+   ========================================================= */
+let currentExamId = EXAM_QUESTIONS[0].id;
+let examStepIndex = {};
+
+function renderExamPills(){
+  const wrap = document.getElementById('examPills');
+  wrap.innerHTML = EXAM_QUESTIONS.map(q=>`<button class="exam-pill${q.id===currentExamId?' active':''}" data-id="${q.id}">${q.title.length>38?q.title.slice(0,38)+'…':q.title}</button>`).join('');
+  wrap.querySelectorAll('.exam-pill').forEach(p=>{
+    p.addEventListener('click', ()=>{
+      currentExamId = p.dataset.id;
+      renderExamPills();
+      renderExamQuestion();
+    });
+  });
+}
+
+function renderExamQuestion(){
+  const q = EXAM_QUESTIONS.find(e=>e.id===currentExamId);
+  if(!(currentExamId in examStepIndex)) examStepIndex[currentExamId] = 0;
+  const step = examStepIndex[currentExamId];
+  const card = document.getElementById('examCard');
+
+  let stepsHtml = '';
+  for(let i=0;i<step;i++){
+    stepsHtml += `<div class="step hint"><div class="step-label">Indice ${i+1}</div>${q.hints[i]}</div>`;
+  }
+
+  let controlsHtml = '';
+  if(step < q.hints.length){
+    controlsHtml += `<button class="btn" id="examHintBtn">Indice ${step+1}</button>`;
+  }
+  if(step > 0 || q.hints.length===0){
+    controlsHtml += `<button class="btn ghost" id="examAnswerBtn">Voir la réponse assemblée</button>`;
+  }
+  controlsHtml += `<button class="btn ghost" id="examResetBtn">Recommencer cette question</button>`;
+
+  card.innerHTML = `
+    <p class="exam-q-title">${q.title}</p>
+    <p class="exam-q-points">${q.points}</p>
+    ${stepsHtml}
+    <div class="exam-controls">${controlsHtml}</div>
+    <div class="exam-answer" id="examAnswer">${q.answerHtml}</div>
+    <p class="exam-note">Corrigé reconstitué à partir des sources internes du module (banque de questions, évaluations, corrigés officiels) — à relire avant diffusion en cas d'écart avec le cours.</p>
+  `;
+
+  const hintBtn = document.getElementById('examHintBtn');
+  if(hintBtn) hintBtn.addEventListener('click', ()=>{
+    examStepIndex[currentExamId] = step+1;
+    renderExamQuestion();
+  });
+  const answerBtn = document.getElementById('examAnswerBtn');
+  if(answerBtn) answerBtn.addEventListener('click', ()=>{
+    document.getElementById('examAnswer').classList.add('show');
+    answerBtn.disabled = true;
+  });
+  document.getElementById('examResetBtn').addEventListener('click', ()=>{
+    examStepIndex[currentExamId] = 0;
+    renderExamQuestion();
+  });
+}
+
+/* =========================================================
+   EN BREF — schéma SVG + points clés
+   ========================================================= */
+function renderBrief(){
+  const svgWrap = document.getElementById('briefSvgWrap');
+  svgWrap.innerHTML = `
+  <svg viewBox="0 0 920 300" width="100%" style="min-width:640px;display:block;">
+    <defs>
+      <style>
+        .vt{font-family:'Merriweather',serif; font-weight:700; fill:var(--text-bright);}
+        .vs{font-family:'Inter',sans-serif; fill:var(--text-dim); font-size:11.5px;}
+        .vb{font-family:'Inter',sans-serif; fill:var(--text); font-size:12.5px; font-weight:600;}
+      </style>
+    </defs>
+    <rect x="0" y="0" width="920" height="300" fill="var(--surface)"/>
+    <text x="30" y="36" class="vt" font-size="16">L'échelle de l'AW (Activity Water)</text>
+    <line x1="60" y1="220" x2="860" y2="220" stroke="var(--border)" stroke-width="3"/>
+    ${[
+      {aw:"0", x:60, label:"Eau liée", desc:"Stable"},
+      {aw:"0,25-0,45", x:260, label:"Réactions chimiques", desc:"Début de dégradation"},
+      {aw:"0,60-0,75", x:460, label:"Réactions enzymatiques", desc:"Lipolyse possible"},
+      {aw:"0,65+", x:620, label:"Levures / moisissures", desc:"Prolifération"},
+      {aw:"0,86+", x:800, label:"Bactéries", desc:"Conservation 2-3 sem. max"}
+    ].map(p => `
+      <circle cx="${p.x}" cy="220" r="6" fill="var(--caramel-hi)"/>
+      <text x="${p.x}" y="205" text-anchor="middle" class="vb">${p.aw}</text>
+      <text x="${p.x}" y="245" text-anchor="middle" class="vs">${p.label}</text>
+      <text x="${p.x}" y="260" text-anchor="middle" class="vs">${p.desc}</text>
+    `).join('')}
+    <text x="30" y="70" class="vs">Plus l'AW est élevée, plus l'eau est "libre" et disponible pour les micro-organismes.</text>
+    <text x="30" y="90" class="vs">Ganache : conserver entre 14-18°C ; au-delà de 0,86 d'AW, conservation limitée à 2-3 semaines.</text>
+  </svg>`;
+
+  const points = document.getElementById('briefPoints');
+  const data = [
+  {h:"Une émulsion", p:"Corps aqueux (eau, crème, lait) + corps gras, stabilisés par la lécithine et les protéines."},
+  {h:"Températures de coulage", p:"Noire 33°C, lactée 31°C, ivoire 27°C (idéal)."},
+  {h:"AW/HRE", p:"Mesure l'eau disponible, pas la teneur en eau. AW>0,86 = développement bactérien, 2-3 sem. max."},
+  {h:"5 règles d'hygiène", p:"Personnel, matériel, matières premières, procédé (coulage), conditions de stockage."},
+  {h:"Ganache tranchée", p:"Déséquilibre eau/MG ou mauvaise dispersion. Rattrapage : eau/crème ou reprise au mixeur."},
+  {h:"11 défauts types", p:"Tranche, moisit, rancit, s'oxyde, goût de savon, perce, fermente, rugueuse, graine, sèche/remouille, colle."},
+  {h:"Conservation bonbons", p:"14-18°C, 55-65% HR. Praliné : 10°C. Congélation -18/-20°C, décongélation par palier <7°C."},
+  {h:"Point de rosée", p:"Écart de température >7°C = condensation d'eau sur les bonbons → risque de blanchiment/moisissures."}
+];
+  points.innerHTML = data.map(d=>`<div class="brief-point"><h4>${d.h}</h4><p>${d.p}</p></div>`).join('');
+}
+
+/* =========================================================
+   NAVIGATION + THEME
+   ========================================================= */
+document.querySelectorAll('.navbtn[data-tab]').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    document.querySelectorAll('.navbtn[data-tab]').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('panel-'+btn.dataset.tab).classList.add('active');
+  });
+});
+
+const themeToggle = document.getElementById('themeToggle');
+const themeLabel = document.getElementById('themeLabel');
+themeToggle.addEventListener('click', () => {
+  const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+  document.documentElement.setAttribute('data-theme', isLight ? 'dark' : 'light');
+  themeLabel.textContent = isLight ? 'Mode clair' : 'Mode sombre';
+});
+
+/* ===== Init ===== */
+startQuiz();
+renderChatSuggestions();
+document.getElementById('chatSend').addEventListener('click', sendChat);
+document.getElementById('chatInput').addEventListener('keydown', e=>{ if(e.key==='Enter') sendChat(); });
+renderExamPills();
+renderExamQuestion();
+renderBrief();
+</script>
+
+</body>
+</html>

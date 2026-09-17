@@ -1,0 +1,2061 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Générateur d'étiquette — BTM Chocolatier Confiseur</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --parchment: #EDE3D0;
+    --parchment-2: #E4D7BE;
+    --paper: #F7F1E4;
+    --cacao-900: #2A1810;
+    --cacao-700: #4A2E1E;
+    --cacao-500: #6B4A34;
+    --ink-muted: #7C6A57;
+    --caramel: #B8792E;
+    --caramel-dark: #8E5C1F;
+    --caramel-light: #E7C486;
+    --moss: #4B6043;
+    --moss-bg: #E4EADC;
+    --rust: #8B3A2B;
+    --rust-bg: #F3DFD7;
+    --amber-bg: #F5EAD2;
+    --amber-ink: #8A5A12;
+    --line: #D7C7A6;
+    --radius: 3px;
+    --shadow-label: 0 1px 0 rgba(42,24,16,0.06), 0 8px 24px -12px rgba(42,24,16,0.35);
+  }
+  *{box-sizing:border-box;}
+  html{-webkit-font-smoothing:antialiased;}
+  body{
+    margin:0;
+    background:
+      radial-gradient(1200px 600px at 10% -10%, #F5ECD8 0%, transparent 60%),
+      var(--parchment);
+    color:var(--cacao-900);
+    font-family:"IBM Plex Sans", sans-serif;
+    line-height:1.5;
+    min-height:100vh;
+  }
+  a{color:var(--caramel-dark);}
+
+  /* ---------- Header ---------- */
+  header.top{
+    padding:2.6rem clamp(1.25rem, 4vw, 3.5rem) 1.8rem;
+    border-bottom:1px solid var(--line);
+  }
+  header.top .kicker{
+    font-size:0.8rem;
+    color:var(--ink-muted);
+    letter-spacing:0.02em;
+    margin:0 0 0.35rem;
+  }
+  header.top h1{
+    font-family:"Fraunces", serif;
+    font-weight:600;
+    font-optical-sizing:auto;
+    font-size:clamp(1.8rem, 3.4vw, 2.6rem);
+    margin:0 0 0.5rem;
+    color:var(--cacao-900);
+    letter-spacing:-0.01em;
+  }
+  header.top p.sub{
+    max-width:62ch;
+    color:var(--cacao-500);
+    margin:0;
+    font-size:1rem;
+  }
+
+  /* ---------- Layout ---------- */
+  .workbench{
+    display:grid;
+    grid-template-columns: minmax(340px, 560px) minmax(320px, 480px);
+    gap:0;
+    align-items:start;
+  }
+  @media (max-width: 980px){
+    .workbench{ grid-template-columns: 1fr; }
+  }
+
+  .col-form{
+    padding: 2rem clamp(1.25rem, 4vw, 3rem) 4rem;
+    border-right:1px solid var(--line);
+  }
+  @media (max-width: 980px){
+    .col-form{ border-right:none; border-bottom:1px solid var(--line); }
+  }
+
+  .col-result{
+    padding: 2rem clamp(1.25rem, 3vw, 2.75rem) 4rem;
+    position:sticky;
+    top:0;
+    align-self:start;
+    max-height:100vh;
+    overflow-y:auto;
+  }
+  @media (max-width: 980px){
+    .col-result{ position:static; max-height:none; }
+  }
+
+  /* ---------- Form sections ---------- */
+  fieldset{
+    border:none;
+    margin:0 0 2.1rem;
+    padding:0;
+  }
+  legend.section-title{
+    font-family:"Fraunces", serif;
+    font-weight:600;
+    font-size:1.15rem;
+    color:var(--cacao-700);
+    padding:0 0 0.55rem;
+    margin-bottom:1rem;
+    border-bottom:1px solid var(--line);
+    width:100%;
+    display:block;
+  }
+  .field{ margin-bottom:1rem; }
+  .field label{
+    display:block;
+    font-size:0.82rem;
+    font-weight:600;
+    color:var(--cacao-700);
+    margin-bottom:0.32rem;
+  }
+  .field .hint{
+    font-size:0.78rem;
+    color:var(--ink-muted);
+    margin-top:0.3rem;
+  }
+  .field-computed input[readonly]{
+    background:var(--amber-bg);
+    color:var(--cacao-900);
+    font-weight:600;
+    border-color:var(--caramel-light);
+    cursor:default;
+  }
+  .row2{ display:grid; grid-template-columns:1fr 1fr; gap:0.85rem; }
+  .row3{ display:grid; grid-template-columns:1.4fr 1fr 1fr; gap:0.85rem; }
+  @media (max-width:560px){ .row2, .row3{ grid-template-columns:1fr; } }
+
+  input[type=text], input[type=number], input[type=date], select, textarea{
+    width:100%;
+    font-family:inherit;
+    font-size:0.92rem;
+    padding:0.55rem 0.65rem;
+    background:var(--paper);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    color:var(--cacao-900);
+  }
+  input:focus, select:focus, textarea:focus, button:focus-visible{
+    outline:2px solid var(--caramel);
+    outline-offset:1px;
+  }
+  textarea{ resize:vertical; min-height:3rem; }
+
+  .check-row{
+    display:flex;
+    align-items:center;
+    gap:0.5rem;
+    font-size:0.88rem;
+    padding:0.2rem 0;
+  }
+  .check-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:0.15rem 1rem;
+  }
+  @media (max-width:560px){ .check-grid{ grid-template-columns:1fr; } }
+  .check-row input{ width:auto; accent-color:var(--caramel-dark); }
+
+  .radio-pair{ display:flex; gap:1.4rem; }
+  .radio-pair label{ display:flex; align-items:center; gap:0.4rem; font-size:0.88rem; font-weight:500; color:var(--cacao-900); margin:0;}
+  .radio-pair input{ width:auto; accent-color:var(--caramel-dark); }
+
+  /* ---------- Coller la recette ---------- */
+  .paste-box{
+    background:var(--paper);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:1rem;
+  }
+  .paste-box textarea{
+    font-family:"IBM Plex Mono", monospace;
+    font-size:0.83rem;
+    min-height:9rem;
+    line-height:1.55;
+  }
+  .paste-toolbar{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:0.7rem;
+    margin-top:0.7rem;
+    flex-wrap:wrap;
+  }
+  .btn-primary-ghost{
+    background:var(--cacao-700);
+    color:var(--paper);
+    border:none;
+    font-weight:600;
+    font-size:0.86rem;
+    padding:0.55rem 1rem;
+    border-radius:var(--radius);
+    cursor:pointer;
+  }
+  .btn-primary-ghost:hover{ background:var(--cacao-900); }
+  .btn-text{
+    background:none;
+    border:none;
+    color:var(--caramel-dark);
+    font-weight:600;
+    font-size:0.82rem;
+    cursor:pointer;
+    padding:0.3rem 0.1rem;
+    text-decoration:underline;
+    text-decoration-color:var(--caramel-light);
+  }
+  #parse-log{
+    margin-top:0.8rem;
+    font-size:0.82rem;
+    display:none;
+  }
+  #parse-log .pl-ok{ color:var(--moss); }
+  #parse-log .pl-warn{ color:var(--amber-ink); }
+  #parse-log ul{ margin:0.35rem 0 0; padding-left:1.1rem; }
+
+  /* ---------- Évaporation / Enrobage ---------- */
+  .calc-box{
+    background:var(--paper);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:1rem;
+  }
+  .calc-readout{
+    margin-top:0.8rem;
+    font-size:0.85rem;
+    background:var(--amber-bg);
+    color:var(--amber-ink);
+    border-radius:var(--radius);
+    padding:0.6rem 0.75rem;
+    line-height:1.6;
+  }
+  .calc-readout b{ color:var(--cacao-900); }
+  .calc-readout.ok{ background:var(--moss-bg); color:var(--moss); }
+  .calc-readout.ok b{ color:var(--moss); }
+  .inline-num{
+    display:inline-flex;
+    align-items:center;
+    gap:0.4rem;
+  }
+  .inline-num input{ width:5.5rem; }
+
+  /* ---------- Composants (fabrication à plusieurs éléments) ---------- */
+  .composant-block{
+    background:var(--paper);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:1rem;
+    margin-bottom:0.8rem;
+  }
+  .composant-ing-row{
+    display:grid;
+    grid-template-columns:1fr 6rem auto;
+    gap:0.5rem;
+    align-items:center;
+    margin-bottom:0.45rem;
+  }
+  .composant-ing-row input{ font-size:0.82rem; }
+  .composant-block .remove-btn{ margin-top:0.5rem; }
+  #composants-list{ margin-bottom:0.6rem; }
+  .remove-btn{
+    border:none;
+    background:none;
+    color:var(--rust);
+    font-size:0.78rem;
+    cursor:pointer;
+    padding:0.3rem 0.4rem;
+  }
+
+  /* ---------- Ingredient rows ---------- */
+  #ingredients-list{ margin-bottom:0.7rem; }
+  .ing-toolbar{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:0.6rem;
+    background:var(--amber-bg);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:0.55rem 0.75rem;
+    margin-bottom:0.9rem;
+    font-size:0.82rem;
+    color:var(--cacao-700);
+  }
+  .ing-row{
+    display:grid;
+    grid-template-columns: 1.05fr 0.42fr 0.34fr 1.05fr 0.72fr 0.72fr auto;
+    gap:0.35rem;
+    align-items:center;
+    padding:0.5rem 0;
+    border-bottom:1px dashed var(--line);
+  }
+  .ing-row select, .ing-row input[type=text], .ing-row input[type=number]{ font-size:0.78rem; padding:0.4rem 0.4rem; }
+  .ing-row .ing-qte{ text-align:right; }
+  .ing-row .ing-quid-wrap{ display:flex; flex-direction:column; align-items:center; gap:0.1rem; font-size:0.62rem; color:var(--caramel-dark); font-weight:700; }
+  .ing-row .ing-quid-wrap input{ width:auto; accent-color:var(--caramel-dark); margin:0; }
+  @media (max-width:780px){ .ing-row{ grid-template-columns:1fr 1fr; } }
+  .ing-row .remove-btn{
+    border:none;
+    background:none;
+    color:var(--rust);
+    font-size:0.78rem;
+    cursor:pointer;
+    padding:0.3rem 0.4rem;
+    justify-self:start;
+  }
+  .btn-add{
+    background:var(--paper);
+    border:1px dashed var(--caramel-dark);
+    color:var(--caramel-dark);
+    font-weight:600;
+    font-size:0.85rem;
+    padding:0.5rem 0.9rem;
+    border-radius:var(--radius);
+    cursor:pointer;
+  }
+  .btn-add:hover{ background:var(--caramel-light); }
+
+  .chip-select{
+    display:flex; flex-wrap:wrap; gap:0.4rem;
+  }
+  .chip{
+    font-size:0.78rem;
+    padding:0.32rem 0.65rem;
+    border:1px solid var(--line);
+    border-radius:20px;
+    background:var(--paper);
+    cursor:pointer;
+    color:var(--cacao-700);
+    user-select:none;
+  }
+  .chip.active{
+    background:var(--cacao-700);
+    border-color:var(--cacao-700);
+    color:var(--paper);
+  }
+
+  .btn-generate{
+    width:100%;
+    background:var(--cacao-900);
+    color:var(--paper);
+    border:none;
+    font-family:"Fraunces", serif;
+    font-weight:600;
+    font-size:1.05rem;
+    padding:0.85rem 1rem;
+    border-radius:var(--radius);
+    cursor:pointer;
+    margin-top:0.5rem;
+    transition:background 0.15s ease;
+  }
+  .btn-generate:hover{ background:var(--caramel-dark); }
+
+  /* ---------- Label preview ---------- */
+  .result-heading{
+    font-family:"Fraunces", serif;
+    font-weight:600;
+    font-size:1.15rem;
+    color:var(--cacao-700);
+    margin:0 0 1rem;
+  }
+  .label-sticker{
+    background:var(--paper);
+    border:1px solid var(--caramel);
+    border-radius:8px;
+    box-shadow:var(--shadow-label);
+    padding:1.4rem 1.5rem;
+    position:relative;
+    overflow:hidden;
+  }
+  .label-sticker::before{
+    content:"";
+    position:absolute; inset:6px;
+    border:1px solid var(--caramel-light);
+    border-radius:5px;
+    pointer-events:none;
+  }
+  .label-empty{
+    color:var(--ink-muted);
+    font-size:0.92rem;
+    text-align:center;
+    padding:2.4rem 1rem;
+  }
+  .label-denom{
+    font-family:"Fraunces", serif;
+    font-weight:600;
+    font-size:1.35rem;
+    color:var(--cacao-900);
+    margin:0 0 0.5rem;
+    line-height:1.2;
+  }
+  .label-mgv{
+    font-weight:700;
+    font-size:0.85rem;
+    color:var(--rust);
+    border:1px solid var(--rust);
+    display:inline-block;
+    padding:0.15rem 0.5rem;
+    border-radius:3px;
+    margin-bottom:0.7rem;
+  }
+  .label-line{
+    font-size:0.86rem;
+    margin:0.42rem 0;
+    color:var(--cacao-700);
+  }
+  .label-line b{ color:var(--cacao-900); }
+  .label-line .allergene{
+    font-weight:700;
+    color:var(--cacao-900);
+    text-decoration:underline;
+    text-decoration-color:var(--caramel);
+    text-decoration-thickness:2px;
+  }
+  .label-divider{ border:none; border-top:1px dashed var(--line); margin:0.85rem 0; }
+  .label-foot-grid{ display:grid; grid-template-columns:1fr 1fr; gap:0.3rem 1rem; font-size:0.82rem; color:var(--cacao-700);}
+  .label-nutri-table{ width:100%; border-collapse:collapse; font-size:0.8rem; margin-top:0.3rem; }
+  .label-nutri-table td{ padding:0.28rem 0.2rem; border-bottom:1px solid var(--line); color:var(--cacao-700); }
+  .label-nutri-table td:last-child{ text-align:right; font-weight:600; color:var(--cacao-900); }
+
+  /* ---------- Rapport ---------- */
+  .rapport{ margin-top:1.75rem; }
+  .rapport-status{
+    font-family:"Fraunces", serif;
+    font-weight:600;
+    font-size:1.05rem;
+    padding:0.7rem 1rem;
+    border-radius:var(--radius);
+    margin-bottom:1rem;
+  }
+  .rapport-status.ok{ background:var(--moss-bg); color:var(--moss); }
+  .rapport-status.ko{ background:var(--rust-bg); color:var(--rust); }
+
+  .rapport-group{ margin-bottom:1rem; }
+  .rapport-group h3{
+    font-size:0.82rem;
+    font-weight:700;
+    margin:0 0 0.5rem;
+    color:var(--cacao-700);
+  }
+  .rapport-group ul{ margin:0; padding-left:0; list-style:none; }
+  .rapport-item{
+    font-size:0.86rem;
+    padding:0.55rem 0.7rem;
+    border-radius:var(--radius);
+    margin-bottom:0.45rem;
+    line-height:1.45;
+  }
+  .rapport-item .src{
+    display:block;
+    font-size:0.72rem;
+    margin-top:0.2rem;
+    opacity:0.75;
+  }
+  .rapport-item.error{ background:var(--rust-bg); color:var(--rust); border-left:3px solid var(--rust); }
+  .rapport-item.warn{ background:var(--amber-bg); color:var(--amber-ink); border-left:3px solid var(--amber-ink); }
+  .rapport-item.info{ background:var(--moss-bg); color:var(--moss); border-left:3px solid var(--moss); }
+
+  footer.bottom{
+    text-align:center;
+    font-size:0.78rem;
+    color:var(--ink-muted);
+    padding:2rem 1rem 3rem;
+  }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <p class="kicker">BTM Chocolatier Confiseur — outil de contrôle réglementaire</p>
+  <h1>De la recette à l'étiquette conforme</h1>
+  <p class="sub">Renseigne la fiche technique de ton produit : la dénomination, la composition, les allergènes et les conditions de vente. L'outil rédige l'étiquette et signale ce qui ne serait pas conforme, avec la règle et la source juridique correspondantes.</p>
+</header>
+
+<div class="workbench">
+
+  <!-- ===================== COLONNE FORMULAIRE ===================== -->
+  <div class="col-form">
+    <form id="fiche-form">
+
+      <fieldset>
+        <legend class="section-title">Identité du produit</legend>
+
+        <div class="field">
+          <label for="nom_produit">Nom du produit (tel qu'il apparaîtra sur l'étiquette)</label>
+          <input type="text" id="nom_produit" placeholder="ex. Tablette Chocolat au Lait Noisettes">
+        </div>
+
+        <div class="field">
+          <label for="denomination_categorie">Dénomination réglementée la plus proche</label>
+          <select id="denomination_categorie"></select>
+          <p class="hint" id="denom-hint"></p>
+        </div>
+
+        <div class="field">
+          <label>Mode de vente</label>
+          <div class="radio-pair">
+            <label><input type="radio" name="type_vente" value="preemballe" checked> Préemballé</label>
+            <label><input type="radio" name="type_vente" value="vrac"> Vrac / assimilé vrac</label>
+          </div>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend class="section-title">Coller la recette</legend>
+        <div class="paste-box">
+          <textarea id="recette-texte" placeholder="Colle ta recette ici, un ingrédient par ligne. Exemples de formats acceptés :&#10;Nom : Tablette Chocolat au Lait Noisettes&#10;Sucre 40g&#10;Beurre de cacao : 20 g&#10;Lait entier en poudre, 15g&#10;Pâte de cacao (20g)&#10;25g de noisettes&#10;Lécithine de soja 0,5g"></textarea>
+          <div class="paste-toolbar">
+            <button type="button" class="btn-primary-ghost" id="btn-parse-recette">Analyser et remplir les ingrédients</button>
+            <button type="button" class="btn-text" id="btn-clear-recette">Effacer</button>
+          </div>
+          <div id="parse-log"></div>
+        </div>
+        <p class="hint" style="margin-top:0.6rem;">Une ligne « Nom : ... » ou « Recette : ... » en tête est reprise comme nom de produit. Les quantités en g/kg sont reconnues automatiquement ; les allergènes et additifs courants sont détectés par mot-clé — à vérifier avant de générer l'étiquette.</p>
+      </fieldset>
+
+      <fieldset>
+        <legend class="section-title">Perte à la cuisson (évaporation)</legend>
+        <div class="calc-box">
+          <div class="field" style="margin-bottom:0;">
+            <label for="evaporation_pct">Évaporation estimée, en % du poids brut des ingrédients</label>
+            <div class="inline-num">
+              <input type="number" id="evaporation_pct" min="0" max="95" step="0.5" value="0"> <span class="hint" style="margin:0;">%</span>
+            </div>
+          </div>
+          <div class="calc-readout" id="evap-readout">Poids brut des ingrédients de la recette : — · aucune perte renseignée.</div>
+        </div>
+        <p class="hint" style="margin-top:0.6rem;">Utile pour les cuissons (caramels, pâtes de fruits...) : le poids fini après évaporation sert de référence pour les teneurs exigées par la réglementation (% de fruits, de garniture...), et non le poids des ingrédients mis en œuvre.</p>
+      </fieldset>
+
+      <fieldset>
+        <legend class="section-title">Enrobage</legend>
+        <div class="check-row" style="margin-bottom:0.6rem;">
+          <input type="checkbox" id="pas_enrobage">
+          <label for="pas_enrobage">Pas d'enrobage pour cette fabrication (ex. caramel, pâte de fruit nue, nougat...)</label>
+        </div>
+        <div class="calc-box" id="enrobage-fields">
+          <div class="row2">
+            <div class="field">
+              <label for="enrobage_nom">Nom de l'enrobage</label>
+              <input type="text" id="enrobage_nom" placeholder="ex. Chocolat de couverture noir 55%">
+            </div>
+            <div class="field">
+              <label for="enrobage_pct">Enrobage, en % du produit fini</label>
+              <div class="inline-num">
+                <input type="number" id="enrobage_pct" min="0" max="95" step="0.5"> <span class="hint" style="margin:0;">%</span>
+              </div>
+            </div>
+          </div>
+          <button type="button" class="btn-primary-ghost" id="btn-calc-enrobage">Calculer et ajouter/mettre à jour l'enrobage dans les ingrédients</button>
+          <div class="calc-readout" id="enrobage-readout" style="display:none;"></div>
+        </div>
+        <p class="hint" style="margin-top:0.6rem;">Le poids d'enrobage est calculé à partir du poids fini de l'intérieur (après évaporation) pour que l'enrobage représente exactement le % du produit fini indiqué. L'ingrédient est ajouté à la liste ci-dessous : complète ensuite son allergène/additif si besoin.</p>
+      </fieldset>
+
+      <fieldset id="fieldset-chocolat">
+        <legend class="section-title">Chocolat — teneurs <span class="hint" style="font-weight:400;">(calculées depuis la recette)</span></legend>
+        <div class="row2">
+          <div class="field field-computed">
+            <label for="teneur_cacao_pct">Cacao : x% minimum</label>
+            <input type="number" id="teneur_cacao_pct" readonly tabindex="-1">
+            <p class="hint">Somme des ingrédients au rôle « Cacao » ÷ poids du produit fini.</p>
+          </div>
+          <div class="field field-computed">
+            <label for="mgv_pct">Matières grasses végétales de substitution (%)</label>
+            <input type="number" id="mgv_pct" readonly tabindex="-1">
+            <p class="hint">Somme des ingrédients au rôle « MG végétale non laitière ».</p>
+          </div>
+        </div>
+      </fieldset>
+
+      <fieldset id="fieldset-caramel" style="display:none;">
+        <legend class="section-title">Caramel — teneurs <span class="hint" style="font-weight:400;">(estimées depuis la recette)</span></legend>
+        <div class="row2">
+          <div class="field field-computed">
+            <label for="teneur_proteines_lait_pct">Protéines de lait (%)</label>
+            <input type="number" id="teneur_proteines_lait_pct" readonly tabindex="-1">
+          </div>
+          <div class="field field-computed">
+            <label for="teneur_matiere_grasse_lactique_pct">Matière grasse lactique (%)</label>
+            <input type="number" id="teneur_matiere_grasse_lactique_pct" readonly tabindex="-1">
+          </div>
+        </div>
+        <p class="hint" style="margin-top:-0.3rem;">Estimation à partir de la composition moyenne des ingrédients laitiers tagués (lait en poudre, lait liquide, crème, beurre) — vérifie ces valeurs avec la fiche technique de tes matières premières pour un usage commercial réel.</p>
+        <div class="check-row" style="margin-top:0.5rem;">
+          <input type="checkbox" id="contient_matiere_grasse_non_laitiere" disabled>
+          <label for="contient_matiere_grasse_non_laitiere" style="margin:0;font-weight:500;">Contient une matière grasse d'origine NON laitière <span class="hint" style="display:inline;">(détecté depuis le rôle « MG végétale non laitière »)</span></label>
+        </div>
+      </fieldset>
+
+      <fieldset id="fieldset-nougat" style="display:none;">
+        <legend class="section-title">Nougat — garniture <span class="hint" style="font-weight:400;">(calculée depuis la recette)</span></legend>
+        <div class="field field-computed">
+          <label for="garniture_pct_produit_fini">Garniture (fruits secs) en % du produit fini</label>
+          <input type="number" id="garniture_pct_produit_fini" readonly tabindex="-1">
+          <p class="hint">Somme des ingrédients au rôle « Garniture (fruit sec) » ÷ poids du produit fini.</p>
+        </div>
+      </fieldset>
+
+      <fieldset id="fieldset-pdf" style="display:none;">
+        <legend class="section-title">Pâte de fruits — composition <span class="hint" style="font-weight:400;">(calculée depuis la recette)</span></legend>
+        <div class="row2">
+          <div class="field field-computed">
+            <label for="teneur_fruits_pct">Teneur en fruits (pulpe/purée), % du produit fini</label>
+            <input type="number" id="teneur_fruits_pct" readonly tabindex="-1">
+          </div>
+          <div class="field">
+            <label for="fruit_cite_denomination">Fruit cité dans la dénomination</label>
+            <input type="text" id="fruit_cite_denomination" placeholder="ex. abricot">
+          </div>
+        </div>
+        <div class="row2">
+          <div class="field">
+            <label for="style_denomination_fruit">Formule choisie</label>
+            <select id="style_denomination_fruit">
+              <option value="pate_de_X">« Pâte de [fruit] »</option>
+              <option value="pate_de_fruits_a_X">« Pâte de fruits à l'[fruit] »</option>
+            </select>
+          </div>
+          <div class="field field-computed">
+            <label for="pct_pulpe_du_fruit_cite">% de la pulpe/purée issue de ce fruit</label>
+            <input type="number" id="pct_pulpe_du_fruit_cite" readonly tabindex="-1">
+            <p class="hint">Calculé en comparant le nom du fruit cité aux ingrédients au rôle « Fruit ».</p>
+          </div>
+        </div>
+        <div class="check-row">
+          <input type="checkbox" id="aromes_non_naturels">
+          <label for="aromes_non_naturels" style="margin:0;font-weight:500;">Utilise des arômes non naturels</label>
+        </div>
+        <div class="field field-computed" style="margin-top:0.8rem;">
+          <label for="quid_fruit_cite_pct">QUID — % du fruit cité à afficher sur l'étiquette</label>
+          <input type="number" id="quid_fruit_cite_pct" readonly tabindex="-1">
+          <p class="hint">Obligatoire dès qu'un ingrédient est cité dans la dénomination (art. R.412-17 du Code de la consommation) : quantité du fruit nommé mise en œuvre ÷ poids du produit fini. Calculé automatiquement et ajouté à l'étiquette.</p>
+        </div>
+      </fieldset>
+
+      <fieldset id="fieldset-composants">
+        <legend class="section-title">Fabrication à plusieurs éléments <span class="hint" style="font-weight:400;">(optionnel)</span></legend>
+        <p class="hint" style="margin-top:-0.4rem;">Si ta fabrication combine plusieurs éléments distincts (ex. une ganache et une pâte de fruit), définis-les ici avec leur recette propre et leur part dans le produit fini. Le calcul fusionne automatiquement les ingrédients, dans les bonnes proportions, dans la liste ci-dessous.</p>
+        <div id="composants-list"></div>
+        <button type="button" class="btn-add" id="btn-add-composant">+ Ajouter un élément (ganache, pâte de fruit, biscuit...)</button>
+        <button type="button" class="btn-primary-ghost" id="btn-calc-composants" style="margin-top:0.6rem;">Calculer et fusionner dans les ingrédients</button>
+        <div class="calc-readout" id="composants-readout" style="display:none;"></div>
+      </fieldset>
+
+      <fieldset>
+        <legend class="section-title">Composition — liste d'ingrédients</legend>
+        <p class="hint" style="margin-top:-0.4rem;margin-bottom:0.8rem;">Ordre = poids décroissant. Renseigne la quantité (g) de chaque ligne, et son <b>rôle</b> si elle compte dans une teneur réglementée (cacao, fruit, garniture, matière grasse...) — les pourcentages ci-dessus se calculent alors automatiquement. Coche l'allergène si besoin, l'étiquette le mettra en évidence.</p>
+        <div class="ing-toolbar">
+          <span id="ing-total-display">Somme des ingrédients : —</span>
+          <span>
+            <button type="button" class="btn-text" id="btn-sort-ing">Trier par poids décroissant</button>
+            &nbsp;·&nbsp;
+            <button type="button" class="btn-text" id="btn-use-total">Utiliser comme quantité nette</button>
+          </span>
+        </div>
+        <div id="ingredients-list"></div>
+        <button type="button" class="btn-add" id="add-ingredient">+ Ajouter un ingrédient</button>
+      </fieldset>
+
+      <fieldset>
+        <legend class="section-title">Allergènes</legend>
+        <div class="field">
+          <label>Traces éventuelles (contamination croisée non maîtrisable)</label>
+          <div class="chip-select" id="traces-chips"></div>
+          <p class="hint">À n'utiliser qu'en dernier recours, après évaluation réelle du risque (art. 36 INCO).</p>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend class="section-title">Congélation</legend>
+        <div class="check-row">
+          <input type="checkbox" id="a_ete_congele">
+          <label for="a_ete_congele" style="margin:0;font-weight:500;">Le produit a été congelé puis décongelé</label>
+        </div>
+        <div class="field" id="temp-field" style="display:none;margin-top:0.6rem;">
+          <label for="temperature_conservation_c">Température de conservation (°C)</label>
+          <input type="number" id="temperature_conservation_c" step="1" placeholder="ex. -20">
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend class="section-title">Quantité, prix &amp; durabilité</legend>
+        <div class="row3">
+          <div class="field">
+            <label for="quantite_nette_g">Quantité nette (g)</label>
+            <input type="number" id="quantite_nette_g" min="0" step="1">
+          </div>
+          <div class="field">
+            <label for="prix">Prix</label>
+            <input type="text" id="prix" placeholder="ex. 6,90 €">
+          </div>
+          <div class="field">
+            <label>Vendu à la pièce</label>
+            <div class="radio-pair" style="padding-top:0.5rem;">
+              <label><input type="radio" name="vendu_a_la_piece" value="oui"> Oui</label>
+              <label><input type="radio" name="vendu_a_la_piece" value="non" checked> Non</label>
+            </div>
+          </div>
+        </div>
+        <div class="row2">
+          <div class="field">
+            <label for="dlc_ou_ddm">Type de date</label>
+            <select id="dlc_ou_ddm">
+              <option value="">— aucune (à justifier) —</option>
+              <option value="DDM">DDM — Date de Durabilité Minimale</option>
+              <option value="DLC">DLC — Date Limite de Consommation</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="date_valeur">Date</label>
+            <input type="date" id="date_valeur">
+          </div>
+        </div>
+        <div class="field">
+          <label for="conditions_conservation">Conditions de conservation</label>
+          <input type="text" id="conditions_conservation" placeholder="ex. à conserver entre 16 et 20°C, au sec">
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend class="section-title">Fabricant</legend>
+        <div class="row2">
+          <div class="field">
+            <label for="fabricant_nom">Nom / raison sociale</label>
+            <input type="text" id="fabricant_nom" value="Institut des métiers / section chocolaterie">
+          </div>
+          <div class="field">
+            <label for="fabricant_adresse">Adresse</label>
+            <input type="text" id="fabricant_adresse" value="14, rue du Château des Vergnes 63000 Clermont-Ferrand">
+          </div>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend class="section-title">Déclaration nutritionnelle <span class="hint" style="font-weight:400;">(estimée depuis la recette)</span></legend>
+        <div class="check-row">
+          <input type="checkbox" id="nutrition_exempte">
+          <label for="nutrition_exempte" style="margin:0;font-weight:500;">Exemption applicable (art. 16 &amp; annexe V du règlement INCO)</label>
+        </div>
+        <select id="nutrition_motif_exemption" style="margin-top:0.5rem;">
+          <option value="vente_directe">Vente directe par le producteur, faible quantité, à un consommateur final ou un détaillant local</option>
+          <option value="non_preemballe">Denrée non préemballée (déjà couvert par le mode de vente « vrac »)</option>
+          <option value="artisanal_local">Denrée produite par un artisan qui fournit directement le consommateur final</option>
+          <option value="emballage_trop_petit">Plus grande face de l'emballage &lt; 25 cm²</option>
+        </select>
+        <div class="calc-readout ok" id="nutrition-readout" style="margin-top:0.8rem;">Renseigne les quantités des ingrédients pour estimer les valeurs nutritionnelles.</div>
+        <p class="hint" style="margin-top:0.6rem;">Estimation à partir d'une table de composition indicative par ingrédient (valeurs moyennes issues de la table <b>Ciqual</b>, ANSES — référence officielle française). Ce n'est pas une analyse de laboratoire : pour une mise sur le marché réelle, fais valider ou recalculer ces valeurs avec les fiches techniques de tes fournisseurs.</p>
+      </fieldset>
+
+      <fieldset>
+        <legend class="section-title">Origine géographique</legend>
+        <div class="check-row">
+          <input type="checkbox" id="origine_suggeree">
+          <label for="origine_suggeree" style="margin:0;font-weight:500;">Le nom, le visuel ou la marque évoque un pays ou une région précise</label>
+        </div>
+        <div class="field" id="origine-field" style="display:none;margin-top:0.6rem;">
+          <label for="origine_reelle">Origine réelle de l'ingrédient primaire correspondant</label>
+          <input type="text" id="origine_reelle" placeholder="ex. cacao : Côte d'Ivoire">
+        </div>
+        <p class="hint" style="margin-top:0.5rem;">Si le pays suggéré diffère du pays d'origine réel de l'ingrédient primaire, l'origine réelle doit être indiquée (art. 26 §3 du règlement INCO — anti-tromperie sur l'origine).</p>
+      </fieldset>
+
+      <fieldset>
+        <legend class="section-title">Allégations</legend>
+        <div class="check-row">
+          <input type="checkbox" id="allegation_sans_gluten">
+          <label for="allegation_sans_gluten" style="margin:0;font-weight:500;">Allégation « sans gluten »</label>
+        </div>
+        <p class="hint" style="margin-top:0.4rem;">Autorisée seulement si le produit contient moins de 20 mg/kg de gluten (règlement UE n°828/2014) — vérifie une analyse ou l'absence totale d'ingrédient à base de gluten dans la recette.</p>
+      </fieldset>
+
+      <fieldset>
+        <legend class="section-title">Mode d'emploi <span class="hint" style="font-weight:400;">(facultatif)</span></legend>
+        <div class="field">
+          <textarea id="mode_emploi" placeholder="ex. À conserver à l'abri de la lumière. Laisser tempérer 10 min avant dégustation."></textarea>
+        </div>
+      </fieldset>
+
+      <button type="button" class="btn-generate" id="btn-generate">Générer l'étiquette</button>
+    </form>
+  </div>
+
+  <!-- ===================== COLONNE RÉSULTAT ===================== -->
+  <div class="col-result">
+    <h2 class="result-heading">Étiquette générée</h2>
+    <div class="label-sticker" id="label-output">
+      <p class="label-empty">Remplis la fiche technique à gauche, puis clique sur « Générer l'étiquette ».</p>
+    </div>
+
+    <div class="rapport" id="rapport-output"></div>
+  </div>
+
+</div>
+
+<footer class="bottom">
+  Sources : règlement UE n°1169/2011 (INCO) · décret n°76-692 (chocolat) · Code des usages de la Confiserie, Alliance7 · Code de la consommation, art. R.412 &amp; L.441-1 · décret n°2015-447 (allergènes). Outil pédagogique — vérifier systématiquement le texte en vigueur pour un usage commercial réel.
+</footer>
+
+<script>
+/* =========================================================================
+   BASE DE DONNÉES (condensée depuis database/*.json)
+   ========================================================================= */
+
+const ALLERGENES = [
+  {code:"gluten", nom:"Céréales contenant du gluten"},
+  {code:"crustaces", nom:"Crustacés"},
+  {code:"oeufs", nom:"Œufs"},
+  {code:"poissons", nom:"Poissons"},
+  {code:"arachides", nom:"Arachides"},
+  {code:"soja", nom:"Soja"},
+  {code:"lait", nom:"Lait"},
+  {code:"fruits_a_coque", nom:"Fruits à coque"},
+  {code:"celeri", nom:"Céleri"},
+  {code:"moutarde", nom:"Moutarde"},
+  {code:"graines_sesame", nom:"Graines de sésame"},
+  {code:"sulfites", nom:"Sulfites"},
+  {code:"lupin", nom:"Lupin"},
+  {code:"mollusques", nom:"Mollusques"},
+];
+
+// famille: "chocolat" | "caramels" | "nougats" | "pates_de_fruits"
+const DENOMINATIONS = {
+  chocolat_noir: {nom:"Chocolat (noir)", famille:"chocolat", source:"Décret n°76-692"},
+  chocolat_noir_vermicelle: {nom:"Chocolat vermicelle", famille:"chocolat", source:"Décret n°76-692"},
+  chocolat_couverture: {nom:"Chocolat de couverture", famille:"chocolat", source:"Décret n°76-692"},
+  chocolat_blanc: {nom:"Chocolat blanc", famille:"chocolat", source:"Décret n°76-692"},
+  chocolat_au_lait: {nom:"Chocolat au lait", famille:"chocolat", source:"Décret n°76-692"},
+  chocolat_au_lait_vermicelle: {nom:"Chocolat au lait vermicelle", famille:"chocolat", source:"Décret n°76-692"},
+  chocolat_au_lait_couverture: {nom:"Chocolat au lait de couverture", famille:"chocolat", source:"Décret n°76-692"},
+  gianduja_noir: {nom:"Gianduja (noir aux noisettes)", famille:"chocolat", source:"Décret n°76-692"},
+  gianduja_au_lait: {nom:"Gianduja au lait", famille:"chocolat", source:"Décret n°76-692"},
+  chocolat_fourre: {nom:"Chocolat fourré", famille:"chocolat", source:"Décret n°76-692", exclu_teneur_cacao:true},
+  bonbon_de_chocolat: {nom:"Bonbon de chocolat / Praline", famille:"chocolat", source:"Décret n°76-692", exclu_teneur_cacao:true},
+  truffe: {nom:"Truffe", famille:"chocolat", source:"Usages professionnels", exclu_teneur_cacao:true},
+  truffe_fantaisie: {nom:"Truffe fantaisie", famille:"chocolat", source:"Usages professionnels", exclu_teneur_cacao:true},
+
+  caramel: {nom:"Caramel", famille:"caramels", source:"Code des usages Confiserie", seuil_proteines_lait:1.5},
+  caramel_au_lait: {nom:"Caramel au lait", famille:"caramels", source:"Code des usages Confiserie", seuil_msnf_lait:4.5, seuil_mgl:1.5},
+  caramel_a_la_creme: {nom:"Caramel à la crème", famille:"caramels", source:"Code des usages Confiserie", seuil_msnf_lait:4.5, seuil_mgl:3, exclusif_laitier:true},
+  caramel_au_beurre: {nom:"Caramel au beurre", famille:"caramels", source:"Code des usages Confiserie", seuil_msnf_lait:4.5, seuil_mgl:3, exclusif_laitier:true},
+
+  nougat: {nom:"Nougat", famille:"nougats", source:"Code des usages Confiserie", seuil_garniture:15},
+  nougat_qualificatif: {nom:"Nougat aux [fruits secs cités]", famille:"nougats", source:"Code des usages Confiserie", seuil_garniture:20},
+  nougat_de_montelimar: {nom:"Nougat de Montélimar (IGP)", famille:"nougats", source:"Cahier des charges INAO (IGP)", seuil_garniture:30, igp:true, aucun_additif:true},
+  nougat_blanc_de_provence: {nom:"Nougat blanc de Provence", famille:"nougats", source:"Code des usages Confiserie", seuil_garniture:35},
+  nougat_noir_rouge_croquante: {nom:"Nougat noir / rouge / Croquante", famille:"nougats", source:"Code des usages Confiserie", seuil_garniture:15},
+  nougat_noir_de_provence: {nom:"Nougat noir de Provence", famille:"nougats", source:"Code des usages Confiserie", seuil_garniture:50},
+
+  pate_de_fruits: {nom:"Pâte de fruits", famille:"pates_de_fruits", source:"Code des usages Confiserie", seuil_fruits:50},
+};
+
+/* =========================================================================
+   ÉTAT
+   ========================================================================= */
+let ingredientRowCount = 0;
+let tracesActives = new Set();
+
+/* =========================================================================
+   CONSTRUCTION DU FORMULAIRE
+   ========================================================================= */
+
+function peupleDenominations(){
+  const sel = document.getElementById("denomination_categorie");
+  const groupes = {
+    chocolat: "Chocolat",
+    caramels: "Caramels",
+    nougats: "Nougats",
+    pates_de_fruits: "Pâtes de fruits",
+  };
+  Object.entries(groupes).forEach(([famille, label])=>{
+    const og = document.createElement("optgroup");
+    og.label = label;
+    Object.entries(DENOMINATIONS).filter(([k,v])=>v.famille===famille).forEach(([k,v])=>{
+      const opt = document.createElement("option");
+      opt.value = k; opt.textContent = v.nom;
+      og.appendChild(opt);
+    });
+    sel.appendChild(og);
+  });
+  sel.addEventListener("change", onDenominationChange);
+  onDenominationChange();
+}
+
+function onDenominationChange(){
+  const key = document.getElementById("denomination_categorie").value;
+  const d = DENOMINATIONS[key];
+  document.getElementById("fieldset-chocolat").style.display = d.famille==="chocolat" ? "" : "none";
+  document.getElementById("fieldset-caramel").style.display = d.famille==="caramels" ? "" : "none";
+  document.getElementById("fieldset-nougat").style.display = d.famille==="nougats" ? "" : "none";
+  document.getElementById("fieldset-pdf").style.display = d.famille==="pates_de_fruits" ? "" : "none";
+
+  const hint = document.getElementById("denom-hint");
+  let seuils = [];
+  if(d.seuil_proteines_lait) seuils.push(`protéines de lait ≥ ${d.seuil_proteines_lait}%`);
+  if(d.seuil_msnf_lait) seuils.push(`MS non grasse lait ≥ ${d.seuil_msnf_lait}%`);
+  if(d.seuil_mgl) seuils.push(`MG lactique ≥ ${d.seuil_mgl}%`);
+  if(d.seuil_garniture) seuils.push(`garniture ≥ ${d.seuil_garniture}% du produit fini`);
+  if(d.seuil_fruits) seuils.push(`fruits ≥ ${d.seuil_fruits}% du produit fini`);
+  if(d.exclu_teneur_cacao) seuils.push("mention « Cacao : x% minimum » non exigée pour cette catégorie");
+  if(d.igp) seuils.push("IGP homologuée 2023/UE 2024 : zone géographique et cahier des charges à respecter (aucun additif autorisé)");
+  hint.textContent = seuils.length ? `Référence : ${d.source} — ${seuils.join(" · ")}` : `Référence : ${d.source}`;
+  calculeTeneursAuto();
+}
+
+function peupleTraces(){
+  const wrap = document.getElementById("traces-chips");
+  ALLERGENES.forEach(a=>{
+    const chip = document.createElement("span");
+    chip.className = "chip";
+    chip.textContent = a.nom;
+    chip.dataset.code = a.code;
+    chip.addEventListener("click", ()=>{
+      chip.classList.toggle("active");
+      if(tracesActives.has(a.code)) tracesActives.delete(a.code); else tracesActives.add(a.code);
+    });
+    wrap.appendChild(chip);
+  });
+}
+
+function ajouteLigneIngredient(prefill){
+  ingredientRowCount++;
+  const id = ingredientRowCount;
+  const wrap = document.createElement("div");
+  wrap.className = "ing-row";
+  wrap.dataset.id = id;
+  const optionsAllergenes = ALLERGENES.map(a=>`<option value="${a.code}">${a.nom}</option>`).join("");
+  wrap.innerHTML = `
+    <input type="text" placeholder="Nom de l'ingrédient" class="ing-nom">
+    <input type="number" placeholder="g" class="ing-qte" min="0" step="0.1">
+    <span class="ing-quid-wrap" title="Mis en avant dans le nom/visuel du produit : son % doit alors être déclaré (QUID, art. 22 INCO)">
+      <input type="checkbox" class="ing-quid">
+      <span>QUID</span>
+    </span>
+    <select class="ing-role">
+      <option value="">— rôle non spécifié —</option>
+      <optgroup label="Chocolat">
+        <option value="cacao">Cacao (pâte/beurre/poudre)</option>
+        <option value="graisse_vegetale_non_laitiere">MG végétale non laitière</option>
+      </optgroup>
+      <optgroup label="Pâte de fruits">
+        <option value="fruit_pulpe">Fruit (pulpe/purée)</option>
+      </optgroup>
+      <optgroup label="Nougat">
+        <option value="garniture_fruits_secs">Garniture (fruit sec)</option>
+      </optgroup>
+      <optgroup label="Caramel — laitier">
+        <option value="lait_poudre">Lait en poudre</option>
+        <option value="lait_liquide">Lait liquide</option>
+        <option value="creme">Crème</option>
+        <option value="beurre_laitier">Beurre laitier</option>
+      </optgroup>
+    </select>
+    <select class="ing-additif">
+      <option value="">— ingrédient simple —</option>
+      <option value="Émulsifiant">Émulsifiant</option>
+      <option value="Gélifiant">Gélifiant</option>
+      <option value="Acidifiant">Acidifiant</option>
+      <option value="Colorant">Colorant</option>
+      <option value="Conservateur">Conservateur</option>
+      <option value="Épaississant">Épaississant</option>
+      <option value="Arôme">Arôme</option>
+    </select>
+    <select class="ing-allergene">
+      <option value="">— pas un allergène —</option>
+      ${optionsAllergenes}
+    </select>
+    <button type="button" class="remove-btn">Retirer</button>
+  `;
+  wrap.querySelector(".remove-btn").addEventListener("click", ()=>{ wrap.remove(); updateTotalDisplay(); });
+  wrap.querySelector(".ing-qte").addEventListener("input", updateTotalDisplay);
+  wrap.querySelector(".ing-role").addEventListener("change", updateTotalDisplay);
+  wrap.querySelector(".ing-quid").addEventListener("change", updateTotalDisplay);
+  document.getElementById("ingredients-list").appendChild(wrap);
+
+  if(prefill){
+    if(prefill.nom) wrap.querySelector(".ing-nom").value = prefill.nom;
+    if(prefill.quantite!==null && prefill.quantite!==undefined) wrap.querySelector(".ing-qte").value = prefill.quantite;
+    if(prefill.additif) wrap.querySelector(".ing-additif").value = prefill.additif;
+    if(prefill.allergene) wrap.querySelector(".ing-allergene").value = prefill.allergene;
+    if(prefill.role) wrap.querySelector(".ing-role").value = prefill.role;
+  }
+  return wrap;
+}
+
+document.getElementById("a_ete_congele").addEventListener("change", (e)=>{
+  document.getElementById("temp-field").style.display = e.target.checked ? "" : "none";
+});
+document.getElementById("origine_suggeree").addEventListener("change", (e)=>{
+  document.getElementById("origine-field").style.display = e.target.checked ? "" : "none";
+});
+
+/* ---------- Tri, somme, évaporation, enrobage ---------- */
+
+function round1(x){ return Math.round(x*10)/10; }
+
+function liredQteRow(row){
+  const v = row.querySelector(".ing-qte").value.trim();
+  return v==="" ? null : parseFloat(v.replace(",", "."));
+}
+
+function estRowEnrobage(row){ return row.dataset.enrobage === "1"; }
+
+function sumInterieur(){
+  return [...document.querySelectorAll(".ing-row")].filter(r=>!estRowEnrobage(r))
+    .reduce((s,r)=> s + (liredQteRow(r) || 0), 0);
+}
+
+function sumEnrobage(){
+  return [...document.querySelectorAll(".ing-row")].filter(r=>estRowEnrobage(r))
+    .reduce((s,r)=> s + (liredQteRow(r) || 0), 0);
+}
+
+function poidsFiniApresEvaporation(){
+  const S = sumInterieur();
+  const e = parseFloat(document.getElementById("evaporation_pct").value) || 0;
+  return S * (1 - e/100);
+}
+
+function sortIngredientsByWeight(){
+  const container = document.getElementById("ingredients-list");
+  const rows = [...container.querySelectorAll(".ing-row")];
+  const withQte = rows.filter(r=>liredQteRow(r)!==null);
+  const withoutQte = rows.filter(r=>liredQteRow(r)===null);
+  withQte.sort((a,b)=>liredQteRow(b) - liredQteRow(a));
+  [...withQte, ...withoutQte].forEach(r=>container.appendChild(r));
+}
+
+function updateEvapReadout(){
+  const S = sumInterieur();
+  const e = parseFloat(document.getElementById("evaporation_pct").value) || 0;
+  const el = document.getElementById("evap-readout");
+  if(S<=0){
+    el.className = "calc-readout";
+    el.textContent = "Renseigne d'abord les quantités des ingrédients de la recette.";
+    return;
+  }
+  const Z = S * (1 - e/100);
+  if(e>0){
+    el.className = "calc-readout ok";
+    el.innerHTML = `Poids brut des ingrédients : <b>${round1(S)} g</b> · perte à l'évaporation (${e}%) : <b>-${round1(S-Z)} g</b> · poids fini avant enrobage : <b>${round1(Z)} g</b>`;
+  } else {
+    el.className = "calc-readout";
+    el.innerHTML = `Poids brut des ingrédients : <b>${round1(S)} g</b> · aucune perte renseignée (poids fini = poids brut).`;
+  }
+}
+
+function updateEnrobageReadoutPreview(){
+  const pct = parseFloat(document.getElementById("enrobage_pct").value);
+  const el = document.getElementById("enrobage-readout");
+  const Z = poidsFiniApresEvaporation();
+  if(!pct || Z<=0){ el.style.display = "none"; return; }
+  if(pct>=95){
+    el.style.display = "block"; el.className = "calc-readout";
+    el.textContent = "Le pourcentage d'enrobage doit rester inférieur à 95%.";
+    return;
+  }
+  const T = Z/(1 - pct/100);
+  const poidsEnr = T - Z;
+  el.style.display = "block";
+  el.className = "calc-readout ok";
+  el.innerHTML = `Poids d'enrobage calculé : <b>${round1(poidsEnr)} g</b> pour un produit fini total estimé de <b>${round1(T)} g</b> (intérieur ${round1(Z)} g + enrobage ${round1(poidsEnr)} g).`;
+}
+
+function calculeEtAjouteEnrobage(){
+  const nom = document.getElementById("enrobage_nom").value.trim();
+  const pct = parseFloat(document.getElementById("enrobage_pct").value);
+  const Z = poidsFiniApresEvaporation();
+  const el = document.getElementById("enrobage-readout");
+  el.style.display = "block";
+
+  if(!nom){ el.className = "calc-readout"; el.textContent = "Indique le nom de l'enrobage."; return; }
+  if(!pct || pct<=0 || pct>=95){ el.className = "calc-readout"; el.textContent = "Indique un pourcentage d'enrobage valide (entre 0 et 95)."; return; }
+  if(Z<=0){ el.className = "calc-readout"; el.textContent = "Renseigne d'abord les quantités des ingrédients de la recette (intérieur)."; return; }
+
+  const T = Z/(1 - pct/100);
+  const poidsEnr = round1(T - Z);
+
+  let row = document.querySelector('.ing-row[data-enrobage="1"]');
+  if(row){
+    row.querySelector(".ing-nom").value = nom;
+    row.querySelector(".ing-qte").value = poidsEnr;
+  } else {
+    row = ajouteLigneIngredient({ nom, quantite: poidsEnr });
+    row.dataset.enrobage = "1";
+  }
+  sortIngredientsByWeight();
+  updateTotalDisplay();
+
+  el.className = "calc-readout ok";
+  el.innerHTML = `Ajouté / mis à jour dans les ingrédients : <b>${nom}</b> — ${poidsEnr} g (${pct}% du produit fini, total estimé ${round1(T)} g). Complète son allergène/additif directement dans la liste ci-dessous si besoin.`;
+}
+
+function poidsFiniTotalProduit(){
+  const enrobageRow = document.querySelector('.ing-row[data-enrobage="1"]');
+  return enrobageRow ? (poidsFiniApresEvaporation() + sumEnrobage()) : poidsFiniApresEvaporation();
+}
+
+/* ---------- Composants (fabrication à plusieurs éléments, ex. ganache + pâte de fruit) ---------- */
+
+let composantRowCount = 0;
+
+function ajouteComposantIngredient(listEl, prefill){
+  const row = document.createElement("div");
+  row.className = "composant-ing-row";
+  row.innerHTML = `
+    <input type="text" placeholder="Nom de l'ingrédient" class="cing-nom">
+    <input type="number" placeholder="g" class="cing-qte" min="0" step="0.1">
+    <button type="button" class="remove-btn">Retirer</button>
+  `;
+  row.querySelector(".remove-btn").addEventListener("click", ()=> row.remove());
+  if(prefill){
+    if(prefill.nom) row.querySelector(".cing-nom").value = prefill.nom;
+    if(prefill.qte!==null && prefill.qte!==undefined) row.querySelector(".cing-qte").value = prefill.qte;
+  }
+  listEl.appendChild(row);
+  return row;
+}
+
+function ajouteComposant(prefill){
+  composantRowCount++;
+  const id = composantRowCount;
+  const block = document.createElement("div");
+  block.className = "composant-block";
+  block.dataset.id = id;
+  block.innerHTML = `
+    <div class="row2">
+      <div class="field" style="margin-bottom:0.6rem;">
+        <label>Nom de l'élément</label>
+        <input type="text" class="composant-nom" placeholder="ex. Ganache">
+      </div>
+      <div class="field" style="margin-bottom:0.6rem;">
+        <label>Part dans le produit fini</label>
+        <div class="inline-num">
+          <input type="number" class="composant-pct" min="0" max="100" step="0.5"> <span class="hint" style="margin:0;">%</span>
+        </div>
+      </div>
+    </div>
+    <p class="hint" style="margin:0 0 0.5rem;">Recette propre de cet élément (dans les proportions que tu utilises, peu importe la taille du lot) :</p>
+    <div class="composant-ing-list"></div>
+    <button type="button" class="btn-add composant-add-ing" style="font-size:0.78rem; padding:0.4rem 0.7rem;">+ Ajouter un ingrédient à cet élément</button>
+    <button type="button" class="remove-btn composant-remove">Retirer cet élément</button>
+  `;
+  const ingList = block.querySelector(".composant-ing-list");
+  block.querySelector(".composant-add-ing").addEventListener("click", ()=> ajouteComposantIngredient(ingList));
+  block.querySelector(".composant-remove").addEventListener("click", ()=> block.remove());
+  document.getElementById("composants-list").appendChild(block);
+
+  if(prefill){
+    if(prefill.nom) block.querySelector(".composant-nom").value = prefill.nom;
+    if(prefill.pct!==null && prefill.pct!==undefined) block.querySelector(".composant-pct").value = prefill.pct;
+    (prefill.ingredients||[]).forEach(ing => ajouteComposantIngredient(ingList, ing));
+  } else {
+    ajouteComposantIngredient(ingList);
+    ajouteComposantIngredient(ingList);
+  }
+  return block;
+}
+
+function calculeEtFusionneComposants(){
+  const el = document.getElementById("composants-readout");
+  el.style.display = "block";
+  const blocks = [...document.querySelectorAll(".composant-block")];
+  if(blocks.length === 0){
+    el.className = "calc-readout";
+    el.textContent = "Ajoute au moins un élément avant de calculer.";
+    return;
+  }
+
+  const composants = [];
+  let pctTotal = 0;
+  for(const block of blocks){
+    const nom = block.querySelector(".composant-nom").value.trim();
+    const pct = parseFloat(block.querySelector(".composant-pct").value);
+    const ingRows = [...block.querySelectorAll(".composant-ing-row")];
+    const ingredients = ingRows.map(r => ({
+      nom: r.querySelector(".cing-nom").value.trim(),
+      qte: parseFloat((r.querySelector(".cing-qte").value || "").replace(",", "."))
+    })).filter(i => i.nom && i.qte > 0);
+
+    if(!nom){ el.className = "calc-readout"; el.textContent = "Chaque élément doit avoir un nom."; return; }
+    if(!pct || pct<=0 || pct>100){ el.className = "calc-readout"; el.textContent = `Indique une part valide (entre 0 et 100%) pour « ${nom} ».`; return; }
+    if(ingredients.length === 0){ el.className = "calc-readout"; el.textContent = `Renseigne au moins un ingrédient avec sa quantité pour « ${nom} ».`; return; }
+
+    const totalComposant = ingredients.reduce((s,i)=> s + i.qte, 0);
+    composants.push({ nom, pct, ingredients, totalComposant });
+    pctTotal += pct;
+  }
+
+  const enrobageRow = document.querySelector('.ing-row[data-enrobage="1"]');
+  const pctEnrobage = enrobageRow ? (parseFloat(document.getElementById("enrobage_pct").value) || 0) : 0;
+
+  // Fusion : chaque ingrédient contribue (sa part dans sa propre recette) × (part de son élément dans le produit fini)
+  const noms = [];
+  composants.forEach(comp => {
+    comp.ingredients.forEach(ing => {
+      const contribution = (ing.qte / comp.totalComposant) * comp.pct;
+      const existant = [...document.querySelectorAll(".ing-row")].find(r =>
+        !estRowEnrobage(r) && r.querySelector(".ing-nom").value.trim().toLowerCase() === ing.nom.toLowerCase()
+      );
+      if(existant){
+        const qteActuelle = liredQteRow(existant) || 0;
+        existant.querySelector(".ing-qte").value = round1(qteActuelle + contribution);
+      } else {
+        ajouteLigneIngredient({ nom: ing.nom, quantite: round1(contribution) });
+      }
+      if(!noms.includes(ing.nom)) noms.push(ing.nom);
+    });
+  });
+
+  sortIngredientsByWeight();
+  updateTotalDisplay();
+
+  el.className = pctTotal + pctEnrobage > 100.5 ? "calc-readout" : "calc-readout ok";
+  let msg = `Fusionné : ${composants.length} élément${composants.length>1?"s":""} (${composants.map(c=>c.nom+" "+c.pct+"%").join(", ")}) représentant ${round1(pctTotal)}% du produit fini`;
+  if(pctEnrobage) msg += ` + enrobage ${pctEnrobage}%`;
+  msg += `. ${noms.length} ingrédient${noms.length>1?"s":""} ajouté${noms.length>1?"s":""}/mis à jour dans la liste ci-dessous — complète allergène/additif/rôle si besoin.`;
+  if(pctTotal + pctEnrobage > 100.5){
+    msg += ` <b>Attention : le total dépasse 100% (${round1(pctTotal+pctEnrobage)}%), vérifie tes parts.</b>`;
+  }
+  el.innerHTML = msg;
+}
+
+document.getElementById("btn-add-composant").addEventListener("click", ()=> ajouteComposant());
+document.getElementById("btn-calc-composants").addEventListener("click", calculeEtFusionneComposants);
+
+
+/* Composition moyenne indicative des ingrédients laitiers (valeurs usuelles,
+   à vérifier avec la fiche technique réelle du fournisseur) */
+const COMPOSITION_LAITIERE = {
+  lait_poudre:   { prot: 0.26,  mg: 0.26 }, // lait entier en poudre
+  lait_liquide:  { prot: 0.033, mg: 0.036}, // lait entier liquide
+  creme:         { prot: 0.023, mg: 0.30 }, // crème ~30% MG
+  beurre_laitier:{ prot: 0.007, mg: 0.82 }, // beurre doux
+};
+
+/* Composition nutritionnelle indicative pour 100g d'ingrédient, valeurs
+   moyennes issues de la table Ciqual (ANSES) — [kcal, lipides g, dont AGS g,
+   glucides g, dont sucres g, protéines g, sel g]. Approximation pédagogique,
+   pas une analyse de laboratoire. */
+const NUTRITION_CIQUAL = {
+  sucre:         [400, 0,   0,    100, 100, 0,    0   ],
+  beurre_cacao:  [899, 100, 60,   0,   0,   0,    0   ],
+  pate_cacao:    [525, 54,  32,   10,  1,   12,   0.02],
+  cacao_poudre:  [350, 12,  7,    12,  0,   20,   0.1 ],
+  lait_poudre:   [496, 26,  16,   38,  38,  26,   0.5 ],
+  creme:         [292, 30,  19,   3,   3,   2.2,  0.05],
+  beurre_laitier:[751, 82,  54,   0.7, 0.6, 0.7,  0.02],
+  lait_liquide:  [64,  3.6, 2.4,  4.8, 4.8, 3.3,  0.1 ],
+  noisette:      [646, 61,  4.5,  7,   4,   15,   0   ],
+  amande:        [579, 50,  4,    10,  4,   21,   0   ],
+  pistache:      [562, 45,  5.5,  16,  7,   20,   0   ],
+  sirop_glucose: [316, 0,   0,    80,  80,  0,    0   ],
+  miel:          [304, 0,   0,    80,  80,  0.3,  0   ],
+  puree_fruit:   [45,  0.2, 0,    10,  9,   0.8,  0   ],
+  blanc_oeuf:    [48,  0,   0,    0.7, 0.7, 11,   0.3 ],
+};
+const NUTRITION_KEYWORDS = [
+  ["beurre_cacao",  ["beurre de cacao"]],
+  ["pate_cacao",    ["pate de cacao","masse de cacao","liqueur de cacao"]],
+  ["cacao_poudre",  ["cacao en poudre","poudre de cacao","cacao maigre"]],
+  ["lait_poudre",   ["lait en poudre","lait entier en poudre","poudre de lait"]],
+  ["creme",         ["creme"]],
+  ["noisette",      ["noisette"]],
+  ["amande",        ["amande"]],
+  ["pistache",      ["pistache"]],
+  ["sirop_glucose", ["sirop de glucose","glucose"]],
+  ["miel",          ["miel"]],
+  ["puree_fruit",   ["puree","pulpe"]],
+  ["blanc_oeuf",    ["blanc d oeuf","blanc doeuf"]],
+  ["sucre",         ["sucre"]],
+];
+
+function detecteNutrition(nom){
+  const n = normalise(nom);
+  const estBeurreDeCacao = /beurre de cacao|beurre cacao/.test(n);
+  for(const [code, mots] of NUTRITION_KEYWORDS){
+    for(const mot of mots){
+      if(n.includes(normalise(mot))) return code;
+    }
+  }
+  if(!estBeurreDeCacao && n.includes("beurre")) return "beurre_laitier";
+  if(n.includes("lait")) return "lait_liquide";
+  return null;
+}
+
+function sommeParRole(role){
+  return [...document.querySelectorAll(".ing-row")]
+    .filter(r=>r.querySelector(".ing-role") && r.querySelector(".ing-role").value===role)
+    .reduce((s,r)=> s + (liredQteRow(r) || 0), 0);
+}
+
+function setReadonlyPct(id, valeur){
+  const el = document.getElementById(id);
+  if(!el) return;
+  el.value = (valeur===null || isNaN(valeur)) ? "" : round1(valeur);
+}
+
+function calculeTeneursAuto(){
+  const T = poidsFiniTotalProduit();
+
+  // Chocolat
+  const cacao = sommeParRole("cacao");
+  const mgv = sommeParRole("graisse_vegetale_non_laitiere");
+  setReadonlyPct("teneur_cacao_pct", T>0 ? cacao/T*100 : null);
+  setReadonlyPct("mgv_pct", T>0 ? mgv/T*100 : null);
+
+  // Nougat
+  const garniture = sommeParRole("garniture_fruits_secs");
+  setReadonlyPct("garniture_pct_produit_fini", T>0 ? garniture/T*100 : null);
+
+  // Pâte de fruits
+  const fruits = sommeParRole("fruit_pulpe");
+  setReadonlyPct("teneur_fruits_pct", T>0 ? fruits/T*100 : null);
+
+  const fruitCite = document.getElementById("fruit_cite_denomination").value.trim();
+  if(fruitCite && fruits>0){
+    const cible = normalise(fruitCite);
+    const partCite = [...document.querySelectorAll(".ing-row")]
+      .filter(r=>r.querySelector(".ing-role").value==="fruit_pulpe")
+      .filter(r=>normalise(r.querySelector(".ing-nom").value).includes(cible))
+      .reduce((s,r)=> s + (liredQteRow(r)||0), 0);
+    setReadonlyPct("pct_pulpe_du_fruit_cite", partCite/fruits*100);
+    setReadonlyPct("quid_fruit_cite_pct", T>0 ? partCite/T*100 : null);
+  } else {
+    setReadonlyPct("pct_pulpe_du_fruit_cite", null);
+    setReadonlyPct("quid_fruit_cite_pct", null);
+  }
+
+  // Caramel (estimation à partir de la composition laitière moyenne)
+  let prot = 0, mg = 0;
+  Object.keys(COMPOSITION_LAITIERE).forEach(role=>{
+    const q = sommeParRole(role);
+    prot += q * COMPOSITION_LAITIERE[role].prot;
+    mg += q * COMPOSITION_LAITIERE[role].mg;
+  });
+  setReadonlyPct("teneur_proteines_lait_pct", T>0 ? prot/T*100 : null);
+  setReadonlyPct("teneur_matiere_grasse_lactique_pct", T>0 ? mg/T*100 : null);
+  document.getElementById("contient_matiere_grasse_non_laitiere").checked = mgv>0;
+}
+
+/* Somme pondérée des valeurs nutritionnelles de la recette, ramenée à 100g
+   de produit fini. Renvoie null si le poids fini est inconnu. */
+function calculeNutritionAuto(){
+  const T = poidsFiniTotalProduit();
+  const rows = [...document.querySelectorAll(".ing-row")];
+  let totaux = [0,0,0,0,0,0,0]; // kcal, lip, sat, gluc, sucres, prot, sel
+  let nbReconnus = 0, nbNonReconnus = 0;
+
+  rows.forEach(r=>{
+    const qte = liredQteRow(r);
+    if(qte===null || qte<=0) return;
+    const nom = r.querySelector(".ing-nom").value.trim();
+    if(!nom) return;
+    const code = detecteNutrition(nom);
+    if(code && NUTRITION_CIQUAL[code]){
+      nbReconnus++;
+      NUTRITION_CIQUAL[code].forEach((v,i)=>{ totaux[i] += qte * v/100; });
+    } else {
+      nbNonReconnus++;
+    }
+  });
+
+  if(T<=0 || nbReconnus===0) return { valeurs: null, nbReconnus, nbNonReconnus };
+  const pour100g = totaux.map(v => round1(v/T*100));
+  return {
+    valeurs: {
+      kcal: pour100g[0], kj: round1(pour100g[0]*4.184),
+      lipides: pour100g[1], satures: pour100g[2],
+      glucides: pour100g[3], sucres: pour100g[4],
+      proteines: pour100g[5], sel: pour100g[6],
+    },
+    nbReconnus, nbNonReconnus,
+  };
+}
+
+function updateNutritionReadout(){
+  const el = document.getElementById("nutrition-readout");
+  if(!el) return;
+  const { valeurs, nbReconnus, nbNonReconnus } = calculeNutritionAuto();
+  if(!valeurs){
+    el.className = "calc-readout";
+    el.textContent = "Renseigne les quantités des ingrédients pour estimer les valeurs nutritionnelles.";
+    return;
+  }
+  el.className = "calc-readout ok";
+  el.innerHTML = `Pour 100g — Énergie : <b>${valeurs.kcal} kcal</b> (${valeurs.kj} kJ) · Matières grasses : <b>${valeurs.lipides} g</b> dont AGS <b>${valeurs.satures} g</b> · Glucides : <b>${valeurs.glucides} g</b> dont sucres <b>${valeurs.sucres} g</b> · Protéines : <b>${valeurs.proteines} g</b> · Sel : <b>${valeurs.sel} g</b>`
+    + (nbNonReconnus ? ` <br><span style="color:var(--amber-ink);">(${nbNonReconnus} ingrédient(s) non reconnu(s) nutritionnellement, non compté(s) — complète manuellement si leur poids est significatif)</span>` : "");
+}
+
+function updateTotalDisplay(){
+  const rows = [...document.querySelectorAll(".ing-row")];
+  let total = 0, nb = 0, manquants = 0;
+  rows.forEach(r=>{
+    const q = liredQteRow(r);
+    if(q!==null){ total += q; nb++; } else { manquants++; }
+  });
+  const el = document.getElementById("ing-total-display");
+  if(nb===0){ el.textContent = "Somme des ingrédients : —"; }
+  else{
+    el.textContent = `Somme des ingrédients : ${round1(total)} g` + (manquants ? ` (${manquants} ligne(s) sans quantité, non comptée(s))` : "");
+  }
+  updateEvapReadout();
+  updateEnrobageReadoutPreview();
+  calculeTeneursAuto();
+  updateNutritionReadout();
+}
+
+document.getElementById("fruit_cite_denomination").addEventListener("input", calculeTeneursAuto);
+
+document.getElementById("btn-sort-ing").addEventListener("click", sortIngredientsByWeight);
+document.getElementById("btn-use-total").addEventListener("click", ()=>{
+  const enrobageRow = document.querySelector('.ing-row[data-enrobage="1"]');
+  const total = enrobageRow ? (poidsFiniApresEvaporation() + sumEnrobage()) : poidsFiniApresEvaporation();
+  if(total>0){
+    document.getElementById("quantite_nette_g").value = round1(total);
+  }
+  updateTotalDisplay();
+});
+document.getElementById("evaporation_pct").addEventListener("input", updateTotalDisplay);
+document.getElementById("enrobage_pct").addEventListener("input", updateEnrobageReadoutPreview);
+document.getElementById("btn-calc-enrobage").addEventListener("click", calculeEtAjouteEnrobage);
+document.getElementById("pas_enrobage").addEventListener("change", (e)=>{
+  const disabled = e.target.checked;
+  document.getElementById("enrobage-fields").style.display = disabled ? "none" : "";
+  if(disabled){
+    // retire une éventuelle ligne d'enrobage déjà ajoutée, et vide les champs
+    const row = document.querySelector('.ing-row[data-enrobage="1"]');
+    if(row){ row.remove(); updateTotalDisplay(); }
+    document.getElementById("enrobage_nom").value = "";
+    document.getElementById("enrobage_pct").value = "";
+    document.getElementById("enrobage-readout").style.display = "none";
+  }
+});
+
+/* =========================================================================
+   ANALYSE DE RECETTE COLLÉE (détection ingrédients / quantités / allergènes)
+   ========================================================================= */
+
+const ALLERGENE_KEYWORDS = {
+  lait: ["lait","creme","beurre","yaourt","fromage","babeurre","lactose","lactoserum"],
+  oeufs: ["oeuf","blanc d oeuf","jaune d oeuf","albumine"],
+  fruits_a_coque: ["amande","noisette","noix","pistache","cajou","macadamia","pecan","praline","praliné","praline","gianduja"],
+  arachides: ["arachide","cacahuete"],
+  soja: ["soja","soya","lecithine de soja"],
+  gluten: ["farine","ble","gaufrette","biscuit","avoine","orge","seigle","epeautre","kamut","pain azyme","malt"],
+  graines_sesame: ["sesame"],
+  sulfites: ["sulfite","anhydride sulfureux"],
+  moutarde: ["moutarde"],
+  celeri: ["celeri"],
+  lupin: ["lupin"],
+  crustaces: ["crevette","crabe","homard","langoustine","crustace"],
+  poissons: ["poisson","anchois","cabillaud","saumon"],
+  mollusques: ["moule","huitre","escargot","calamar","poulpe","seiche"],
+};
+
+const ADDITIF_KEYWORDS = [
+  ["Émulsifiant", ["lecithine"]],
+  ["Gélifiant", ["pectine","gelatine","agar-agar","carraghenane"]],
+  ["Acidifiant", ["acide citrique","acide tartrique","acide malique"]],
+  ["Colorant", ["colorant","curcumine","carmin","betanine"]],
+  ["Conservateur", ["conservateur","sorbate","benzoate"]],
+  ["Épaississant", ["gomme xanthane","gomme arabique","gomme guar"]],
+];
+
+function normalise(s){
+  return s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9 ]/g, " ");
+}
+
+function detecteAllergene(nom){
+  const n = normalise(nom);
+  // Faux positif fréquent en chocolaterie : "beurre de cacao" n'est pas un produit laitier.
+  const estBeurreDeCacao = /beurre de cacao|beurre cacao/.test(n);
+  for(const [code, mots] of Object.entries(ALLERGENE_KEYWORDS)){
+    for(const mot of mots){
+      const m = normalise(mot);
+      if(code === "lait" && m === "beurre" && estBeurreDeCacao) continue;
+      if(n.includes(m)) return code;
+    }
+  }
+  return null;
+}
+
+function detecteAdditif(nom){
+  const n = normalise(nom);
+  for(const [categorie, mots] of ADDITIF_KEYWORDS){
+    if(mots.some(m => n.includes(normalise(m)))) return categorie;
+  }
+  return null;
+}
+
+/* Rôle réglementaire d'un ingrédient, déduit par mot-clé (recette collée).
+   Ordre = priorité : du plus spécifique au plus générique, pour éviter
+   les faux positifs (ex. "beurre de cacao" ne doit pas matcher "beurre laitier"). */
+const ROLE_KEYWORDS = [
+  ["cacao", ["pate de cacao","masse de cacao","liqueur de cacao","beurre de cacao","poudre de cacao","cacao maigre","cacao en poudre"]],
+  ["fruit_pulpe", ["puree", "pulpe"]],
+  ["garniture_fruits_secs", ["amande","noisette","pistache","noix","arachide","pecan"]],
+  ["graisse_vegetale_non_laitiere", ["huile de palme","beurre de karite","beurre d illipe","beurre de sal","huile de noyau de mangue","huile de kokum","matiere grasse vegetale","graisse vegetale"]],
+  ["lait_poudre", ["lait en poudre","lait entier en poudre","poudre de lait","lait ecreme en poudre"]],
+  ["creme", ["creme"]],
+];
+
+function detecteRole(nom){
+  const n = normalise(nom);
+  const estBeurreDeCacao = /beurre de cacao|beurre cacao/.test(n);
+  for(const [role, mots] of ROLE_KEYWORDS){
+    for(const mot of mots){
+      if(n.includes(normalise(mot))) return role;
+    }
+  }
+  if(!estBeurreDeCacao && n.includes("beurre")) return "beurre_laitier";
+  if(n.includes("lait")) return "lait_liquide";
+  return null;
+}
+
+function parseLigneIngredient(ligneBrute){
+  let ligne = ligneBrute.trim().replace(/^[-•*▪◦]\s*/, "").replace(/^\d+[.)]\s*/, "");
+  if(!ligne) return null;
+
+  // motif "Nom 40g" / "Nom : 40 g" / "Nom, 40g" / "Nom (40g)"
+  let m = ligne.match(/^(.*?)[\s:,–-]*\(?(\d+(?:[.,]\d+)?)\s*(kg|g)\)?\.?\s*$/i);
+  if(m && m[1].trim()){
+    let qte = parseFloat(m[2].replace(",", "."));
+    if(m[3].toLowerCase() === "kg") qte *= 1000;
+    return { nom: m[1].trim().replace(/[:,–-]\s*$/, "").trim(), quantite: qte, unite: "g" };
+  }
+  // motif "40g de Nom" / "40 g Nom"
+  m = ligne.match(/^\(?(\d+(?:[.,]\d+)?)\s*(kg|g)\)?\s*(?:de\s+|d')?(.+)$/i);
+  if(m && m[3].trim()){
+    let qte = parseFloat(m[1].replace(",", "."));
+    if(m[2].toLowerCase() === "kg") qte *= 1000;
+    return { nom: m[3].trim(), quantite: qte, unite: "g" };
+  }
+  // motif pourcentage "Nom 30%"
+  m = ligne.match(/^(.*?)[\s:,–-]*\(?(\d+(?:[.,]\d+)?)\s*%\)?\.?\s*$/i);
+  if(m && m[1].trim()){
+    return { nom: m[1].trim().replace(/[:,–-]\s*$/, "").trim(), quantite: parseFloat(m[2].replace(",", ".")), unite: "%" };
+  }
+  // pas de quantité reconnue : tout est le nom
+  return { nom: ligne.replace(/[.,]\s*$/, "").trim(), quantite: null, unite: null };
+}
+
+function parseRecetteTexte(texte){
+  const lignesIgnoreHeader = /^(ingr[ée]dients?|composition|recette)\s*:?\s*$/i;
+  const lignesTitre = /^(nom|produit|titre|recette)\s*:\s*(.+)$/i;
+
+  let titre = null;
+  const ingredients = [];
+  const ignorees = [];
+
+  texte.split("\n").forEach(raw=>{
+    const l = raw.trim();
+    if(!l) return;
+    if(lignesIgnoreHeader.test(l)){ return; }
+    const mTitre = l.match(lignesTitre);
+    if(mTitre){ titre = mTitre[2].trim(); return; }
+
+    const parsed = parseLigneIngredient(l);
+    if(!parsed || !parsed.nom){ ignorees.push(l); return; }
+    ingredients.push({
+      nom: parsed.nom,
+      quantite: parsed.quantite,
+      unite: parsed.unite,
+      allergene: detecteAllergene(parsed.nom),
+      additif: detecteAdditif(parsed.nom),
+      role: detecteRole(parsed.nom),
+    });
+  });
+
+  return { titre, ingredients, ignorees };
+}
+
+function analyserRecette(){
+  const texte = document.getElementById("recette-texte").value;
+  if(!texte.trim()){
+    afficheParseLog(`<span class="pl-warn">Colle d'abord une recette dans la zone de texte.</span>`);
+    return;
+  }
+  const { titre, ingredients, ignorees } = parseRecetteTexte(texte);
+
+  if(titre){
+    document.getElementById("nom_produit").value = titre;
+  }
+
+  document.getElementById("ingredients-list").innerHTML = "";
+  ingredients.forEach(ing=>{
+    ajouteLigneIngredient({ nom: ing.nom, quantite: ing.quantite, additif: ing.additif, allergene: ing.allergene, role: ing.role });
+  });
+  if(ingredients.length === 0){
+    ajouteLigneIngredient(); ajouteLigneIngredient(); ajouteLigneIngredient();
+  }
+  sortIngredientsByWeight();
+  updateTotalDisplay();
+
+  const nbAllergenes = ingredients.filter(i=>i.allergene).length;
+  const nbAdditifs = ingredients.filter(i=>i.additif).length;
+  const nbRoles = ingredients.filter(i=>i.role).length;
+  const nbSansQte = ingredients.filter(i=>i.quantite===null).length;
+
+  let log = `<span class="pl-ok">${ingredients.length} ingrédient(s) reconnu(s)`;
+  if(titre) log += `, nom de produit détecté « ${titre} »`;
+  log += `.</span><ul>`;
+  log += `<li>${nbRoles} ingrédient(s) rattaché(s) automatiquement à un rôle (cacao, fruit, garniture, laitier...) — <b>à vérifier</b>, les teneurs ci-dessus en dépendent directement.</li>`;
+  log += `<li>${nbAllergenes} allergène(s) détecté(s) automatiquement par mot-clé — <b>à vérifier</b>, la détection est indicative.</li>`;
+  if(nbAdditifs) log += `<li>${nbAdditifs} additif(s) classé(s) automatiquement (émulsifiant, gélifiant...) — à vérifier.</li>`;
+  if(nbSansQte) log += `<li class="pl-warn">${nbSansQte} ligne(s) sans quantité reconnue : le tri par poids et la somme totale les ignorent, complète-les à la main si besoin.</li>`;
+  if(ignorees.length) log += `<li class="pl-warn">${ignorees.length} ligne(s) non comprise(s) et ignorée(s) : ${ignorees.map(l=>`« ${l} »`).join(", ")}</li>`;
+  log += `</ul>`;
+  afficheParseLog(log);
+}
+
+function afficheParseLog(html){
+  const el = document.getElementById("parse-log");
+  el.innerHTML = html;
+  el.style.display = "block";
+}
+
+document.getElementById("btn-parse-recette").addEventListener("click", analyserRecette);
+document.getElementById("btn-clear-recette").addEventListener("click", ()=>{
+  document.getElementById("recette-texte").value = "";
+  document.getElementById("parse-log").style.display = "none";
+});
+
+/* =========================================================================
+   COLLECTE DE LA FICHE
+   ========================================================================= */
+
+function val(id){ const el = document.getElementById(id); return el ? el.value.trim() : ""; }
+function num(id){ const v = val(id); return v==="" ? null : parseFloat(v); }
+function checked(id){ const el = document.getElementById(id); return el ? el.checked : false; }
+function radioVal(name){ const el = document.querySelector(`input[name="${name}"]:checked`); return el ? el.value : null; }
+
+function collecteFiche(){
+  const ingredients = [];
+  const T = poidsFiniTotalProduit();
+  document.querySelectorAll(".ing-row").forEach(row=>{
+    const nom = row.querySelector(".ing-nom").value.trim();
+    if(!nom) return;
+    const additif = row.querySelector(".ing-additif").value;
+    const allergene = row.querySelector(".ing-allergene").value || null;
+    const quantite = liredQteRow(row);
+    const quid = row.querySelector(".ing-quid").checked;
+    const quid_pct = (quid && T>0 && quantite!==null) ? quantite/T*100 : null;
+    ingredients.push({nom, additif_categorie: additif || null, allergene, quantite, quid, quid_pct});
+  });
+
+  const allergenes_presents = [...new Set(ingredients.filter(i=>i.allergene).map(i=>i.allergene))];
+
+  return {
+    nom_produit: val("nom_produit"),
+    denomination_categorie: val("denomination_categorie"),
+    type_vente: radioVal("type_vente"),
+
+    teneur_cacao_pct: num("teneur_cacao_pct"),
+    mgv_pct: num("mgv_pct"),
+
+    teneur_proteines_lait_pct: num("teneur_proteines_lait_pct"),
+    teneur_matiere_grasse_lactique_pct: num("teneur_matiere_grasse_lactique_pct"),
+    contient_matiere_grasse_non_laitiere: checked("contient_matiere_grasse_non_laitiere"),
+
+    garniture_pct_produit_fini: num("garniture_pct_produit_fini"),
+
+    teneur_fruits_pct: num("teneur_fruits_pct"),
+    fruit_cite_denomination: val("fruit_cite_denomination"),
+    style_denomination_fruit: val("style_denomination_fruit"),
+    pct_pulpe_du_fruit_cite: num("pct_pulpe_du_fruit_cite"),
+    quid_fruit_cite_pct: num("quid_fruit_cite_pct"),
+    aromes_non_naturels: checked("aromes_non_naturels"),
+
+    ingredients,
+    allergenes_presents,
+    traces_eventuelles: [...tracesActives],
+
+    a_ete_congele: checked("a_ete_congele"),
+    temperature_conservation_c: num("temperature_conservation_c"),
+
+    quantite_nette_g: num("quantite_nette_g"),
+    prix: val("prix"),
+    vendu_a_la_piece: radioVal("vendu_a_la_piece") === "oui",
+
+    dlc_ou_ddm: val("dlc_ou_ddm") || null,
+    date_valeur: val("date_valeur"),
+    conditions_conservation: val("conditions_conservation"),
+
+    fabricant: { nom: val("fabricant_nom"), adresse: val("fabricant_adresse") },
+
+    nutrition_exempte: checked("nutrition_exempte"),
+    nutrition_motif_exemption: val("nutrition_motif_exemption"),
+    nutrition_calculee: calculeNutritionAuto(),
+
+    origine_suggeree: checked("origine_suggeree"),
+    origine_reelle: val("origine_reelle"),
+
+    allegation_sans_gluten: checked("allegation_sans_gluten"),
+
+    mode_emploi: val("mode_emploi"),
+  };
+}
+
+/* =========================================================================
+   MOTEUR DE CONTRÔLE (port du générateur Python)
+   ========================================================================= */
+
+class Rapport{
+  constructor(){ this.erreurs=[]; this.avertissements=[]; this.infos=[]; }
+  erreur(msg, src){ this.erreurs.push({msg, src}); }
+  avertir(msg, src){ this.avertissements.push({msg, src}); }
+  info(msg, src){ this.infos.push({msg, src}); }
+  conforme(){ return this.erreurs.length===0; }
+}
+
+function validerDenomination(fiche, r){
+  const key = fiche.denomination_categorie;
+  const d = DENOMINATIONS[key];
+  if(!d){ r.erreur("Aucune dénomination de vente sélectionnée."); return null; }
+  r.info(`Dénomination reconnue : « ${d.nom} » (famille : ${d.famille}).`, d.source);
+
+  if(d.famille === "chocolat"){
+    if(!d.exclu_teneur_cacao && fiche.teneur_cacao_pct===null){
+      r.avertir(`La mention « Cacao : x% minimum » est obligatoire pour « ${d.nom} » et n'est pas renseignée.`, "DGCCRF");
+    }
+    if(d.exclu_teneur_cacao && fiche.teneur_cacao_pct!==null){
+      r.info("Mention « Cacao : x% minimum » non exigée pour ce type de produit — elle peut qualifier le seul chocolat d'enrobage.");
+    }
+  }
+
+  if(d.famille === "caramels"){
+    if(d.seuil_proteines_lait && fiche.teneur_proteines_lait_pct!==null && fiche.teneur_proteines_lait_pct < d.seuil_proteines_lait){
+      r.erreur(`Teneur en protéines de lait (${fiche.teneur_proteines_lait_pct}%) inférieure au minimum requis (${d.seuil_proteines_lait}%) pour « ${d.nom} ».`, d.source);
+    }
+    if(d.seuil_msnf_lait && fiche.teneur_matiere_grasse_lactique_pct!==null && fiche.teneur_matiere_grasse_lactique_pct < d.seuil_mgl){
+      r.erreur(`Teneur en matière grasse lactique (${fiche.teneur_matiere_grasse_lactique_pct}%) inférieure au minimum requis (${d.seuil_mgl}%) pour « ${d.nom} ».`, d.source);
+    }
+    if(d.exclusif_laitier && fiche.contient_matiere_grasse_non_laitiere){
+      r.erreur(`« ${d.nom} » exclut toute matière grasse d'origine NON laitière.`, d.source);
+    }
+  }
+
+  if(d.famille === "nougats"){
+    if(d.seuil_garniture && fiche.garniture_pct_produit_fini!==null && fiche.garniture_pct_produit_fini < d.seuil_garniture){
+      r.erreur(`Garniture (${fiche.garniture_pct_produit_fini}% du produit fini) inférieure au minimum requis (${d.seuil_garniture}%) pour « ${d.nom} ».`, d.source);
+    }
+    if(d.igp){
+      r.avertir(`« ${d.nom} » est une IGP homologuée par arrêté du 17/08/2023 (confirmée au niveau UE le 26/11/2024) : réservée aux produits fabriqués dans les 14 communes de la zone protégée autour de Montélimar, conformes au cahier des charges.`, d.source);
+    }
+    if(d.aucun_additif){
+      const additifs = fiche.ingredients.filter(i=>i.additif_categorie);
+      if(additifs.length){
+        r.erreur(`Le cahier des charges IGP du « ${d.nom} » n'autorise AUCUN additif — retire : ${additifs.map(i=>i.nom).join(", ")}.`, d.source);
+      }
+    }
+  }
+
+  if(d.famille === "pates_de_fruits"){
+    if(fiche.teneur_fruits_pct!==null && fiche.teneur_fruits_pct < d.seuil_fruits){
+      r.erreur(`Teneur en fruits (${fiche.teneur_fruits_pct}%) inférieure au minimum requis (${d.seuil_fruits}%) pour utiliser la dénomination « pâte de fruits ».`, d.source);
+    }
+    if(fiche.fruit_cite_denomination && fiche.pct_pulpe_du_fruit_cite!==null){
+      if(fiche.style_denomination_fruit==="pate_de_X" && fiche.pct_pulpe_du_fruit_cite < 100){
+        r.erreur(`« Pâte de ${fiche.fruit_cite_denomination} » exige 100% de la pulpe/purée issue de ce fruit (actuel : ${fiche.pct_pulpe_du_fruit_cite}%) — utiliser plutôt « Pâte de fruits à l'${fiche.fruit_cite_denomination} ».`, d.source);
+      }
+      if(fiche.style_denomination_fruit==="pate_de_fruits_a_X" && fiche.pct_pulpe_du_fruit_cite < 25){
+        r.erreur(`« Pâte de fruits à l'${fiche.fruit_cite_denomination} » exige au moins 25% de la pulpe/purée issue de ce fruit (actuel : ${fiche.pct_pulpe_du_fruit_cite}%).`, d.source);
+      }
+    }
+    if(fiche.aromes_non_naturels){
+      r.erreur("Des arômes non naturels sont utilisés : la dénomination « pâte de fruits » doit être complétée par « aromatisée » (ou équivalent).", d.source);
+    }
+    if(fiche.fruit_cite_denomination){
+      if(fiche.quid_fruit_cite_pct===null || fiche.quid_fruit_cite_pct<=0){
+        r.erreur(`Le fruit cité dans la dénomination (« ${fiche.fruit_cite_denomination} ») ne correspond à aucun ingrédient au rôle « Fruit » dans la recette — le pourcentage QUID ne peut pas être calculé et affiché.`, "Code conso. art. R.412-17 (QUID)");
+      } else {
+        r.info(`Mention QUID obligatoire car « ${fiche.fruit_cite_denomination} » figure dans la dénomination : « ${fiche.fruit_cite_denomination} ${round1(fiche.quid_fruit_cite_pct)}% » sera affiché à côté du nom du produit.`, "Code conso. art. R.412-17 (QUID)");
+      }
+    }
+  }
+  return d;
+}
+
+function validerMgv(fiche, r){
+  if(fiche.mgv_pct!==null && fiche.mgv_pct>0){
+    if(fiche.mgv_pct > 5){
+      r.erreur(`Taux de matières grasses végétales de substitution (${fiche.mgv_pct}%) dépasse le maximum autorisé de 5%.`, "Décret n°76-692");
+    }
+    r.info("MGV de substitution déclarée : la mention « contient des matières grasses végétales en plus du beurre de cacao » doit apparaître en gras, aussi grande que la dénomination, à proximité de celle-ci.", "Décret n°76-692");
+  }
+}
+
+function validerAllergenes(fiche, r){
+  if(fiche.allergenes_presents.length === 0){
+    r.info("Aucun allergène déclaré parmi les ingrédients saisis. Vérifie qu'aucun ingrédient de la recette n'en contient (lécithine de soja, lait, fruits à coque... sont très fréquents en confiserie).");
+  }
+  if(fiche.traces_eventuelles.length){
+    const noms = fiche.traces_eventuelles.map(c=>ALLERGENES.find(a=>a.code===c).nom);
+    r.info(`Mention de traces éventuelles pour : ${noms.join(", ")}. Rappel : dernier recours, après évaluation réelle du risque de contamination croisée.`, "Art. 36 INCO");
+  }
+}
+
+function validerCongelation(fiche, r){
+  if(fiche.a_ete_congele){
+    const t = fiche.temperature_conservation_c;
+    if(t!==null && t<=-18 && t>=-25){
+      r.info("Produit conservé entre -18°C et -25°C : la mention « décongelé » n'est pas exigée pour le chocolat (pas de changement d'état).", "Note DGCCRF 2009-25");
+    } else {
+      r.avertir("Produit congelé/décongelé hors de la plage -18°C/-25°C dérogatoire : la mention de l'état physique est probablement requise à côté de la dénomination.");
+    }
+  }
+}
+
+function validerQuidGeneral(fiche, r){
+  fiche.ingredients.forEach(ing=>{
+    if(!ing.quid) return;
+    if(ing.quantite===null){
+      r.erreur(`« ${ing.nom} » est marqué comme mis en avant dans le nom/visuel du produit, mais sa quantité n'est pas renseignée : le pourcentage QUID ne peut pas être calculé et affiché.`, "Art. 22 / R.412-17 (QUID)");
+    } else {
+      r.info(`Mention QUID obligatoire pour « ${ing.nom} » (mis en avant) : « ${ing.nom} (${round1(ing.quid_pct)}%) » sera affiché dans la liste d'ingrédients.`, "Art. 22 / R.412-17 (QUID)");
+    }
+  });
+}
+
+function validerNutrition(fiche, r){
+  if(fiche.type_vente !== "preemballe") return;
+  if(fiche.nutrition_exempte){
+    const motifs = {
+      vente_directe: "vente directe par le producteur, faible quantité, à un consommateur final ou un détaillant local",
+      non_preemballe: "denrée non préemballée",
+      artisanal_local: "artisan fournissant directement le consommateur final",
+      emballage_trop_petit: "plus grande face de l'emballage < 25 cm²",
+    };
+    r.info(`Déclaration nutritionnelle non exigée : exemption invoquée — ${motifs[fiche.nutrition_motif_exemption] || fiche.nutrition_motif_exemption}.`, "Art. 16 / annexe V INCO");
+  } else if(fiche.nutrition_calculee && fiche.nutrition_calculee.valeurs){
+    const v = fiche.nutrition_calculee.valeurs;
+    r.info(`Déclaration nutritionnelle estimée pour 100g : ${v.kcal} kcal (${v.kj} kJ), matières grasses ${v.lipides}g (dont AGS ${v.satures}g), glucides ${v.glucides}g (dont sucres ${v.sucres}g), protéines ${v.proteines}g, sel ${v.sel}g. Valeurs indicatives (table Ciqual) — à faire valider avant usage commercial.`, "Art. 9 / 30 INCO");
+    if(fiche.nutrition_calculee.nbNonReconnus>0){
+      r.avertir(`${fiche.nutrition_calculee.nbNonReconnus} ingrédient(s) non reconnu(s) par la table de composition nutritionnelle : leur contribution n'est pas comptée dans l'estimation ci-dessus.`);
+    }
+  } else {
+    r.avertir("Déclaration nutritionnelle obligatoire (énergie, matières grasses dont AG saturés, glucides dont sucres, protéines, sel — pour 100g) : renseigne les quantités des ingrédients pour une estimation automatique, ou coche une exemption si applicable.", "Art. 9 / 30 INCO");
+  }
+}
+
+function validerOrigine(fiche, r){
+  if(fiche.origine_suggeree){
+    if(!fiche.origine_reelle){
+      r.erreur("Le nom/visuel évoque un pays ou une région, mais l'origine réelle de l'ingrédient primaire n'est pas renseignée — mention obligatoire pour éviter toute tromperie.", "Art. 26 §3 INCO");
+    } else {
+      r.info(`Origine à afficher car le nom/visuel évoque un pays : « ${fiche.origine_reelle} ».`, "Art. 26 §3 INCO");
+    }
+  }
+}
+
+function validerAllegations(fiche, r){
+  if(fiche.allegation_sans_gluten){
+    const gluten = fiche.ingredients.some(i=>i.allergene==="gluten");
+    if(gluten){
+      r.erreur("Allégation « sans gluten » incompatible avec un ingrédient contenant du gluten dans la recette — retire l'ingrédient ou l'allégation.", "Règlement UE n°828/2014");
+    } else {
+      r.avertir("Allégation « sans gluten » : autorisée seulement si le produit contient moins de 20 mg/kg de gluten — assure-toi d'une analyse ou d'une maîtrise totale du risque de contamination croisée.", "Règlement UE n°828/2014");
+    }
+  }
+}
+
+function validerLisibilite(fiche, r){
+  r.info("Rappel lisibilité : la hauteur de caractère des mentions obligatoires doit être ≥ 1,2 mm (≥ 0,9 mm si la plus grande face de l'emballage < 80 cm²).", "Art. 13.2 INCO");
+}
+
+function validerQuantiteEtDate(fiche, r){
+  if(fiche.quantite_nette_g === null){
+    if(!(fiche.vendu_a_la_piece)){
+      r.erreur("Quantité nette non renseignée.", "Code conso. art. R.412");
+    }
+  } else if(fiche.vendu_a_la_piece && fiche.quantite_nette_g < 50){
+    r.info("Quantité nette < 50g et vente à la pièce : mention facultative (dispense légale).", "Code conso. art. R.412");
+  }
+
+  if(!fiche.dlc_ou_ddm){
+    r.avertir("Aucune date de durabilité (DLC/DDM) renseignée. Rappel : le professionnel doit en fixer une et la justifier (sauf confiseries presque uniquement composées de sucre).");
+  } else if(!fiche.date_valeur){
+    r.erreur(`Type de date « ${fiche.dlc_ou_ddm} » choisi mais aucune valeur de date renseignée.`);
+  }
+}
+
+function validerIdentification(fiche, r){
+  if(!fiche.fabricant.nom || !fiche.fabricant.adresse){
+    r.erreur("Nom et/ou adresse du fabricant manquant(s) — mention obligatoire.", "Code conso. art. R.412");
+  }
+}
+
+/* =========================================================================
+   GÉNÉRATION DE L'ÉTIQUETTE (rendu HTML)
+   ========================================================================= */
+
+function formatIngredients(ingredients){
+  return ingredients.map(ing=>{
+    let texte = ing.additif_categorie ? `${ing.additif_categorie} : ${ing.nom}` : ing.nom;
+    if(ing.allergene) texte = `<span class="allergene">${texte.toUpperCase()}</span>`;
+    if(ing.quid && ing.quid_pct!==null) texte += ` (${round1(ing.quid_pct)}%)`;
+    return texte;
+  }).join(", ");
+}
+
+function rendreEtiquette(fiche, d){
+  const out = document.getElementById("label-output");
+  let denom = fiche.nom_produit || (d ? d.nom : "Produit");
+  if(fiche.fruit_cite_denomination && fiche.quid_fruit_cite_pct!==null && fiche.quid_fruit_cite_pct>0){
+    denom += ` (${round1(fiche.quid_fruit_cite_pct)}%)`;
+  }
+  let html = `<p class="label-denom">${denom}</p>`;
+
+  if(fiche.mgv_pct && fiche.mgv_pct>0){
+    html += `<span class="label-mgv">Contient des matières grasses végétales en plus du beurre de cacao</span><br>`;
+  }
+  if(fiche.allegation_sans_gluten){
+    html += `<span class="label-mgv" style="color:var(--moss);border-color:var(--moss);">Sans gluten</span><br>`;
+  }
+  if(fiche.teneur_cacao_pct!==null){
+    html += `<p class="label-line"><b>Cacao : ${fiche.teneur_cacao_pct}% minimum</b></p>`;
+  }
+
+  if(fiche.type_vente === "preemballe"){
+    if(fiche.ingredients.length){
+      html += `<p class="label-line">Ingrédients : ${formatIngredients(fiche.ingredients)}.</p>`;
+    }
+    if(fiche.traces_eventuelles.length){
+      const noms = fiche.traces_eventuelles.map(c=>ALLERGENES.find(a=>a.code===c).nom);
+      html += `<p class="label-line">Peut contenir des traces de : ${noms.join(", ")}.</p>`;
+    }
+    if(fiche.origine_suggeree && fiche.origine_reelle){
+      html += `<p class="label-line">Origine : ${fiche.origine_reelle}</p>`;
+    }
+    html += `<hr class="label-divider">`;
+    let foot = [];
+    if(fiche.quantite_nette_g!==null) foot.push(["Quantité nette", `${fiche.quantite_nette_g} g`]);
+    if(fiche.dlc_ou_ddm && fiche.date_valeur){
+      const lbl = fiche.dlc_ou_ddm==="DLC" ? "À consommer jusqu'au" : "À consommer de préférence avant le";
+      foot.push([lbl, formatDate(fiche.date_valeur)]);
+    }
+    if(fiche.prix) foot.push(["Prix", fiche.prix]);
+    html += `<div class="label-foot-grid">` + foot.map(([k,v])=>`<span>${k}</span><span><b>${v}</b></span>`).join("") + `</div>`;
+    if(fiche.conditions_conservation){
+      html += `<p class="label-line" style="margin-top:0.6rem;">${fiche.conditions_conservation}</p>`;
+    }
+    if(fiche.mode_emploi){
+      html += `<p class="label-line">${fiche.mode_emploi}</p>`;
+    }
+    if(!fiche.nutrition_exempte){
+      const nv = fiche.nutrition_calculee && fiche.nutrition_calculee.valeurs;
+      if(nv){
+        html += `<p class="label-line" style="margin-top:0.6rem;font-weight:700;">Valeurs nutritionnelles moyennes pour 100g</p>`;
+        html += `<table class="label-nutri-table">
+          <tr><td>Énergie</td><td>${nv.kj} kJ / ${nv.kcal} kcal</td></tr>
+          <tr><td>Matières grasses</td><td>${nv.lipides} g</td></tr>
+          <tr><td style="padding-left:1rem;">dont acides gras saturés</td><td>${nv.satures} g</td></tr>
+          <tr><td>Glucides</td><td>${nv.glucides} g</td></tr>
+          <tr><td style="padding-left:1rem;">dont sucres</td><td>${nv.sucres} g</td></tr>
+          <tr><td>Protéines</td><td>${nv.proteines} g</td></tr>
+          <tr><td>Sel</td><td>${nv.sel} g</td></tr>
+        </table>`;
+        html += `<p class="hint" style="margin-top:0.3rem;">Valeurs estimées (table Ciqual) — à faire valider avant usage commercial réel.</p>`;
+      } else {
+        html += `<p class="label-line" style="color:var(--ink-muted);font-style:italic;">Valeurs nutritionnelles moyennes pour 100g : renseigne les quantités des ingrédients pour une estimation.</p>`;
+      }
+    }
+    if(fiche.fabricant.nom || fiche.fabricant.adresse){
+      html += `<p class="label-line">${fiche.fabricant.nom || ""} — ${fiche.fabricant.adresse || ""}</p>`;
+    }
+  } else {
+    // vrac
+    if(fiche.allergenes_presents.length){
+      const noms = fiche.allergenes_presents.map(c=>ALLERGENES.find(a=>a.code===c).nom);
+      html += `<p class="label-line">Allergènes : <span class="allergene">${noms.join(", ")}</span></p>`;
+    }
+    if(fiche.prix) html += `<p class="label-line"><b>Prix : ${fiche.prix}</b></p>`;
+    html += `<p class="label-line" style="margin-top:0.6rem;color:var(--ink-muted);font-style:italic;">À afficher sur pancarte à proximité du produit exposé.</p>`;
+  }
+
+  out.innerHTML = html;
+}
+
+function formatDate(iso){
+  if(!iso) return "";
+  const [y,m,d] = iso.split("-");
+  return `${d}/${m}/${y}`;
+}
+
+function rendreRapport(r){
+  const out = document.getElementById("rapport-output");
+  let html = `<div class="rapport-status ${r.conforme() ? "ok" : "ko"}">${r.conforme() ? "Étiquette conforme (sous réserve du contenu réel)" : "Étiquette non conforme en l'état — corriger les erreurs ci-dessous"}</div>`;
+
+  const groupe = (titre, items, cls) => {
+    if(!items.length) return "";
+    let h = `<div class="rapport-group"><h3>${titre}</h3><ul>`;
+    items.forEach(it=>{
+      h += `<li class="rapport-item ${cls}">${it.msg}${it.src ? `<span class="src">${it.src}</span>`:""}</li>`;
+    });
+    h += `</ul></div>`;
+    return h;
+  };
+
+  html += groupe("Erreurs bloquantes", r.erreurs, "error");
+  html += groupe("Avertissements à vérifier", r.avertissements, "warn");
+  html += groupe("Rappels utiles", r.infos, "info");
+
+  out.innerHTML = html;
+}
+
+/* =========================================================================
+   POINT D'ENTRÉE
+   ========================================================================= */
+
+function genererEtiquette(){
+  const fiche = collecteFiche();
+  const r = new Rapport();
+
+  const d = validerDenomination(fiche, r);
+  validerMgv(fiche, r);
+  validerAllergenes(fiche, r);
+  validerCongelation(fiche, r);
+  validerQuidGeneral(fiche, r);
+  validerAllegations(fiche, r);
+  validerOrigine(fiche, r);
+  validerLisibilite(fiche, r);
+  if(fiche.type_vente === "preemballe"){
+    validerQuantiteEtDate(fiche, r);
+    validerIdentification(fiche, r);
+    validerNutrition(fiche, r);
+  }
+
+  rendreEtiquette(fiche, d);
+  rendreRapport(r);
+  document.getElementById("label-output").scrollIntoView({behavior:"smooth", block:"nearest"});
+}
+
+document.getElementById("add-ingredient").addEventListener("click", ajouteLigneIngredient);
+document.getElementById("btn-generate").addEventListener("click", genererEtiquette);
+
+peupleDenominations();
+peupleTraces();
+ajouteLigneIngredient();
+ajouteLigneIngredient();
+ajouteLigneIngredient();
+updateTotalDisplay();
+</script>
+</body>
+</html>

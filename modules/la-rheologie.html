@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>La rhéologie du chocolat — BTM Chocolatier</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #20110a;
+    --surface: #2b1810;
+    --surface-alt: #3d2416;
+    --border: rgba(242,232,216,0.14);
+    --text: #f2e8d8;
+    --text-bright: #faf4e9;
+    --text-dim: rgba(242,232,216,0.62);
+    --caramel: #b8783a;
+    --caramel-hi: #cf9455;
+    --gold: #d8b66e;
+    --error: #7a2e2a;
+    --error-text: #e2a29d;
+    --success: #4c7a3a;
+    --success-text: #b7dba0;
+    --shadow: rgba(0,0,0,0.35);
+  }
+  [data-theme="light"]{
+    --bg: #f7efdf;
+    --surface: #fffaf0;
+    --surface-alt: #efe0c4;
+    --border: rgba(61,36,22,0.16);
+    --text: #3a2415;
+    --text-bright: #241207;
+    --text-dim: rgba(58,36,21,0.62);
+    --caramel: #a8632b;
+    --caramel-hi: #94551f;
+    --gold: #93701f;
+    --error: #a13d34;
+    --error-text: #7c2b25;
+    --success: #3d6b2c;
+    --success-text: #2c4f20;
+    --shadow: rgba(58,36,21,0.12);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--bg); color:var(--text); font-family:'Inter',sans-serif;
+    min-height:100vh; -webkit-font-smoothing:antialiased;
+    transition:background .35s ease, color .35s ease;
+  }
+  h1,h2,h3{font-family:'Merriweather',serif; font-weight:700; letter-spacing:-0.005em;}
+  a{color:var(--caramel-hi);}
+  ::-webkit-scrollbar{width:10px;height:10px;}
+  ::-webkit-scrollbar-thumb{background:var(--surface-alt); border-radius:8px;}
+
+  .app{display:flex; min-height:100vh;}
+
+  /* ===== Sidebar ===== */
+  .sidebar{
+    width:230px; flex-shrink:0; background:var(--surface); border-right:1px solid var(--border);
+    display:flex; flex-direction:column; padding:24px 16px; gap:6px;
+    position:sticky; top:0; height:100vh;
+  }
+  .sidebar .brand{padding:4px 10px 20px;}
+  .sidebar .brand .kicker{color:var(--caramel-hi); font-size:11.5px; font-weight:600; text-transform:uppercase; letter-spacing:.06em; margin:0 0 4px;}
+  .sidebar .brand h1{font-size:20px; margin:0; color:var(--text-bright); line-height:1.25;}
+  .navbtn{
+    display:flex; align-items:center; gap:10px; text-align:left; width:100%;
+    background:transparent; border:none; border-radius:10px; padding:11px 12px;
+    color:var(--text-dim); font-family:'Inter',sans-serif; font-size:14px; font-weight:500;
+    cursor:pointer; transition:background .2s ease, color .2s ease;
+  }
+  .navbtn svg{width:17px; height:17px; flex-shrink:0;}
+  .navbtn:hover{background:var(--surface-alt); color:var(--text);}
+  .navbtn.active{background:linear-gradient(155deg, var(--caramel-hi), var(--caramel) 65%); color:var(--bg); font-weight:600;}
+  .sidebar-spacer{flex:1;}
+  .theme-toggle{
+    display:flex; align-items:center; gap:8px; background:var(--surface-alt); border:1px solid var(--border);
+    color:var(--text-dim); padding:10px 12px; border-radius:10px; font-size:13px; cursor:pointer;
+  }
+  .theme-toggle:hover{color:var(--text);}
+  .theme-toggle svg{width:15px;height:15px;}
+  .back-link{display:block; font-size:12.5px; color:var(--text-dim); text-decoration:none; padding:8px 12px 2px;}
+  .back-link:hover{color:var(--text);}
+
+  /* ===== Main ===== */
+  .main{flex:1; min-width:0; padding:40px 44px 80px;}
+  .panel{display:none; max-width:820px; margin:0 auto;}
+  .panel.active{display:block;}
+  .panel-head{margin-bottom:28px;}
+  .panel-head .kicker{color:var(--caramel-hi); font-size:12.5px; font-weight:600; margin:0 0 6px;}
+  .panel-head h2{font-size:26px; margin:0 0 8px; color:var(--text-bright);}
+  .panel-head p{color:var(--text-dim); font-size:14px; margin:0; line-height:1.55; max-width:60ch;}
+
+  .card{
+    background:var(--surface); border:1px solid var(--border); border-radius:16px;
+    padding:26px; box-shadow:0 8px 24px var(--shadow); margin-bottom:18px;
+  }
+
+  /* ===== Quiz ===== */
+  .quiz-progress-wrap{display:flex; align-items:center; gap:12px; margin-bottom:22px;}
+  .quiz-progress-bar{flex:1; height:8px; border-radius:99px; background:var(--surface-alt); overflow:hidden;}
+  .quiz-progress-fill{height:100%; background:linear-gradient(90deg, var(--caramel), var(--gold)); border-radius:99px; transition:width .3s ease;}
+  .quiz-progress-label{font-size:12.5px; color:var(--text-dim); white-space:nowrap;}
+  .quiz-q{font-size:17px; line-height:1.5; color:var(--text-bright); margin:0 0 20px; font-family:'Merriweather',serif; font-weight:700;}
+  .quiz-options{display:flex; flex-direction:column; gap:10px;}
+  .quiz-opt{
+    text-align:left; padding:13px 16px; border-radius:11px; border:1px solid var(--border);
+    background:var(--surface-alt); color:var(--text); font-family:'Inter',sans-serif; font-size:14.5px;
+    cursor:pointer; transition:border-color .15s ease, background .15s ease;
+  }
+  .quiz-opt:hover{border-color:var(--caramel-hi);}
+  .quiz-opt.correct{background:color-mix(in srgb, var(--success) 30%, var(--surface-alt)); border-color:var(--success);}
+  .quiz-opt.incorrect{background:color-mix(in srgb, var(--error) 30%, var(--surface-alt)); border-color:var(--error);}
+  .quiz-opt[disabled]{cursor:default;}
+  .quiz-explain{
+    margin-top:18px; padding:16px 18px; border-radius:12px; background:var(--surface-alt);
+    border-left:3px solid var(--gold); font-size:13.5px; line-height:1.6; color:var(--text); display:none;
+  }
+  .quiz-explain.show{display:block;}
+  .quiz-explain b{color:var(--text-bright);}
+  .quiz-next{margin-top:18px; display:none;}
+  .quiz-next.show{display:inline-flex;}
+  .quiz-result{text-align:center; padding:20px 0;}
+  .badge{
+    width:110px; height:110px; border-radius:50%; margin:0 auto 18px; display:flex; align-items:center;
+    justify-content:center; font-family:'Merriweather',serif; font-weight:900; font-size:15px; text-align:center;
+    box-shadow:inset 0 2px 6px rgba(0,0,0,0.25), 0 6px 18px var(--shadow); color:#2a1a0a;
+  }
+  .badge.bronze{background:linear-gradient(155deg,#d3925a,#9a5a2c);}
+  .badge.argent{background:linear-gradient(155deg,#e6e6e6,#a8a8a8); color:#2a2a2a;}
+  .badge.or{background:linear-gradient(155deg,#f2d27a,#c99a2e);}
+  .quiz-result h3{margin:0 0 6px; color:var(--text-bright); font-size:20px;}
+  .quiz-result p{color:var(--text-dim); font-size:14px; margin:0 0 22px;}
+
+  .btn{
+    display:inline-flex; align-items:center; justify-content:center; gap:8px; border:none; border-radius:11px;
+    font-family:'Inter',sans-serif; font-weight:600; font-size:14px; padding:11px 20px; cursor:pointer;
+    color:var(--bg); text-decoration:none; background:linear-gradient(155deg, var(--caramel-hi), var(--caramel) 60%, #8a5427);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,0.25), 0 3px 10px var(--shadow); transition:transform .15s ease;
+  }
+  .btn:hover{transform:translateY(-1px);}
+  .btn.ghost{background:transparent; color:var(--text); border:1px solid var(--border); box-shadow:none;}
+
+  /* ===== Tuteur ===== */
+  .chat-wrap{display:flex; flex-direction:column; height:64vh;}
+  .chat-log{flex:1; overflow-y:auto; padding:4px 2px 12px; display:flex; flex-direction:column; gap:14px;}
+  .msg{max-width:88%; padding:12px 15px; border-radius:14px; font-size:14px; line-height:1.55;}
+  .msg.user{align-self:flex-end; background:linear-gradient(155deg, var(--caramel-hi), var(--caramel)); color:var(--bg); border-bottom-right-radius:4px;}
+  .msg.bot{align-self:flex-start; background:var(--surface-alt); border:1px solid var(--border); color:var(--text); border-bottom-left-radius:4px; white-space:pre-wrap;}
+  .msg.bot.loading{color:var(--text-dim); font-style:italic;}
+  .suggestions{display:flex; flex-wrap:wrap; gap:8px; margin:6px 0 16px;}
+  .suggestion-chip{
+    background:var(--surface-alt); border:1px solid var(--border); color:var(--text-dim); font-size:12.5px;
+    padding:8px 13px; border-radius:99px; cursor:pointer; text-align:left;
+  }
+  .suggestion-chip:hover{border-color:var(--caramel-hi); color:var(--text);}
+  .chat-input-row{display:flex; gap:10px; margin-top:8px;}
+  .chat-input-row input{
+    flex:1; background:var(--surface-alt); border:1px solid var(--border); border-radius:11px; color:var(--text);
+    font-family:'Inter',sans-serif; font-size:14px; padding:12px 15px;
+  }
+  .chat-input-row input:focus{outline:none; border-color:var(--caramel-hi);}
+
+  /* ===== Question d'examen ===== */
+  .exam-pills{display:flex; flex-wrap:wrap; gap:8px; margin-bottom:22px;}
+  .exam-pill{
+    background:var(--surface-alt); border:1px solid var(--border); color:var(--text-dim); font-size:13px;
+    padding:9px 15px; border-radius:99px; cursor:pointer; font-family:'Inter',sans-serif;
+  }
+  .exam-pill.active{background:linear-gradient(155deg, var(--caramel-hi), var(--caramel)); color:var(--bg); border-color:transparent; font-weight:600;}
+  .exam-q-title{font-size:17px; font-family:'Merriweather',serif; font-weight:700; color:var(--text-bright); margin:0 0 6px;}
+  .exam-q-points{font-size:12px; color:var(--text-dim); margin:0 0 20px;}
+  .step{
+    background:var(--surface-alt); border-radius:12px; padding:14px 16px; margin-bottom:12px;
+    font-size:13.5px; line-height:1.6; border-left:3px solid var(--border);
+  }
+  .step.hint{border-left-color:var(--gold);}
+  .step-label{font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:.05em; color:var(--caramel-hi); margin-bottom:5px;}
+  .exam-answer{
+    display:none; margin-top:16px; padding:18px; border-radius:12px; background:var(--surface-alt);
+    border-left:3px solid var(--success); font-size:13.5px; line-height:1.65;
+  }
+  .exam-answer.show{display:block;}
+  .exam-answer h4{margin:14px 0 6px; font-size:13.5px; color:var(--text-bright); font-family:'Inter',sans-serif;}
+  .exam-answer h4:first-child{margin-top:0;}
+  .exam-answer ul{margin:4px 0; padding-left:18px;}
+  .exam-controls{display:flex; gap:10px; flex-wrap:wrap; margin-top:6px;}
+  .exam-note{font-size:11.5px; color:var(--text-dim); margin-top:14px; font-style:italic;}
+
+  /* ===== En bref ===== */
+  .brief-svg-wrap{background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:18px; margin-bottom:18px; overflow-x:auto;}
+  .brief-points{display:grid; grid-template-columns:repeat(auto-fit, minmax(230px,1fr)); gap:14px;}
+  .brief-point{background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:16px 18px;}
+  .brief-point h4{margin:0 0 6px; font-size:14px; color:var(--gold); font-family:'Inter',sans-serif;}
+  .brief-point p{margin:0; font-size:13px; line-height:1.55; color:var(--text-dim);}
+
+  @media (max-width: 860px){
+    .app{flex-direction:column;}
+    .sidebar{width:100%; height:auto; position:relative; flex-direction:row; overflow-x:auto; padding:14px 12px; align-items:center;}
+    .sidebar .brand{padding:0 12px 0 4px; flex-shrink:0;}
+    .sidebar-spacer{display:none;}
+    .navbtn{flex-shrink:0; width:auto;}
+    .theme-toggle{flex-shrink:0;}
+    .main{padding:26px 18px 60px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="app">
+  <nav class="sidebar">
+    <div class="brand">
+      <p class="kicker">BTM Chocolatier</p>
+      <h1>La rhéologie du chocolat</h1>
+    </div>
+    <button class="navbtn active" data-tab="quiz">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+      Quiz
+    </button>
+    <button class="navbtn" data-tab="tuteur">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      Poser une question
+    </button>
+    <button class="navbtn" data-tab="examen">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M9 13h6M9 17h6M9 9h1"/></svg>
+      Question d'examen
+    </button>
+    <button class="navbtn" data-tab="brief">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+      En bref
+    </button>
+    <div class="sidebar-spacer"></div>
+    <a class="back-link" href="../index.html">← Retour au hub</a>
+    <button class="theme-toggle" id="themeToggle">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4.5"/><path d="M12 2.5v2M12 19.5v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M2.5 12h2M19.5 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4"/></svg>
+      <span id="themeLabel">Mode clair</span>
+    </button>
+  </nav>
+
+  <main class="main">
+
+    <!-- ===== QUIZ ===== -->
+    <section class="panel active" id="panel-quiz">
+      <div class="panel-head">
+        <p class="kicker">Quiz — La rhéologie du chocolat</p>
+        <h2>Teste tes connaissances</h2>
+        <p>Viscosité, limite d'écoulement et leviers de modification en atelier.</p>
+      </div>
+      <div class="card" id="quizCard"></div>
+    </section>
+
+    <!-- ===== TUTEUR ===== -->
+    <section class="panel" id="panel-tuteur">
+      <div class="panel-head">
+        <p class="kicker">Tuteur IA — La rhéologie du chocolat</p>
+        <h2>Poser une question</h2>
+        <p>Le tuteur répond uniquement à partir du cours de ce module. Pour les autres sujets, utilise le module concerné.</p>
+      </div>
+      <div class="card chat-wrap">
+        <div class="chat-log" id="chatLog"></div>
+        <div class="suggestions" id="chatSuggestions"></div>
+        <div class="chat-input-row">
+          <input type="text" id="chatInput" placeholder="Écris ta question sur le cacao…">
+          <button class="btn" id="chatSend">Envoyer</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== EXAMEN ===== -->
+    <section class="panel" id="panel-examen">
+      <div class="panel-head">
+        <p class="kicker">Question d'examen — La rhéologie du chocolat</p>
+        <h2>Cheminement guidé</h2>
+        <p>Choisis une question, avance indice par indice, puis assemble ta réponse avant de découvrir le corrigé.</p>
+      </div>
+      <div class="exam-pills" id="examPills"></div>
+      <div class="card" id="examCard"></div>
+    </section>
+
+    <!-- ===== EN BREF ===== -->
+    <section class="panel" id="panel-brief">
+      <div class="panel-head">
+        <p class="kicker">En bref — La rhéologie du chocolat</p>
+        <h2>Récapitulatif visuel</h2>
+        <p>Les 4 grandes variétés et l'essentiel à retenir avant l'épreuve.</p>
+      </div>
+      <div class="brief-svg-wrap" id="briefSvgWrap"></div>
+      <div class="brief-points" id="briefPoints"></div>
+    </section>
+
+  </main>
+</div>
+
+
+<script>
+/* =========================================================
+   COURSE_TEXT — synthèse fidèle du cours "La rhéologie du chocolat"
+   (source du tuteur IA — ne répond qu'à partir de ce texte)
+   ========================================================= */
+const COURSE_TEXT = `
+
+MODULE : LA RHÉOLOGIE — BTM Chocolatier Confiseur (Bloc 4 — Réaliser une production de chocolaterie confiserie)
+
+1/ DÉFINITION
+La rhéologie est l'étude de la déformation et de l'écoulement de la matière sous l'effet d'une contrainte appliquée. Plus simplement, c'est la mesure de la viscosité et de la limite d'écoulement. L'impact de ces deux propriétés est primordial pour comprendre certaines difficultés rencontrées au laboratoire.
+Sa mesure : l'instrument le plus fréquemment utilisé pour mesurer les propriétés rhéologiques du chocolat est le viscosimètre rotatif. Il mesure la résistance rencontrée par un cylindre rotatif, le rotor, à une température spécifique.
+
+2/ LA VISCOSITÉ
+La viscosité décrit le comportement de l'écoulement en fonction des forces appliquées : c'est l'expression de la friction interne d'un fluide soumis à une force. Ces données permettent de savoir si un chocolat s'écoule facilement ou difficilement pendant son travail.
+Elle est exprimée en Pa.s (Pascal-seconde) ou en mPa.s (millipascal-seconde). Une mesure élevée comme 7000 mPa.s correspond à un chocolat très visqueux, ne s'écoulant pas facilement ; à l'inverse, 500 mPa.s désigne un chocolat très fluide.
+La viscosité est directement influencée par la teneur en lipides et la présence d'émulsifiant (comme la lécithine). Le travail du couverturier est de l'ajuster au mieux selon l'objectif du produit (moulage, enrobage, intérieurs...). D'un point de vue simple : ajouter du beurre de cacao diminue la viscosité du chocolat, et la lécithine diminue le besoin en beurre de cacao.
+Étalement = viscosité : mesuré au repos (à plat) ou avec une force appliquée (à 45°).
+
+3/ LA LIMITE D'ÉCOULEMENT
+La limite d'écoulement décrit le comportement du chocolat lorsque de très faibles forces sont appliquées, comme l'écoulement sous son propre poids (résistance à l'écoulement). On peut aussi la décrire comme la tension critique verticale qui fait que certains produits vont s'écouler sous l'action principale de la pesanteur, par simple gravité.
+Elle est exprimée en Pa (pascal) : une valeur élevée comme 30 Pa correspond à peu ou aucun écoulement ; une valeur basse désigne un écoulement important.
+Pesanteur = limite d'écoulement. Exemple : une limite d'écoulement de 0 donne un écoulement total ; une limite d'écoulement de 25 Pa provoque un décrochement du produit et un arrêt de l'écoulement.
+
+4/ COMMENT INTERVENIR SUR LA RHÉOLOGIE D'UNE COUVERTURE ?
+- La lécithine : ajoutée à un taux de 0,1 à 0,3 % et, si nécessaire, le PGPR (polyricinoléate de polyglycérol), a un effet de réduction de la viscosité semblable à celui obtenu en ajoutant 1 à 3 % de beurre de cacao. Ajouter des quantités plus grandes que celles mentionnées entraînera une hausse de la limite d'écoulement. L'ajout d'émulsifiant permet donc un ajout moindre de beurre de cacao, donc une diminution des coûts.
+- Le type et la quantité de l'émulsifiant exercent une influence sur la rhéologie : le PGPR a un grand effet sur la limite d'écoulement. Le conchage à sec influence à la fois la viscosité et la limite d'écoulement.
+- Le taux d'humidité : la présence d'une petite quantité d'eau suffit pour une hausse considérable de la viscosité et de la limite d'écoulement.
+- Répartition des dimensions particulaires : la répartition des tailles de particules solides influence considérablement les propriétés rhéologiques du chocolat ; plus les particules sont grandes, plus la limite d'écoulement est basse et plus la viscosité est faible.
+- La température (au-dessus du point de fusion des matières grasses) : une augmentation de température entraîne une baisse de la viscosité et une hausse de la limite d'écoulement. C'est ce qui est pratiqué lors d'un maintien à température de travail.
+- Temps de conchage : le conchage affecte principalement la limite d'écoulement, qui diminue considérablement, en particulier pendant les premières heures de conchage.
+
+5/ EXEMPLE CONCRET
+F horizontale = viscosité ; G verticale = limite d'écoulement.
+L'air de la soufflerie d'une enrobeuse rencontre la partie supérieure d'un intérieur qui vient d'être nappé de chocolat : par déviation, cette force devient verticale. Sur la même enrobeuse, la tapoteuse accentue le phénomène de pesanteur par ses vibrations verticales. Le chocolat s'écoule plus fortement sur les parois verticales, et les crêtes formées sur la partie supérieure s'aplanissent plus ou moins. Ces deux phénomènes dépendent de la limite d'écoulement.
+En résumé : la viscosité est associée à l'aplanissement (glissement en couche mince) et la limite d'écoulement à l'égouttage (pesanteur). En réalité, les deux forces s'exercent en même temps et interfèrent dans leurs résultats ; on peut compenser l'une par l'autre, mais seulement dans certaines limites. Les différents types de chocolats (noirs, au lait, blancs) n'ont pas le même comportement rhéologique pour une même teneur en matière grasse.
+Les cristaux instables du beurre de cacao contenus dans la couverture rendent les paramètres de tempérage cruciaux dans l'application : la température d'amorce, de travail, la génération des différents cristaux modifient les caractéristiques rhéologiques. Il en va de même pour la température des intérieurs et l'environnement de travail.
+
+6/ EXEMPLES DE DÉFAUTS EN APPLICATION
+
+Moulage : un mauvais choix de couverture ou de mauvais réglages causera un moulage trop fin ou trop épais si la limite d'écoulement n'est pas adaptée. Une viscosité trop importante provoquera des bulles d'air que le tapotage n'éliminera pas.
+
+Enrobage : une couverture trop visqueuse provoquera des bulles d'air fréquentes et une mauvaise répartition (espace non couvert, couche trop lisse ou crêtes importantes). À l'inverse, trop fluide, la couverture aura du mal à adhérer et les arêtes ne seront pas couvertes, donc elles fissureront et l'intérieur sera fragilisé.
+La limite d'écoulement, elle, cause sur l'enrobage une mauvaise répartition, une irrégularité sur les flancs du bonbon ou sur le dessus (apparition de pied, épaisseur inadaptée) plutôt qu'une bonne répartition homogène.
+
+`;
+
+/* =========================================================
+   QUESTIONS — Quiz (QCM)
+   ========================================================= */
+const QUESTIONS = [
+  {
+    q: "Comment définit-on la rhéologie ?",
+    options: ["L'étude de la couleur des chocolats", "L'étude de la déformation et de l'écoulement de la matière sous contrainte", "L'étude de la fermentation du cacao", "L'étude du tempérage uniquement"],
+    correct: 1,
+    explain: "<b>La rhéologie</b> est l'étude de la déformation et de l'écoulement de la matière sous l'effet d'une contrainte appliquée. Concrètement, c'est ce qui te permet de comprendre pourquoi un chocolat coule bien au moulage mais fait des bulles à l'enrobage, ou l'inverse."
+  },
+  {
+    q: "Quelles sont les deux mesures principales de la rhéologie du chocolat ?",
+    options: ["La couleur et la brillance", "La viscosité et la limite d'écoulement", "Le pH et la température", "Le taux de sucre et le taux de MG"],
+    correct: 1,
+    explain: "<b>La viscosité</b> (résistance à l'écoulement sous une force appliquée) et <b>la limite d'écoulement</b> (comportement sous très faible force, comme le poids propre). Ce sont ces deux paramètres qu'un couverturier ajuste pour adapter son chocolat au moulage, à l'enrobage ou aux intérieurs."
+  },
+  {
+    q: "Avec quel instrument mesure-t-on les propriétés rhéologiques du chocolat ?",
+    options: ["Le réfractomètre", "Le viscosimètre rotatif", "Le thermomètre à sonde", "Le pH-mètre"],
+    correct: 1,
+    explain: "Le <b>viscosimètre rotatif</b> mesure la résistance rencontrée par un cylindre rotatif (le rotor) à une température spécifique. En atelier, c'est l'outil de contrôle qualité qu'utilisent les fabricants de couverture pour garantir une régularité entre deux lots."
+  },
+  {
+    q: "En quelle unité exprime-t-on la viscosité d'un chocolat ?",
+    options: ["En degrés Brix", "En Pa.s ou mPa.s", "En pourcentage", "En degrés Celsius"],
+    correct: 1,
+    explain: "En <b>Pa.s (Pascal-seconde)</b> ou <b>mPa.s (millipascal-seconde)</b>. Une mesure de 7000 mPa.s correspond à un chocolat très visqueux, tandis que 500 mPa.s désigne un chocolat très fluide — un repère utile en atelier pour choisir la couverture adaptée à un moulage fin."
+  },
+  {
+    q: "Qu'est-ce que la limite d'écoulement d'un chocolat ?",
+    options: [
+      "La température maximale de fonte",
+      "La tension critique qui détermine si le chocolat s'écoule sous son propre poids (pesanteur)",
+      "Le taux maximal de beurre de cacao autorisé",
+      "La durée maximale de conservation"
+    ],
+    correct: 1,
+    explain: "C'est la <b>tension critique verticale</b> qui détermine si un produit va s'écouler sous l'effet de la pesanteur seule. Une valeur élevée (30 Pa) signifie peu ou pas d'écoulement ; une valeur basse signifie un écoulement important — décisif pour un enrobage propre sans pied qui coule."
+  },
+  {
+    q: "Quel additif, ajouté à 0,1-0,3 %, réduit la viscosité de façon comparable à 1-3 % de beurre de cacao ?",
+    options: ["Le sorbitol", "La lécithine", "La pectine", "Le glucose"],
+    correct: 1,
+    explain: "La <b>lécithine</b>, associée si besoin au PGPR. En atelier, c'est un levier économique : elle permet de réduire l'ajout de beurre de cacao pour fluidifier une couverture, donc de limiter les coûts — mais un excès de lécithine fait au contraire monter la limite d'écoulement."
+  },
+  {
+    q: "Que se passe-t-il si on augmente la quantité de lécithine au-delà de 0,3 % environ ?",
+    options: [
+      "La viscosité continue de baisser indéfiniment",
+      "La limite d'écoulement augmente",
+      "Le chocolat devient plus sucré",
+      "Aucun effet supplémentaire"
+    ],
+    correct: 1,
+    explain: "Au-delà du taux optimal, un ajout supplémentaire de lécithine <b>entraîne une hausse de la limite d'écoulement</b> — l'inverse de l'effet recherché sur la fluidité. C'est pourquoi le dosage de lécithine en couverture est encadré strictement (0,3 à 0,7 % en général en fabrication)."
+  },
+  {
+    q: "Quel est l'effet d'une petite quantité d'eau sur la viscosité et la limite d'écoulement d'un chocolat ?",
+    options: [
+      "Aucun effet notable",
+      "Une hausse considérable des deux",
+      "Une baisse des deux",
+      "Seule la viscosité augmente"
+    ],
+    correct: 1,
+    explain: "Même une <b>très petite quantité d'eau</b> suffit à faire grimper fortement la viscosité et la limite d'écoulement — d'où l'importance en atelier de bien sécher son matériel avant de travailler du chocolat, et de ne jamais mélanger eau et chocolat par accident (risque de « graine »)."
+  },
+  {
+    q: "Comment la taille des particules solides influence-t-elle la rhéologie ?",
+    options: [
+      "Plus les particules sont grandes, plus la viscosité et la limite d'écoulement sont faibles",
+      "Plus les particules sont petites, plus la viscosité est faible",
+      "La taille des particules n'a aucun effet",
+      "Seules les particules de sucre comptent"
+    ],
+    correct: 0,
+    explain: "Plus les particules sont <b>grandes</b>, plus la limite d'écoulement et la viscosité sont <b>faibles</b>. C'est une des raisons pour lesquelles l'affinage et le conchage (qui affinent la granulométrie) modifient fortement le comportement du chocolat en bouche et à l'écoulement."
+  },
+  {
+    q: "Quel est l'effet d'une hausse de température (au-dessus du point de fusion des matières grasses) sur la rhéologie ?",
+    options: [
+      "Baisse de la viscosité, hausse de la limite d'écoulement",
+      "Hausse de la viscosité, baisse de la limite d'écoulement",
+      "Aucun effet",
+      "Les deux baissent"
+    ],
+    correct: 0,
+    explain: "Une hausse de température entraîne une <b>baisse de la viscosité</b> et une <b>hausse de la limite d'écoulement</b>. C'est exactement ce qu'on exploite lors du maintien en température de travail d'une couverture tempérée, pour la garder fluide et exploitable."
+  },
+  {
+    q: "Sur quelle propriété rhéologique le temps de conchage agit-il principalement ?",
+    options: ["La couleur du chocolat", "La limite d'écoulement, qui diminue fortement, surtout au début du conchage", "Le taux de théobromine", "La teneur en eau uniquement"],
+    correct: 1,
+    explain: "Le conchage affecte surtout la <b>limite d'écoulement</b>, qui diminue considérablement pendant les premières heures. C'est une des raisons pour lesquelles le conchage est une étape si déterminante dans la texture finale d'un chocolat de couverture."
+  },
+  {
+    q: "Dans l'exemple de l'enrobeuse, à quoi correspond la force horizontale F ?",
+    options: ["À la limite d'écoulement", "À la viscosité", "À la température de travail", "Au taux de cristaux stables"],
+    correct: 1,
+    explain: "La force <b>horizontale (F) correspond à la viscosité</b>, tandis que la force <b>verticale (G) correspond à la limite d'écoulement</b>. C'est ce couple de forces qui explique pourquoi le nappage puis la tapoteuse d'une enrobeuse influencent différemment l'aspect final du bonbon."
+  },
+  {
+    q: "Un chocolat trop visqueux à l'enrobage provoquera surtout :",
+    options: ["Un manque de brillant uniquement", "Des bulles d'air fréquentes et une mauvaise répartition", "Une décristallisation immédiate", "Un excès de blanchiment sucrier"],
+    correct: 1,
+    explain: "Une couverture <b>trop visqueuse</b> provoque des <b>bulles d'air fréquentes</b> et une mauvaise répartition sur le bonbon. À l'inverse, une couverture trop fluide adhère mal, laisse les arêtes découvertes, qui fissureront et fragiliseront l'intérieur."
+  },
+  {
+    q: "Une couverture trop fluide à l'enrobage entraîne surtout quel défaut ?",
+    options: [
+      "Une adhérence excessive",
+      "Une mauvaise adhérence, des arêtes non couvertes qui fissurent, fragilisant l'intérieur",
+      "Un excès de brillant permanent",
+      "Une viscosité qui continue d'augmenter avec le temps"
+    ],
+    correct: 1,
+    explain: "Trop fluide, la couverture <b>adhère mal</b> et laisse les arêtes du bonbon découvertes ; ces zones fines finissent par fissurer, ce qui fragilise l'intérieur et accélère son altération (dessiccation, oxydation)."
+  },
+  {
+    q: "Pour le moulage, quel défaut apparaît si la limite d'écoulement n'est pas adaptée ?",
+    options: ["Un moulage trop fin ou trop épais", "Une prise de couleur anormale", "Une fermentation excessive", "Un excès de théobromine"],
+    correct: 0,
+    explain: "Une limite d'écoulement inadaptée entraîne un <b>moulage trop fin ou trop épais</b>. Une viscosité trop importante, elle, provoque des <b>bulles d'air</b> que le tapotage n'arrive pas à éliminer — deux défauts distincts à diagnostiquer différemment en atelier."
+  },
+  {
+    q: "Pourquoi les différents chocolats (noir, lait, blanc) ne se comportent-ils pas de la même façon rhéologiquement, à teneur en matière grasse égale ?",
+    options: [
+      "Parce que leur comportement rhéologique dépend aussi de leur composition globale, pas seulement de la teneur en MG",
+      "Parce qu'ils ont tous exactement le même comportement",
+      "Parce que seul le chocolat noir a une rhéologie mesurable",
+      "Parce que la rhéologie ne s'applique qu'au chocolat blanc"
+    ],
+    correct: 0,
+    explain: "Le cours précise explicitement que les différents types de chocolats <b>n'ont pas le même comportement rhéologique</b> pour une même teneur en matière grasse — la présence de lait en poudre, de sucre ou de cacao sec modifie aussi la viscosité et la limite d'écoulement, pas seulement le taux de MG."
+  }
+];
+
+/* =========================================================
+   EXAM_QUESTIONS — cheminements guidés
+   ========================================================= */
+const EXAM_QUESTIONS = [
+  {
+    id: "def-viscosite",
+    title: "Qu'est-ce que la viscosité d'un chocolat, et avec quel instrument la mesure-t-on ?",
+    points: "d'après le corrigé officiel 1102-2017",
+    hints: [
+      "Définis d'abord la viscosité par rapport à la notion de résistance à l'étalement, en la distinguant de la limite d'écoulement.",
+      "Puis nomme l'instrument de mesure et précise ce qu'il mesure exactement."
+    ],
+    answerHtml: `
+      <h4>Définition</h4>
+      <p>La viscosité est une <b>force de résistance à l'étalement</b>. Elle se distingue de la limite d'écoulement, qui est la masse critique au-delà de laquelle la pesanteur permet au chocolat de s'écouler.</p>
+      <h4>Instrument de mesure</h4>
+      <p>Le <b>viscosimètre rotatif</b> est l'instrument le plus utilisé : il mesure la résistance rencontrée par un cylindre rotatif (le rotor) à une température spécifique — la viscosité et la limite d'écoulement dépendant toutes deux de la température.</p>`
+  },
+  {
+    id: "leviers",
+    title: "Quelles matières premières et quels facteurs permettent de modifier la viscosité et la limite d'écoulement d'un chocolat ?",
+    points: "d'après la banque de questions et le corrigé officiel 1102-2017",
+    hints: [
+      "Il y a au moins 5 leviers distincts vus en cours : un additif, un facteur granulométrique, un facteur d'humidité, un facteur thermique et un facteur de procédé.",
+      "Pour chacun, précise le sens de l'effet (hausse ou baisse) sur la viscosité et/ou la limite d'écoulement."
+    ],
+    answerHtml: `
+      <h4>La lécithine (et le PGPR)</h4>
+      <p>Ajoutée à 0,1-0,3 %, elle réduit la viscosité de façon comparable à un ajout de 1-3 % de beurre de cacao. Au-delà de ce taux, elle fait au contraire monter la limite d'écoulement.</p>
+      <h4>Le taux d'humidité</h4>
+      <p>Une toute petite quantité d'eau suffit pour une hausse considérable de la viscosité <b>et</b> de la limite d'écoulement.</p>
+      <h4>La répartition des tailles de particules</h4>
+      <p>Plus les particules solides sont grandes, plus la limite d'écoulement et la viscosité sont faibles.</p>
+      <h4>La température</h4>
+      <p>Au-dessus du point de fusion des matières grasses, une hausse de température fait baisser la viscosité mais monter la limite d'écoulement.</p>
+      <h4>Le temps de conchage</h4>
+      <p>Il affecte surtout la limite d'écoulement, qui diminue fortement, en particulier durant les premières heures de conchage.</p>`
+  },
+  {
+    id: "defauts-enrobage",
+    title: "Quels défauts d'enrobage sont liés à un mauvais réglage de la viscosité ou de la limite d'écoulement ?",
+    points: "d'après le cours « La rhéologie »",
+    hints: [
+      "Distingue les défauts d'une couverture trop visqueuse de ceux d'une couverture trop fluide.",
+      "Puis distingue les défauts propres à un problème de limite d'écoulement (répartition, flancs) de ceux liés à la viscosité (bulles, adhérence)."
+    ],
+    answerHtml: `
+      <h4>Couverture trop visqueuse</h4>
+      <p>Provoque des <b>bulles d'air fréquentes</b> et une mauvaise répartition (espace non couvert, couche trop lisse ou crêtes trop importantes).</p>
+      <h4>Couverture trop fluide</h4>
+      <p>Adhère mal : les arêtes du bonbon ne sont pas couvertes, elles fissureront et fragiliseront l'intérieur.</p>
+      <h4>Problème de limite d'écoulement</h4>
+      <p>Cause une mauvaise répartition, une irrégularité sur les flancs du bonbon ou sur le dessus — apparition de pied, épaisseur inadaptée — plutôt qu'une bonne répartition homogène.</p>`
+  },
+  {
+    id: "rheologie-def",
+    title: "Qu'est-ce que la rhéologie ? Comment la modifie-t-on ?",
+    points: "d'après la banque de questions techno",
+    hints: [
+      "Commence par la définition générale, puis les deux grandeurs qu'elle recouvre pour le chocolat.",
+      "Termine en listant les principaux leviers de modification (au moins 4)."
+    ],
+    answerHtml: `
+      <h4>Définition</h4>
+      <p>La rhéologie est l'étude de la déformation et de l'écoulement de la matière sous l'effet d'une contrainte appliquée. Pour le chocolat, elle se résume à deux mesures : la <b>viscosité</b> et la <b>limite d'écoulement</b>, mesurées au viscosimètre rotatif.</p>
+      <h4>Comment la modifier</h4>
+      <p>Par la lécithine et le PGPR (émulsifiants), le taux d'humidité, la répartition des tailles de particules (affinage), la température de travail, et le temps de conchage — chacun agissant différemment sur la viscosité et/ou la limite d'écoulement.</p>`
+  }
+];
+
+/* =========================================================
+   QUIZ LOGIC
+   ========================================================= */
+let quizOrder = [];
+let quizIndex = 0;
+let quizScore = 0;
+
+function shuffle(arr){
+  const a = arr.slice();
+  for(let i=a.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]]=[a[j],a[i]];
+  }
+  return a;
+}
+
+function startQuiz(){
+  quizOrder = shuffle(QUESTIONS.map((_,i)=>i));
+  quizIndex = 0;
+  quizScore = 0;
+  renderQuizQuestion();
+}
+
+function renderQuizQuestion(){
+  const card = document.getElementById('quizCard');
+  if(quizIndex >= quizOrder.length){
+    renderQuizResult();
+    return;
+  }
+  const q = QUESTIONS[quizOrder[quizIndex]];
+  const pct = Math.round((quizIndex/quizOrder.length)*100);
+  card.innerHTML = `
+    <div class="quiz-progress-wrap">
+      <div class="quiz-progress-bar"><div class="quiz-progress-fill" style="width:${pct}%"></div></div>
+      <div class="quiz-progress-label">${quizIndex+1} / ${quizOrder.length}</div>
+    </div>
+    <p class="quiz-q">${q.q}</p>
+    <div class="quiz-options" id="quizOptions">
+      ${q.options.map((o,i)=>`<button class="quiz-opt" data-i="${i}">${o}</button>`).join('')}
+    </div>
+    <div class="quiz-explain" id="quizExplain"></div>
+    <button class="btn quiz-next" id="quizNextBtn">Question suivante</button>
+  `;
+  document.querySelectorAll('#quizOptions .quiz-opt').forEach(btn=>{
+    btn.addEventListener('click', ()=>answerQuiz(parseInt(btn.dataset.i), q));
+  });
+  document.getElementById('quizNextBtn').addEventListener('click', ()=>{
+    quizIndex++;
+    renderQuizQuestion();
+  });
+}
+
+function answerQuiz(i, q){
+  const opts = document.querySelectorAll('#quizOptions .quiz-opt');
+  opts.forEach(o=>o.disabled=true);
+  if(i === q.correct){
+    opts[i].classList.add('correct');
+    quizScore++;
+  } else {
+    opts[i].classList.add('incorrect');
+    opts[q.correct].classList.add('correct');
+  }
+  const ex = document.getElementById('quizExplain');
+  ex.innerHTML = q.explain;
+  ex.classList.add('show');
+  document.getElementById('quizNextBtn').classList.add('show');
+}
+
+function renderQuizResult(){
+  const card = document.getElementById('quizCard');
+  const pct = Math.round((quizScore/quizOrder.length)*100);
+  let tier = 'bronze', label = 'Bronze';
+  if(pct >= 85){ tier='or'; label='Or'; }
+  else if(pct >= 65){ tier='argent'; label='Argent'; }
+  card.innerHTML = `
+    <div class="quiz-result">
+      <div class="badge ${tier}">${label}</div>
+      <h3>${quizScore} / ${quizOrder.length} bonnes réponses</h3>
+      <p>${pct}% de réussite sur le module « La rhéologie du chocolat »</p>
+      <button class="btn" id="quizRestart">Recommencer le quiz</button>
+    </div>
+  `;
+  document.getElementById('quizRestart').addEventListener('click', startQuiz);
+}
+
+/* =========================================================
+   TUTEUR IA — appel direct à l'API Groq (gratuite), fonctionne
+   dans n'importe quel navigateur, sans compte ni autorisation
+   ========================================================= */
+const SUGGESTED_QUESTIONS = [
+  "Quelle est la différence entre viscosité et limite d'écoulement ?",
+  "Pourquoi la lécithine réduit-elle la viscosité du chocolat ?",
+  "Quels défauts d'enrobage viennent d'un mauvais réglage rhéologique ?"
+];
+
+const GROQ_MODEL = "llama-3.3-70b-versatile";
+const RELAY_URL = "/.netlify/functions/chat";
+
+let chatHistory = [];
+
+function renderChatSuggestions(){
+  const wrap = document.getElementById('chatSuggestions');
+  wrap.innerHTML = SUGGESTED_QUESTIONS.map(s=>`<button class="suggestion-chip">${s}</button>`).join('');
+  wrap.querySelectorAll('.suggestion-chip').forEach(chip=>{
+    chip.addEventListener('click', ()=>{
+      document.getElementById('chatInput').value = chip.textContent;
+      sendChat();
+    });
+  });
+}
+
+function addMsg(text, cls){
+  const log = document.getElementById('chatLog');
+  const div = document.createElement('div');
+  div.className = 'msg ' + cls;
+  div.textContent = text;
+  log.appendChild(div);
+  log.scrollTop = log.scrollHeight;
+  return div;
+}
+
+async function askTuteur(systemPrompt, messages){
+  const response = await fetch(RELAY_URL, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      model: GROQ_MODEL,
+      messages: [{role: "system", content: systemPrompt}, ...messages],
+      temperature: 0.4
+    })
+  });
+  if(!response.ok){
+    const errBody = await response.text().catch(()=>"");
+    const err = new Error("HTTP " + response.status);
+    err.status = response.status;
+    err.body = errBody;
+    throw err;
+  }
+  const data = await response.json();
+  return data.choices[0].message.content;
+}
+
+async function sendChat(){
+  const inputEl = document.getElementById('chatInput');
+  const text = inputEl.value.trim();
+  if(!text) return;
+  inputEl.value = '';
+  addMsg(text, 'user');
+  chatHistory.push({role:'user', content:text});
+  const loadingDiv = addMsg('Le tuteur réfléchit…', 'bot loading');
+
+  const RULES = "Tu es un tuteur pour des élèves en BTM Chocolatier-Confiseur. Tu réponds UNIQUEMENT à partir du texte de cours suivant, sur le module 'La rhéologie du chocolat'. Si la question sort de ce cours (autre module), dis poliment que ce sujet est traité dans un autre module et invite l'élève à s'y rendre. Réponds de façon claire, pédagogique, avec des exemples concrets d'atelier quand c'est pertinent. Ne mentionne jamais quel modèle d'IA tu es : reste dans ton rôle de tuteur du module.\n\nCOURS :\n" + COURSE_TEXT;
+
+  const recentHistory = chatHistory.slice(-10);
+
+  try{
+    const answer = await askTuteur(RULES, recentHistory);
+    loadingDiv.classList.remove('loading');
+    loadingDiv.textContent = answer;
+    chatHistory.push({role:'assistant', content: answer});
+  } catch(err){
+    loadingDiv.classList.remove('loading');
+    loadingDiv.textContent = err.status === 429
+      ? "Trop de questions envoyées d'un coup : attends un instant avant de réessayer."
+      : "Une erreur est survenue en contactant le tuteur. Réessaie dans un instant.";
+    console.error(err);
+  }
+}
+
+/* =========================================================
+   QUESTION D'EXAMEN — cheminement guidé
+   ========================================================= */
+let currentExamId = EXAM_QUESTIONS[0].id;
+let examStepIndex = {};
+
+function renderExamPills(){
+  const wrap = document.getElementById('examPills');
+  wrap.innerHTML = EXAM_QUESTIONS.map(q=>`<button class="exam-pill${q.id===currentExamId?' active':''}" data-id="${q.id}">${q.title.length>38?q.title.slice(0,38)+'…':q.title}</button>`).join('');
+  wrap.querySelectorAll('.exam-pill').forEach(p=>{
+    p.addEventListener('click', ()=>{
+      currentExamId = p.dataset.id;
+      renderExamPills();
+      renderExamQuestion();
+    });
+  });
+}
+
+function renderExamQuestion(){
+  const q = EXAM_QUESTIONS.find(e=>e.id===currentExamId);
+  if(!(currentExamId in examStepIndex)) examStepIndex[currentExamId] = 0;
+  const step = examStepIndex[currentExamId];
+  const card = document.getElementById('examCard');
+
+  let stepsHtml = '';
+  for(let i=0;i<step;i++){
+    stepsHtml += `<div class="step hint"><div class="step-label">Indice ${i+1}</div>${q.hints[i]}</div>`;
+  }
+
+  let controlsHtml = '';
+  if(step < q.hints.length){
+    controlsHtml += `<button class="btn" id="examHintBtn">Indice ${step+1}</button>`;
+  }
+  if(step > 0 || q.hints.length===0){
+    controlsHtml += `<button class="btn ghost" id="examAnswerBtn">Voir la réponse assemblée</button>`;
+  }
+  controlsHtml += `<button class="btn ghost" id="examResetBtn">Recommencer cette question</button>`;
+
+  card.innerHTML = `
+    <p class="exam-q-title">${q.title}</p>
+    <p class="exam-q-points">${q.points}</p>
+    ${stepsHtml}
+    <div class="exam-controls">${controlsHtml}</div>
+    <div class="exam-answer" id="examAnswer">${q.answerHtml}</div>
+    <p class="exam-note">Corrigé reconstitué à partir des sources internes du module (banque de questions, évaluations, corrigés officiels) — à relire avant diffusion en cas d'écart avec le cours.</p>
+  `;
+
+  const hintBtn = document.getElementById('examHintBtn');
+  if(hintBtn) hintBtn.addEventListener('click', ()=>{
+    examStepIndex[currentExamId] = step+1;
+    renderExamQuestion();
+  });
+  const answerBtn = document.getElementById('examAnswerBtn');
+  if(answerBtn) answerBtn.addEventListener('click', ()=>{
+    document.getElementById('examAnswer').classList.add('show');
+    answerBtn.disabled = true;
+  });
+  document.getElementById('examResetBtn').addEventListener('click', ()=>{
+    examStepIndex[currentExamId] = 0;
+    renderExamQuestion();
+  });
+}
+
+/* =========================================================
+   EN BREF — schéma SVG + points clés
+   ========================================================= */
+function renderBrief(){
+  const svgWrap = document.getElementById('briefSvgWrap');
+  svgWrap.innerHTML = `
+  <svg viewBox="0 0 920 300" width="100%" style="min-width:600px;display:block;">
+    <defs>
+      <style>
+        .vt{font-family:'Merriweather',serif; font-weight:700; fill:var(--text-bright);}
+        .vs{font-family:'Inter',sans-serif; fill:var(--text-dim); font-size:12px;}
+        .vb{font-family:'Inter',sans-serif; fill:var(--text); font-size:12.5px;}
+      </style>
+    </defs>
+    <rect x="0" y="0" width="920" height="300" fill="var(--surface)"/>
+    <rect x="20" y="20" width="420" height="260" rx="14" fill="var(--surface-alt)" stroke="var(--border)"/>
+    <text x="40" y="52" class="vt" font-size="17">Viscosité</text>
+    <text x="40" y="74" class="vs">RÉSISTANCE À L'ÉTALEMENT — mesurée à plat ou à 45°</text>
+    <text x="40" y="104" class="vb">Unité : Pa.s ou mPa.s</text>
+    <text x="40" y="126" class="vb">↑ avec : eau, petites particules, baisse de T°</text>
+    <text x="40" y="148" class="vb">↓ avec : beurre de cacao, lécithine, hausse de T°</text>
+    <text x="40" y="176" class="vs">DÉFAUT SI TROP ÉLEVÉE</text>
+    <text x="40" y="196" class="vb">Bulles d'air à l'enrobage, moulage épais</text>
+    <text x="40" y="224" class="vs">DÉFAUT SI TROP BASSE</text>
+    <text x="40" y="244" class="vb">Mauvaise adhérence, arêtes découvertes</text>
+    <rect x="470" y="20" width="430" height="260" rx="14" fill="var(--surface-alt)" stroke="var(--border)"/>
+    <text x="490" y="52" class="vt" font-size="17">Limite d'écoulement</text>
+    <text x="490" y="74" class="vs">RÉSISTANCE À LA PESANTEUR (poids propre)</text>
+    <text x="490" y="104" class="vb">Unité : Pa</text>
+    <text x="490" y="126" class="vb">↑ avec : eau, hausse de T°, PGPR</text>
+    <text x="490" y="148" class="vb">↓ avec : grandes particules, temps de conchage</text>
+    <text x="490" y="176" class="vs">DÉFAUT SI TROP ÉLEVÉE</text>
+    <text x="490" y="196" class="vb">Épaisseur inadaptée, mauvaise répartition</text>
+    <text x="490" y="224" class="vs">DÉFAUT SI TROP BASSE</text>
+    <text x="490" y="244" class="vb">Écoulement total, apparition de pied</text>
+  </svg>`;
+
+  const points = document.getElementById('briefPoints');
+  const data = [
+  {h:"Deux mesures", p:"La rhéologie du chocolat se résume à la viscosité (Pa.s) et la limite d'écoulement (Pa), mesurées au viscosimètre rotatif."},
+  {h:"Lécithine", p:"0,1-0,3% réduit la viscosité comme 1-3% de beurre de cacao. Au-delà, elle fait monter la limite d'écoulement."},
+  {h:"Eau = danger", p:"Une toute petite quantité d'eau suffit à faire grimper fortement viscosité et limite d'écoulement."},
+  {h:"Granulométrie", p:"Plus les particules solides sont grandes, plus viscosité et limite d'écoulement sont faibles."},
+  {h:"Température", p:"Une hausse de T° (hors point de fusion des MG) baisse la viscosité mais augmente la limite d'écoulement."},
+  {h:"Conchage", p:"Agit surtout sur la limite d'écoulement, qui chute fortement dans les premières heures."},
+  {h:"Moulage", p:"Limite d'écoulement mal réglée = moulage trop fin ou trop épais. Viscosité trop haute = bulles d'air."},
+  {h:"Enrobage", p:"Trop visqueux = bulles et mauvaise répartition. Trop fluide = arêtes découvertes qui fissurent."}
+];
+  points.innerHTML = data.map(d=>`<div class="brief-point"><h4>${d.h}</h4><p>${d.p}</p></div>`).join('');
+}
+
+/* =========================================================
+   NAVIGATION + THEME
+   ========================================================= */
+document.querySelectorAll('.navbtn[data-tab]').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    document.querySelectorAll('.navbtn[data-tab]').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('panel-'+btn.dataset.tab).classList.add('active');
+  });
+});
+
+const themeToggle = document.getElementById('themeToggle');
+const themeLabel = document.getElementById('themeLabel');
+themeToggle.addEventListener('click', () => {
+  const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+  document.documentElement.setAttribute('data-theme', isLight ? 'dark' : 'light');
+  themeLabel.textContent = isLight ? 'Mode clair' : 'Mode sombre';
+});
+
+/* ===== Init ===== */
+startQuiz();
+renderChatSuggestions();
+document.getElementById('chatSend').addEventListener('click', sendChat);
+document.getElementById('chatInput').addEventListener('keydown', e=>{ if(e.key==='Enter') sendChat(); });
+renderExamPills();
+renderExamQuestion();
+renderBrief();
+</script>
+
+</body>
+</html>

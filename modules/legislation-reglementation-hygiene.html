@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Législation, réglementation & hygiène — BTM Chocolatier</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #20110a;
+    --surface: #2b1810;
+    --surface-alt: #3d2416;
+    --border: rgba(242,232,216,0.14);
+    --text: #f2e8d8;
+    --text-bright: #faf4e9;
+    --text-dim: rgba(242,232,216,0.62);
+    --caramel: #b8783a;
+    --caramel-hi: #cf9455;
+    --gold: #d8b66e;
+    --error: #7a2e2a;
+    --error-text: #e2a29d;
+    --success: #4c7a3a;
+    --success-text: #b7dba0;
+    --shadow: rgba(0,0,0,0.35);
+  }
+  [data-theme="light"]{
+    --bg: #f7efdf;
+    --surface: #fffaf0;
+    --surface-alt: #efe0c4;
+    --border: rgba(61,36,22,0.16);
+    --text: #3a2415;
+    --text-bright: #241207;
+    --text-dim: rgba(58,36,21,0.62);
+    --caramel: #a8632b;
+    --caramel-hi: #94551f;
+    --gold: #93701f;
+    --error: #a13d34;
+    --error-text: #7c2b25;
+    --success: #3d6b2c;
+    --success-text: #2c4f20;
+    --shadow: rgba(58,36,21,0.12);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--bg); color:var(--text); font-family:'Inter',sans-serif;
+    min-height:100vh; -webkit-font-smoothing:antialiased;
+    transition:background .35s ease, color .35s ease;
+  }
+  h1,h2,h3{font-family:'Merriweather',serif; font-weight:700; letter-spacing:-0.005em;}
+  a{color:var(--caramel-hi);}
+  ::-webkit-scrollbar{width:10px;height:10px;}
+  ::-webkit-scrollbar-thumb{background:var(--surface-alt); border-radius:8px;}
+
+  .app{display:flex; min-height:100vh;}
+
+  /* ===== Sidebar ===== */
+  .sidebar{
+    width:230px; flex-shrink:0; background:var(--surface); border-right:1px solid var(--border);
+    display:flex; flex-direction:column; padding:24px 16px; gap:6px;
+    position:sticky; top:0; height:100vh;
+  }
+  .sidebar .brand{padding:4px 10px 20px;}
+  .sidebar .brand .kicker{color:var(--caramel-hi); font-size:11.5px; font-weight:600; text-transform:uppercase; letter-spacing:.06em; margin:0 0 4px;}
+  .sidebar .brand h1{font-size:20px; margin:0; color:var(--text-bright); line-height:1.25;}
+  .navbtn{
+    display:flex; align-items:center; gap:10px; text-align:left; width:100%;
+    background:transparent; border:none; border-radius:10px; padding:11px 12px;
+    color:var(--text-dim); font-family:'Inter',sans-serif; font-size:14px; font-weight:500;
+    cursor:pointer; transition:background .2s ease, color .2s ease;
+  }
+  .navbtn svg{width:17px; height:17px; flex-shrink:0;}
+  .navbtn:hover{background:var(--surface-alt); color:var(--text);}
+  .navbtn.active{background:linear-gradient(155deg, var(--caramel-hi), var(--caramel) 65%); color:var(--bg); font-weight:600;}
+  .sidebar-spacer{flex:1;}
+  .theme-toggle{
+    display:flex; align-items:center; gap:8px; background:var(--surface-alt); border:1px solid var(--border);
+    color:var(--text-dim); padding:10px 12px; border-radius:10px; font-size:13px; cursor:pointer;
+  }
+  .theme-toggle:hover{color:var(--text);}
+  .theme-toggle svg{width:15px;height:15px;}
+  .back-link{display:block; font-size:12.5px; color:var(--text-dim); text-decoration:none; padding:8px 12px 2px;}
+  .back-link:hover{color:var(--text);}
+
+  /* ===== Main ===== */
+  .main{flex:1; min-width:0; padding:40px 44px 80px;}
+  .panel{display:none; max-width:820px; margin:0 auto;}
+  .panel.active{display:block;}
+  .panel-head{margin-bottom:28px;}
+  .panel-head .kicker{color:var(--caramel-hi); font-size:12.5px; font-weight:600; margin:0 0 6px;}
+  .panel-head h2{font-size:26px; margin:0 0 8px; color:var(--text-bright);}
+  .panel-head p{color:var(--text-dim); font-size:14px; margin:0; line-height:1.55; max-width:60ch;}
+
+  .card{
+    background:var(--surface); border:1px solid var(--border); border-radius:16px;
+    padding:26px; box-shadow:0 8px 24px var(--shadow); margin-bottom:18px;
+  }
+
+  /* ===== Quiz ===== */
+  .quiz-progress-wrap{display:flex; align-items:center; gap:12px; margin-bottom:22px;}
+  .quiz-progress-bar{flex:1; height:8px; border-radius:99px; background:var(--surface-alt); overflow:hidden;}
+  .quiz-progress-fill{height:100%; background:linear-gradient(90deg, var(--caramel), var(--gold)); border-radius:99px; transition:width .3s ease;}
+  .quiz-progress-label{font-size:12.5px; color:var(--text-dim); white-space:nowrap;}
+  .quiz-q{font-size:17px; line-height:1.5; color:var(--text-bright); margin:0 0 20px; font-family:'Merriweather',serif; font-weight:700;}
+  .quiz-options{display:flex; flex-direction:column; gap:10px;}
+  .quiz-opt{
+    text-align:left; padding:13px 16px; border-radius:11px; border:1px solid var(--border);
+    background:var(--surface-alt); color:var(--text); font-family:'Inter',sans-serif; font-size:14.5px;
+    cursor:pointer; transition:border-color .15s ease, background .15s ease;
+  }
+  .quiz-opt:hover{border-color:var(--caramel-hi);}
+  .quiz-opt.correct{background:color-mix(in srgb, var(--success) 30%, var(--surface-alt)); border-color:var(--success);}
+  .quiz-opt.incorrect{background:color-mix(in srgb, var(--error) 30%, var(--surface-alt)); border-color:var(--error);}
+  .quiz-opt[disabled]{cursor:default;}
+  .quiz-explain{
+    margin-top:18px; padding:16px 18px; border-radius:12px; background:var(--surface-alt);
+    border-left:3px solid var(--gold); font-size:13.5px; line-height:1.6; color:var(--text); display:none;
+  }
+  .quiz-explain.show{display:block;}
+  .quiz-explain b{color:var(--text-bright);}
+  .quiz-next{margin-top:18px; display:none;}
+  .quiz-next.show{display:inline-flex;}
+  .quiz-result{text-align:center; padding:20px 0;}
+  .badge{
+    width:110px; height:110px; border-radius:50%; margin:0 auto 18px; display:flex; align-items:center;
+    justify-content:center; font-family:'Merriweather',serif; font-weight:900; font-size:15px; text-align:center;
+    box-shadow:inset 0 2px 6px rgba(0,0,0,0.25), 0 6px 18px var(--shadow); color:#2a1a0a;
+  }
+  .badge.bronze{background:linear-gradient(155deg,#d3925a,#9a5a2c);}
+  .badge.argent{background:linear-gradient(155deg,#e6e6e6,#a8a8a8); color:#2a2a2a;}
+  .badge.or{background:linear-gradient(155deg,#f2d27a,#c99a2e);}
+  .quiz-result h3{margin:0 0 6px; color:var(--text-bright); font-size:20px;}
+  .quiz-result p{color:var(--text-dim); font-size:14px; margin:0 0 22px;}
+
+  .btn{
+    display:inline-flex; align-items:center; justify-content:center; gap:8px; border:none; border-radius:11px;
+    font-family:'Inter',sans-serif; font-weight:600; font-size:14px; padding:11px 20px; cursor:pointer;
+    color:var(--bg); text-decoration:none; background:linear-gradient(155deg, var(--caramel-hi), var(--caramel) 60%, #8a5427);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,0.25), 0 3px 10px var(--shadow); transition:transform .15s ease;
+  }
+  .btn:hover{transform:translateY(-1px);}
+  .btn.ghost{background:transparent; color:var(--text); border:1px solid var(--border); box-shadow:none;}
+
+  /* ===== Tuteur ===== */
+  .chat-wrap{display:flex; flex-direction:column; height:64vh;}
+  .chat-log{flex:1; overflow-y:auto; padding:4px 2px 12px; display:flex; flex-direction:column; gap:14px;}
+  .msg{max-width:88%; padding:12px 15px; border-radius:14px; font-size:14px; line-height:1.55;}
+  .msg.user{align-self:flex-end; background:linear-gradient(155deg, var(--caramel-hi), var(--caramel)); color:var(--bg); border-bottom-right-radius:4px;}
+  .msg.bot{align-self:flex-start; background:var(--surface-alt); border:1px solid var(--border); color:var(--text); border-bottom-left-radius:4px; white-space:pre-wrap;}
+  .msg.bot.loading{color:var(--text-dim); font-style:italic;}
+  .suggestions{display:flex; flex-wrap:wrap; gap:8px; margin:6px 0 16px;}
+  .suggestion-chip{
+    background:var(--surface-alt); border:1px solid var(--border); color:var(--text-dim); font-size:12.5px;
+    padding:8px 13px; border-radius:99px; cursor:pointer; text-align:left;
+  }
+  .suggestion-chip:hover{border-color:var(--caramel-hi); color:var(--text);}
+  .chat-input-row{display:flex; gap:10px; margin-top:8px;}
+  .chat-input-row input{
+    flex:1; background:var(--surface-alt); border:1px solid var(--border); border-radius:11px; color:var(--text);
+    font-family:'Inter',sans-serif; font-size:14px; padding:12px 15px;
+  }
+  .chat-input-row input:focus{outline:none; border-color:var(--caramel-hi);}
+
+  /* ===== Question d'examen ===== */
+  .exam-pills{display:flex; flex-wrap:wrap; gap:8px; margin-bottom:22px;}
+  .exam-pill{
+    background:var(--surface-alt); border:1px solid var(--border); color:var(--text-dim); font-size:13px;
+    padding:9px 15px; border-radius:99px; cursor:pointer; font-family:'Inter',sans-serif;
+  }
+  .exam-pill.active{background:linear-gradient(155deg, var(--caramel-hi), var(--caramel)); color:var(--bg); border-color:transparent; font-weight:600;}
+  .exam-q-title{font-size:17px; font-family:'Merriweather',serif; font-weight:700; color:var(--text-bright); margin:0 0 6px;}
+  .exam-q-points{font-size:12px; color:var(--text-dim); margin:0 0 20px;}
+  .step{
+    background:var(--surface-alt); border-radius:12px; padding:14px 16px; margin-bottom:12px;
+    font-size:13.5px; line-height:1.6; border-left:3px solid var(--border);
+  }
+  .step.hint{border-left-color:var(--gold);}
+  .step-label{font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:.05em; color:var(--caramel-hi); margin-bottom:5px;}
+  .exam-answer{
+    display:none; margin-top:16px; padding:18px; border-radius:12px; background:var(--surface-alt);
+    border-left:3px solid var(--success); font-size:13.5px; line-height:1.65;
+  }
+  .exam-answer.show{display:block;}
+  .exam-answer h4{margin:14px 0 6px; font-size:13.5px; color:var(--text-bright); font-family:'Inter',sans-serif;}
+  .exam-answer h4:first-child{margin-top:0;}
+  .exam-answer ul{margin:4px 0; padding-left:18px;}
+  .exam-controls{display:flex; gap:10px; flex-wrap:wrap; margin-top:6px;}
+  .exam-note{font-size:11.5px; color:var(--text-dim); margin-top:14px; font-style:italic;}
+
+  /* ===== En bref ===== */
+  .brief-svg-wrap{background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:18px; margin-bottom:18px; overflow-x:auto;}
+  .brief-points{display:grid; grid-template-columns:repeat(auto-fit, minmax(230px,1fr)); gap:14px;}
+  .brief-point{background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:16px 18px;}
+  .brief-point h4{margin:0 0 6px; font-size:14px; color:var(--gold); font-family:'Inter',sans-serif;}
+  .brief-point p{margin:0; font-size:13px; line-height:1.55; color:var(--text-dim);}
+
+  @media (max-width: 860px){
+    .app{flex-direction:column;}
+    .sidebar{width:100%; height:auto; position:relative; flex-direction:row; overflow-x:auto; padding:14px 12px; align-items:center;}
+    .sidebar .brand{padding:0 12px 0 4px; flex-shrink:0;}
+    .sidebar-spacer{display:none;}
+    .navbtn{flex-shrink:0; width:auto;}
+    .theme-toggle{flex-shrink:0;}
+    .main{padding:26px 18px 60px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="app">
+  <nav class="sidebar">
+    <div class="brand">
+      <p class="kicker">BTM Chocolatier</p>
+      <h1>Législation, réglementation & hygiène</h1>
+    </div>
+    <button class="navbtn active" data-tab="quiz">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+      Quiz
+    </button>
+    <button class="navbtn" data-tab="tuteur">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      Poser une question
+    </button>
+    <button class="navbtn" data-tab="examen">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M9 13h6M9 17h6M9 9h1"/></svg>
+      Question d'examen
+    </button>
+    <button class="navbtn" data-tab="brief">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+      En bref
+    </button>
+    <div class="sidebar-spacer"></div>
+    <a class="back-link" href="../index.html">← Retour au hub</a>
+    <button class="theme-toggle" id="themeToggle">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4.5"/><path d="M12 2.5v2M12 19.5v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M2.5 12h2M19.5 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4"/></svg>
+      <span id="themeLabel">Mode clair</span>
+    </button>
+  </nav>
+
+  <main class="main">
+
+    <!-- ===== QUIZ ===== -->
+    <section class="panel active" id="panel-quiz">
+      <div class="panel-head">
+        <p class="kicker">Quiz — Législation, réglementation & hygiène</p>
+        <h2>Teste tes connaissances</h2>
+        <p>Appellations légales du chocolat, étiquetage, allergènes, HACCP et hygiène en laboratoire.</p>
+      </div>
+      <div class="card" id="quizCard"></div>
+    </section>
+
+    <!-- ===== TUTEUR ===== -->
+    <section class="panel" id="panel-tuteur">
+      <div class="panel-head">
+        <p class="kicker">Tuteur IA — Législation, réglementation & hygiène</p>
+        <h2>Poser une question</h2>
+        <p>Le tuteur répond uniquement à partir du cours de ce module. Pour les autres sujets, utilise le module concerné.</p>
+      </div>
+      <div class="card chat-wrap">
+        <div class="chat-log" id="chatLog"></div>
+        <div class="suggestions" id="chatSuggestions"></div>
+        <div class="chat-input-row">
+          <input type="text" id="chatInput" placeholder="Écris ta question sur le cacao…">
+          <button class="btn" id="chatSend">Envoyer</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== EXAMEN ===== -->
+    <section class="panel" id="panel-examen">
+      <div class="panel-head">
+        <p class="kicker">Question d'examen — Législation, réglementation & hygiène</p>
+        <h2>Cheminement guidé</h2>
+        <p>Choisis une question, avance indice par indice, puis assemble ta réponse avant de découvrir le corrigé.</p>
+      </div>
+      <div class="exam-pills" id="examPills"></div>
+      <div class="card" id="examCard"></div>
+    </section>
+
+    <!-- ===== EN BREF ===== -->
+    <section class="panel" id="panel-brief">
+      <div class="panel-head">
+        <p class="kicker">En bref — Législation, réglementation & hygiène</p>
+        <h2>Récapitulatif visuel</h2>
+        <p>Les 4 grandes variétés et l'essentiel à retenir avant l'épreuve.</p>
+      </div>
+      <div class="brief-svg-wrap" id="briefSvgWrap"></div>
+      <div class="brief-points" id="briefPoints"></div>
+    </section>
+
+  </main>
+</div>
+
+
+<script>
+/* =========================================================
+   COURSE_TEXT — synthèse fidèle du cours "Législation, réglementation & hygiène"
+   (source du tuteur IA — ne répond qu'à partir de ce texte)
+   ========================================================= */
+const COURSE_TEXT = `
+
+MODULE : LÉGISLATION, RÉGLEMENTATION & HYGIÈNE — BTM Chocolatier Confiseur (Bloc 4)
+
+1/ POURQUOI L'ÉTIQUETAGE EST-IL ENCADRÉ ?
+Le non-respect des règles d'étiquetage expose à des sanctions allant de 450€ (méconnaissance des règles) jusqu'à 2 ans d'emprisonnement et 37 500€ d'amende (tromperie ou publicité trompeuse). Mais l'étiquetage est aussi un outil de communication et de valorisation commerciale — toute valorisation doit rester justifiée et loyale.
+
+2/ PRINCIPES GÉNÉRAUX
+A. Interdiction de tromper ou induire en erreur le consommateur, directement ou indirectement, sur les propriétés des aliments (Art. L213-1, R112-7, L121-1 du Code de la consommation ; loi du 1er août 1905 sur les fraudes). Exemple : une photo réaliste de fruits alors que le produit ne contient que des arômes.
+B. Interdiction de faire croire qu'un produit possède des caractéristiques particulières alors que tous les produits similaires les possèdent (Art. R112-7). Exemple : « sans colorant » devrait préciser « conformément à la réglementation » ; « sans cholestérol » sur un produit dont toute la famille en est dépourvue devrait préciser « naturellement sans cholestérol ».
+C. Interdiction du dénigrement : allusions permettant d'identifier des concurrents = concurrence déloyale, engageant la responsabilité civile (Art. 1382-1383 du Code civil).
+
+3/ LES MENTIONS OBLIGATOIRES (produits préemballés)
+Dénomination de vente ; origine (si son omission risque d'induire en erreur) ; liste des ingrédients (ordre d'importance décroissante, y compris additifs et arômes) ; quantité de certains ingrédients mis en valeur ; quantité nette (volume ou masse) ; date de consommation (denrées périssables) ; identification du fabricant (nom, adresse, ou « EMB » + coordonnées du centre d'emballage) ; allergènes (mis en évidence : gras, police plus importante...). Seules la quantité nette et la date de consommation peuvent être manuscrites, le reste doit être dactylographié.
+Facultatif : numéro de lot (traçabilité), mode d'emploi si nécessaire.
+
+4/ LA LISTE DES INGRÉDIENTS
+Regroupe ingrédients simples (sucre, farine), ingrédients composés (chocolat, pâte de pistache) et additifs, listés par ordre décroissant d'importance pondérale à la mise en œuvre.
+Les additifs sont désignés par leur catégorie suivie de leur nom spécifique ou numéro CE (ex : « Acidifiant : acide citrique » ou « Acidifiant : E330 »). Si l'additif est un allergène, il doit être désigné uniquement sous son nom spécifique (ex : « Émulsifiant : lécithine de soja », jamais « E322 » seul).
+Ingrédients reconstitués : ex. poudre de lait + eau → peut être mentionné « lait entier ».
+Pourcentages : obligatoires si la dénomination de vente fait référence à un ingrédient (mots ou image) — ex. « nougat au miel et aux amandes : ... miel (3%), amandes (1,6%) ». Le pourcentage de fruits secs n'est pas nécessaire à préciser pour un praliné (qui contient par définition minimum 50% de fruits à coque).
+Énumération des ingrédients composés : cas détaillé (chaque composant du chocolat listé séparément — valorise les ingrédients mais rallonge la liste) ou cas simplifié (ingrédients seulement — liste plus courte, mais le sucre apparaît souvent en 1er).
+
+5/ LA QUANTITÉ ET LA DATE
+Quantité nette : obligatoire, en unités de masse (solides) ou volume (liquides), dans le même champ visuel que la dénomination et la date. Non obligatoire pour les produits de chocolat vendus à la pièce dont le poids net est inférieur à 50g (Art. R112-19).
+DDM/DLUO (Date de Durabilité Minimale, anciennement DLUO) : garantit les qualités organoleptiques jusqu'à la date, pour des produits stabilisés. Pas de DLC/DLUO imposée par la réglementation aux artisans chocolatiers : le professionnel garantit lui-même la date via des tests de suivi de vieillissement. Les confiseries composées presque uniquement de sucre aromatisé/coloré sont dispensées de cette mention.
+DLC (Date Limite de Consommation) : denrées rapidement périssables (ex. lait pasteurisé).
+Responsabilité : il est impératif de retirer un produit dont la DLC est atteinte. Un produit dont la DLUO est dépassée peut être vendu sous la responsabilité propre du revendeur — celle du fabricant est alors totalement dégagée.
+Numéro de lot : traçabilité interne (ex : « PRN03 » = praliné noisette, semaine 3).
+
+6/ LES ALLERGÈNES
+L'allergie alimentaire est une réaction anormale du système immunitaire à des substances reconnues comme étrangères (allergènes) : réactions cutanées (eczéma), respiratoires (asthme), digestives (vomissements), voire — rarement — un choc anaphylactique (risque vital, touchant surtout enfants et adolescents).
+Liste des 14 allergènes à déclaration obligatoire (ADO), selon la réglementation européenne : céréales contenant du gluten, crustacés, œufs, poissons, arachides, soja, lait, fruits à coque, céleri, moutarde, graines de sésame, anhydride sulfureux et sulfites, lupin, mollusques.
+Étiquetage : le règlement INCO (n°1169/2011) impose, pour les produits préemballés, que l'allergène figure dans la liste des ingrédients et soit mis en exergue (gras, italique, souligné) ; pour les produits dispensés de liste d'ingrédients, la mention « Contient » suivie du nom de l'allergène. Pour les produits non préemballés, le décret n°2015-447 impose une indication écrite à proximité du produit, sans ambiguïté possible.
+Présence fortuite : la contamination croisée involontaire (stockage, transport) doit être évaluée et limitée par les professionnels ; la mention « peut contenir des traces de... » n'est qu'un dernier recours si le risque ne peut être maîtrisé autrement.
+
+7/ LES QUALIFICATIFS RÉGLEMENTÉS
+« Maison » : chocolats fabriqués de manière non industrielle, recettes traditionnelles, sur le lieu de commercialisation, vente directe. Suppose que le fabricant confectionne lui-même ses intérieurs (même si la couverture utilisée est industrielle, cela ne prive pas le bonbon de la qualification).
+« Artisanal » : réservé à un fabricant ayant la qualité d'artisan (décret 98-247 du 2 avril 1998).
+« Maître » / « Maître chocolatier » : le métier de chocolatier n'exige pas de qualification professionnelle particulière (art. 16-1 de la loi n°96-603). Selon la DGCCRF, rien n'empêche l'usage de « Maître Chocolatier » tant que le titre « Maître artisan » n'y figure pas ; le professionnel doit pouvoir justifier cet usage (compétences, formation).
+« À l'ancienne » : produit fabriqué selon des usages anciens répertoriés.
+« Traditionnel » : chocolat fabriqué uniquement à partir de graisses tirées des fèves de cacaoyer, sans autre graisse végétale ajoutée, sans additifs, recette respectueuse de la tradition.
+« Pur beurre de cacao » : concerne uniquement la partie chocolat de la composition — ne peut jamais qualifier un bonbon fourré dans son ensemble, mais peut qualifier son chocolat d'enrobage.
+« Fraîcheur » : utilisable sous 3 conditions — caractéristiques essentielles conservées depuis la production ; pas de traitement/substance destinée à stopper l'activité enzymatique/microflore (sauf réfrigération, parfois pasteurisation) ; fabriqué depuis moins de 30 jours. Ne s'applique pas si le terme réfère au froid, à un emballage, aux conditions de conservation, ou au temps de cuisson.
+
+8/ VRAC ET PRÉEMBALLÉ
+Un produit vendu en « vrac » est emballé ou non mais peut être modifié par le client sans altérer l'emballage (ex : bonbons choisis avant mise en sachet). Un produit « préemballé » ne peut pas être modifié par le client : l'emballage est scellé (agrafe, autocollant) — ballotins ou sachets préparés à l'avance, soumis à l'étiquetage réglementaire complet.
+
+9/ HACCP ET TRAÇABILITÉ
+HACCP (Hazard Analysis Critical Control Point — Analyse des Dangers et Maîtrise des Points Critiques) : méthode d'analyse des risques permettant d'identifier, d'évaluer et de maîtriser les dangers significatifs au regard de la sécurité des aliments, à chaque étape du process (réception des matières premières, stockage, fabrication, conditionnement, vente). Elle repose sur l'identification des points critiques (CCP) où un contrôle est indispensable pour prévenir ou éliminer un danger, avec des limites critiques, une surveillance et des actions correctives documentées.
+La traçabilité en chocolaterie est l'obligation de pouvoir retracer, à tout moment, l'origine et le parcours d'un produit (matières premières → fabrication → vente), via le numéro de lot notamment. Elle est obligatoire pour permettre le retrait rapide d'un produit en cas de problème (sanitaire ou gustatif) et protéger le consommateur ; elle se met en œuvre concrètement par l'étiquetage des matières premières à réception, l'attribution d'un numéro de lot à chaque fabrication, et l'enregistrement des dates et quantités utilisées.
+
+`;
+
+/* =========================================================
+   QUESTIONS — Quiz (QCM)
+   ========================================================= */
+const QUESTIONS = [
+  {
+    q: "Quelles sont les sanctions maximales prévues en cas de tromperie ou de publicité trompeuse sur l'étiquetage d'un produit ?",
+    options: ["Un simple avertissement oral", "450€ d'amende uniquement", "Jusqu'à 2 ans d'emprisonnement et 37 500€ d'amende", "Aucune sanction possible"],
+    correct: 2,
+    explain: "Les sanctions vont de <b>450€</b> en cas de simple méconnaissance des règles d'étiquetage, jusqu'à <b>2 ans d'emprisonnement et 37 500€ d'amende</b> en cas de tromperie ou de publicité trompeuse — l'étiquetage est donc un sujet à prendre très au sérieux, pas seulement un outil marketing."
+  },
+  {
+    q: "Dans quel ordre les ingrédients doivent-ils être listés sur une étiquette ?",
+    options: ["Par ordre alphabétique", "Par ordre décroissant d'importance pondérale à la mise en œuvre", "Dans l'ordre où ils sont ajoutés en dernier", "Aucun ordre n'est imposé"],
+    correct: 1,
+    explain: "Les ingrédients doivent être listés par <b>ordre décroissant d'importance pondérale</b>, au moment de leur mise en œuvre dans la recette — ce qui inclut aussi les additifs et les arômes."
+  },
+  {
+    q: "Comment un additif allergène (ex : la lécithine de soja) doit-il être désigné sur une étiquette ?",
+    options: [
+      "Uniquement par son code E (ex : E322)",
+      "Uniquement par son nom spécifique (ex : « Émulsifiant : lécithine de soja »)",
+      "Il n'a pas besoin d'être mentionné",
+      "Par sa catégorie seule, sans précision"
+    ],
+    correct: 1,
+    explain: "Quand un additif est un allergène, il doit être désigné <b>uniquement sous son nom spécifique</b> — « Émulsifiant : lécithine de soja », jamais « Émulsifiant : E322 » seul, pour que le consommateur allergique puisse l'identifier sans ambiguïté."
+  },
+  {
+    q: "Un produit de chocolat vendu à la pièce est-il dispensé de l'indication de la quantité nette, et à partir de quel poids ?",
+    options: [
+      "Jamais dispensé, quel que soit le poids",
+      "Dispensé si son poids net est inférieur à 50g",
+      "Dispensé uniquement au-dessus de 500g",
+      "Dispensé systématiquement pour tout chocolat"
+    ],
+    correct: 1,
+    explain: "L'indication de la quantité nette n'est <b>pas obligatoire</b> pour les produits de chocolat vendus à la pièce dont le poids net est <b>inférieur à 50g</b> (Art. R112-19 du Code de la consommation)."
+  },
+  {
+    q: "La réglementation impose-t-elle une DLC ou DLUO aux artisans chocolatiers ?",
+    options: [
+      "Oui, systématiquement, avec une durée fixée par la loi",
+      "Non, le professionnel évalue et garantit lui-même la date via des tests de suivi de vieillissement",
+      "Uniquement pour le chocolat noir",
+      "Uniquement pour les produits vendus en grande surface"
+    ],
+    correct: 1,
+    explain: "La réglementation <b>n'impose aucune DLC ni DLUO</b> aux artisans chocolatiers : cela dépend des matières premières, du procédé et de l'organisation de travail. C'est au professionnel de <b>garantir lui-même</b> la date, via des tests de suivi de vieillissement en conditions normales."
+  },
+  {
+    q: "Que se passe-t-il en termes de responsabilité si un revendeur vend un produit dont la DLUO est dépassée ?",
+    options: [
+      "C'est interdit et impossible",
+      "C'est autorisé, mais sous la responsabilité propre du revendeur ; celle du fabricant est totalement dégagée",
+      "C'est le fabricant qui reste toujours responsable",
+      "Cela n'engage aucune responsabilité"
+    ],
+    correct: 1,
+    explain: "Vendre un produit dont la DLUO est dépassée n'est <b>pas interdit</b>, mais le revendeur agit sous <b>sa propre responsabilité</b> — celle du fabricant est alors totalement dégagée. À la différence de la DLC, qu'il est impératif de retirer une fois atteinte."
+  },
+  {
+    q: "Combien y a-t-il d'allergènes à déclaration obligatoire (ADO) selon la réglementation européenne ?",
+    options: ["5", "9", "14", "20"],
+    correct: 2,
+    explain: "La réglementation européenne fixe une liste de <b>14 allergènes à déclaration obligatoire</b> : gluten, crustacés, œufs, poissons, arachides, soja, lait, fruits à coque, céleri, moutarde, sésame, sulfites, lupin, mollusques."
+  },
+  {
+    q: "Comment l'allergène doit-il apparaître dans la liste des ingrédients d'un produit préemballé, selon le règlement INCO ?",
+    options: [
+      "Il n'a pas besoin d'être visible",
+      "Mis en exergue (gras, italique ou souligné)",
+      "Uniquement en toutes petites lettres",
+      "Uniquement sur un site internet séparé"
+    ],
+    correct: 1,
+    explain: "Le règlement <b>INCO (n°1169/2011)</b> impose que l'allergène soit <b>mis en exergue</b> dans la liste des ingrédients — en gras, en italique ou souligné — pour être clairement identifiable par le consommateur."
+  },
+  {
+    q: "Quelle est la différence entre un produit vendu « en vrac » et un produit « préemballé » ?",
+    options: [
+      "Aucune différence légale",
+      "Le vrac peut être modifié par le client sans altérer l'emballage ; le préemballé est scellé et non modifiable",
+      "Le vrac est toujours plus cher",
+      "Le préemballé n'a jamais besoin d'étiquetage"
+    ],
+    correct: 1,
+    explain: "Un produit « <b>vrac</b> » (emballé ou non) peut être <b>modifié par le client sans altérer l'emballage</b> (ex : bonbons choisis avant mise en sachet). Un produit « <b>préemballé</b> » est scellé (agrafe, autocollant) et ne peut pas être modifié — il est soumis à l'étiquetage réglementaire complet."
+  },
+  {
+    q: "Sous quelle condition le qualificatif « maison » peut-il être utilisé pour un chocolat ?",
+    options: [
+      "Uniquement si toutes les matières premières sont fabriquées sur place, y compris la couverture",
+      "Fabrication non industrielle, recette traditionnelle, sur le lieu de commercialisation, avec des intérieurs confectionnés par le fabricant lui-même",
+      "Il suffit d'avoir un joli packaging",
+      "Aucune condition particulière"
+    ],
+    correct: 1,
+    explain: "Le qualificatif « maison » suppose une fabrication <b>non industrielle</b>, selon des <b>recettes traditionnelles</b>, sur le <b>lieu de commercialisation</b>, avec une <b>vente directe</b> au consommateur. Le fabricant doit confectionner lui-même ses intérieurs — même si la couverture utilisée est industrielle, cela ne retire pas la qualification."
+  },
+  {
+    q: "Que signifie l'appellation « chocolat traditionnel » ?",
+    options: [
+      "Un chocolat fabriqué avec n'importe quelle graisse végétale",
+      "Un chocolat fabriqué uniquement avec les graisses des fèves de cacaoyer, sans autre graisse végétale ni additif",
+      "Un chocolat obligatoirement fabriqué à la main",
+      "Un chocolat vendu uniquement en vrac"
+    ],
+    correct: 1,
+    explain: "Le « chocolat traditionnel » est réservé aux chocolats fabriqués <b>uniquement à partir des graisses tirées des fèves de cacaoyer</b>, sans adjonction d'autres graisses végétales, sans additifs, et selon une recette respectueuse de la tradition."
+  },
+  {
+    q: "Le terme « pur beurre de cacao » peut-il qualifier l'ensemble d'un bonbon de chocolat fourré ?",
+    options: [
+      "Oui, systématiquement",
+      "Non, ce terme ne concerne que la partie chocolat (l'enrobage), jamais l'ensemble du bonbon fourré",
+      "Uniquement pour les bonbons sans fourrage",
+      "Cela dépend du fourrage utilisé"
+    ],
+    correct: 1,
+    explain: "Le terme « pur beurre de cacao » ne concerne <b>que la partie chocolat</b> de la composition. En aucun cas il ne peut qualifier un <b>bonbon fourré</b> dans son ensemble — en revanche, il peut qualifier son <b>chocolat d'enrobage</b> spécifiquement."
+  },
+  {
+    q: "Que signifie HACCP ?",
+    options: [
+      "Haute Analyse Chimique du Chocolat Pur",
+      "Hazard Analysis Critical Control Point (analyse des dangers et maîtrise des points critiques)",
+      "Un label de qualité pour l'artisanat",
+      "Une norme européenne de poids et mesures"
+    ],
+    correct: 1,
+    explain: "HACCP = <b>Hazard Analysis Critical Control Point</b> (analyse des dangers, points critiques pour leur maîtrise). C'est une méthode qui identifie et maîtrise les dangers à chaque étape de la fabrication, du stockage des matières premières à la vente."
+  },
+  {
+    q: "À quoi sert la traçabilité en chocolaterie, et comment se met-elle en œuvre concrètement ?",
+    options: [
+      "Uniquement à des fins comptables",
+      "À pouvoir retracer l'origine et le parcours d'un produit en cas de problème, via le numéro de lot notamment",
+      "Elle n'a aucune utilité pratique",
+      "Uniquement pour les produits exportés"
+    ],
+    correct: 1,
+    explain: "La traçabilité permet de <b>retracer l'origine et le parcours</b> d'un produit (matière première → fabrication → vente) pour permettre un <b>retrait rapide</b> en cas de problème sanitaire ou gustatif. Elle se met en œuvre via l'étiquetage des matières premières et l'attribution d'un <b>numéro de lot</b> à chaque fabrication."
+  }
+];
+
+/* =========================================================
+   EXAM_QUESTIONS — cheminements guidés
+   ========================================================= */
+const EXAM_QUESTIONS = [
+  {
+    id: "mentions-obligatoires",
+    title: "Quelles sont les mentions obligatoires à noter sur l'étiquette de ballotins de chocolat fermés préparés à l'avance ? Citez-en 5 et expliquez leur intérêt pour le client",
+    points: "d'après la banque de questions techno",
+    hints: [
+      "Un ballotin fermé à l'avance est un produit préemballé — quelles sont ses 8 mentions obligatoires ?",
+      "Choisis-en 5 et explique, pour chacune, ce qu'elle apporte concrètement au client (sécurité, information, confiance...)."
+    ],
+    answerHtml: `
+      <ul>
+        <li><b>La dénomination de vente</b> — informe le client sur la nature exacte du produit acheté.</li>
+        <li><b>La liste des ingrédients</b> — permet au client de connaître la composition exacte et de faire un choix éclairé.</li>
+        <li><b>Les allergènes</b>, mis en évidence — permet aux personnes allergiques d'identifier immédiatement un risque pour leur santé.</li>
+        <li><b>La quantité nette</b> — garantit au client la quantité réellement achetée.</li>
+        <li><b>L'identification du fabricant</b> (nom, adresse) — permet au client de s'adresser directement à un responsable en cas de réclamation.</li>
+      </ul>
+      <p>(Autres mentions possibles : date de consommation, numéro de lot pour la traçabilité en cas de rappel.)</p>`
+  },
+  {
+    id: "vrac-preemballe",
+    title: "Quelle différence y a-t-il entre un produit vendu en « vrac » et un produit « préemballé » ?",
+    points: "d'après la banque de questions et l'Évaluation N°2",
+    hints: [
+      "La distinction porte sur la possibilité, pour le client, de modifier le contenu sans altérer l'emballage.",
+      "Donne un exemple concret pour chacun."
+    ],
+    answerHtml: `
+      <h4>Vrac</h4>
+      <p>Un produit vendu en vrac est emballé ou non, mais le client peut le <b>modifier sans altérer l'emballage</b> — par exemple des bonbons choisis un par un avant leur mise en sachet.</p>
+      <h4>Préemballé</h4>
+      <p>Un produit préemballé <b>ne peut pas être modifié</b> par le client : l'emballage est scellé (agrafe, autocollant). C'est le cas de sachets ou ballotins préparés à l'avance et présentés en magasin — ce type de produit doit obligatoirement être étiqueté selon la réglementation en vigueur.</p>`
+  },
+  {
+    id: "haccp",
+    title: "Expliquez le principe et la démarche HACCP",
+    points: "d'après la banque de questions techno",
+    hints: [
+      "Développe le sigle et explique le but général de la méthode.",
+      "Précise sur quoi elle repose concrètement (identification des points critiques, surveillance, actions correctives)."
+    ],
+    answerHtml: `
+      <h4>Principe</h4>
+      <p>HACCP = <b>Hazard Analysis Critical Control Point</b> (Analyse des Dangers et Maîtrise des Points Critiques). C'est une méthode qui permet d'identifier, d'évaluer et de maîtriser les dangers significatifs pour la sécurité des aliments, à chaque étape du processus — de la réception des matières premières jusqu'à la vente.</p>
+      <h4>Démarche</h4>
+      <p>Elle repose sur l'identification des <b>points critiques (CCP)</b> où un contrôle est indispensable pour prévenir ou éliminer un danger, avec la définition de <b>limites critiques</b> à ne pas dépasser, une <b>surveillance</b> régulière de ces points, et des <b>actions correctives</b> documentées en cas de dérive.</p>`
+  },
+  {
+    id: "qualificatifs",
+    title: "Quelles sont les conditions d'utilisation des qualificatifs « artisanal », « traditionnel » et « pur beurre de cacao » sur un produit de chocolat ?",
+    points: "d'après le cours « Législation, réglementation & hygiène »",
+    hints: [
+      "« Artisanal » renvoie à un statut du fabricant, pas seulement à une méthode de fabrication.",
+      "« Traditionnel » et « pur beurre de cacao » portent sur la composition en matière grasse — mais l'un concerne tout le produit, l'autre non."
+    ],
+    answerHtml: `
+      <h4>« Artisanal »</h4>
+      <p>Réservé à un produit dont le fabricant possède la qualité d'artisan, conformément au décret 98-247 du 2 avril 1998 relatif à la qualification artisanale.</p>
+      <h4>« Traditionnel »</h4>
+      <p>Réservé aux chocolats fabriqués uniquement à partir des graisses tirées des fèves de cacaoyer, sans aucune autre graisse végétale ajoutée, sans additifs, selon une recette respectueuse de la tradition.</p>
+      <h4>« Pur beurre de cacao »</h4>
+      <p>Ne concerne que la partie chocolat de la composition : il ne peut jamais qualifier un bonbon fourré dans son ensemble, mais peut qualifier son chocolat d'enrobage.</p>`
+  }
+];
+
+/* =========================================================
+   QUIZ LOGIC
+   ========================================================= */
+let quizOrder = [];
+let quizIndex = 0;
+let quizScore = 0;
+
+function shuffle(arr){
+  const a = arr.slice();
+  for(let i=a.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]]=[a[j],a[i]];
+  }
+  return a;
+}
+
+function startQuiz(){
+  quizOrder = shuffle(QUESTIONS.map((_,i)=>i));
+  quizIndex = 0;
+  quizScore = 0;
+  renderQuizQuestion();
+}
+
+function renderQuizQuestion(){
+  const card = document.getElementById('quizCard');
+  if(quizIndex >= quizOrder.length){
+    renderQuizResult();
+    return;
+  }
+  const q = QUESTIONS[quizOrder[quizIndex]];
+  const pct = Math.round((quizIndex/quizOrder.length)*100);
+  card.innerHTML = `
+    <div class="quiz-progress-wrap">
+      <div class="quiz-progress-bar"><div class="quiz-progress-fill" style="width:${pct}%"></div></div>
+      <div class="quiz-progress-label">${quizIndex+1} / ${quizOrder.length}</div>
+    </div>
+    <p class="quiz-q">${q.q}</p>
+    <div class="quiz-options" id="quizOptions">
+      ${q.options.map((o,i)=>`<button class="quiz-opt" data-i="${i}">${o}</button>`).join('')}
+    </div>
+    <div class="quiz-explain" id="quizExplain"></div>
+    <button class="btn quiz-next" id="quizNextBtn">Question suivante</button>
+  `;
+  document.querySelectorAll('#quizOptions .quiz-opt').forEach(btn=>{
+    btn.addEventListener('click', ()=>answerQuiz(parseInt(btn.dataset.i), q));
+  });
+  document.getElementById('quizNextBtn').addEventListener('click', ()=>{
+    quizIndex++;
+    renderQuizQuestion();
+  });
+}
+
+function answerQuiz(i, q){
+  const opts = document.querySelectorAll('#quizOptions .quiz-opt');
+  opts.forEach(o=>o.disabled=true);
+  if(i === q.correct){
+    opts[i].classList.add('correct');
+    quizScore++;
+  } else {
+    opts[i].classList.add('incorrect');
+    opts[q.correct].classList.add('correct');
+  }
+  const ex = document.getElementById('quizExplain');
+  ex.innerHTML = q.explain;
+  ex.classList.add('show');
+  document.getElementById('quizNextBtn').classList.add('show');
+}
+
+function renderQuizResult(){
+  const card = document.getElementById('quizCard');
+  const pct = Math.round((quizScore/quizOrder.length)*100);
+  let tier = 'bronze', label = 'Bronze';
+  if(pct >= 85){ tier='or'; label='Or'; }
+  else if(pct >= 65){ tier='argent'; label='Argent'; }
+  card.innerHTML = `
+    <div class="quiz-result">
+      <div class="badge ${tier}">${label}</div>
+      <h3>${quizScore} / ${quizOrder.length} bonnes réponses</h3>
+      <p>${pct}% de réussite sur le module « Législation, réglementation & hygiène »</p>
+      <button class="btn" id="quizRestart">Recommencer le quiz</button>
+    </div>
+  `;
+  document.getElementById('quizRestart').addEventListener('click', startQuiz);
+}
+
+/* =========================================================
+   TUTEUR IA — appel direct à l'API Groq (gratuite), fonctionne
+   dans n'importe quel navigateur, sans compte ni autorisation
+   ========================================================= */
+const SUGGESTED_QUESTIONS = [
+  "Quelle est la différence entre DLC et DLUO ?",
+  "Quelles sont les conditions pour utiliser le mot « traditionnel » sur un chocolat ?",
+  "Comment un allergène doit-il apparaître sur une étiquette ?"
+];
+
+const GROQ_MODEL = "llama-3.3-70b-versatile";
+const RELAY_URL = "/.netlify/functions/chat";
+
+let chatHistory = [];
+
+function renderChatSuggestions(){
+  const wrap = document.getElementById('chatSuggestions');
+  wrap.innerHTML = SUGGESTED_QUESTIONS.map(s=>`<button class="suggestion-chip">${s}</button>`).join('');
+  wrap.querySelectorAll('.suggestion-chip').forEach(chip=>{
+    chip.addEventListener('click', ()=>{
+      document.getElementById('chatInput').value = chip.textContent;
+      sendChat();
+    });
+  });
+}
+
+function addMsg(text, cls){
+  const log = document.getElementById('chatLog');
+  const div = document.createElement('div');
+  div.className = 'msg ' + cls;
+  div.textContent = text;
+  log.appendChild(div);
+  log.scrollTop = log.scrollHeight;
+  return div;
+}
+
+async function askTuteur(systemPrompt, messages){
+  const response = await fetch(RELAY_URL, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      model: GROQ_MODEL,
+      messages: [{role: "system", content: systemPrompt}, ...messages],
+      temperature: 0.4
+    })
+  });
+  if(!response.ok){
+    const errBody = await response.text().catch(()=>"");
+    const err = new Error("HTTP " + response.status);
+    err.status = response.status;
+    err.body = errBody;
+    throw err;
+  }
+  const data = await response.json();
+  return data.choices[0].message.content;
+}
+
+async function sendChat(){
+  const inputEl = document.getElementById('chatInput');
+  const text = inputEl.value.trim();
+  if(!text) return;
+  inputEl.value = '';
+  addMsg(text, 'user');
+  chatHistory.push({role:'user', content:text});
+  const loadingDiv = addMsg('Le tuteur réfléchit…', 'bot loading');
+
+  const RULES = "Tu es un tuteur pour des élèves en BTM Chocolatier-Confiseur. Tu réponds UNIQUEMENT à partir du texte de cours suivant, sur le module 'Législation, réglementation & hygiène'. Si la question sort de ce cours (autre module), dis poliment que ce sujet est traité dans un autre module et invite l'élève à s'y rendre. Réponds de façon claire, pédagogique, avec des exemples concrets d'atelier quand c'est pertinent. Ne mentionne jamais quel modèle d'IA tu es : reste dans ton rôle de tuteur du module.\n\nCOURS :\n" + COURSE_TEXT;
+
+  const recentHistory = chatHistory.slice(-10);
+
+  try{
+    const answer = await askTuteur(RULES, recentHistory);
+    loadingDiv.classList.remove('loading');
+    loadingDiv.textContent = answer;
+    chatHistory.push({role:'assistant', content: answer});
+  } catch(err){
+    loadingDiv.classList.remove('loading');
+    loadingDiv.textContent = err.status === 429
+      ? "Trop de questions envoyées d'un coup : attends un instant avant de réessayer."
+      : "Une erreur est survenue en contactant le tuteur. Réessaie dans un instant.";
+    console.error(err);
+  }
+}
+
+/* =========================================================
+   QUESTION D'EXAMEN — cheminement guidé
+   ========================================================= */
+let currentExamId = EXAM_QUESTIONS[0].id;
+let examStepIndex = {};
+
+function renderExamPills(){
+  const wrap = document.getElementById('examPills');
+  wrap.innerHTML = EXAM_QUESTIONS.map(q=>`<button class="exam-pill${q.id===currentExamId?' active':''}" data-id="${q.id}">${q.title.length>38?q.title.slice(0,38)+'…':q.title}</button>`).join('');
+  wrap.querySelectorAll('.exam-pill').forEach(p=>{
+    p.addEventListener('click', ()=>{
+      currentExamId = p.dataset.id;
+      renderExamPills();
+      renderExamQuestion();
+    });
+  });
+}
+
+function renderExamQuestion(){
+  const q = EXAM_QUESTIONS.find(e=>e.id===currentExamId);
+  if(!(currentExamId in examStepIndex)) examStepIndex[currentExamId] = 0;
+  const step = examStepIndex[currentExamId];
+  const card = document.getElementById('examCard');
+
+  let stepsHtml = '';
+  for(let i=0;i<step;i++){
+    stepsHtml += `<div class="step hint"><div class="step-label">Indice ${i+1}</div>${q.hints[i]}</div>`;
+  }
+
+  let controlsHtml = '';
+  if(step < q.hints.length){
+    controlsHtml += `<button class="btn" id="examHintBtn">Indice ${step+1}</button>`;
+  }
+  if(step > 0 || q.hints.length===0){
+    controlsHtml += `<button class="btn ghost" id="examAnswerBtn">Voir la réponse assemblée</button>`;
+  }
+  controlsHtml += `<button class="btn ghost" id="examResetBtn">Recommencer cette question</button>`;
+
+  card.innerHTML = `
+    <p class="exam-q-title">${q.title}</p>
+    <p class="exam-q-points">${q.points}</p>
+    ${stepsHtml}
+    <div class="exam-controls">${controlsHtml}</div>
+    <div class="exam-answer" id="examAnswer">${q.answerHtml}</div>
+    <p class="exam-note">Corrigé reconstitué à partir des sources internes du module (banque de questions, évaluations, corrigés officiels) — à relire avant diffusion en cas d'écart avec le cours.</p>
+  `;
+
+  const hintBtn = document.getElementById('examHintBtn');
+  if(hintBtn) hintBtn.addEventListener('click', ()=>{
+    examStepIndex[currentExamId] = step+1;
+    renderExamQuestion();
+  });
+  const answerBtn = document.getElementById('examAnswerBtn');
+  if(answerBtn) answerBtn.addEventListener('click', ()=>{
+    document.getElementById('examAnswer').classList.add('show');
+    answerBtn.disabled = true;
+  });
+  document.getElementById('examResetBtn').addEventListener('click', ()=>{
+    examStepIndex[currentExamId] = 0;
+    renderExamQuestion();
+  });
+}
+
+/* =========================================================
+   EN BREF — schéma SVG + points clés
+   ========================================================= */
+function renderBrief(){
+  const svgWrap = document.getElementById('briefSvgWrap');
+  svgWrap.innerHTML = `
+  <svg viewBox="0 0 900 260" width="100%" style="min-width:600px;display:block;">
+    <defs>
+      <style>
+        .vt{font-family:'Inter',sans-serif; font-weight:700; fill:var(--text-bright); font-size:12.5px;}
+        .vs{font-family:'Inter',sans-serif; fill:var(--text-dim); font-size:10.5px;}
+      </style>
+    </defs>
+    <rect x="0" y="0" width="900" height="260" fill="var(--surface)"/>
+    <text x="20" y="28" fill="var(--gold)" font-family="Merriweather,serif" font-weight="700" font-size="15">Mentions obligatoires — produit préemballé</text>
+    ${["Dénomination de vente","Liste des ingrédients","Quantité nette","Date de consommation","Identification du fabricant","Allergènes (mis en exergue)"].map((m,i) => {
+      const col = i % 3, row = Math.floor(i/3);
+      const x = 30 + col*290;
+      const y = 55 + row*95;
+      return `
+      <rect x="${x}" y="${y}" width="260" height="75" rx="10" fill="var(--surface-alt)" stroke="var(--border)"/>
+      <text x="${x+16}" y="${y+30}" class="vt">${m}</text>
+      <text x="${x+16}" y="${y+52}" class="vs">Obligatoire</text>
+      `;
+    }).join('')}
+  </svg>`;
+
+  const points = document.getElementById('briefPoints');
+  const data = [
+  {h:"Sanctions", p:"450€ (méconnaissance) à 2 ans + 37 500€ (tromperie/publicité trompeuse)."},
+  {h:"Additif allergène", p:"Toujours désigné par son nom spécifique (« lécithine de soja »), jamais son seul code E."},
+  {h:"DLC vs DDM/DLUO", p:"DLC = denrées périssables, retrait obligatoire. DDM = qualités organoleptiques, vente possible après sous responsabilité du revendeur."},
+  {h:"Artisan : pas de DLC imposée", p:"Le professionnel garantit lui-même la date via des tests de vieillissement."},
+  {h:"14 allergènes ADO", p:"Gluten, crustacés, œufs, poisson, arachide, soja, lait, fruits à coque, céleri, moutarde, sésame, sulfites, lupin, mollusques."},
+  {h:"Vrac vs préemballé", p:"Vrac = modifiable par le client. Préemballé = scellé, étiquetage complet obligatoire."},
+  {h:"Qualificatifs réglementés", p:"Maison, artisanal, maître chocolatier, traditionnel, pur beurre de cacao, fraîcheur : chacun a ses conditions précises."},
+  {h:"HACCP", p:"Analyse des dangers, points critiques (CCP), limites, surveillance, actions correctives à chaque étape."}
+];
+  points.innerHTML = data.map(d=>`<div class="brief-point"><h4>${d.h}</h4><p>${d.p}</p></div>`).join('');
+}
+
+/* =========================================================
+   NAVIGATION + THEME
+   ========================================================= */
+document.querySelectorAll('.navbtn[data-tab]').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    document.querySelectorAll('.navbtn[data-tab]').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('panel-'+btn.dataset.tab).classList.add('active');
+  });
+});
+
+const themeToggle = document.getElementById('themeToggle');
+const themeLabel = document.getElementById('themeLabel');
+themeToggle.addEventListener('click', () => {
+  const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+  document.documentElement.setAttribute('data-theme', isLight ? 'dark' : 'light');
+  themeLabel.textContent = isLight ? 'Mode clair' : 'Mode sombre';
+});
+
+/* ===== Init ===== */
+startQuiz();
+renderChatSuggestions();
+document.getElementById('chatSend').addEventListener('click', sendChat);
+document.getElementById('chatInput').addEventListener('keydown', e=>{ if(e.key==='Enter') sendChat(); });
+renderExamPills();
+renderExamQuestion();
+renderBrief();
+</script>
+
+</body>
+</html>
