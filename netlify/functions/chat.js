@@ -38,7 +38,7 @@ exports.handler = async (event) => {
   }
 
   const payload = {
-    model: body.model || "llama-3.3-70b-versatile",
+    model: "openai/gpt-oss-20b",
     messages: Array.isArray(body.messages) ? body.messages : [],
     temperature: typeof body.temperature === "number" ? body.temperature : 0.4,
   };
