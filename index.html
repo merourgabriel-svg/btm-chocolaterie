@@ -220,72 +220,72 @@ const MODULES = [
   {
     title: "Arômes & spiritueux",
     desc: "Classification des arômes, réaction de Maillard, eaux de vie, liqueurs et vins.",
-    url: "https://claude.ai/artifact/XVJrY7oTXXaTPXejZQwujZ"
+    url: "modules/aromes-et-spiritueux.html"
   },
   {
     title: "Confiseries techniques",
     desc: "Guimauve, pâte d'amande, pâte de fruits, fondant, nougat, caramels, fruits confits, bonbons liqueurs.",
-    url: "https://claude.ai/artifact/HdLCDPfYDp66nTszVphPNS"
+    url: "modules/confiseries-techniques.html"
   },
   {
     title: "La rhéologie du chocolat",
     desc: "Viscosité, limite d'écoulement et leviers de modification en atelier.",
-    url: "https://claude.ai/artifact/My2zNYafcEuFPXF1U2Yx4t"
+    url: "modules/la-rheologie.html"
   },
   {
     title: "La transformation du cacao",
     desc: "De la récolte à la tablette : fermentation, séchage, torréfaction, conchage.",
-    url: "https://claude.ai/artifact/ARJ14QJc9NqgsNfxVDCDez"
+    url: "modules/la-transformation-du-cacao.html"
   },
   {
     title: "Le beurre de cacao & la cristallisation",
     desc: "Polymorphisme des cristaux, pré-cristallisation, tempérage, blanchiments, conservation.",
-    url: "https://claude.ai/artifact/1kfYdxDEJGKAnCYea6m6x8"
+    url: "modules/le-beurre-de-cacao-et-la-cristallisation.html"
   },
   {
     title: "Le cacao",
     desc: "Botanique, culture, variétés, maladies et marché du cacao.",
-    url: "https://claude.ai/artifact/NAkV9yLFf2i5Do5UoxdVoj"
+    url: "modules/le-cacao.html"
   },
   {
     title: "Législation, réglementation & hygiène",
     desc: "Appellations légales du chocolat, étiquetage, allergènes, HACCP et hygiène en laboratoire.",
-    url: "https://claude.ai/artifact/YVFtwc1m1d8MSdCpu1kUeX"
+    url: "modules/legislation-reglementation-hygiene.html"
   },
   {
     title: "Les additifs",
     desc: "Colorants, conservateurs, antioxydants, gélifiants, acidifiants : réglementation et rôles.",
-    url: "https://claude.ai/artifact/B4LJgsESoK7ei83QTPuVbb"
+    url: "modules/les-additifs.html"
   },
   {
     title: "Les fruits & fruits secs",
     desc: "Classification des fruits, fruits secs à coque, conservation et rancissement.",
-    url: "https://claude.ai/artifact/9tTWznrHDgSqp7QF74U9fC"
+    url: "modules/les-fruits-et-fruits-secs.html"
   },
   {
     title: "Les ganaches",
     desc: "Émulsion, AW/HRE, hygiène, défauts et conservation des ganaches.",
-    url: "https://claude.ai/artifact/6youw8nFzMZS7g51SSFP95"
+    url: "modules/les-ganaches.html"
   },
   {
     title: "Les matières grasses",
     desc: "Lait, crème, beurre et margarine : composition, fabrication, rôles en chocolaterie.",
-    url: "https://claude.ai/artifact/LvQGipgn7zUcxV8XTB5TcM"
+    url: "modules/les-matieres-grasses.html"
   },
   {
     title: "Produits dérivés du cacao",
     desc: "Beurre de cacao et poudre de cacao : obtention, polymorphisme, alcalinisation.",
-    url: "https://claude.ai/artifact/2RrvztRAzy7Vxdis34qbD1"
+    url: "modules/produits-derives-du-cacao.html"
   },
   {
     title: "Sucres & édulcorants",
     desc: "Saccharose, fabrication du sucre, sirops, polyols, édulcorants intenses.",
-    url: "https://claude.ai/artifact/9yqyuF3hc8ZAuJZpxY6nE2"
+    url: "modules/sucres-edulcorants.html"
   },
   {
     title: "Révisions générales",
     desc: "Banque de questions par thème (cheminement guidé) et discussion libre avec le tuteur, tous modules confondus.",
-    url: "https://claude.ai/artifact/2kbSisf7qWiBgiD1fAZGTX",
+    url: "modules/revisions-generales.html",
     highlight: true
   }
 ];
@@ -298,17 +298,17 @@ const TOOLS = [
   {
     title: "Ancrage — révision par répétition espacée",
     desc: "101 questions rédigées tirées de tous les modules. Réponds par écrit avant de voir la correction : le tuteur évalue si c'est juste ET assez développé, puis espace les révisions selon ta maîtrise.",
-    url: "https://claude.ai/artifact/2RERH2wvEGmK2tLZ8AgY5p"
+    url: "modules/ancrage-repetition-espacee.html"
   },
   {
     title: "Générateur d'étiquette",
     desc: "Renseigne une fiche produit pour générer une étiquette conforme (réglementation INCO) et un rapport de vérification automatique.",
-    url: "https://claude.ai/artifact/XnjZr6CLPGt9n5wyVH9s5R"
+    url: "modules/generateur_etiquette.html"
   },
   {
     title: "Générateur d'évaluations transversales",
     desc: "Génère une série de questions d'évaluation façon « Évaluation N°X », à cheval sur plusieurs modules, chacune avec un cheminement guidé (indices puis réponse assemblée).",
-    url: "https://claude.ai/artifact/N8chd6Eq4PekMp5tWyua54"
+    url: "modules/generateur-evaluations-transversales.html"
   }
 ];
 
@@ -407,7 +407,7 @@ function render(){
     <div class="card${mod.highlight ? ' highlight' : ''}">
       <h3>${escapeHtml(mod.title)}</h3>
       <p class="desc">${escapeHtml(mod.desc || '')}</p>
-      <a class="btn" href="${escapeAttr(mod.url)}" target="_blank" rel="noopener">Ouvrir le module</a>
+      <a class="btn" href="${escapeAttr(mod.url)}" rel="noopener">Ouvrir le module</a>
     </div>
   `).join('');
 
@@ -416,7 +416,7 @@ function render(){
     <div class="card">
       <h3>${escapeHtml(tool.title)}</h3>
       <p class="desc">${escapeHtml(tool.desc || '')}</p>
-      <a class="btn" href="${escapeAttr(tool.url)}" target="_blank" rel="noopener">Ouvrir l'outil</a>
+      <a class="btn" href="${escapeAttr(tool.url)}" rel="noopener">Ouvrir l'outil</a>
     </div>
   `).join('');
 
