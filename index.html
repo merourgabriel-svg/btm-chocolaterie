@@ -81,7 +81,9 @@
     transition:background .35s ease, border-color .35s ease;
   }
   .card h3{font-size:17px; margin:0; color:var(--text-bright); line-height:1.3;}
-  .card p.desc{color:var(--text-dim); font-size:13.5px; line-height:1.55; margin:0; flex-grow:1;}
+  .card p.desc{color:var(--text-dim); font-size:13.5px; line-height:1.55; margin:0;}
+  .card p.quote{color:var(--gold); font-size:12.5px; font-style:italic; line-height:1.5; margin:0; flex-grow:1; opacity:.9;}
+  .card.highlight p.quote{color:rgba(42,26,10,0.7);}
 
   /* Carte "Révisions générales" mise en valeur */
   .card.highlight{
@@ -220,71 +222,85 @@ const MODULES = [
   {
     title: "Arômes & spiritueux",
     desc: "Classification des arômes, réaction de Maillard, eaux de vie, liqueurs et vins.",
+    quote: "Un chocolat parle aussi la langue des alambics et des distillations.",
     url: "modules/aromes-et-spiritueux.html"
   },
   {
     title: "Confiseries techniques",
     desc: "Guimauve, pâte d'amande, pâte de fruits, fondant, nougat, caramels, fruits confits, bonbons liqueurs.",
+    quote: "Entre le sucre au boulé et le sucre cassant, quelques degrés font toute la différence.",
     url: "modules/confiseries-techniques.html"
   },
   {
     title: "La rhéologie du chocolat",
     desc: "Viscosité, limite d'écoulement et leviers de modification en atelier.",
+    quote: "Entre la viscosité et la limite d'écoulement se joue tout ce qui coule, ou ne coule pas.",
     url: "modules/la-rheologie.html"
   },
   {
     title: "La transformation du cacao",
     desc: "De la récolte à la tablette : fermentation, séchage, torréfaction, conchage.",
+    quote: "Le moindre geste a une importance.",
     url: "modules/la-transformation-du-cacao.html"
   },
   {
     title: "Le beurre de cacao & la cristallisation",
     desc: "Polymorphisme des cristaux, pré-cristallisation, tempérage, blanchiments, conservation.",
+    quote: "Cinq cristaux possibles, un seul stable — tout le tempérage tient dans ce choix.",
     url: "modules/le-beurre-de-cacao-et-la-cristallisation.html"
   },
   {
     title: "Le cacao",
     desc: "Botanique, culture, variétés, maladies et marché du cacao.",
+    quote: "Du Mexique des Mayas aux 57 pays d'aujourd'hui, le cacao n'a jamais cessé de voyager.",
     url: "modules/le-cacao.html"
   },
   {
     title: "Législation, réglementation & hygiène",
     desc: "Appellations légales du chocolat, étiquetage, allergènes, HACCP et hygiène en laboratoire.",
+    quote: "Une étiquette bien écrite protège autant le client que l'artisan.",
     url: "modules/legislation-reglementation-hygiene.html"
   },
   {
     title: "Les additifs",
     desc: "Colorants, conservateurs, antioxydants, gélifiants, acidifiants : réglementation et rôles.",
+    quote: "Ce qu'on ne voit pas dans un chocolat en dit souvent long sur sa tenue.",
     url: "modules/les-additifs.html"
   },
   {
     title: "Les fruits & fruits secs",
     desc: "Classification des fruits, fruits secs à coque, conservation et rancissement.",
+    quote: "Ce que la nature conserve mal, l'atelier doit apprendre à préserver.",
     url: "modules/les-fruits-et-fruits-secs.html"
   },
   {
     title: "Les ganaches",
     desc: "Émulsion, AW/HRE, hygiène, défauts et conservation des ganaches.",
+    quote: "Deux corps qui ne devraient pas se mélanger, et pourtant s'accordent — c'est toute la ganache.",
     url: "modules/les-ganaches.html"
   },
   {
     title: "Les matières grasses",
     desc: "Lait, crème, beurre et margarine : composition, fabrication, rôles en chocolaterie.",
+    quote: "Le beurre, la crème et le lait ne racontent jamais tout à fait la même histoire, malgré leur origine commune.",
     url: "modules/les-matieres-grasses.html"
   },
   {
     title: "Produits dérivés du cacao",
     desc: "Beurre de cacao et poudre de cacao : obtention, polymorphisme, alcalinisation.",
+    quote: "Presser la même pâte donne deux chemins : le beurre, ou la poudre.",
     url: "modules/produits-derives-du-cacao.html"
   },
   {
     title: "Sucres & édulcorants",
     desc: "Saccharose, fabrication du sucre, sirops, polyols, édulcorants intenses.",
+    quote: "Un même goût sucré, cent façons différentes de l'obtenir.",
     url: "modules/sucres-edulcorants.html"
   },
   {
     title: "Révisions générales",
     desc: "Banque de questions par thème (cheminement guidé) et discussion libre avec le tuteur, tous modules confondus.",
+    quote: "Ce qui revient au bon moment reste — c'est tout le principe de la révision.",
     url: "modules/revisions-generales.html",
     highlight: true
   }
@@ -419,6 +435,7 @@ function render(){
     <div class="card${mod.highlight ? ' highlight' : ''}">
       <h3>${escapeHtml(mod.title)}</h3>
       <p class="desc">${escapeHtml(mod.desc || '')}</p>
+      <p class="quote">${escapeHtml(mod.quote || '')}</p>
       <a class="btn" href="${escapeAttr(mod.url)}" rel="noopener">Ouvrir le module</a>
     </div>
   `).join('');
