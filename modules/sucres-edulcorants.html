@@ -323,7 +323,7 @@ Transforme les sucres roux de canne en sucre blanc (le sucre de betterave est na
 Sucre blanc (min. 99,8% saccharose pur) ; sucre glace/impalpable (moulu fin + amidon 3% ou silice 2%) ; sucre en morceaux ; sucre roux (canne brut ou raffiné recoloré à la mélasse) ; cassonade (cristallisation sous vide du sucre de canne roux) ; sucre blond (bio, non raffiné) ; sucre candi (cristallisation lente d'un sirop sursaturé) ; sucre gélifiant (saccharose + pectine + acide citrique) ; vergeoise blonde/brune (re-cuisson d'un sirop de betterave) ; sucre de canne complet/intégral (type Rapadura) ; sucre Muscovado (fort en mélasse, Philippines/Île Maurice) ; sucre neige/décor (saccharose + dextrose + végétaline + amidon + silice). Plus le sucre est foncé, plus il contient d'impuretés.
 
 7/ Les sirops de sucre
-Liquide visqueux obtenu par mélange eau/sucre porté à ébullition. Viscosité mesurée au densimètre, concentration au réfractomètre. Solubilité : à 0°C, l'eau contient 1,7 fois son poids en sucre (saturée) ; à 100°C, jusqu'à 3 fois son poids (devient sursaturée en refroidissant). Sous-saturation : plus de 6 molécules d'eau pour 1 molécule de sucre. Saturation : chaque molécule de saccharose entourée de 6 molécules d'eau (jusqu'à 1,9 kg de sucre/L à 10°C). Sursaturation : moins de 6 molécules d'eau pour 1 de sucre.
+Liquide visqueux obtenu par mélange eau/sucre porté à ébullition. Viscosité mesurée au densimètre, concentration au réfractomètre. Solubilité : à 20°C, l'eau contient 1,7 fois son poids en sucre (saturée) ; à 100°C, jusqu'à 3 fois son poids (devient sursaturée en refroidissant). Sous-saturation : plus de 6 molécules d'eau pour 1 molécule de sucre. Saturation : chaque molécule de saccharose entourée de 6 molécules d'eau (jusqu'à 1,9 kg de sucre/L à 10°C). Sursaturation : moins de 6 molécules d'eau pour 1 de sucre.
 Cuisson des sirops : matériel en cuivre de préférence, nettoyé au sel et vinaigre. Eau : 300-400g par kilo de sucre. Graissage (anti-cristallisant) : glucose (10-20% du poids du sucre), crème de tartre (2-3g/kg) ou acide tartrique (3-4 gouttes/kg). Éponger les parois à l'eau, ôter l'écume avant ébullition.
 
 Table des degrés de cuisson du sucre (repère à 100° C = 1er degré, dit « sirop », 33% d'eau) :
@@ -436,7 +436,7 @@ const QUESTIONS = [
     q: "À combien de fois son poids en sucre l'eau peut-elle se saturer à 100°C ?",
     options: ["1 fois", "1,7 fois", "3 fois", "10 fois"],
     correct: 2,
-    explain: "À 100°C, l'eau peut dissoudre jusqu'à <b>3 fois son poids</b> en sucre, contre seulement 1,7 fois à 0°C. C'est cette différence qui explique pourquoi un sirop de sucre chaud devient sursaturé en refroidissant, provoquant la cristallisation."
+    explain: "À 100°C, l'eau peut dissoudre jusqu'à <b>3 fois son poids</b> en sucre, contre seulement 1,7 fois à 20°C. C'est cette différence qui explique pourquoi un sirop de sucre chaud devient sursaturé en refroidissant, provoquant la cristallisation."
   },
   {
     q: "À quel degré de cuisson du sucre correspond le « petit boulé » (117°C) ?",
@@ -630,6 +630,51 @@ const EXAM_QUESTIONS = [
       <p>Principal acide du vin de raisin, obtenu par fermentation du moût, des tartres viticoles ou des lies. Antioxydant, régulateur de pH et stabilisateur ; utilisé pour accentuer l'acidulé et pour graisser les sucres cuits.</p>
       <h4>E336 — Crème de tartre / tartrate de potassium (pH 3,7)</h4>
       <p>Sel de l'acide tartrique, formé en cristaux sur les parois des barils de fermentation du vin. Utilisé comme anti-cristallisant lors de la cuisson des sucres.</p>`
+  },
+  {
+    id: "regles-cuisson-sucre",
+    title: "La cuisson des sirops de sucre est cruciale en confiserie : citez 3 règles de cuisson du sucre",
+    points: "3 x 1 pt — d'après l'annale BTM 2026 (proposition de sujet)",
+    hints: [
+      "Pense au matériel, à la montée en température et à la pureté des matières premières.",
+      "Pense aussi au contrôle : thermomètre, écume."
+    ],
+    answerHtml: `
+      <h4>Règles de cuisson (3 à citer, il en existe d'autres)</h4>
+      <ul><li>Matériel en <b>cuivre</b> de préférence (attention à son nettoyage)</li><li>Cuisson <b>lente</b> jusqu'à fonte totale des cristaux, puis accélération</li><li>Sucre en <b>morceaux</b> de préférence (sans impuretés)</li><li>Eau de <b>source</b> de préférence (sans impuretés)</li><li><b>Étalonner</b> le thermomètre</li><li><b>Nettoyer / écumer</b> si nécessaire</li></ul>`
+  },
+  {
+    id: "saturation",
+    title: "Expliquez et décrivez ce qu'est la « saturation » d'un sirop de sucre",
+    points: "5 pts — d'après l'annale BTM 2026 (proposition de sujet)",
+    hints: [
+      "Définis d'abord la saturation à une température donnée.",
+      "Que se passe-t-il au-delà de la limite ? Donne un chiffre à 100 °C et à 20 °C."
+    ],
+    answerHtml: `
+      <h4>Définition</h4>
+      <p>La saturation est l'état dans lequel le sirop contient la <b>quantité maximale de sucre dissous</b> possible à une température donnée.</p>
+      <h4>Au-delà : la sursaturation</h4>
+      <p>Au-delà de cette limite, le sucre ne peut plus se dissoudre et <b>recristallise</b> : c'est la sursaturation.</p>
+      <h4>Repères chiffrés</h4>
+      <p>Une eau à <b>100 °C</b> dissout environ <b>3 fois</b> son poids en sucre ; à <b>20 °C</b>, environ <b>1,7 fois</b>.</p>`
+  },
+  {
+    id: "hydrolyse",
+    title: "L'hydrolyse est un phénomène fréquent en confiserie : définissez-la, indiquez les facteurs qui l'accentuent dans une pâte de fruit et citez 2 matières premières issues de cette réaction",
+    points: "12 pts (5 + 5 + 2) — d'après l'annale BTM 2026 (proposition de sujet)",
+    hints: [
+      "Définition : une réaction avec de l'eau qui casse une molécule complexe en molécules simples.",
+      "Dans une pâte de fruit, deux facteurs : l'acidité des pulpes et la durée de cuisson."
+    ],
+    answerHtml: `
+      <h4>a) Définition</h4>
+      <p>Réaction chimique qui décompose des molécules complexes en molécules simples (ex. les sucres). Elle <b>requiert de l'eau</b> et est favorisée par la <b>chaleur</b> ou un <b>catalyseur</b> (enzyme, acide, courant électrique).</p>
+      <h4>b) Facteurs accentuant l'hydrolyse dans une pâte de fruit</h4>
+      <p><b>1. L'acidité des pulpes</b> : plus le fruit est acide, plus la réaction est prononcée. On peut atténuer le pH en mélangeant les fruits (ex. passion / mangue) ou réguler les pulpes au pH-mètre avec des correcteurs de pH.</p>
+      <p><b>2. La vitesse de cuisson</b> : plus la cuisson est longue, plus la réaction dure : il faut donc la maîtriser.</p>
+      <h4>c) Matières premières issues de cette réaction</h4>
+      <ul><li><b>Sucre inverti</b> (issu de l'hydrolyse du saccharose)</li><li><b>Glucose</b></li><li><b>Fructose</b></li></ul>`
   }
 ];
 
@@ -729,7 +774,7 @@ const SUGGESTED_QUESTIONS = [
 ];
 
 const GROQ_MODEL = "llama-3.3-70b-versatile";
-const RELAY_URL = "/.netlify/functions/chat";
+const RELAY_URL = "https://technobtm.netlify.app/.netlify/functions/chat";
 
 let chatHistory = [];
 

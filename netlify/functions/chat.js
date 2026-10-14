@@ -41,6 +41,7 @@ exports.handler = async (event) => {
     model: "openai/gpt-oss-20b",
     messages: Array.isArray(body.messages) ? body.messages : [],
     temperature: typeof body.temperature === "number" ? body.temperature : 0.4,
+    reasoning_effort: ["low", "medium", "high"].includes(body.reasoning_effort) ? body.reasoning_effort : "medium",
   };
 
   try {

@@ -218,8 +218,12 @@
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M9 13h6M9 17h6M9 9h1"/></svg>
       Banque de questions
     </button>
+    <button class="navbtn" data-tab="discussion">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      Discussion libre
+    </button>
     <div class="sidebar-spacer"></div>
-    <a class="back-link" href="../index.html">← Retour au hub</a>
+    <a class="back-link" href="../index.html" target="_top">← Retour au hub</a>
     <button class="theme-toggle" id="themeToggle">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4.5"/><path d="M12 2.5v2M12 19.5v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M2.5 12h2M19.5 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4"/></svg>
       <span id="themeLabel">Mode clair</span>
@@ -241,6 +245,27 @@
       </div>
       <div class="exam-pills" id="examPills"></div>
       <div class="card" id="examCard"></div>
+    </section>
+
+    <!-- ===== DISCUSSION LIBRE ===== -->
+    <section class="panel" id="panel-discussion">
+      <div class="panel-head">
+        <p class="kicker">Discussion libre — tuteur IA</p>
+        <h2>Poser une question, tous modules confondus</h2>
+        <p>Choisis la portée de la discussion : un cours précis, ou tous les modules combinés (le tuteur précisera alors sa source). Basé sur les mêmes questions/réponses que la banque ci-contre.</p>
+      </div>
+      <div class="card" style="margin-bottom:18px;">
+        <label for="scopeSelect" style="display:block; font-size:12.5px; color:var(--text-dim); margin-bottom:8px; font-weight:600; text-transform:uppercase; letter-spacing:.04em;">Portée de la discussion</label>
+        <select id="scopeSelect" style="width:100%; background:var(--surface-alt); border:1px solid var(--border); border-radius:11px; color:var(--text); font-family:'Inter',sans-serif; font-size:14.5px; padding:12px 15px;"></select>
+      </div>
+      <div class="card chat-wrap">
+        <div class="chat-log" id="chatLog"></div>
+        <div class="suggestions" id="chatSuggestions"></div>
+        <div class="chat-input-row">
+          <input type="text" id="chatInput" placeholder="Écris ta question…">
+          <button class="btn" id="chatSend">Envoyer</button>
+        </div>
+      </div>
     </section>
 
   </main>
@@ -392,7 +417,27 @@ Pas de producteurs, pas de cacao, pas de chocolat.
     points: "6 pts — d'après Évaluation N°1",
     hints: [
       "Pense aux 3 grandes zones productrices vues dans le cours : Afrique, Amérique centrale/du Sud, Asie.",
-      "Le 1er producteur mondial pèse à lui seul plus d'un tiers de la production mondiale — quel pays d'Afrique de l'Ouest ?"
+      "Le 1er producteur mondial pèse à lui seul plus d'un tiers de la production mondiale — quel pays d'Afrique de l'Ouest ?",
+  {
+    id: "maladies-consequences",
+    title: "Quelles peuvent être les conséquences de la propagation des maladies du cacaoyer sur les lieux de plantation ?",
+    points: "10 pts — d'après l'annale BTM 2026 (proposition de sujet)",
+    hints: [
+      "Pense à trois niveaux : la gestion de la plantation, le rendement (quantité/qualité des fèves), puis la propagation.",
+      "Termine par l'impact économique pour les producteurs et les pays producteurs."
+    ],
+    answerHtml: `
+      <h4>Sur la gestion des plantations</h4>
+      <p>Les producteurs doivent renforcer leurs pratiques : entretien des parcelles, élimination des cabosses infectées, traitements ou variétés résistantes. Ces mesures demandent plus de travail et augmentent les coûts de production.</p>
+      <h4>Sur le rendement</h4>
+      <p>Pourriture des cabosses, chute des fruits, affaiblissement des arbres : baisse de la quantité <b>et</b> de la qualité des fèves. Dans les cas graves, des arbres meurent et la production baisse durablement.</p>
+      <h4>Sur la propagation</h4>
+      <p>Les maladies voyagent par l'eau, le vent, les insectes ou le matériel contaminé : toute la plantation, voire les parcelles voisines, peuvent être touchées si aucune mesure n'est prise.</p>
+      <h4>Sur l'économie</h4>
+      <p>Baisse des rendements + hausse des dépenses = revenus des producteurs réduits, avec un effet possible sur l'économie des pays producteurs.</p>
+      <h4>Rappel : 4 maladies à citer</h4>
+      <ul><li><b>Moniliose</b> : maladie fongique qui se développe à l'intérieur de la cabosse, souvent blessée.</li><li><b>Phytophthora</b> : maladie fongique, taches brunes sur les fruits ; cabosses à éliminer loin de la plantation, nettoyage assidu des mains.</li><li><b>Balai de sorcière</b> : maladie fongique des coussinets floraux et bourgeons végétatifs ; l'arbre ne fructifie plus mais les branches se développent jusqu'à l'épuiser. Surtout en Amérique du Sud.</li><li><b>Œdème des pousses (« swollen shoot »)</b> : virus transmis par la cochenille ; fruits plus petits, gonflement des tiges et racines ; tue l'arbre en 2-3 ans.</li></ul>`
+  }
     ],
     answerHtml: `
       <h4>Exemples de pays producteurs</h4>
@@ -585,7 +630,28 @@ Conditionnement hermétique, à l'abri de la lumière, des insectes et de la pou
     points: "d'après la banque de questions et les corrigés officiels 1102-2017 / 1103-2016",
     hints: [
       "Commence par le jugement de la maturité (deux critères), puis la coupe proprement dite.",
-      "Termine par l'écabossage : outil utilisé, délai maximum, et pourquoi la rapidité est essentielle une fois la cabosse ouverte."
+      "Termine par l'écabossage : outil utilisé, délai maximum, et pourquoi la rapidité est essentielle une fois la cabosse ouverte.",
+  {
+    id: "fermentation-description",
+    title: "La fermentation est une étape fondamentale de la transformation du cacao : décrivez cette étape et développez",
+    points: "18 pts (Q3a : 3 + 15 pts) — d'après l'annale BTM 2026 (proposition de sujet)",
+    hints: [
+      "Commence par les objectifs de la fermentation (mucilage, pouvoir germinatif, saveurs désagréables, précurseurs d'arômes), puis la durée et le dispositif.",
+      "Détaille ensuite les 2 phases : alcoolique (anaérobie) puis acétique (aérobie), avec température et brassages."
+    ],
+    answerHtml: `
+      <h4>Objectifs</h4>
+      <ul><li>Éliminer le <b>mucilage</b></li><li>Supprimer le <b>pouvoir germinatif</b> de la graine</li><li>Diminuer les saveurs désagréables (<b>astringence</b>, <b>amertume</b>)</li><li>Former les <b>précurseurs d'arômes</b> du chocolat</li></ul>
+      <h4>Conduite</h4>
+      <p>Opération complexe : fermentation du mucilage + réactions biochimiques dans les cotylédons. Durée : 5 à 7 jours en bacs. Les fèves sont déversées dans de grandes auges de bois, recouvertes de feuilles de bananier ou de nattes. Elles ne doivent pas être enfermées dans des récipients étanches : les jus doivent pouvoir s'écouler librement.</p>
+      <h4>Phase 1 — fermentation alcoolique (24 à 48 h, anaérobie)</h4>
+      <p>Le mucilage, stérile dans le fruit, est ensemencé spontanément par les micro-organismes de l'environnement (apportés par l'écabossage). Pauvreté en oxygène + pulpe sucrée + pH bas = milieu favorable aux <b>levures</b> (2 à 30 millions de cellules par gramme, au centre de la masse). Certaines sécrètent des enzymes qui déstructurent le mucilage : il se liquéfie et s'écoule. Les sucres sont transformés en <b>éthanol + CO₂</b>. L'acidité diminue, la température augmente très légèrement.</p>
+      <h4>Phase 2 — fermentation acétique (aérobie)</h4>
+      <p>Il faut remuer et retourner les fèves (premier brassage vers 24 h, puis toutes les 48 h ; ou quotidiennement pour la régularité). L'air permet aux <b>bactéries acétiques</b> d'oxyder l'éthanol en <b>acide acétique</b> : réaction très exothermique, la température monte jusqu'à <b>50 °C</b>, ce qui tue le germe (perte du pouvoir germinatif).</p>
+      <p>La chaleur et l'acide modifient la perméabilité des cellules des cotylédons : la fève gonfle, le contenu des cellules diffuse. Les substances amères et les composés phénoliques (astringence) migrent vers l'extérieur et s'écoulent. Les polyphénols s'associent aux protéines en complexes insolubles (<b>tanins</b>) qui brunissent les fèves. Les <b>précurseurs d'arôme</b> se forment, amertume et astringence diminuent.</p>
+      <h4>Résultat</h4>
+      <p>Criollo : brun jaune ; Forastero : brun violet. Les fèves non fermentées sont dites <b>« ardoisées »</b> (cosse dure, germe compact).</p>`
+  }
     ],
     answerHtml: `
       <h4>Jugement de la maturité et coupe</h4>
@@ -775,7 +841,37 @@ Temps de conservation :
     points: "d'après la banque de questions et le corrigé officiel 1102-2017",
     hints: [
       "Les 5 formes portent des noms de lettres grecques, de la plus instable à la plus stable.",
-      "Pour chacune, associe une plage de température de fusion croissante."
+      "Pour chacune, associe une plage de température de fusion croissante.",
+  {
+    id: "polymorphisme",
+    title: "Le beurre de cacao est dit « polymorphe » : expliquez ce terme et son impact sur la pré-cristallisation de la couverture",
+    points: "10 pts (5 + 5) — d'après l'annale BTM 2026 (proposition de sujet)",
+    hints: [
+      "Polymorphe : plusieurs formes cristallines, avec un point de fusion différent pour chacune.",
+      "Pourquoi doit-on pré-cristalliser ? Quelle forme cherche-t-on à obtenir ?"
+    ],
+    answerHtml: `
+      <h4>a) Polymorphisme</h4>
+      <p>Le beurre de cacao peut s'organiser sous <b>plusieurs formes cristallines</b>, chacune ayant un <b>point de fusion différent</b>. Pour une couverture, cela correspond aux différentes structures de cristaux que le beurre de cacao peut former selon la température.</p>
+      <h4>b) Impact sur la pré-cristallisation</h4>
+      <p>Cette propriété explique la nécessité de la pré-cristallisation lors du tablage : il faut <b>former et sélectionner la structure cristalline la plus stable</b>, avec le point de fusion approprié, pour obtenir une couverture <b>brillante, cassante et bien tempérée</b>.</p>`
+  },
+  {
+    id: "blanchiment-praline",
+    title: "En boutique, vos bonbons de chocolat pralinés noisette ont blanchi : quels sont les 2 types de blanchiment et quelles solutions (2 pour chacun) ?",
+    points: "15 pts (10 + 5) — d'après l'annale BTM 2026 (proposition de sujet)",
+    hints: [
+      "Deux blanchiments : l'un lié au sucre et à l'humidité, l'autre à la matière grasse déstabilisée.",
+      "Pour les solutions : pense à la fabrication (pré-cristallisation, broyage, recette) pour le gras et à l'environnement (température, hygrométrie, conditionnement) pour le sucre."
+    ],
+    answerHtml: `
+      <h4>Blanchiment sucrier (sugar bloom)</h4>
+      <p>Dû à l'<b>humidité</b>, à la suite d'une variation de température et d'une condensation sur le produit (ex. produit laissé trop longtemps à +4 °C). La condensation transforme en sirop le sucre de la couverture, qui remonte en surface : surface <b>collante</b>, puis le sirop cristallise et la surface devient <b>rugueuse</b>.</p>
+      <p><b>Solutions</b> : point de rosée, variations de température limitées, contrôle et stabilité de l'hygrométrie, HRE, hygroscopicité des matières premières, méthodes de conditionnement…</p>
+      <h4>Blanchiment gras (fat bloom)</h4>
+      <p>Provient d'une <b>matière grasse déstabilisée</b> : mauvaise pré-cristallisation ou variations de température trop importantes au stockage. Il peut aussi apparaître sur des intérieurs gras comme les <b>pralinés</b> : le gras instable remonte en surface, qui devient <b>grasse au toucher</b>.</p>
+      <p><b>Solutions</b> : température de coulage, méthode et finesse de broyage, composition de la recette (poudre de lait, collage…), couleur du chablon et de l'enrobage, conditions de stockage…</p>`
+  }
     ],
     answerHtml: `
       <h4>Les 5 formes cristallines</h4>
@@ -1059,7 +1155,27 @@ La décongélation doit s'effectuer par palier inférieur à 7°C, écart corres
     points: "d'après la banque de questions techno",
     hints: [
       "L'objectif principal concerne la texture et la perception en bouche — précise ce qui se passe si l'émulsion échoue.",
-      "Les deux composants favorisant l'émulsion agissent différemment : l'un lie la MG au liquide, l'autre crée des ponts liquide-MG."
+      "Les deux composants favorisant l'émulsion agissent différemment : l'un lie la MG au liquide, l'autre crée des ponts liquide-MG.",
+  {
+    id: "table-analytique-annale",
+    title: "Table analytique : analysez et commentez cette ganache cadrée (crème 35 %, sorbitol, miel, lactée 38 %, fondante 70 %, beurre) et proposez des corrections",
+    points: "25 pts — d'après l'annale BTM 2026 (proposition de sujet)",
+    hints: [
+      "Compare chaque totaux aux paramètres d'une ganache cadrée : eau (25 % max), EST (75 % min), beurre de cacao (18 % min), MG totale (25-40 %), matière sucrante (25-35 %).",
+      "Conclus sur l'AW et la conservation, puis propose une correction : plus de sorbitol/miel, moins de crème."
+    ],
+    answerHtml: `
+      <h4>Données de la recette (1760 g)</h4>
+      <p>Crème 35 % 750 g · sorbitol 80 g · miel 60 g · couverture lactée 38 % 350 g · couverture fondante 70 % 435 g · beurre laitier 85 g.</p>
+      <h4>Résultats de la table analytique</h4>
+      <ul><li>Eau : 475,95 g soit <b>27,04 %</b> (paramètre : 25 % max)</li><li>EST : 1284,05 g soit <b>72,96 %</b> (paramètre : 75 % min)</li><li>Beurre de cacao : 325,44 g soit <b>18,49 %</b> (paramètre : 18 % min)</li><li>Cacao dégraissé : 146,24 g soit 8,31 %</li><li>MG laitière : 353,20 g soit 20,07 %</li><li>MG totale : 678,64 g soit <b>38,59 %</b> (paramètre : 25 à 40 %)</li><li>Matière sucrante : 386,37 g soit <b>21,95 %</b> (paramètre : 25 à 35 %)</li></ul>
+      <h4>Analyse</h4>
+      <ul><li>La <b>balance EST / eau n'est pas respectée</b> (trop d'eau, pas assez d'extrait sec).</li><li>Le beurre de cacao est suffisant.</li><li>La MG totale est suffisante, mais dans une fourchette haute.</li><li>Le sucre est en quantité <b>insuffisante</b>.</li></ul>
+      <h4>Conséquence sur la conservation</h4>
+      <p>Trop d'eau et pas assez de sucre pour la fixer : l'<b>AW</b> n'est pas satisfaisante, la ganache subirait un développement microbien précoce et sa conservation serait limitée.</p>
+      <h4>Correction proposée</h4>
+      <p>Augmenter le sorbitol (6-7 %) et/ou le miel pour apporter l'extrait sec et le sucre manquants, éventuellement en <b>réduisant la crème</b> : on rééquilibre ainsi la balance eau / EST.</p>`
+  }
     ],
     answerHtml: `
       <h4>Objectifs d'une bonne émulsion</h4>
@@ -1185,7 +1301,7 @@ Transforme les sucres roux de canne en sucre blanc (le sucre de betterave est na
 Sucre blanc (min. 99,8% saccharose pur) ; sucre glace/impalpable (moulu fin + amidon 3% ou silice 2%) ; sucre en morceaux ; sucre roux (canne brut ou raffiné recoloré à la mélasse) ; cassonade (cristallisation sous vide du sucre de canne roux) ; sucre blond (bio, non raffiné) ; sucre candi (cristallisation lente d'un sirop sursaturé) ; sucre gélifiant (saccharose + pectine + acide citrique) ; vergeoise blonde/brune (re-cuisson d'un sirop de betterave) ; sucre de canne complet/intégral (type Rapadura) ; sucre Muscovado (fort en mélasse, Philippines/Île Maurice) ; sucre neige/décor (saccharose + dextrose + végétaline + amidon + silice). Plus le sucre est foncé, plus il contient d'impuretés.
 
 7/ Les sirops de sucre
-Liquide visqueux obtenu par mélange eau/sucre porté à ébullition. Viscosité mesurée au densimètre, concentration au réfractomètre. Solubilité : à 0°C, l'eau contient 1,7 fois son poids en sucre (saturée) ; à 100°C, jusqu'à 3 fois son poids (devient sursaturée en refroidissant). Sous-saturation : plus de 6 molécules d'eau pour 1 molécule de sucre. Saturation : chaque molécule de saccharose entourée de 6 molécules d'eau (jusqu'à 1,9 kg de sucre/L à 10°C). Sursaturation : moins de 6 molécules d'eau pour 1 de sucre.
+Liquide visqueux obtenu par mélange eau/sucre porté à ébullition. Viscosité mesurée au densimètre, concentration au réfractomètre. Solubilité : à 20°C, l'eau contient 1,7 fois son poids en sucre (saturée) ; à 100°C, jusqu'à 3 fois son poids (devient sursaturée en refroidissant). Sous-saturation : plus de 6 molécules d'eau pour 1 molécule de sucre. Saturation : chaque molécule de saccharose entourée de 6 molécules d'eau (jusqu'à 1,9 kg de sucre/L à 10°C). Sursaturation : moins de 6 molécules d'eau pour 1 de sucre.
 Cuisson des sirops : matériel en cuivre de préférence, nettoyé au sel et vinaigre. Eau : 300-400g par kilo de sucre. Graissage (anti-cristallisant) : glucose (10-20% du poids du sucre), crème de tartre (2-3g/kg) ou acide tartrique (3-4 gouttes/kg). Éponger les parois à l'eau, ôter l'écume avant ébullition.
 
 Table des degrés de cuisson du sucre (repère à 100° C = 1er degré, dit « sirop », 33% d'eau) :
@@ -1266,7 +1382,52 @@ Cyclamate E952 : valeur calorifique nulle, souvent combiné à la saccharine. DJ
     points: "d'après la banque de questions et le corrigé officiel 1102-2017",
     hints: [
       "Pour la betterave, il y a 7 grandes étapes, de la récolte au conditionnement.",
-      "Pour la canne, seule la première phase (l'extraction) change réellement : quels sont les 2 produits obtenus à cette étape ?"
+      "Pour la canne, seule la première phase (l'extraction) change réellement : quels sont les 2 produits obtenus à cette étape ?",
+  {
+    id: "regles-cuisson-sucre",
+    title: "La cuisson des sirops de sucre est cruciale en confiserie : citez 3 règles de cuisson du sucre",
+    points: "3 x 1 pt — d'après l'annale BTM 2026 (proposition de sujet)",
+    hints: [
+      "Pense au matériel, à la montée en température et à la pureté des matières premières.",
+      "Pense aussi au contrôle : thermomètre, écume."
+    ],
+    answerHtml: `
+      <h4>Règles de cuisson (3 à citer, il en existe d'autres)</h4>
+      <ul><li>Matériel en <b>cuivre</b> de préférence (attention à son nettoyage)</li><li>Cuisson <b>lente</b> jusqu'à fonte totale des cristaux, puis accélération</li><li>Sucre en <b>morceaux</b> de préférence (sans impuretés)</li><li>Eau de <b>source</b> de préférence (sans impuretés)</li><li><b>Étalonner</b> le thermomètre</li><li><b>Nettoyer / écumer</b> si nécessaire</li></ul>`
+  },
+  {
+    id: "saturation",
+    title: "Expliquez et décrivez ce qu'est la « saturation » d'un sirop de sucre",
+    points: "5 pts — d'après l'annale BTM 2026 (proposition de sujet)",
+    hints: [
+      "Définis d'abord la saturation à une température donnée.",
+      "Que se passe-t-il au-delà de la limite ? Donne un chiffre à 100 °C et à 20 °C."
+    ],
+    answerHtml: `
+      <h4>Définition</h4>
+      <p>La saturation est l'état dans lequel le sirop contient la <b>quantité maximale de sucre dissous</b> possible à une température donnée.</p>
+      <h4>Au-delà : la sursaturation</h4>
+      <p>Au-delà de cette limite, le sucre ne peut plus se dissoudre et <b>recristallise</b> : c'est la sursaturation.</p>
+      <h4>Repères chiffrés</h4>
+      <p>Une eau à <b>100 °C</b> dissout environ <b>3 fois</b> son poids en sucre ; à <b>20 °C</b>, environ <b>1,7 fois</b>.</p>`
+  },
+  {
+    id: "hydrolyse",
+    title: "L'hydrolyse est un phénomène fréquent en confiserie : définissez-la, indiquez les facteurs qui l'accentuent dans une pâte de fruit et citez 2 matières premières issues de cette réaction",
+    points: "12 pts (5 + 5 + 2) — d'après l'annale BTM 2026 (proposition de sujet)",
+    hints: [
+      "Définition : une réaction avec de l'eau qui casse une molécule complexe en molécules simples.",
+      "Dans une pâte de fruit, deux facteurs : l'acidité des pulpes et la durée de cuisson."
+    ],
+    answerHtml: `
+      <h4>a) Définition</h4>
+      <p>Réaction chimique qui décompose des molécules complexes en molécules simples (ex. les sucres). Elle <b>requiert de l'eau</b> et est favorisée par la <b>chaleur</b> ou un <b>catalyseur</b> (enzyme, acide, courant électrique).</p>
+      <h4>b) Facteurs accentuant l'hydrolyse dans une pâte de fruit</h4>
+      <p><b>1. L'acidité des pulpes</b> : plus le fruit est acide, plus la réaction est prononcée. On peut atténuer le pH en mélangeant les fruits (ex. passion / mangue) ou réguler les pulpes au pH-mètre avec des correcteurs de pH.</p>
+      <p><b>2. La vitesse de cuisson</b> : plus la cuisson est longue, plus la réaction dure : il faut donc la maîtriser.</p>
+      <h4>c) Matières premières issues de cette réaction</h4>
+      <ul><li><b>Sucre inverti</b> (issu de l'hydrolyse du saccharose)</li><li><b>Glucose</b></li><li><b>Fructose</b></li></ul>`
+  }
     ],
     answerHtml: `
       <h4>Sucre de betterave</h4>
@@ -1545,7 +1706,24 @@ Antiagglomérants : évitent la prise en blocs (sucre glace/silice, sel/silicate
     points: "d'après la banque de questions techno",
     hints: [
       "L'une contient des sels retardateurs, l'autre des phosphates de calcium — cette différence détermine leur propriété clé (réversibilité ou non).",
-      "Associe chaque pectine à son usage principal en atelier."
+      "Associe chaque pectine à son usage principal en atelier.",
+  {
+    id: "emulsifiants",
+    title: "Les émulsifiants sont très utiles en chocolaterie-confiserie : définissez-les, expliquez comment ils agissent et citez-en 2 présents dans nos fabrications",
+    points: "20 pts — d'après l'annale BTM 2026 (proposition de sujet)",
+    hints: [
+      "Définition : deux phases non miscibles (eau / matière grasse) que l'émulsifiant aide à mélanger et à stabiliser.",
+      "Mécanisme : molécule à double affinité (hydrophile / lipophile) placée à l'interface, qui réduit la tension interfaciale."
+    ],
+    answerHtml: `
+      <h4>Définition</h4>
+      <p>Les émulsifiants facilitent et stabilisent le mélange de deux matières <b>non miscibles</b> naturellement (par exemple eau / matière grasse).</p>
+      <h4>Mode d'action</h4>
+      <p>Ce sont des molécules <b>tensio-actives</b> à <b>double affinité</b> : une partie <b>hydrophile</b> attirée par l'eau et une partie <b>lipophile</b> attirée par les graisses. Incorporées à une préparation, elles se placent à l'<b>interface eau / graisse</b> : elles réduisent la tension interfaciale, facilitent la dispersion en fines gouttelettes et empêchent leur regroupement.</p>
+      <p>En chocolaterie, ils améliorent la fluidité, la texture et la stabilité des préparations, tout en limitant la séparation des phases.</p>
+      <h4>Exemples courants</h4>
+      <ul><li><b>Lécithine de soja</b></li><li><b>Lécithine de tournesol</b></li><li><b>PGPR</b> (polyricinoléate de polyglycérol, qui agit sur la viscosité / le seuil d'écoulement)</li></ul>`
+  }
     ],
     answerHtml: `
       <h4>Pectine jaune</h4>
@@ -1876,7 +2054,23 @@ Qu'est-ce que le rancissement ? Oxydation (parfois enzymatique pour les graisses
     points: "d'après la banque de questions techno (fruits secs)",
     hints: [
       "L'amande et la noisette appartiennent toutes deux au même grand groupe botanique de fruits charnus — lequel ?",
-      "Cite au moins 3 variétés pour chacune, en identifiant clairement celle(s) d'origine française."
+      "Cite au moins 3 variétés pour chacune, en identifiant clairement celle(s) d'origine française.",
+  {
+    id: "varietes-noisettes-amandes",
+    title: "Pour la confection de vos pralinés : citez 3 variétés de noisettes et 3 variétés d'amandes dont 1 française pour chaque",
+    points: "10 pts (5 + 5) — d'après l'annale BTM 2026 (proposition de sujet)",
+    hints: [
+      "Le sujet demande de souligner la variété française pour chaque fruit sec.",
+      "Pense à la Corabel et à la Fertile de Coutard pour la noisette, et à la Princesse ou à la Languedoc pour l'amande."
+    ],
+    answerHtml: `
+      <h4>Noisettes (3 à citer, dont 1 française)</h4>
+      <ul><li><b>Corabel</b> (française)</li><li><b>Fertile de Coutard</b> (française)</li><li>Ennis</li><li>Segorbe</li><li>Pauetet</li><li>Tombul</li><li>Negret</li><li>Tonda Gentile, Tonda Romana, Tonda Griffoni (Italie)</li></ul>
+      <h4>Amandes (3 à citer, dont 1 française)</h4>
+      <ul><li><b>Fournat de Brézenaud</b> (française)</li><li><b>Languedoc</b> (française)</li><li><b>Princesse</b> (française)</li><li>Marcona</li><li>Desmayo Largueta</li><li>Valencia</li><li>Tuono</li><li>Ferraduel</li><li>Abiod</li><li>Non Pareil</li><li>Monterey</li></ul>
+      <h4>Rappel : conservation des fruits secs</h4>
+      <p>Principale altération : le <b>rancissement</b> (oxydation des matières grasses, favorisée par l'oxygène, la lumière, la chaleur, un stockage trop long ou mal protégé). Conserver à l'abri de la lumière, au sec, à température stable (environ 15 °C), à l'abri de la poussière, des insectes et des fortes odeurs.</p>`
+  }
     ],
     answerHtml: `
       <h4>Groupe et famille</h4>
@@ -1983,7 +2177,25 @@ La traçabilité en chocolaterie est l'obligation de pouvoir retracer, à tout m
     points: "d'après la banque de questions techno",
     hints: [
       "Un ballotin fermé à l'avance est un produit préemballé — quelles sont ses 8 mentions obligatoires ?",
-      "Choisis-en 5 et explique, pour chacune, ce qu'elle apporte concrètement au client (sécurité, information, confiance...)."
+      "Choisis-en 5 et explique, pour chacune, ce qu'elle apporte concrètement au client (sécurité, information, confiance...).",
+  {
+    id: "tracabilite",
+    title: "Qu'est-ce que la traçabilité en chocolaterie, pourquoi est-elle obligatoire et comment est-elle mise en œuvre concrètement dans un atelier ?",
+    points: "12 pts — d'après l'annale BTM 2026 (proposition de sujet)",
+    hints: [
+      "Définis la traçabilité : origine, parcours, destination, de la réception jusqu'à la vente.",
+      "Justifie son caractère obligatoire (sécurité, retrait/rappel), puis donne 4 actions concrètes d'atelier."
+    ],
+    answerHtml: `
+      <h4>Définition</h4>
+      <p>Ensemble des moyens permettant de retrouver l'<b>origine</b>, le <b>parcours</b> et la <b>destination</b> d'une matière première ou d'un produit fini, de la réception jusqu'à la vente.</p>
+      <h4>Pourquoi obligatoire</h4>
+      <p>Pour garantir la <b>sécurité alimentaire</b>, protéger le consommateur et permettre un <b>retrait ou rappel rapide</b> des produits en cas de problème sanitaire (contamination, allergène non déclaré, défaut de qualité).</p>
+      <h4>Mise en œuvre concrète</h4>
+      <ul><li>Enregistrement des fournisseurs, <b>numéros de lots</b> et <b>dates de réception</b> des matières premières</li><li>Identification des lots de fabrication (dates, recettes, quantités)</li><li>Suivi des produits finis avec dates de fabrication et <b>DDM</b></li><li>Conservation des documents (bons de livraison, fiches de fabrication)</li></ul>
+      <h4>Cadre</h4>
+      <p>La traçabilité fait partie du <b>plan de maîtrise sanitaire (PMS)</b> et est indissociable de la méthode <b>HACCP</b> : elle démontre la maîtrise de l'hygiène.</p>`
+  }
     ],
     answerHtml: `
       <ul>
@@ -2050,7 +2262,7 @@ Module reconstitué à partir de la banque de questions techno et des codes d'us
 
 1/ LE CANDISSAGE CONFISEUR
 Procédé de conservation visant à former une couche de cristaux de sucre soudés les uns aux autres, apportant une protection hermétique (empêche le séchage de la confiserie) et une finition brillante.
-Principe : la capacité de saturation d'un sirop de sucre dépend de sa température (l'eau à 100°C dissout 3 fois son poids en sucre ; à 10°C, seulement 1,7 fois). La saturation est la capacité de l'eau à maintenir dissous les cristaux de sucre ; la sursaturation est un sirop dont l'eau ne suffit plus, donc les cristaux se reforment.
+Principe : la capacité de saturation d'un sirop de sucre dépend de sa température (l'eau à 100°C dissout 3 fois son poids en sucre ; à 20°C, seulement 1,7 fois). La saturation est la capacité de l'eau à maintenir dissous les cristaux de sucre ; la sursaturation est un sirop dont l'eau ne suffit plus, donc les cristaux se reforment.
 Méthode : réaliser un sirop de sucre saturé (3L d'eau pour 7,5kg de sucre) à 72Bx à chaud, en démarrant la fonte lentement et en nettoyant soigneusement (les impuretés gênent la cristallisation) — utiliser de préférence eau de source et sucre en morceaux pour leur propreté. Réserver le sirop avec du papier sulfurisé au contact (évite une recristallisation prématurée) jusqu'à température ambiante (~25°C). Filtrer et verser sur les supports à candir, en les immergeant complètement ; recouvrir d'un film au contact, laisser au repos 12h sans vibrations. En refroidissant, le sirop devient sursaturé et recristallise : le support (une « impureté » pour le sucre) sert de point d'accroche, permettant une cristallisation fine et régulière. Les vibrations pendant la cristallisation déplaceraient les cristaux en formation et donneraient une cristallisation irrégulière. Une fois la cristallisation effectuée, les supports sont totalement égouttés.
 
 2/ LES BONBONS LIQUEUR AVEC ROBE DE SUCRE
@@ -2247,11 +2459,142 @@ themeToggle.addEventListener('click', () => {
   themeLabel.textContent = isLight ? 'Mode clair' : 'Mode sombre';
 });
 
+/* =========================================================
+   DISCUSSION LIBRE — appel à l'API Groq (via relais Netlify),
+   contenu dérivé EN DIRECT du même COURSE_DATA[].exam que la
+   Banque de questions (pas de texte séparé à maintenir)
+   ========================================================= */
+let currentScope = 'all';
+let chatHistory = [];
+const RELAY_URL = "/.netlify/functions/chat";
+
+function stripHtml(html){
+  const div = document.createElement('div');
+  div.innerHTML = html;
+  return div.textContent.replace(/\s+/g, ' ').trim();
+}
+
+function buildAllModulesDigest(){
+  return COURSE_DATA.map(c => {
+    const qaLines = c.exam.map(q => {
+      let ans = stripHtml(q.answerHtml);
+      if(ans.length > 230) ans = ans.slice(0,230).replace(/\s+\S*$/,'') + '…';
+      return `Q: ${q.title}\nR: ${ans}`;
+    }).join('\n\n');
+    return `### ${c.title}\n${qaLines}`;
+  }).join('\n\n');
+}
+
+function populateScopeSelect(){
+  const sel = document.getElementById('scopeSelect');
+  const options = [`<option value="all">Tous les modules combinés</option>`]
+    .concat(COURSE_DATA.map(c => `<option value="${c.id}">${c.title}</option>`));
+  sel.innerHTML = options.join('');
+  sel.addEventListener('change', () => {
+    currentScope = sel.value;
+    chatHistory = [];
+    document.getElementById('chatLog').innerHTML = '';
+    renderChatSuggestions();
+  });
+}
+
+function renderChatSuggestions(){
+  const wrap = document.getElementById('chatSuggestions');
+  let suggestions;
+  if(currentScope === 'all'){
+    suggestions = [
+      "Compare la fermentation du cacao et la maturation de la crème.",
+      "Quels modules parlent de la lécithine, et pour quel rôle ?",
+      "Fais-moi un récapitulatif des températures clés à retenir."
+    ];
+  } else {
+    suggestions = [
+      "Fais-moi un résumé des points essentiels de ce cours.",
+      "Quelles sont les questions d'examen les plus probables sur ce cours ?",
+      "Explique-moi la notion la plus difficile de ce module."
+    ];
+  }
+  wrap.innerHTML = suggestions.map(s=>`<button class="suggestion-chip">${s}</button>`).join('');
+  wrap.querySelectorAll('.suggestion-chip').forEach(chip=>{
+    chip.addEventListener('click', ()=>{
+      document.getElementById('chatInput').value = chip.textContent;
+      sendChat();
+    });
+  });
+}
+
+function addMsg(text, cls){
+  const log = document.getElementById('chatLog');
+  const div = document.createElement('div');
+  div.className = 'msg ' + cls;
+  div.textContent = text;
+  log.appendChild(div);
+  log.scrollTop = log.scrollHeight;
+  return div;
+}
+
+async function askTuteur(systemPrompt, messages){
+  const response = await fetch(RELAY_URL, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      messages: [{role: "system", content: systemPrompt}, ...messages],
+      temperature: 0.4
+    })
+  });
+  if(!response.ok){
+    const errBody = await response.text().catch(()=>"");
+    const err = new Error("HTTP " + response.status);
+    err.status = response.status;
+    err.body = errBody;
+    throw err;
+  }
+  const data = await response.json();
+  return data.choices[0].message.content;
+}
+
+async function sendChat(){
+  const inputEl = document.getElementById('chatInput');
+  const text = inputEl.value.trim();
+  if(!text) return;
+  inputEl.value = '';
+  addMsg(text, 'user');
+  chatHistory.push({role:'user', content:text});
+  const loadingDiv = addMsg('Le tuteur réfléchit…', 'bot loading');
+
+  let RULES;
+  if(currentScope === 'all'){
+    RULES = "Tu es un tuteur pour des élèves en BTM Chocolatier-Confiseur, en session de révisions générales. Tu réponds à partir de la BANQUE DE QUESTIONS condensée ci-dessous (questions/réponses officielles de chacun des 13 modules) — ce n'est pas le cours complet, seulement l'essentiel de la banque. Précise systématiquement de quel(s) module(s) provient l'information. Si une question touche plusieurs modules, fais le lien entre eux. Si l'élève a besoin de plus de détail, invite-le à changer la portée de la discussion (menu déroulant en haut). Réponds de façon claire, pédagogique. Ne mentionne jamais quel modèle d'IA tu es.\n\nBANQUE (tous modules) :\n" + buildAllModulesDigest();
+  } else {
+    const course = COURSE_DATA.find(c => c.id === currentScope);
+    RULES = "Tu es un tuteur pour des élèves en BTM Chocolatier-Confiseur. Tu réponds UNIQUEMENT à partir du texte de cours suivant, sur le module '" + course.title + "'. Si la question sort de ce cours, dis poliment que ce sujet est traité dans un autre module et invite l'élève à changer la portée de la discussion (menu déroulant en haut) ou à s'y rendre. Réponds de façon claire, pédagogique, avec des exemples concrets d'atelier quand c'est pertinent. Ne mentionne jamais quel modèle d'IA tu es.\n\nCOURS :\n" + course.course;
+  }
+
+  const recentHistory = chatHistory.slice(-10);
+
+  try{
+    const answer = await askTuteur(RULES, recentHistory);
+    loadingDiv.classList.remove('loading');
+    loadingDiv.textContent = answer;
+    chatHistory.push({role:'assistant', content: answer});
+  } catch(err){
+    loadingDiv.classList.remove('loading');
+    loadingDiv.textContent = err.status === 429
+      ? "Trop de questions envoyées d'un coup : attends un instant avant de réessayer."
+      : "Une erreur est survenue en contactant le tuteur. Réessaie dans un instant.";
+    console.error(err);
+  }
+}
+
 /* ===== Init ===== */
 populateCourseSelect();
 currentExamId = COURSE_DATA[0].exam.length ? COURSE_DATA[0].exam[0].id : null;
 renderExamPills();
 renderExamQuestion();
+populateScopeSelect();
+renderChatSuggestions();
+document.getElementById('chatSend').addEventListener('click', sendChat);
+document.getElementById('chatInput').addEventListener('keydown', e=>{ if(e.key==='Enter') sendChat(); });
 </script>
 </body>
 </html>

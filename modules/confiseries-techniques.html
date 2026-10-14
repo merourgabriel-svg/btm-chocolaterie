@@ -305,7 +305,7 @@ Module reconstitué à partir de la banque de questions techno et des codes d'us
 
 1/ LE CANDISSAGE CONFISEUR
 Procédé de conservation visant à former une couche de cristaux de sucre soudés les uns aux autres, apportant une protection hermétique (empêche le séchage de la confiserie) et une finition brillante.
-Principe : la capacité de saturation d'un sirop de sucre dépend de sa température (l'eau à 100°C dissout 3 fois son poids en sucre ; à 10°C, seulement 1,7 fois). La saturation est la capacité de l'eau à maintenir dissous les cristaux de sucre ; la sursaturation est un sirop dont l'eau ne suffit plus, donc les cristaux se reforment.
+Principe : la capacité de saturation d'un sirop de sucre dépend de sa température (l'eau à 100°C dissout 3 fois son poids en sucre ; à 20°C, seulement 1,7 fois). La saturation est la capacité de l'eau à maintenir dissous les cristaux de sucre ; la sursaturation est un sirop dont l'eau ne suffit plus, donc les cristaux se reforment.
 Méthode : réaliser un sirop de sucre saturé (3L d'eau pour 7,5kg de sucre) à 72Bx à chaud, en démarrant la fonte lentement et en nettoyant soigneusement (les impuretés gênent la cristallisation) — utiliser de préférence eau de source et sucre en morceaux pour leur propreté. Réserver le sirop avec du papier sulfurisé au contact (évite une recristallisation prématurée) jusqu'à température ambiante (~25°C). Filtrer et verser sur les supports à candir, en les immergeant complètement ; recouvrir d'un film au contact, laisser au repos 12h sans vibrations. En refroidissant, le sirop devient sursaturé et recristallise : le support (une « impureté » pour le sucre) sert de point d'accroche, permettant une cristallisation fine et régulière. Les vibrations pendant la cristallisation déplaceraient les cristaux en formation et donneraient une cristallisation irrégulière. Une fois la cristallisation effectuée, les supports sont totalement égouttés.
 
 2/ LES BONBONS LIQUEUR AVEC ROBE DE SUCRE
@@ -620,7 +620,7 @@ const SUGGESTED_QUESTIONS = [
 ];
 
 const GROQ_MODEL = "llama-3.3-70b-versatile";
-const RELAY_URL = "/.netlify/functions/chat";
+const RELAY_URL = "https://technobtm.netlify.app/.netlify/functions/chat";
 
 let chatHistory = [];
 

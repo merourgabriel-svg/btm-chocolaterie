@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Entraînement annales — questions flash et mots-clés</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#20110a; --surface:#2b1810; --surface-alt:#3d2416;
+    --border:rgba(242,232,216,0.14); --text:#f2e8d8; --text-bright:#faf4e9;
+    --text-dim:rgba(242,232,216,0.62); --caramel:#b8783a; --caramel-hi:#cf9455;
+    --gold:#d8b66e; --shadow:rgba(0,0,0,0.35);
+    --ok:#4c7a3a; --ok-text:#b7dba0; --ko:#7a2e2a; --ko-text:#e2a29d; --on-accent:#20110a;
+  }
+  [data-theme="light"]{
+    --bg:#f7efdf; --surface:#fffaf0; --surface-alt:#efe0c4;
+    --border:rgba(61,36,22,0.16); --text:#3a2415; --text-bright:#241207;
+    --text-dim:rgba(58,36,21,0.62); --caramel:#a8632b; --caramel-hi:#94551f;
+    --gold:#93701f; --shadow:rgba(58,36,21,0.12);
+    --ok:#3d6b2c; --ok-text:#2c4f20; --ko:#a13d34; --ko-text:#7c2b25; --on-accent:#fffaf0;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-height:100vh;-webkit-font-smoothing:antialiased;transition:background .35s,color .35s;}
+  h1,h2,h3,h4{font-family:'Merriweather',serif;font-weight:700;}
+  .wrap{max-width:760px;margin:0 auto;padding:36px 18px 90px;}
+  .back-link{display:inline-block;font-size:12.5px;color:var(--text-dim);text-decoration:none;margin-bottom:16px;}
+  .back-link:hover{color:var(--text);}
+  .hero{margin-bottom:22px;display:flex;justify-content:space-between;align-items:flex-start;gap:14px;flex-wrap:wrap;}
+  .hero .kicker{color:var(--caramel-hi);font-size:13px;font-weight:600;margin:0 0 8px;}
+  .hero h1{font-size:clamp(22px,3.4vw,28px);margin:0 0 8px;color:var(--text-bright);line-height:1.2;}
+  .hero p{color:var(--text-dim);font-size:14px;margin:0;max-width:60ch;line-height:1.6;}
+  .theme-toggle{display:flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--border);color:var(--text-dim);padding:9px 14px;border-radius:10px;font-size:13px;cursor:pointer;}
+  .theme-toggle:hover{color:var(--text);}
+  .tabs{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;}
+  .tab{flex:1;min-width:150px;background:var(--surface);border:1px solid var(--border);color:var(--text-dim);padding:12px 14px;border-radius:12px;font:600 14px 'Inter',sans-serif;cursor:pointer;}
+  .tab.active{background:linear-gradient(155deg,var(--caramel-hi),var(--caramel));color:var(--on-accent);border-color:transparent;}
+  .panel{display:none;} .panel.active{display:block;}
+  .card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;box-shadow:0 8px 24px var(--shadow);margin-bottom:16px;}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px;}
+  .chip{background:var(--surface-alt);border:1px solid var(--border);color:var(--text);padding:7px 13px;border-radius:999px;font-size:12.5px;cursor:pointer;font-family:'Inter',sans-serif;}
+  .chip.active{background:linear-gradient(155deg,var(--caramel-hi),var(--caramel));color:var(--on-accent);border-color:transparent;font-weight:600;}
+  .btn{background:linear-gradient(155deg,var(--caramel-hi),var(--caramel));color:var(--on-accent);border:none;padding:11px 20px;border-radius:10px;font:600 14px 'Inter',sans-serif;cursor:pointer;}
+  .btn.ghost{background:var(--surface-alt);color:var(--text);border:1px solid var(--border);}
+  .btn:disabled{opacity:.5;cursor:default;}
+  .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;}
+  .meta{font-size:12px;color:var(--text-dim);margin-bottom:14px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;}
+  .bar{height:6px;background:var(--surface-alt);border-radius:99px;overflow:hidden;margin-bottom:18px;}
+  .bar>i{display:block;height:100%;background:var(--gold);width:0;transition:width .3s;}
+  .q{font-family:'Merriweather',serif;font-size:18px;line-height:1.5;color:var(--text-bright);margin:0 0 18px;}
+  .opts{display:grid;gap:10px;margin-bottom:6px;}
+  .opt{text-align:left;background:var(--surface-alt);border:1px solid var(--border);color:var(--text);padding:13px 15px;border-radius:12px;font:500 14.5px 'Inter',sans-serif;cursor:pointer;}
+  .opt:hover:not(:disabled){border-color:var(--caramel-hi);}
+  .opt.good{background:var(--ok);color:#fff;border-color:transparent;}
+  .opt.bad{background:var(--ko);color:#fff;border-color:transparent;}
+  input[type=text],textarea,select{width:100%;background:var(--bg);color:var(--text);border:1px solid var(--border);border-radius:10px;padding:12px 14px;font:14.5px 'Inter',sans-serif;}
+  textarea{min-height:170px;resize:vertical;line-height:1.55;}
+  .fb{margin-top:16px;padding:14px 16px;border-radius:12px;font-size:14px;line-height:1.6;display:none;}
+  .fb.show{display:block;} .fb.good{background:rgba(76,122,58,.18);border:1px solid var(--ok);} .fb.bad{background:rgba(122,46,42,.18);border:1px solid var(--ko);}
+  .fb b.t{display:block;margin-bottom:4px;}
+  .fb.good b.t{color:var(--ok-text);} .fb.bad b.t{color:var(--ko-text);}
+  .score{font-family:'Merriweather',serif;font-weight:900;font-size:40px;color:var(--gold);margin:6px 0;}
+  .kw{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 4px;}
+  .kwp{padding:7px 12px;border-radius:999px;font-size:13px;border:1px solid var(--border);}
+  .kwp.found{background:rgba(76,122,58,.2);border-color:var(--ok);color:var(--ok-text);}
+  .kwp.miss{background:rgba(122,46,42,.15);border-color:var(--ko);color:var(--ko-text);}
+  .kwp.hid{background:var(--surface-alt);color:var(--text-dim);}
+  label.small{font-size:12.5px;color:var(--text-dim);display:block;margin:0 0 6px;}
+  .hint{font-size:12.5px;color:var(--text-dim);line-height:1.55;margin-top:12px;}
+  @media (max-width:520px){.card{padding:18px;} .q{font-size:16.5px;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back-link" href="../index.html" target="_top">← Retour au hub</a>
+  <div class="hero">
+    <div>
+      <p class="kicker">Outil · Annales BTM</p>
+      <h1>Entraînement annales</h1>
+      <p>Deux façons de travailler les questions d'examen : des questions flash très courtes pour fixer les points clés, et un contrôle de mots-clés pour vérifier que ta réponse rédigée ne passe à côté de rien. Sans IA, corrigé immédiat.</p>
+    </div>
+    <button class="theme-toggle" id="themeToggle"><span id="themeLabel">Mode clair</span></button>
+  </div>
+
+  <div class="tabs">
+    <button class="tab active" data-tab="flash">Questions flash (110)</button>
+    <button class="tab" data-tab="kw">Contrôle de mots-clés (13 sujets)</button>
+  </div>
+
+  <!-- FLASH -->
+  <section class="panel active" id="panel-flash">
+    <div id="flashSetup" class="card">
+      <label class="small">Choisis un ou plusieurs thèmes (aucun = tous)</label>
+      <div class="chips" id="themeChips"></div>
+      <div class="row">
+        <button class="btn" id="startFlash">Commencer</button>
+        <span class="hint" id="countInfo" style="margin:0"></span>
+      </div>
+    </div>
+    <div id="flashPlay" class="card" style="display:none">
+      <div class="meta"><span id="fTheme"></span><span id="fCount"></span></div>
+      <div class="bar"><i id="fBar"></i></div>
+      <p class="q" id="fQ"></p>
+      <div id="fAnswer"></div>
+      <div class="fb" id="fFb"></div>
+      <div class="row" style="margin-top:16px"><button class="btn" id="fNext" style="display:none">Suivante →</button></div>
+    </div>
+    <div id="flashEnd" class="card" style="display:none">
+      <h3 style="margin:0 0 4px">Série terminée</h3>
+      <div class="score" id="eScore"></div>
+      <p class="hint" id="eMsg" style="margin:0 0 16px"></p>
+      <div class="row">
+        <button class="btn" id="eRetryWrong">Refaire mes erreurs</button>
+        <button class="btn ghost" id="eAgain">Nouvelle série</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- KEYWORDS -->
+  <section class="panel" id="panel-kw">
+    <div class="card">
+      <label class="small" for="kwSelect">Question d'annale</label>
+      <select id="kwSelect"></select>
+      <p class="hint" id="kwInfo"></p>
+      <label class="small" for="kwText" style="margin-top:14px">Ta réponse (rédigée, ou simplement une liste de mots-clés)</label>
+      <textarea id="kwText" placeholder="Écris ta réponse ici, ou liste tes mots-clés séparés par des virgules…"></textarea>
+      <div class="row" style="margin-top:14px">
+        <button class="btn" id="kwCheck">Vérifier mes mots-clés</button>
+        <button class="btn ghost" id="kwShow">Voir tous les mots-clés attendus</button>
+        <button class="btn ghost" id="kwClear">Effacer</button>
+      </div>
+      <div id="kwResult" style="margin-top:18px"></div>
+      <p class="hint">Le contrôle repère le vocabulaire attendu, pas la qualité de ton explication. Un mot-clé manquant peut parfois avoir été écrit autrement : relis ta réponse avant de conclure.</p>
+    </div>
+  </section>
+</div>
+
+<script>
+const FLASH = [{"t": "Fermentation", "q": "Fermentation du cacao, phase alcoolique : le pH monte ou descend ?", "k": "c", "o": ["Il monte", "Il descend"], "a": 0, "e": "Pendant la phase alcoolique, l'acidité diminue progressivement : le pH monte (et la température n'augmente que très légèrement)."}, {"t": "Fermentation", "q": "La phase alcoolique de la fermentation est…", "k": "c", "o": ["Anaérobie", "Aérobie"], "a": 0, "e": "Elle se déroule sans oxygène (milieu pauvre en O₂) et dure 24 à 48 heures."}, {"t": "Fermentation", "q": "Durée de la phase alcoolique ?", "k": "c", "o": ["Environ 24 à 48 heures", "Environ 5 à 6 jours", "Moins de 6 heures"], "a": 0, "e": "La première phase, anaérobie, dure de 24 à 48 heures."}, {"t": "Fermentation", "q": "Phase alcoolique : en quoi les sucres du mucilage sont-ils transformés ? (2 produits)", "k": "s", "ok": ["ethanol", "alcool"], "a": "En éthanol et en dioxyde de carbone (CO₂).", "e": "Les levures transforment les sucres du mucilage en éthanol + CO₂."}, {"t": "Fermentation", "q": "Quels micro-organismes dominent la phase alcoolique ?", "k": "s", "ok": ["levure"], "a": "Les levures.", "e": "Milieu pauvre en oxygène, pulpe sucrée et pH bas = milieu favorable aux levures (2 à 30 millions de cellules par gramme)."}, {"t": "Fermentation", "q": "La phase acétique de la fermentation est…", "k": "c", "o": ["Aérobie", "Anaérobie"], "a": 0, "e": "Elle a besoin d'air, c'est pourquoi on remue et on retourne les fèves."}, {"t": "Fermentation", "q": "Phase acétique : la température monte ou descend ?", "k": "c", "o": ["Elle monte (jusqu'à 50 °C)", "Elle descend"], "a": 0, "e": "L'oxydation de l'éthanol en acide acétique est très exothermique : la température peut atteindre 50 °C."}, {"t": "Fermentation", "q": "Quel acide se forme pendant la phase acétique ?", "k": "s", "ok": ["acetique"], "a": "L'acide acétique.", "e": "Les bactéries acétiques oxydent l'éthanol en acide acétique."}, {"t": "Fermentation", "q": "Quelle conséquence a la montée à 50 °C sur la graine ?", "k": "s", "ok": ["germina"], "a": "Perte du pouvoir germinatif (le germe est tué).", "e": "La chaleur et l'acide font perdre à la graine son pouvoir germinatif."}, {"t": "Fermentation", "q": "Pourquoi brasse-t-on les fèves pendant la phase acétique ?", "k": "c", "o": ["Pour apporter de l'air", "Pour faire monter l'acidité", "Pour refroidir les fèves"], "a": 0, "e": "Cette phase est aérobie : l'air est nécessaire au développement des bactéries acétiques."}, {"t": "Fermentation", "q": "Premier brassage des fèves au bout de…", "k": "c", "o": ["24 heures", "48 heures", "6 jours"], "a": 0, "e": "Premier brassage vers 24 h, puis toutes les 48 h (ou chaque jour pour plus de régularité)."}, {"t": "Fermentation", "q": "Les polyphénols s'associent aux protéines : comment appelle-t-on ces complexes insolubles ?", "k": "s", "ok": ["tanin"], "a": "Les tanins (ils contribuent au brunissement des fèves).", "e": "Les tanins brunissent les fèves ; l'astringence diminue."}, {"t": "Fermentation", "q": "Pendant la fermentation, l'amertume et l'astringence…", "k": "c", "o": ["Diminuent", "Augmentent"], "a": 0, "e": "Les substances amères et les composés phénoliques migrent à l'extérieur et sont éliminés par écoulement."}, {"t": "Fermentation", "q": "Couleur des fèves Forastero fermentées ?", "k": "c", "o": ["Brun violet", "Brun jaune", "Blanc"], "a": 0, "e": "Les fèves Criollo se colorent en brun jaune, les Forastero en brun violet."}, {"t": "Fermentation", "q": "Comment appelle-t-on les fèves non fermentées ?", "k": "s", "ok": ["ardois"], "a": "Des fèves « ardoisées » (cosse dure, germe compact).", "e": "Un signe de fermentation insuffisante, avec fèves violettes."}, {"t": "Fermentation", "q": "Une fermentation trop longue provoque…", "k": "c", "o": ["Un excès d'acidité acétique (piquant)", "Un manque d'acidité", "Une amertume accrue"], "a": 0, "e": "Trop courte : manque d'acidité et arômes peu développés. Trop longue : excès d'acide acétique, goût piquant désagréable."}, {"t": "Fermentation", "q": "Citez un rôle du mucilage dans le déroulement de la fermentation.", "k": "s", "ok": ["sucre", "substrat", "ferment"], "a": "Ses sucres sont fermentés par les levures ; il est ensuite éliminé.", "e": "L'un des objectifs de la fermentation est précisément d'éliminer le mucilage."}, {"t": "Culture et maladies", "q": "Température moyenne idéale pour le cacaoyer ?", "k": "c", "o": ["26 °C", "18 °C", "35 °C"], "a": 0, "e": "Climat équatorial : environ 26 °C, humidité d'environ 75 %."}, {"t": "Culture et maladies", "q": "Hygrométrie idéale pour le cacaoyer ?", "k": "c", "o": ["75 %", "40 %", "95 %"], "a": 0, "e": "Climat équatorial humide : environ 75 %."}, {"t": "Culture et maladies", "q": "Altitude de culture habituelle ?", "k": "c", "o": ["300 à 700 m (max 1000 m)", "0 à 100 m", "1500 à 2000 m"], "a": 0, "e": "300 à 700 m, jusqu'à 1000 m au maximum."}, {"t": "Culture et maladies", "q": "Quels éléments du sol favorisent la croissance et la résistance aux maladies ? (2)", "k": "s", "ok": ["azote", "potasse"], "a": "L'azote et la potasse.", "e": "Sol riche en azote et en potasse, et bien drainé."}, {"t": "Culture et maladies", "q": "Une densité de plantation trop forte (plus de 1000 arbres/ha)…", "k": "c", "o": ["Épuise les sols et réduit durée de vie et rendement", "Augmente les rendements durablement", "N'a aucun effet"], "a": 0, "e": "Les sols s'épuisent, il faut un apport artificiel ; les arbres vivent moins longtemps et leur rendement décline plus vite."}, {"t": "Culture et maladies", "q": "L'œdème des pousses (swollen shoot) est causé par…", "k": "c", "o": ["Un virus", "Un champignon", "Une bactérie"], "a": 0, "e": "Virus transmis par la cochenille ; il tue l'arbre en 2-3 ans."}, {"t": "Culture et maladies", "q": "Quel insecte transmet le swollen shoot ?", "k": "s", "ok": ["cochenille"], "a": "La cochenille.", "e": "Fruits plus petits, gonflement des tiges et des racines."}, {"t": "Culture et maladies", "q": "Le balai de sorcière est surtout présent en…", "k": "c", "o": ["Amérique du Sud", "Afrique de l'Ouest", "Asie"], "a": 0, "e": "C'est une maladie fongique : l'arbre ne produit plus de fruits mais ses branches se développent jusqu'à l'épuiser."}, {"t": "Culture et maladies", "q": "Quelle maladie provoque des taches brunes sur les fruits ?", "k": "c", "o": ["Le phytophthora", "La moniliose", "Le balai de sorcière"], "a": 0, "e": "Les fruits atteints doivent être éliminés loin de la plantation, avec un nettoyage assidu des mains."}, {"t": "Émulsifiants", "q": "La partie hydrophile d'un émulsifiant est attirée par…", "k": "c", "o": ["L'eau", "Les graisses", "Le sucre"], "a": 0, "e": "Hydrophile = attirée par l'eau ; lipophile = attirée par les graisses."}, {"t": "Émulsifiants", "q": "Où se placent les émulsifiants dans une préparation ?", "k": "s", "ok": ["interface"], "a": "À l'interface entre l'eau et la matière grasse.", "e": "Ils réduisent la tension interfaciale et empêchent les gouttelettes de se regrouper."}, {"t": "Émulsifiants", "q": "Citez un émulsifiant utilisé en chocolaterie.", "k": "s", "ok": ["lecithine", "pgpr"], "a": "Lécithine de soja ou de tournesol, PGPR.", "e": "Ils améliorent la fluidité, la texture et la stabilité des préparations."}, {"t": "Sirops et hydrolyse", "q": "Une eau à 100 °C dissout environ … son poids en sucre (valeur de l'annale).", "k": "c", "o": ["3 fois", "1,7 fois", "10 fois"], "a": 0, "e": "À 100 °C : environ 3 fois ; à 20 °C : environ 1,7 fois."}, {"t": "Sirops et hydrolyse", "q": "Une eau à 20 °C dissout environ … son poids en sucre (valeur de l'annale).", "k": "c", "o": ["1,7 fois", "3 fois", "5 fois"], "a": 0, "e": "Plus l'eau est chaude, plus elle dissout de sucre."}, {"t": "Sirops et hydrolyse", "q": "Au-delà de la saturation, le sucre recristallise : comment appelle-t-on cet état ?", "k": "s", "ok": ["sursaturation"], "a": "La sursaturation.", "e": "La saturation = quantité maximale de sucre dissous à une température donnée."}, {"t": "Sirops et hydrolyse", "q": "Cuisson du sucre : on commence…", "k": "c", "o": ["Lentement jusqu'à fonte des cristaux, puis on accélère", "Très vite dès le début", "À feu constant sans surveiller"], "a": 0, "e": "Cuisson lente jusqu'à fonte totale des cristaux, puis accélération."}, {"t": "Sirops et hydrolyse", "q": "Sirop de candissage : Brix à atteindre ?", "k": "c", "o": ["72 Bx", "50 Bx", "90 Bx"], "a": 0, "e": "Sirop : 1 L d'eau + 2,5 kg de sucre, Brix contrôlé et régularisé à 72."}, {"t": "Sirops et hydrolyse", "q": "L'hydrolyse requiert…", "k": "c", "o": ["De l'eau", "De l'huile", "Du froid"], "a": 0, "e": "Réaction avec de l'eau, favorisée par la chaleur ou un catalyseur (enzyme, acide, courant électrique)."}, {"t": "Sirops et hydrolyse", "q": "Pâte de fruit : plus la pulpe est acide, plus l'hydrolyse est…", "k": "c", "o": ["Prononcée", "Faible"], "a": 0, "e": "On atténue en mélangeant les fruits (passion/mangue) ou en régulant au pH-mètre avec des correcteurs de pH."}, {"t": "Sirops et hydrolyse", "q": "Pâte de fruit : plus la cuisson est longue, plus l'hydrolyse…", "k": "c", "o": ["Dure longtemps", "S'arrête"], "a": 0, "e": "Plus la cuisson est longue, plus la réaction dure : la vitesse de cuisson doit être maîtrisée."}, {"t": "Sirops et hydrolyse", "q": "Citez une matière première issue de l'hydrolyse du saccharose.", "k": "s", "ok": ["inverti", "glucose", "fructose"], "a": "Sucre inverti, glucose ou fructose.", "e": "L'hydrolyse du saccharose donne du glucose et du fructose, soit du sucre inverti."}, {"t": "Cristallisation et blanchiment", "q": "Le beurre de cacao polymorphe a…", "k": "c", "o": ["Plusieurs formes cristallines, chacune avec un point de fusion différent", "Une seule forme cristalline", "Plusieurs formes avec le même point de fusion"], "a": 0, "e": "Selon la température, il forme différentes structures de cristaux."}, {"t": "Cristallisation et blanchiment", "q": "Pourquoi pré-cristallise-t-on (tablage) une couverture ? Quelle structure vise-t-on ?", "k": "s", "ok": ["stable"], "a": "Pour former et sélectionner la structure cristalline la plus stable (couverture brillante, cassante, bien tempérée).", "e": "Le polymorphisme rend la pré-cristallisation indispensable."}, {"t": "Cristallisation et blanchiment", "q": "Surface collante puis rugueuse : quel blanchiment ?", "k": "c", "o": ["Sucrier", "Gras"], "a": 0, "e": "Le sucre dissous par la condensation remonte en sirop puis cristallise (sugar bloom)."}, {"t": "Cristallisation et blanchiment", "q": "Surface grasse au toucher : quel blanchiment ?", "k": "c", "o": ["Gras", "Sucrier"], "a": 0, "e": "Le gras instable remonte en surface (fat bloom) : mauvaise pré-cristallisation ou variations de température."}, {"t": "Cristallisation et blanchiment", "q": "Un produit resté trop longtemps à +4 °C puis sorti blanchit. Pourquoi ?", "k": "c", "o": ["Condensation puis blanchiment sucrier", "Fat bloom par excès de chaleur", "Rancissement"], "a": 0, "e": "La condensation (humidité) transforme le sucre en sirop en surface."}, {"t": "Cristallisation et blanchiment", "q": "Une mauvaise pré-cristallisation provoque plutôt un blanchiment…", "k": "c", "o": ["Gras", "Sucrier"], "a": 0, "e": "Matière grasse déstabilisée ; il peut aussi apparaître sur les intérieurs gras comme les pralinés."}, {"t": "Cristallisation et blanchiment", "q": "Pour limiter le blanchiment sucrier, on contrôle…", "k": "c", "o": ["L'hygrométrie", "La température de coulage", "La finesse de broyage"], "a": 0, "e": "Sucrier : point de rosée, variations de température, hygrométrie, HRE, conditionnement. Gras : température de coulage, broyage, recette, stockage."}, {"t": "Fruits secs", "q": "Noisette française parmi ces variétés ?", "k": "c", "o": ["Corabel", "Ennis", "Segorbe"], "a": 0, "e": "Corabel et Fertile de Coutard sont françaises."}, {"t": "Fruits secs", "q": "Amande française parmi ces variétés ?", "k": "c", "o": ["Princesse", "Marcona", "Valencia"], "a": 0, "e": "Françaises : Fournat de Brézenaud, Languedoc, Princesse."}, {"t": "Fruits secs", "q": "Principale altération de conservation d'un fruit sec ?", "k": "s", "ok": ["rancissement", "rance"], "a": "Le rancissement.", "e": "Odeur et goût désagréables : fruit impropre à l'usage."}, {"t": "Fruits secs", "q": "Cause du rancissement ?", "k": "s", "ok": ["oxydation"], "a": "L'oxydation des matières grasses (oxygène, lumière, chaleur, stockage trop long ou mal protégé).", "e": "Le rancissement rend le fruit sec impropre à l'usage en chocolaterie."}, {"t": "Fruits secs", "q": "Température de conservation des fruits secs ?", "k": "c", "o": ["Stable, environ 15 °C", "Congélateur à -18 °C", "Chaud, environ 30 °C"], "a": 0, "e": "À l'abri de la lumière, au sec, à température stable, à l'abri de la poussière, des insectes et des fortes odeurs."}, {"t": "Traçabilité", "q": "La traçabilité est obligatoire notamment pour…", "k": "c", "o": ["Permettre un retrait ou un rappel rapide des produits", "Augmenter le prix de vente", "Allonger la DLC"], "a": 0, "e": "Elle garantit la sécurité alimentaire et protège le consommateur."}, {"t": "Traçabilité", "q": "À quel ensemble de règles la traçabilité appartient-elle ? (plan…)", "k": "s", "ok": ["pms", "maitrise sanitaire"], "a": "Au plan de maîtrise sanitaire (PMS), indissociable de l'HACCP.", "e": "Elle démontre la maîtrise de l'hygiène."}, {"t": "Traçabilité", "q": "Que doit-on enregistrer à la réception des matières premières ?", "k": "s", "ok": ["lot", "fournisseur", "date"], "a": "Fournisseurs, numéros de lots, dates de réception.", "e": "On conserve aussi les bons de livraison et fiches de fabrication."}, {"t": "Table analytique de ganache", "q": "Ganache cadrée : teneur en eau…", "k": "c", "o": ["25 % maximum", "25 % minimum", "50 % maximum"], "a": 0, "e": "Paramètres : eau 25 % max, EST 75 % min."}, {"t": "Table analytique de ganache", "q": "Ganache cadrée : EST…", "k": "c", "o": ["75 % minimum", "75 % maximum", "25 % minimum"], "a": 0, "e": "EST (extrait sec total) 75 % min ; eau 25 % max."}, {"t": "Table analytique de ganache", "q": "Ganache cadrée : beurre de cacao…", "k": "c", "o": ["18 % minimum", "18 % maximum", "40 % minimum"], "a": 0, "e": "Beurre de cacao : 18 % min."}, {"t": "Table analytique de ganache", "q": "Ganache cadrée : MG totale entre…", "k": "c", "o": ["25 et 40 %", "10 et 15 %", "50 et 60 %"], "a": 0, "e": "MG totale 25-40 % ; matière sucrante 25-35 %."}, {"t": "Table analytique de ganache", "q": "Ganache cadrée : matière sucrante entre…", "k": "c", "o": ["25 et 35 %", "5 et 10 %", "40 et 50 %"], "a": 0, "e": "Une matière sucrante insuffisante fixe mal l'eau."}, {"t": "Table analytique de ganache", "q": "Trop d'eau et pas assez de sucre : quelle conséquence pour la conservation ?", "k": "s", "ok": ["microb", "aw", "conservation limit"], "a": "AW trop élevée, conservation limitée, développement microbien précoce.", "e": "Le sucre est insuffisant pour fixer l'eau."}, {"t": "Table analytique de ganache", "q": "Comment rééquilibrer une ganache trop aqueuse et pas assez sucrée ? (2 pistes)", "k": "s", "ok": ["sorbitol", "miel", "reduire", "creme"], "a": "Plus de sorbitol (6-7 %) et/ou de miel, et/ou moins de crème.", "e": "On rééquilibre ainsi la balance eau / EST."}, {"t": "Transformation du cacao", "q": "Température de torréfaction des fèves ?", "k": "c", "o": ["110 à 150 °C", "60 à 80 °C", "180 à 220 °C"], "a": 0, "e": "Torréfaction à 110-150 °C pendant 15 à 40 minutes, en cylindre rotatif."}, {"t": "Transformation du cacao", "q": "Durée de la torréfaction ?", "k": "c", "o": ["15 à 40 minutes", "2 à 3 heures", "1 à 2 minutes"], "a": 0, "e": "110-150 °C pendant 15 à 40 minutes."}, {"t": "Transformation du cacao", "q": "Quelle réaction développe les arômes pendant la torréfaction ?", "k": "s", "ok": ["maillard"], "a": "La réaction de Maillard.", "e": "Elle développe les précurseurs d'arômes formés pendant la fermentation."}, {"t": "Transformation du cacao", "q": "Humidité des fèves après torréfaction ?", "k": "c", "o": ["Environ 2,5 %", "Environ 15 %", "Environ 40 %"], "a": 0, "e": "La torréfaction abaisse l'humidité à 2,5 %, évapore l'acide acétique résiduel et fragilise la pelure."}, {"t": "Transformation du cacao", "q": "Quelle part de la production est séchée naturellement au soleil ?", "k": "c", "o": ["Environ 95 %", "Environ 50 %", "Environ 5 %"], "a": 0, "e": "Séchage naturel : 95 % de la production (5 à 20 jours). Artificiel : 5 % (15 à 36 h)."}, {"t": "Transformation du cacao", "q": "Séchage artificiel : l'acide acétique est…", "k": "c", "o": ["Mal éliminé", "Mieux éliminé qu'au soleil"], "a": 0, "e": "Rapide et homogène, mais acide acétique mal éliminé, qualité inférieure et label BIO impossible."}, {"t": "Transformation du cacao", "q": "Humidité visée après séchage ?", "k": "c", "o": ["Environ 7 %", "Environ 25 %", "Environ 55 %"], "a": 0, "e": "On passe d'environ 55 % à 7 % d'humidité ; au-delà de 7 %, risque de moisissures."}, {"t": "Transformation du cacao", "q": "Comment extrait-on le beurre de cacao de la pâte de cacao ?", "k": "s", "ok": ["pressage", "presse", "pression"], "a": "Par pressage (pression hydraulique), qui laisse un tourteau.", "e": "Le tourteau est broyé et tamisé pour donner la poudre de cacao."}, {"t": "Transformation du cacao", "q": "L'alcalinisation (procédé hollandais) de la poudre de cacao…", "k": "c", "o": ["Adoucit le goût et fonce la couleur", "Éclaircit la couleur", "Augmente l'acidité"], "a": 0, "e": "Elle adoucit l'amertume et l'acidité et améliore la dispersion dans les liquides."}, {"t": "Transformation du cacao", "q": "Durée du conchage ?", "k": "c", "o": ["De 8 à 72 heures", "De 5 à 10 minutes", "De 15 à 40 minutes"], "a": 0, "e": "Conchage en 2 temps : à sec (45-50 °C) puis liquide."}, {"t": "Transformation du cacao", "q": "Dose de lécithine ajoutée en fin de conchage ?", "k": "c", "o": ["0,3 à 0,7 %", "5 à 10 %", "Plus de 20 %"], "a": 0, "e": "La lécithine (E322) est incorporée en fin de conchage liquide."}, {"t": "Transformation du cacao", "q": "Finesse des particules après mélange et affinage avec le sucre ?", "k": "c", "o": ["18 à 20 microns", "80 à 100 microns", "Plus de 1 mm"], "a": 0, "e": "Le pré-broyage donne la pâte de cacao (80-100 microns), l'affinage descend à 18-20 microns."}, {"t": "Transformation du cacao", "q": "Délai maximal avant l'écabossage après la récolte ?", "k": "c", "o": ["5 jours", "1 mois", "Aucun délai"], "a": 0, "e": "Écabossage sous 5 jours ; la cabosse ouverte devient vite un milieu favorable aux levures."}, {"t": "Beurre de cacao et rhéologie", "q": "Quel cristal du beurre de cacao est le seul stable ?", "k": "s", "ok": ["beta", "bêta"], "a": "Le cristal bêta (31 à 35 °C).", "e": "Les formes gamma, alpha, bêta seconde et bêta prime sont instables."}, {"t": "Beurre de cacao et rhéologie", "q": "Point de fusion du cristal bêta, le seul stable ?", "k": "c", "o": ["31 à 35 °C", "13 à 17 °C", "50 à 55 °C"], "a": 0, "e": "Gamma 13-17 °C, alpha 17-20 °C, bêta seconde 22-24 °C, bêta prime 26-28 °C, bêta 31-35 °C."}, {"t": "Beurre de cacao et rhéologie", "q": "L'acide stéarique du beurre de cacao est…", "k": "c", "o": ["Saturé", "Insaturé"], "a": 0, "e": "Stéarique (~35 %) et palmitique (~26 %) sont saturés ; oléique (~34 %) et linoléique (~3 %) sont insaturés."}, {"t": "Beurre de cacao et rhéologie", "q": "Les acides gras saturés donnent au beurre de cacao…", "k": "c", "o": ["Sa dureté à température ambiante", "Son fondant en bouche"], "a": 0, "e": "Les insaturés (oléique, linoléique) participent au fondant en bouche."}, {"t": "Beurre de cacao et rhéologie", "q": "Quel antioxydant naturel protège le beurre de cacao du rancissement ?", "k": "s", "ok": ["tocopherol"], "a": "Le tocophérol.", "e": "Le beurre de cacao est solide et cassant à température ambiante, fondant à température du corps."}, {"t": "Beurre de cacao et rhéologie", "q": "Quel appareil mesure la viscosité d'un chocolat ?", "k": "c", "o": ["Le viscosimètre rotatif", "Le réfractomètre", "Le densimètre"], "a": 0, "e": "On mesure la viscosité (Pa.s) et la limite d'écoulement (Pa)."}, {"t": "Beurre de cacao et rhéologie", "q": "Parmi ces facteurs, lequel n'influence pas la pré-cristallisation ?", "k": "c", "o": ["La couleur de l'emballage", "La température", "La friction"], "a": 0, "e": "Les 3 facteurs sont la température (courbe de tempérage), la friction et la vitesse."}, {"t": "Ganaches", "q": "L'AW mesure…", "k": "c", "o": ["La disponibilité de l'eau, pas sa teneur", "La quantité totale d'eau", "Le taux de sucre"], "a": 0, "e": "Elle détermine la stabilité et la conservation de la ganache."}, {"t": "Ganaches", "q": "Au-delà de quelle AW la prolifération bactérienne démarre-t-elle ?", "k": "c", "o": ["0,86", "0,50", "0,20"], "a": 0, "e": "Au-delà de 0,86, conservation de 2 à 3 semaines maximum."}, {"t": "Ganaches", "q": "Citez une matière première qui abaisse l'AW d'une ganache.", "k": "s", "ok": ["sorbitol", "inverti", "glucose", "saccharose", "sucre"], "a": "Sorbitol, sucre inverti, glucose ou sucre.", "e": "Ces matières fixent l'eau et améliorent la conservation."}, {"t": "Ganaches", "q": "Ganache cadrée à une température trop basse : on risque…", "k": "c", "o": ["Une cristallisation prématurée et une texture granuleuse", "Une évaporation excessive", "Rien de particulier"], "a": 0, "e": "Trop élevée : évaporation excessive et risque de rupture de l'émulsion."}, {"t": "Ganaches", "q": "Ganache qui tranche : une solution est de…", "k": "c", "o": ["Reprendre au mixeur et rééquilibrer eau / matière grasse", "Chauffer fortement", "Ajouter de la couverture"], "a": 0, "e": "Causes : manque d'eau ou excès de matière grasse, mauvaise dispersion, température trop élevée."}, {"t": "Ganaches", "q": "Conditions idéales de conservation des bonbons de chocolat en boutique ?", "k": "c", "o": ["14 à 18 °C et 55 à 65 % d'humidité", "25 à 30 °C et 30 % d'humidité", "4 °C et 90 % d'humidité"], "a": 0, "e": "De manière stable, sans variation."}, {"t": "Ganaches", "q": "Vous changez de couverture et la texture change : que faire ?", "k": "c", "o": ["Recalculer le poids de chocolat avec la table analytique", "Ne rien changer", "Doubler la crème"], "a": 0, "e": "La teneur en beurre de cacao et en cacao sec varie d'une couverture à l'autre."}, {"t": "Ganaches", "q": "Dose recommandée de sorbitol dans une ganache sans alcool ?", "k": "c", "o": ["Environ 5 % (jamais plus de 10 %)", "Environ 30 %", "Moins de 0,1 %"], "a": 0, "e": "Le sorbitol (E420) est anti-cristallisant et réduit l'HRE ; effet laxatif au-delà de 10 %."}, {"t": "Ganaches", "q": "La lécithine porte le code…", "k": "c", "o": ["E322", "E330", "E420"], "a": 0, "e": "Émulsifiant extrait du soja ou du tournesol."}, {"t": "Sucres et édulcorants", "q": "Que signifie DE dans « sirop de glucose DE 38 » ?", "k": "s", "ok": ["dextrose"], "a": "Dextrose Équivalent : intensité d'hydrolyse de l'amidon.", "e": "Plus le DE est élevé, plus le sirop est fluide et hygroscopique."}, {"t": "Sucres et édulcorants", "q": "Quel sirop de glucose pour une ganache ?", "k": "c", "o": ["DE élevé (environ 60)", "DE bas (environ 38)"], "a": 0, "e": "Plus hygroscopique et anti-cristallisant. Pour un sucre cuit : DE bas (38), meilleur pouvoir liant et moins de brunissement."}, {"t": "Sucres et édulcorants", "q": "Quel appareil mesure le Brix d'un sirop ?", "k": "c", "o": ["Le réfractomètre", "Le densimètre", "Le thermomètre"], "a": 0, "e": "Le densimètre mesure en degrés Baumé, le thermomètre en °C."}, {"t": "Sucres et édulcorants", "q": "Citez un agent anti-cristallisant pour ralentir la recristallisation d'un sirop.", "k": "s", "ok": ["glucose", "inverti", "sorbitol"], "a": "Glucose, sucre inverti (ou sorbitol).", "e": "Ils perturbent l'organisation des molécules de saccharose."}, {"t": "Sucres et édulcorants", "q": "Le sucre inverti est obtenu par hydrolyse du…", "k": "c", "o": ["Saccharose", "Lactose", "Amidon"], "a": 0, "e": "Il est composé de glucose et de fructose."}, {"t": "Sucres et édulcorants", "q": "« Graisser » un sucre, c'est…", "k": "c", "o": ["Le travailler pour forcer une cristallisation fine (ex. fondant)", "Y ajouter du beurre", "Le caraméliser"], "a": 0, "e": "On obtient une masse fine, opaque et onctueuse."}, {"t": "Sucres et édulcorants", "q": "Le lévulose est un autre nom du…", "k": "c", "o": ["Fructose", "Glucose", "Lactose"], "a": 0, "e": "On le trouve dans les fruits, les légumes, les fruits secs et le miel."}, {"t": "Additifs", "q": "Pectine jaune : elle gélifie…", "k": "c", "o": ["En milieu acide, sans thermoréversibilité", "À chaud uniquement, thermoréversible"], "a": 0, "e": "Pectine jaune : pH 3,5-3,8, sels retardateurs, pâtes de fruits. Pectine NH : thermoréversible, nappages."}, {"t": "Additifs", "q": "Le code E334 correspond à…", "k": "c", "o": ["L'acide tartrique", "L'acide citrique", "La crème de tartre"], "a": 0, "e": "E330 acide citrique, E334 acide tartrique, E336 crème de tartre."}, {"t": "Additifs", "q": "Le degré Bloom mesure…", "k": "c", "o": ["La force gélifiante de la gélatine", "La pureté du sucre", "L'acidité"], "a": 0, "e": "De 50 à 300, au gelmètre. Gélatine or : 200-210, argent : 180, bronze : 150."}, {"t": "Additifs", "q": "Citez un rôle d'un antioxydant.", "k": "s", "ok": ["rancissement", "noircissement", "oxygene", "vitamine"], "a": "Éviter le rancissement des graisses ou le noircissement des fruits.", "e": "Il empêche l'influence de l'oxygène de l'air."}, {"t": "Législation et hygiène", "q": "Extrait sec minimum d'une confiture ?", "k": "c", "o": ["45 % (55 % pour l'extra)", "25 %", "80 %"], "a": 0, "e": "La marmelade est réservée aux agrumes."}, {"t": "Législation et hygiène", "q": "Quelle part de graisses végétales autorisées peut-on ajouter au chocolat ?", "k": "c", "o": ["5 % maximum du produit fini", "25 %", "Aucune"], "a": 0, "e": "Illipé, palme, karité, sal, noyau de mangue, kokum gurgi ; à mentionner dans la liste des ingrédients."}, {"t": "Législation et hygiène", "q": "Nougat de Montélimar : part minimale de miel ?", "k": "c", "o": ["25 % du poids de matière sèche des matières sucrantes", "5 %", "60 %"], "a": 0, "e": "Aération à l'albumine d'œuf, seul arôme autorisé : vanille naturelle."}, {"t": "Législation et hygiène", "q": "HACCP : que signifie le sigle ? (donnez un mot de l'anglais)", "k": "s", "ok": ["hazard", "point"], "a": "Hazard Analysis Critical Control Point : analyse des dangers et points critiques.", "e": "On définit des points critiques (CCP) avec limites, surveillance et actions correctives."}, {"t": "Législation et hygiène", "q": "Un produit « préemballé » est…", "k": "c", "o": ["Scellé, sans modification possible par le client", "Modifiable par le client sans toucher à l'emballage"], "a": 0, "e": "Il est soumis à l'étiquetage réglementaire complet. Le vrac peut être modifié par le client."}, {"t": "Confiseries techniques", "q": "Un fondant confiseur se cuit…", "k": "c", "o": ["Au boulé (120 à 124 °C)", "Au caramel (170 °C)", "À 80 °C"], "a": 0, "e": "Puis on le travaille (graissage) pour cristalliser finement."}, {"t": "Confiseries techniques", "q": "Durée de repos d'un candissage ?", "k": "c", "o": ["12 heures sans vibration", "20 minutes", "3 jours avec agitation"], "a": 0, "e": "Les vibrations donneraient une cristallisation irrégulière."}, {"t": "Confiseries techniques", "q": "Sur quel principe physique repose la fabrication d'un fruit confit ?", "k": "s", "ok": ["osmose"], "a": "L'osmose : l'eau du fruit sort, le sirop entre.", "e": "Le confisage remplace l'eau de végétation par du sucre."}, {"t": "Confiseries techniques", "q": "Berlingots qui remouillent : la cause est…", "k": "c", "o": ["Trop de sucre inverti (hygroscopique)", "Un refroidissement trop rapide", "Un manque de sucre"], "a": 0, "e": "Solutions : acide en fin de cuisson, glucose à DE bas ajouté à 100-110 °C, emballage étanche une fois refroidi."}, {"t": "Confiseries techniques", "q": "Pâte de fruits : pourcentage minimal de fruit ?", "k": "c", "o": ["50 %", "10 %", "90 %"], "a": 0, "e": "Avec un pH maîtrisé (3,5-3,8) pour la gélification de la pectine."}];
+const KEYWORDS = [{"id": "q1", "t": "Conditions de culture du cacaoyer (Q1)", "p": "10 pts", "kw": [{"l": "Climat équatorial", "a": ["equatorial"]}, {"l": "Humidité ~75 %", "a": ["75"]}, {"l": "Chaleur moyenne 26 °C", "a": ["26"]}, {"l": "Altitude 300-700 m", "a": ["300", "700"]}, {"l": "Sol bien drainé", "a": ["draine"]}, {"l": "Azote", "a": ["azote"]}, {"l": "Potasse", "a": ["potasse"]}, {"l": "Ombre / agroforesterie", "a": ["agroforest", "ombre"]}, {"l": "Protégé du soleil direct et du vent", "a": ["vent", "soleil", "lumiere"]}, {"l": "Densité ~600/ha (jusqu'à 1000)", "a": ["600", "1000"]}, {"l": "Épuisement des sols / apport artificiel", "a": ["epuis", "engrais", "artificiel"]}, {"l": "Durée de vie et rendement réduits", "a": ["duree de vie", "rendement"]}]}, {"id": "q2a", "t": "Maladies du cacaoyer — 4 à citer (Q2a)", "p": "15 pts", "kw": [{"l": "Moniliose", "a": ["monilio", "manilio"]}, {"l": "Phytophthora", "a": ["phytoph", "phytop"]}, {"l": "Balai de sorcière", "a": ["balai"]}, {"l": "Œdème des pousses / swollen shoot", "a": ["swollen", "oedeme"]}, {"l": "Maladie fongique (champignon)", "a": ["fongique", "champignon"]}, {"l": "Virus (cochenille)", "a": ["virus", "cochenille"]}, {"l": "Taches brunes sur les fruits", "a": ["tache"]}, {"l": "Amérique du Sud (balai de sorcière)", "a": ["amerique du sud"]}, {"l": "L'arbre meurt en 2-3 ans (swollen shoot)", "a": ["2 3 ans", "2-3 ans", "meurt", "tue"]}]}, {"id": "q2b", "t": "Conséquences de la propagation des maladies (Q2b)", "p": "10 pts", "kw": [{"l": "Gestion renforcée de la plantation", "a": ["gestion", "entretien"]}, {"l": "Élimination des cabosses infectées", "a": ["elimin"]}, {"l": "Coûts de production en hausse", "a": ["cout"]}, {"l": "Baisse du rendement (quantité)", "a": ["rendement", "quantite"]}, {"l": "Baisse de la qualité des fèves", "a": ["qualite"]}, {"l": "Pourriture / chute des fruits", "a": ["pourriture", "chute"]}, {"l": "Mort des arbres", "a": ["=mort", "meurent", "mourir", "meurt"]}, {"l": "Propagation (eau, vent, insectes, matériel)", "a": ["vent", "insecte", "materiel"]}, {"l": "Parcelles voisines touchées", "a": ["voisin"]}, {"l": "Revenus des producteurs réduits / économie", "a": ["revenu", "economi"]}]}, {"id": "q3a", "t": "La fermentation du cacao (Q3a)", "p": "18 pts", "kw": [{"l": "Élimination du mucilage", "a": ["mucilage"]}, {"l": "Perte du pouvoir germinatif", "a": ["germina"]}, {"l": "Moins d'amertume", "a": ["amer"]}, {"l": "Moins d'astringence", "a": ["astringen"]}, {"l": "Précurseurs d'arômes", "a": ["precurseur"]}, {"l": "Durée 5 à 7 jours", "a": ["5 a 7", "5-7", "5 7"]}, {"l": "Phase alcoolique (24-48 h)", "a": ["alcoolique"]}, {"l": "Anaérobie", "a": ["anaerobie"]}, {"l": "Levures", "a": ["levure"]}, {"l": "Éthanol + CO₂", "a": ["ethanol", "dioxyde", "co2"]}, {"l": "L'acidité diminue", "a": ["acidite diminu", "=ph", "acidite"]}, {"l": "Phase acétique", "a": ["acetique"]}, {"l": "Aérobie / brassage", "a": ["aerobie", "brass", "retourn"]}, {"l": "Bactéries acétiques", "a": ["bacterie"]}, {"l": "Acide acétique", "a": ["acide acetique"]}, {"l": "Exothermique, jusqu'à 50 °C", "a": ["50", "exotherm"]}, {"l": "Polyphénols → tanins (brunissement)", "a": ["tanin", "polyphenol", "brun"]}, {"l": "Fèves ardoisées si non fermentées", "a": ["ardois"]}]}, {"id": "q3b", "t": "Fermentation mal conduite (Q3b)", "p": "10 pts", "kw": [{"l": "Mauvaise formation des arômes", "a": ["arome"]}, {"l": "Cacao amer / astringent", "a": ["amer", "astringen"]}, {"l": "Goûts indésirables (acide, végétal, moisi)", "a": ["vegetal", "moisi", "indesirable"]}, {"l": "Mucilage mal éliminé", "a": ["mucilage", "pulpe"]}, {"l": "Séchage difficile", "a": ["sechage"]}, {"l": "Risque de moisissures", "a": ["moisissure", "microbio"]}, {"l": "Fèves violettes / ardoisées", "a": ["violet", "ardois"]}, {"l": "Trop courte : manque d'acidité", "a": ["trop courte", "manque d acidite"]}, {"l": "Trop longue : excès d'acide acétique", "a": ["trop longue", "exces"]}, {"l": "Fèves déclassées, valeur en baisse", "a": ["declass", "valeur", "prix"]}]}, {"id": "q4", "t": "Les émulsifiants (Q4)", "p": "20 pts", "kw": [{"l": "Mélange de 2 phases non miscibles", "a": ["miscible"]}, {"l": "Eau / matière grasse", "a": ["=eau", "=gras", "matiere grasse"]}, {"l": "Stabilise l'émulsion", "a": ["stabilis"]}, {"l": "Molécule tensio-active", "a": ["tensio"]}, {"l": "Partie hydrophile", "a": ["hydrophile"]}, {"l": "Partie lipophile", "a": ["lipophile"]}, {"l": "Placés à l'interface", "a": ["interface"]}, {"l": "Réduit la tension interfaciale", "a": ["tension"]}, {"l": "Empêche le regroupement des gouttelettes", "a": ["gouttelette"]}, {"l": "Lécithine (soja / tournesol)", "a": ["lecithine"]}, {"l": "PGPR", "a": ["pgpr"]}]}, {"id": "q5", "t": "Cuisson du sucre, saturation, candissage (Q5)", "p": "13 pts", "kw": [{"l": "Cuivre (bien nettoyé)", "a": ["cuivre"]}, {"l": "Cuisson lente puis accélération", "a": ["lente", "lentement"]}, {"l": "Sucre en morceaux (sans impuretés)", "a": ["morceau"]}, {"l": "Eau de source", "a": ["source"]}, {"l": "Thermomètre étalonné", "a": ["etalon"]}, {"l": "Écumer / nettoyer", "a": ["ecum", "nettoy"]}, {"l": "Saturation = quantité maximale de sucre dissous", "a": ["maximale", "maximum"]}, {"l": "À une température donnée", "a": ["temperature donnee"]}, {"l": "Sursaturation / recristallise", "a": ["sursatur", "recristal"]}, {"l": "100 °C : 3 fois son poids", "a": ["3 fois"]}, {"l": "20 °C : 1,7 fois", "a": ["1.7", "1,7"]}, {"l": "1 L d'eau + 2,5 kg de sucre", "a": ["2.5", "2,5"]}, {"l": "Brix 72", "a": ["72"]}, {"l": "Couvrir, stabiliser", "a": ["stabilis", "couvr"]}, {"l": "Mise au candi", "a": ["candi"]}, {"l": "Égouttage", "a": ["egoutt"]}, {"l": "Cristallisation", "a": ["cristallisation"]}, {"l": "Séchage", "a": ["sechage"]}]}, {"id": "q6", "t": "L'hydrolyse (Q6)", "p": "12 pts", "kw": [{"l": "Réaction chimique", "a": ["reaction"]}, {"l": "Molécules complexes → simples", "a": ["complexe", "simple"]}, {"l": "Nécessite de l'eau", "a": ["=eau"]}, {"l": "Chaleur", "a": ["chaleur"]}, {"l": "Catalyseur (enzyme, acide, courant)", "a": ["catalyseur", "enzyme"]}, {"l": "Acidité des pulpes", "a": ["acidite", "acide"]}, {"l": "Mélanger les fruits / pH-mètre / correcteurs", "a": ["=ph", "melang", "correcteur"]}, {"l": "Vitesse / durée de cuisson", "a": ["cuisson", "duree"]}, {"l": "Sucre inverti", "a": ["inverti"]}, {"l": "Glucose", "a": ["glucose"]}, {"l": "Fructose", "a": ["fructose"]}]}, {"id": "q7", "t": "Le beurre de cacao polymorphe (Q7)", "p": "10 pts", "kw": [{"l": "Plusieurs formes cristallines", "a": ["formes cristallines", "plusieurs formes", "polymorph"]}, {"l": "Point de fusion différent", "a": ["point de fusion"]}, {"l": "Dépend de la température", "a": ["temperature"]}, {"l": "Pré-cristallisation / tablage", "a": ["cristallisation", "tablage"]}, {"l": "Structure la plus stable", "a": ["stable"]}, {"l": "Couverture brillante", "a": ["brillant"]}, {"l": "Cassante", "a": ["cassant"]}, {"l": "Bien tempérée", "a": ["temper"]}]}, {"id": "q8", "t": "Fruits secs : variétés, rancissement, conservation (Q8)", "p": "14 pts", "kw": [{"l": "Noisette : Corabel / Fertile de Coutard (FR)", "a": ["corabel", "coutard"]}, {"l": "Autres noisettes (Ennis, Segorbe, Tonda…)", "a": ["ennis", "segorbe", "tonda", "tombul", "negret"]}, {"l": "Amande : Princesse / Languedoc / Fournat (FR)", "a": ["princesse", "languedoc", "fournat"]}, {"l": "Autres amandes (Marcona, Valencia, Tuono…)", "a": ["marcona", "valencia", "tuono", "non pareil", "monterey"]}, {"l": "Rancissement", "a": ["rancissement", "rance"]}, {"l": "Oxydation des matières grasses", "a": ["oxydation"]}, {"l": "Oxygène / lumière / chaleur", "a": ["oxygene", "lumiere", "chaleur"]}, {"l": "Odeur et goût désagréables", "a": ["desagreable", "odeur"]}, {"l": "À l'abri de la lumière", "a": ["abri de la lumiere"]}, {"l": "Au sec", "a": ["=sec", "au sec"]}, {"l": "Température stable ~15 °C", "a": ["15"]}, {"l": "Poussière, insectes, odeurs", "a": ["poussiere", "insecte", "odeur"]}]}, {"id": "q9", "t": "Blanchiment de pralinés en boutique (Q9)", "p": "15 pts", "kw": [{"l": "Blanchiment sucrier (sugar bloom)", "a": ["sucrier", "sugar"]}, {"l": "Humidité / condensation", "a": ["humidite", "condensation"]}, {"l": "Variation de température (ex. +4 °C)", "a": ["variation"]}, {"l": "Sucre transformé en sirop", "a": ["sirop"]}, {"l": "Surface collante puis rugueuse", "a": ["collant", "rugueu"]}, {"l": "Blanchiment gras (fat bloom)", "a": ["fat bloom", "=gras"]}, {"l": "Matière grasse déstabilisée", "a": ["destabilis", "instable"]}, {"l": "Mauvaise pré-cristallisation", "a": ["precristallisation", "pre cristallisation", "cristallisation"]}, {"l": "Remonte en surface, grasse au toucher", "a": ["surface"]}, {"l": "Solution sucrier : hygrométrie / point de rosée / conditionnement", "a": ["hygrometrie", "rosee", "conditionnement", "hre"]}, {"l": "Solution gras : température de coulage / broyage / recette", "a": ["coulage", "broyage", "recette"]}, {"l": "Stockage maîtrisé", "a": ["stockage"]}]}, {"id": "q10", "t": "La traçabilité (Q10)", "p": "12 pts", "kw": [{"l": "Origine, parcours, destination", "a": ["origine", "parcours", "destination"]}, {"l": "De la réception à la vente", "a": ["reception", "vente"]}, {"l": "Sécurité alimentaire", "a": ["securite"]}, {"l": "Protection du consommateur", "a": ["consommateur"]}, {"l": "Retrait / rappel rapide", "a": ["retrait", "rappel"]}, {"l": "Fournisseurs, lots, dates de réception", "a": ["=lot", "=lots", "fournisseur"]}, {"l": "Lots de fabrication (dates, recettes, quantités)", "a": ["fabrication"]}, {"l": "Produits finis : date de fabrication, DDM", "a": ["ddm"]}, {"l": "Conservation des documents (bons de livraison)", "a": ["livraison", "document"]}, {"l": "PMS", "a": ["pms", "maitrise sanitaire"]}, {"l": "HACCP", "a": ["haccp"]}]}, {"id": "q11", "t": "Table analytique de ganache : analyse (Q11)", "p": "25 pts", "kw": [{"l": "Balance EST / eau non respectée", "a": ["balance"]}, {"l": "Eau trop élevée (27 % > 25 %)", "a": ["27", "trop d eau", "trop eau", "quantite d eau", "eau trop"]}, {"l": "EST insuffisant (73 % < 75 %)", "a": ["73", "extrait sec"]}, {"l": "Beurre de cacao suffisant (18,49 %)", "a": ["beurre de cacao"]}, {"l": "MG totale suffisante mais haute (38,6 %)", "a": ["mg totale", "matiere grasse"]}, {"l": "Matière sucrante insuffisante (21,95 %)", "a": ["sucr", "sucre"]}, {"l": "AW trop élevée", "a": ["=aw", "activite de l eau"]}, {"l": "Conservation limitée", "a": ["conservation"]}, {"l": "Développement microbien précoce", "a": ["microb"]}, {"l": "Ajouter sorbitol (6-7 %) et/ou miel", "a": ["sorbitol", "miel"]}, {"l": "Réduire la crème", "a": ["creme"]}]}];
+const THEMES = ["Fermentation", "Culture et maladies", "Émulsifiants", "Sirops et hydrolyse", "Cristallisation et blanchiment", "Fruits secs", "Traçabilité", "Table analytique de ganache", "Transformation du cacao", "Beurre de cacao et rhéologie", "Ganaches", "Sucres et édulcorants", "Additifs", "Législation et hygiène", "Confiseries techniques"];
+
+function norm(s){
+  s = (s||'').toLowerCase().replace(/œ/g,'oe').replace(/æ/g,'ae');
+  s = s.normalize('NFD').replace(/[̀-ͯ]/g,'');
+  s = s.replace(/(\d),(\d)/g,'$1.$2').replace(/[’'‘`]/g,' ');
+  s = s.replace(/[^a-z0-9.%+ -]/g,' ').replace(/\s+/g,' ').trim();
+  return ' ' + s + ' ';
+}
+function has(text, alt){
+  if(alt.charAt(0)==='='){
+    const a = norm(alt.slice(1)).trim();
+    return new RegExp('(^|[^a-z0-9])'+a.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'([^a-z0-9]|$)').test(text);
+  }
+  return text.indexOf(norm(alt).trim()) !== -1;
+}
+function shuffle(a){ a = a.slice(); for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]];} return a; }
+function esc(s){ return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+
+/* tabs */
+document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>{
+  document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x===b));
+  document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('active',p.id==='panel-'+b.dataset.tab));
+}));
+
+/* ===== FLASH ===== */
+const selected = new Set();
+function renderChips(){
+  const wrap = document.getElementById('themeChips');
+  wrap.innerHTML = THEMES.map(t=>`<button class="chip${selected.has(t)?' active':''}" data-t="${esc(t)}">${esc(t)}</button>`).join('');
+  wrap.querySelectorAll('.chip').forEach(c=>c.addEventListener('click',()=>{
+    const t=c.dataset.t; selected.has(t)?selected.delete(t):selected.add(t); renderChips(); updateCount();
+  }));
+}
+function pool(){ return FLASH.filter(f=>selected.size===0||selected.has(f.t)); }
+function updateCount(){ document.getElementById('countInfo').textContent = pool().length+' question'+(pool().length>1?'s':''); }
+
+let deck=[], idx=0, good=0, wrong=[], answered=false;
+function startDeck(list){
+  deck = shuffle(list); idx=0; good=0; wrong=[];
+  document.getElementById('flashSetup').style.display='none';
+  document.getElementById('flashEnd').style.display='none';
+  document.getElementById('flashPlay').style.display='block';
+  showQ();
+}
+function showQ(){
+  answered=false;
+  const f = deck[idx];
+  document.getElementById('fTheme').textContent = f.t;
+  document.getElementById('fCount').textContent = (idx+1)+' / '+deck.length+' · '+good+' juste'+(good>1?'s':'');
+  document.getElementById('fBar').style.width = (idx/deck.length*100)+'%';
+  document.getElementById('fQ').textContent = f.q;
+  const fb = document.getElementById('fFb'); fb.className='fb'; fb.innerHTML='';
+  document.getElementById('fNext').style.display='none';
+  const box = document.getElementById('fAnswer');
+  if(f.k==='c'){
+    const order = shuffle(f.o.map((t,i)=>({t,i})));
+    box.innerHTML = '<div class="opts">'+order.map(o=>`<button class="opt" data-i="${o.i}">${esc(o.t)}</button>`).join('')+'</div>';
+    box.querySelectorAll('.opt').forEach(b=>b.addEventListener('click',()=>{
+      if(answered) return;
+      const ok = Number(b.dataset.i)===f.a;
+      box.querySelectorAll('.opt').forEach(x=>{ x.disabled=true; if(Number(x.dataset.i)===f.a) x.classList.add('good'); });
+      if(!ok) b.classList.add('bad');
+      finish(ok, f.o[f.a]);
+    }));
+  } else {
+    box.innerHTML = '<input type="text" id="fInput" placeholder="Ta réponse courte…" autocomplete="off"><div class="row" style="margin-top:12px"><button class="btn" id="fValid">Valider</button><button class="btn ghost" id="fSkip">Je ne sais pas</button></div>';
+    const inp = document.getElementById('fInput'); inp.focus();
+    const check = ()=>{
+      if(answered) return;
+      const t = norm(inp.value);
+      finish(inp.value.trim()!=='' && f.ok.some(a=>has(t,a)), f.a);
+    };
+    document.getElementById('fValid').addEventListener('click',check);
+    inp.addEventListener('keydown',e=>{ if(e.key==='Enter') check(); });
+    document.getElementById('fSkip').addEventListener('click',()=>{ if(!answered) finish(false, f.a); });
+  }
+}
+function finish(ok, goodAnswer){
+  answered=true;
+  const f = deck[idx];
+  if(ok) good++; else wrong.push(f);
+  const fb = document.getElementById('fFb');
+  fb.className = 'fb show '+(ok?'good':'bad');
+  fb.innerHTML = `<b class="t">${ok?'Juste.':'À retenir.'}</b>${ok?'':'Réponse : '+esc(goodAnswer)+'<br>'}${esc(f.e)}`;
+  document.getElementById('fCount').textContent = (idx+1)+' / '+deck.length+' · '+good+' juste'+(good>1?'s':'');
+  const nx = document.getElementById('fNext');
+  nx.textContent = idx+1<deck.length ? 'Suivante →' : 'Voir mon score';
+  nx.style.display='inline-block';
+  const inp = document.getElementById('fInput'); if(inp){ inp.disabled=true; document.getElementById('fValid').disabled=true; document.getElementById('fSkip').disabled=true; }
+}
+document.getElementById('fNext').addEventListener('click',()=>{
+  idx++;
+  if(idx<deck.length) showQ(); else endDeck();
+});
+function endDeck(){
+  document.getElementById('flashPlay').style.display='none';
+  document.getElementById('flashEnd').style.display='block';
+  document.getElementById('eScore').textContent = good+' / '+deck.length;
+  const r = good/deck.length;
+  document.getElementById('eMsg').textContent = wrong.length===0 ? 'Série sans faute.' : (r>=0.75 ? 'Bon score. Refais tes erreurs pour les fixer.' : 'Reprends tes erreurs, puis refais une série dans quelques heures.');
+  document.getElementById('eRetryWrong').style.display = wrong.length? 'inline-block':'none';
+}
+document.getElementById('startFlash').addEventListener('click',()=>{ const p=pool(); if(p.length) startDeck(p); });
+document.getElementById('eRetryWrong').addEventListener('click',()=>startDeck(wrong));
+document.getElementById('eAgain').addEventListener('click',()=>{
+  document.getElementById('flashEnd').style.display='none';
+  document.getElementById('flashSetup').style.display='block';
+});
+
+/* ===== MOTS-CLES ===== */
+const sel = document.getElementById('kwSelect');
+sel.innerHTML = KEYWORDS.map((k,i)=>`<option value="${i}">${esc(k.t)}</option>`).join('');
+function curKw(){ return KEYWORDS[Number(sel.value)]; }
+function updInfo(){ const k=curKw(); document.getElementById('kwInfo').textContent = k.p+' à l\'annale · '+k.kw.length+' mots-clés / idées attendus'; document.getElementById('kwResult').innerHTML=''; }
+sel.addEventListener('change',updInfo); updInfo();
+document.getElementById('kwCheck').addEventListener('click',()=>{
+  const k=curKw(); const txt = norm(document.getElementById('kwText').value);
+  if(txt.trim()===''){ document.getElementById('kwResult').innerHTML='<p class="hint">Écris d\'abord ta réponse.</p>'; return; }
+  const found = k.kw.filter(w=>w.a.some(a=>has(txt,a)));
+  const miss = k.kw.filter(w=>!found.includes(w));
+  document.getElementById('kwResult').innerHTML =
+    `<div class="score">${found.length} / ${k.kw.length}</div>`+
+    `<p class="hint" style="margin:0 0 8px">${miss.length===0?'Tous les mots-clés sont présents.':'Voici ce qu\'il te reste à retrouver ou à développer.'}</p>`+
+    (found.length?`<h4 style="margin:12px 0 4px;font-size:14px">Présents</h4><div class="kw">${found.map(w=>`<span class="kwp found">✓ ${esc(w.l)}</span>`).join('')}</div>`:'')+
+    (miss.length?`<h4 style="margin:12px 0 4px;font-size:14px">Manquants</h4><div class="kw">${miss.map(w=>`<span class="kwp miss">${esc(w.l)}</span>`).join('')}</div>`:'');
+});
+document.getElementById('kwShow').addEventListener('click',()=>{
+  const k=curKw();
+  document.getElementById('kwResult').innerHTML = `<h4 style="margin:0 0 4px;font-size:14px">Mots-clés attendus</h4><div class="kw">${k.kw.map(w=>`<span class="kwp hid">${esc(w.l)}</span>`).join('')}</div>`;
+});
+document.getElementById('kwClear').addEventListener('click',()=>{ document.getElementById('kwText').value=''; document.getElementById('kwResult').innerHTML=''; });
+
+/* thème */
+const tt=document.getElementById('themeToggle'), tl=document.getElementById('themeLabel');
+tt.addEventListener('click',()=>{
+  const light=document.documentElement.getAttribute('data-theme')==='light';
+  document.documentElement.setAttribute('data-theme',light?'dark':'light');
+  tl.textContent = light?'Mode clair':'Mode sombre';
+});
+renderChips(); updateCount();
+</script>
+</body>
+</html>

@@ -562,6 +562,24 @@ const EXAM_QUESTIONS = [
       <p>Réservé aux chocolats fabriqués uniquement à partir des graisses tirées des fèves de cacaoyer, sans aucune autre graisse végétale ajoutée, sans additifs, selon une recette respectueuse de la tradition.</p>
       <h4>« Pur beurre de cacao »</h4>
       <p>Ne concerne que la partie chocolat de la composition : il ne peut jamais qualifier un bonbon fourré dans son ensemble, mais peut qualifier son chocolat d'enrobage.</p>`
+  },
+  {
+    id: "tracabilite",
+    title: "Qu'est-ce que la traçabilité en chocolaterie, pourquoi est-elle obligatoire et comment est-elle mise en œuvre concrètement dans un atelier ?",
+    points: "12 pts — d'après l'annale BTM 2026 (proposition de sujet)",
+    hints: [
+      "Définis la traçabilité : origine, parcours, destination, de la réception jusqu'à la vente.",
+      "Justifie son caractère obligatoire (sécurité, retrait/rappel), puis donne 4 actions concrètes d'atelier."
+    ],
+    answerHtml: `
+      <h4>Définition</h4>
+      <p>Ensemble des moyens permettant de retrouver l'<b>origine</b>, le <b>parcours</b> et la <b>destination</b> d'une matière première ou d'un produit fini, de la réception jusqu'à la vente.</p>
+      <h4>Pourquoi obligatoire</h4>
+      <p>Pour garantir la <b>sécurité alimentaire</b>, protéger le consommateur et permettre un <b>retrait ou rappel rapide</b> des produits en cas de problème sanitaire (contamination, allergène non déclaré, défaut de qualité).</p>
+      <h4>Mise en œuvre concrète</h4>
+      <ul><li>Enregistrement des fournisseurs, <b>numéros de lots</b> et <b>dates de réception</b> des matières premières</li><li>Identification des lots de fabrication (dates, recettes, quantités)</li><li>Suivi des produits finis avec dates de fabrication et <b>DDM</b></li><li>Conservation des documents (bons de livraison, fiches de fabrication)</li></ul>
+      <h4>Cadre</h4>
+      <p>La traçabilité fait partie du <b>plan de maîtrise sanitaire (PMS)</b> et est indissociable de la méthode <b>HACCP</b> : elle démontre la maîtrise de l'hygiène.</p>`
   }
 ];
 
@@ -661,7 +679,7 @@ const SUGGESTED_QUESTIONS = [
 ];
 
 const GROQ_MODEL = "llama-3.3-70b-versatile";
-const RELAY_URL = "/.netlify/functions/chat";
+const RELAY_URL = "https://technobtm.netlify.app/.netlify/functions/chat";
 
 let chatHistory = [];
 

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Révisions — Ancrage, banque de questions, annales</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#20110a;--surface:#2b1810;--border:rgba(242,232,216,0.14);--text:#f2e8d8;--text-dim:rgba(242,232,216,0.62);--caramel:#b8783a;--caramel-hi:#cf9455;--on-accent:#20110a;}
+  [data-theme="light"]{--bg:#f7efdf;--surface:#fffaf0;--border:rgba(61,36,22,0.16);--text:#3a2415;--text-dim:rgba(58,36,21,0.62);--caramel:#a8632b;--caramel-hi:#94551f;--on-accent:#fffaf0;}
+  *{box-sizing:border-box;}
+  html,body{margin:0;height:100%;}
+  body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;display:flex;flex-direction:column;}
+  header{background:var(--surface);border-bottom:1px solid var(--border);padding:10px 14px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;}
+  header a.back{font-size:12.5px;color:var(--text-dim);text-decoration:none;white-space:nowrap;}
+  header a.back:hover{color:var(--text);}
+  .tabs{display:flex;gap:8px;flex:1;flex-wrap:wrap;}
+  .tab{flex:1;min-width:120px;background:transparent;border:1px solid var(--border);color:var(--text-dim);padding:9px 12px;border-radius:10px;font:600 13.5px 'Inter',sans-serif;cursor:pointer;}
+  .tab.active{background:linear-gradient(155deg,var(--caramel-hi),var(--caramel));color:var(--on-accent);border-color:transparent;}
+  .theme{background:transparent;border:1px solid var(--border);color:var(--text-dim);padding:9px 12px;border-radius:10px;font:13px 'Inter',sans-serif;cursor:pointer;white-space:nowrap;}
+  main{flex:1;position:relative;min-height:0;}
+  iframe{position:absolute;inset:0;width:100%;height:100%;border:0;display:none;background:var(--bg);}
+  iframe.active{display:block;}
+</style>
+</head>
+<body>
+<header>
+  <a class="back" href="../index.html">← Hub</a>
+  <div class="tabs">
+    <button class="tab active" data-i="0">Ancrage</button>
+    <button class="tab" data-i="1">Banque de questions</button>
+    <button class="tab" data-i="2">Entraînement annales</button>
+  </div>
+  <button class="theme" id="theme">Mode clair</button>
+</header>
+<main>
+  <iframe id="f0" title="Ancrage" data-src="ancrage-repetition-espacee.html"></iframe>
+  <iframe id="f1" title="Banque de questions" data-src="revisions-generales.html"></iframe>
+  <iframe id="f2" title="Entraînement annales" data-src="entrainement-annales.html"></iframe>
+</main>
+<script>
+var theme='dark';
+function applyTheme(fr){ try{ fr.contentDocument.documentElement.setAttribute('data-theme',theme);}catch(e){} }
+function show(i){
+  document.querySelectorAll('.tab').forEach(function(t){t.classList.toggle('active',Number(t.dataset.i)===i);});
+  document.querySelectorAll('iframe').forEach(function(f,k){
+    f.classList.toggle('active',k===i);
+    if(k===i && !f.src){ f.addEventListener('load',function(){applyTheme(f);},{once:true}); f.src=f.dataset.src; }
+  });
+  try{ history.replaceState(null,'','#'+i); }catch(e){}
+}
+document.querySelectorAll('.tab').forEach(function(t){t.addEventListener('click',function(){show(Number(t.dataset.i));});});
+document.getElementById('theme').addEventListener('click',function(){
+  theme = theme==='dark'?'light':'dark';
+  document.documentElement.setAttribute('data-theme',theme);
+  this.textContent = theme==='dark'?'Mode clair':'Mode sombre';
+  document.querySelectorAll('iframe').forEach(applyTheme);
+});
+var h=parseInt((location.hash||'').slice(1),10); show(h>=0&&h<=2?h:0);
+</script>
+</body>
+</html>

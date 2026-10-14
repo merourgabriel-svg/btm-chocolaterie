@@ -651,7 +651,7 @@
 
       <fieldset id="fieldset-composants">
         <legend class="section-title">Fabrication à plusieurs éléments <span class="hint" style="font-weight:400;">(optionnel)</span></legend>
-        <p class="hint" style="margin-top:-0.4rem;">Si ta fabrication combine plusieurs éléments distincts (ex. une ganache et une pâte de fruit), définis-les ici avec leur recette propre et leur part dans le produit fini. Le calcul fusionne automatiquement les ingrédients, dans les bonnes proportions, dans la liste ci-dessous.</p>
+        <p class="hint" style="margin-top:-0.4rem;">Si ta fabrication combine plusieurs éléments distincts (ex. un caramel et une pâte de fruit), définis-les ici avec leur recette propre, leur part dans le produit fini, et leur évaporation propre si l'un ou l'autre (ou les deux) perd de l'eau à sa cuisson. Le calcul fusionne automatiquement les ingrédients, dans les bonnes proportions, dans la liste ci-dessous.</p>
         <div id="composants-list"></div>
         <button type="button" class="btn-add" id="btn-add-composant">+ Ajouter un élément (ganache, pâte de fruit, biscuit...)</button>
         <button type="button" class="btn-primary-ghost" id="btn-calc-composants" style="margin-top:0.6rem;">Calculer et fusionner dans les ingrédients</button>
@@ -1115,6 +1115,19 @@ function poidsFiniTotalProduit(){
 
 let composantRowCount = 0;
 
+function parseRecipeLine(line){
+  line = line.trim();
+  if(!line) return null;
+  // Nom puis quantité, séparés par espace(s)/tabulation/deux-points/tiret/point-virgule,
+  // avec un éventuel "g" à la fin (ex: "Sucre 250g", "Sucre : 250", "Sucre\t250 g")
+  const m = line.match(/^(.+?)[\s:;\t\-]+(\d+(?:[.,]\d+)?)\s*g?\s*$/i);
+  if(!m) return null;
+  const nom = m[1].trim().replace(/[-:;]+$/,"").trim();
+  const qte = parseFloat(m[2].replace(",", "."));
+  if(!nom || isNaN(qte) || qte <= 0) return null;
+  return { nom, qte };
+}
+
 function ajouteComposantIngredient(listEl, prefill){
   const row = document.createElement("div");
   row.className = "composant-ing-row";
@@ -1142,7 +1155,7 @@ function ajouteComposant(prefill){
     <div class="row2">
       <div class="field" style="margin-bottom:0.6rem;">
         <label>Nom de l'élément</label>
-        <input type="text" class="composant-nom" placeholder="ex. Ganache">
+        <input type="text" class="composant-nom" placeholder="ex. Caramel">
       </div>
       <div class="field" style="margin-bottom:0.6rem;">
         <label>Part dans le produit fini</label>
@@ -1151,19 +1164,60 @@ function ajouteComposant(prefill){
         </div>
       </div>
     </div>
+    <div class="field" style="margin-bottom:0.6rem; max-width:260px;">
+      <label>Évaporation à la cuisson de cet élément <span class="hint" style="margin:0;">(optionnel)</span></label>
+      <div class="inline-num">
+        <input type="number" class="composant-evap" min="0" max="95" step="0.5" value="0"> <span class="hint" style="margin:0;">%</span>
+      </div>
+    </div>
     <p class="hint" style="margin:0 0 0.5rem;">Recette propre de cet élément (dans les proportions que tu utilises, peu importe la taille du lot) :</p>
     <div class="composant-ing-list"></div>
     <button type="button" class="btn-add composant-add-ing" style="font-size:0.78rem; padding:0.4rem 0.7rem;">+ Ajouter un ingrédient à cet élément</button>
+    <button type="button" class="btn-add composant-toggle-paste" style="font-size:0.78rem; padding:0.4rem 0.7rem;">📋 Coller une recette</button>
+    <div class="composant-paste-box" style="display:none; margin-top:0.6rem;">
+      <p class="hint" style="margin:0 0 0.4rem;">Colle ta recette, une ligne par ingrédient (ex. <code>Sucre 250g</code> ou <code>Sucre&nbsp;&nbsp;&nbsp;250</code>, copié depuis Excel/Word fonctionne aussi) :</p>
+      <textarea class="composant-paste-textarea" rows="6" style="width:100%; font-family:inherit; font-size:0.82rem; border:1px solid var(--line); border-radius:var(--radius); padding:0.5rem;" placeholder="Sucre 250g&#10;Beurre de cacao 120g&#10;Purée de framboise 300g"></textarea>
+      <button type="button" class="btn-primary-ghost composant-parse-paste" style="margin-top:0.5rem; font-size:0.78rem; padding:0.4rem 0.7rem;">Répartir dans la liste</button>
+      <span class="composant-paste-result hint" style="margin-left:0.5rem;"></span>
+    </div>
     <button type="button" class="remove-btn composant-remove">Retirer cet élément</button>
   `;
   const ingList = block.querySelector(".composant-ing-list");
   block.querySelector(".composant-add-ing").addEventListener("click", ()=> ajouteComposantIngredient(ingList));
   block.querySelector(".composant-remove").addEventListener("click", ()=> block.remove());
+
+  const pasteBox = block.querySelector(".composant-paste-box");
+  block.querySelector(".composant-toggle-paste").addEventListener("click", ()=>{
+    pasteBox.style.display = pasteBox.style.display === "none" ? "block" : "none";
+  });
+  block.querySelector(".composant-parse-paste").addEventListener("click", ()=>{
+    const textarea = block.querySelector(".composant-paste-textarea");
+    const resultSpan = block.querySelector(".composant-paste-result");
+    const lines = textarea.value.split("\n");
+    let added = 0, skipped = 0;
+    // retire les lignes d'ingrédients vides déjà présentes avant de coller
+    [...ingList.querySelectorAll(".composant-ing-row")].forEach(row => {
+      const nomVal = row.querySelector(".cing-nom").value.trim();
+      const qteVal = row.querySelector(".cing-qte").value.trim();
+      if(!nomVal && !qteVal) row.remove();
+    });
+    lines.forEach(line => {
+      const parsed = parseRecipeLine(line);
+      if(parsed){ ajouteComposantIngredient(ingList, parsed); added++; }
+      else if(line.trim()) skipped++;
+    });
+    resultSpan.textContent = added
+      ? `${added} ingrédient${added>1?"s":""} ajouté${added>1?"s":""}${skipped ? ", " + skipped + " ligne(s) non reconnue(s)" : ""}.`
+      : "Aucune ligne reconnue — vérifie le format (nom puis quantité).";
+    if(added){ textarea.value = ""; }
+  });
+
   document.getElementById("composants-list").appendChild(block);
 
   if(prefill){
     if(prefill.nom) block.querySelector(".composant-nom").value = prefill.nom;
     if(prefill.pct!==null && prefill.pct!==undefined) block.querySelector(".composant-pct").value = prefill.pct;
+    if(prefill.evap!==null && prefill.evap!==undefined) block.querySelector(".composant-evap").value = prefill.evap;
     (prefill.ingredients||[]).forEach(ing => ajouteComposantIngredient(ingList, ing));
   } else {
     ajouteComposantIngredient(ingList);
@@ -1187,6 +1241,7 @@ function calculeEtFusionneComposants(){
   for(const block of blocks){
     const nom = block.querySelector(".composant-nom").value.trim();
     const pct = parseFloat(block.querySelector(".composant-pct").value);
+    const evap = parseFloat(block.querySelector(".composant-evap").value) || 0;
     const ingRows = [...block.querySelectorAll(".composant-ing-row")];
     const ingredients = ingRows.map(r => ({
       nom: r.querySelector(".cing-nom").value.trim(),
@@ -1195,21 +1250,25 @@ function calculeEtFusionneComposants(){
 
     if(!nom){ el.className = "calc-readout"; el.textContent = "Chaque élément doit avoir un nom."; return; }
     if(!pct || pct<=0 || pct>100){ el.className = "calc-readout"; el.textContent = `Indique une part valide (entre 0 et 100%) pour « ${nom} ».`; return; }
+    if(evap < 0 || evap >= 95){ el.className = "calc-readout"; el.textContent = `L'évaporation de « ${nom} » doit être comprise entre 0 et 95%.`; return; }
     if(ingredients.length === 0){ el.className = "calc-readout"; el.textContent = `Renseigne au moins un ingrédient avec sa quantité pour « ${nom} ».`; return; }
 
     const totalComposant = ingredients.reduce((s,i)=> s + i.qte, 0);
-    composants.push({ nom, pct, ingredients, totalComposant });
+    composants.push({ nom, pct, evap, ingredients, totalComposant });
     pctTotal += pct;
   }
 
   const enrobageRow = document.querySelector('.ing-row[data-enrobage="1"]');
   const pctEnrobage = enrobageRow ? (parseFloat(document.getElementById("enrobage_pct").value) || 0) : 0;
 
-  // Fusion : chaque ingrédient contribue (sa part dans sa propre recette) × (part de son élément dans le produit fini)
+  // Fusion : chaque ingrédient contribue (sa part dans sa propre recette) × (part de son élément dans
+  // le produit fini), corrigé de l'évaporation propre à cet élément : plus il perd d'eau à la cuisson,
+  // plus il faut de recette brute pour obtenir le même poids fini de cet élément.
   const noms = [];
   composants.forEach(comp => {
+    const facteurEvap = 1 - (comp.evap / 100);
     comp.ingredients.forEach(ing => {
-      const contribution = (ing.qte / comp.totalComposant) * comp.pct;
+      const contribution = (ing.qte / comp.totalComposant) * comp.pct / facteurEvap;
       const existant = [...document.querySelectorAll(".ing-row")].find(r =>
         !estRowEnrobage(r) && r.querySelector(".ing-nom").value.trim().toLowerCase() === ing.nom.toLowerCase()
       );
@@ -1227,7 +1286,7 @@ function calculeEtFusionneComposants(){
   updateTotalDisplay();
 
   el.className = pctTotal + pctEnrobage > 100.5 ? "calc-readout" : "calc-readout ok";
-  let msg = `Fusionné : ${composants.length} élément${composants.length>1?"s":""} (${composants.map(c=>c.nom+" "+c.pct+"%").join(", ")}) représentant ${round1(pctTotal)}% du produit fini`;
+  let msg = `Fusionné : ${composants.length} élément${composants.length>1?"s":""} (${composants.map(c=>c.nom+" "+c.pct+"%"+(c.evap?" — évap. "+c.evap+"%":"")).join(", ")}) représentant ${round1(pctTotal)}% du produit fini`;
   if(pctEnrobage) msg += ` + enrobage ${pctEnrobage}%`;
   msg += `. ${noms.length} ingrédient${noms.length>1?"s":""} ajouté${noms.length>1?"s":""}/mis à jour dans la liste ci-dessous — complète allergène/additif/rôle si besoin.`;
   if(pctTotal + pctEnrobage > 100.5){

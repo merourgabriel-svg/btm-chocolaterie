@@ -514,6 +514,22 @@ const EXAM_QUESTIONS = [
       <p>C'est une <b>oxydation</b> (parfois enzymatique) des acides gras <b>insaturés</b>, au niveau de leurs doubles liaisons carbone-carbone. Des radicaux libres s'attaquent aux acides gras, entraînant la rupture des chaînes de carbone et libérant des <b>aldéhydes</b> — non toxiques, mais au goût et à l'odeur très désagréables.</p>
       <h4>Facteurs aggravants</h4>
       <p>Le phénomène est accéléré par l'exposition à l'<b>oxygène</b> de l'air, à la <b>lumière</b> et à la <b>chaleur</b>. Plus le corps gras est insaturé, plus l'attaque est facile — c'est pourquoi les matières sensibles sont souvent protégées par un antioxydant.</p>`
+  },
+  {
+    id: "varietes-noisettes-amandes",
+    title: "Pour la confection de vos pralinés : citez 3 variétés de noisettes et 3 variétés d'amandes dont 1 française pour chaque",
+    points: "10 pts (5 + 5) — d'après l'annale BTM 2026 (proposition de sujet)",
+    hints: [
+      "Le sujet demande de souligner la variété française pour chaque fruit sec.",
+      "Pense à la Corabel et à la Fertile de Coutard pour la noisette, et à la Princesse ou à la Languedoc pour l'amande."
+    ],
+    answerHtml: `
+      <h4>Noisettes (3 à citer, dont 1 française)</h4>
+      <ul><li><b>Corabel</b> (française)</li><li><b>Fertile de Coutard</b> (française)</li><li>Ennis</li><li>Segorbe</li><li>Pauetet</li><li>Tombul</li><li>Negret</li><li>Tonda Gentile, Tonda Romana, Tonda Griffoni (Italie)</li></ul>
+      <h4>Amandes (3 à citer, dont 1 française)</h4>
+      <ul><li><b>Fournat de Brézenaud</b> (française)</li><li><b>Languedoc</b> (française)</li><li><b>Princesse</b> (française)</li><li>Marcona</li><li>Desmayo Largueta</li><li>Valencia</li><li>Tuono</li><li>Ferraduel</li><li>Abiod</li><li>Non Pareil</li><li>Monterey</li></ul>
+      <h4>Rappel : conservation des fruits secs</h4>
+      <p>Principale altération : le <b>rancissement</b> (oxydation des matières grasses, favorisée par l'oxygène, la lumière, la chaleur, un stockage trop long ou mal protégé). Conserver à l'abri de la lumière, au sec, à température stable (environ 15 °C), à l'abri de la poussière, des insectes et des fortes odeurs.</p>`
   }
 ];
 
@@ -613,7 +629,7 @@ const SUGGESTED_QUESTIONS = [
 ];
 
 const GROQ_MODEL = "llama-3.3-70b-versatile";
-const RELAY_URL = "/.netlify/functions/chat";
+const RELAY_URL = "https://technobtm.netlify.app/.netlify/functions/chat";
 
 let chatHistory = [];
 

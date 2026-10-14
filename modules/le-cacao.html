@@ -712,6 +712,26 @@ const EXAM_QUESTIONS = [
         <li>Problèmes diplomatiques</li>
       </ul>
       <p>Les producteurs ne pouvant pas garder le cacao indéfiniment, ils sont désavantagés dans les négociations — d'où l'intérêt de tracer le cacao via des réseaux fiables qui protègent et valorisent les producteurs.</p>`
+  },
+  {
+    id: "maladies-consequences",
+    title: "Quelles peuvent être les conséquences de la propagation des maladies du cacaoyer sur les lieux de plantation ?",
+    points: "10 pts — d'après l'annale BTM 2026 (proposition de sujet)",
+    hints: [
+      "Pense à trois niveaux : la gestion de la plantation, le rendement (quantité/qualité des fèves), puis la propagation.",
+      "Termine par l'impact économique pour les producteurs et les pays producteurs."
+    ],
+    answerHtml: `
+      <h4>Sur la gestion des plantations</h4>
+      <p>Les producteurs doivent renforcer leurs pratiques : entretien des parcelles, élimination des cabosses infectées, traitements ou variétés résistantes. Ces mesures demandent plus de travail et augmentent les coûts de production.</p>
+      <h4>Sur le rendement</h4>
+      <p>Pourriture des cabosses, chute des fruits, affaiblissement des arbres : baisse de la quantité <b>et</b> de la qualité des fèves. Dans les cas graves, des arbres meurent et la production baisse durablement.</p>
+      <h4>Sur la propagation</h4>
+      <p>Les maladies voyagent par l'eau, le vent, les insectes ou le matériel contaminé : toute la plantation, voire les parcelles voisines, peuvent être touchées si aucune mesure n'est prise.</p>
+      <h4>Sur l'économie</h4>
+      <p>Baisse des rendements + hausse des dépenses = revenus des producteurs réduits, avec un effet possible sur l'économie des pays producteurs.</p>
+      <h4>Rappel : 4 maladies à citer</h4>
+      <ul><li><b>Moniliose</b> : maladie fongique qui se développe à l'intérieur de la cabosse, souvent blessée.</li><li><b>Phytophthora</b> : maladie fongique, taches brunes sur les fruits ; cabosses à éliminer loin de la plantation, nettoyage assidu des mains.</li><li><b>Balai de sorcière</b> : maladie fongique des coussinets floraux et bourgeons végétatifs ; l'arbre ne fructifie plus mais les branches se développent jusqu'à l'épuiser. Surtout en Amérique du Sud.</li><li><b>Œdème des pousses (« swollen shoot »)</b> : virus transmis par la cochenille ; fruits plus petits, gonflement des tiges et racines ; tue l'arbre en 2-3 ans.</li></ul>`
   }
 ];
 
@@ -811,7 +831,7 @@ const SUGGESTED_QUESTIONS = [
 ];
 
 const GROQ_MODEL = "llama-3.3-70b-versatile";
-const RELAY_URL = "/.netlify/functions/chat";
+const RELAY_URL = "https://technobtm.netlify.app/.netlify/functions/chat";
 
 let chatHistory = [];
 

@@ -627,6 +627,27 @@ const EXAM_QUESTIONS = [
       <p>Elle stabilise une émulsion entre matières sèches (sucre, cacao, éventuellement lait en poudre) et matières grasses (beurre de cacao), apporte fluidité, onctuosité et homogénéité, et permet d'influer sur la rhéologie (viscosité).</p>
       <h4>Moment d'incorporation</h4>
       <p>Elle est ajoutée en <b>fin de conchage liquide</b>, à un dosage de <b>0,3 à 0,7%</b>.</p>`
+  },
+  {
+    id: "fermentation-description",
+    title: "La fermentation est une étape fondamentale de la transformation du cacao : décrivez cette étape et développez",
+    points: "18 pts (Q3a : 3 + 15 pts) — d'après l'annale BTM 2026 (proposition de sujet)",
+    hints: [
+      "Commence par les objectifs de la fermentation (mucilage, pouvoir germinatif, saveurs désagréables, précurseurs d'arômes), puis la durée et le dispositif.",
+      "Détaille ensuite les 2 phases : alcoolique (anaérobie) puis acétique (aérobie), avec température et brassages."
+    ],
+    answerHtml: `
+      <h4>Objectifs</h4>
+      <ul><li>Éliminer le <b>mucilage</b></li><li>Supprimer le <b>pouvoir germinatif</b> de la graine</li><li>Diminuer les saveurs désagréables (<b>astringence</b>, <b>amertume</b>)</li><li>Former les <b>précurseurs d'arômes</b> du chocolat</li></ul>
+      <h4>Conduite</h4>
+      <p>Opération complexe : fermentation du mucilage + réactions biochimiques dans les cotylédons. Durée : 5 à 7 jours en bacs. Les fèves sont déversées dans de grandes auges de bois, recouvertes de feuilles de bananier ou de nattes. Elles ne doivent pas être enfermées dans des récipients étanches : les jus doivent pouvoir s'écouler librement.</p>
+      <h4>Phase 1 — fermentation alcoolique (24 à 48 h, anaérobie)</h4>
+      <p>Le mucilage, stérile dans le fruit, est ensemencé spontanément par les micro-organismes de l'environnement (apportés par l'écabossage). Pauvreté en oxygène + pulpe sucrée + pH bas = milieu favorable aux <b>levures</b> (2 à 30 millions de cellules par gramme, au centre de la masse). Certaines sécrètent des enzymes qui déstructurent le mucilage : il se liquéfie et s'écoule. Les sucres sont transformés en <b>éthanol + CO₂</b>. L'acidité diminue, la température augmente très légèrement.</p>
+      <h4>Phase 2 — fermentation acétique (aérobie)</h4>
+      <p>Il faut remuer et retourner les fèves (premier brassage vers 24 h, puis toutes les 48 h ; ou quotidiennement pour la régularité). L'air permet aux <b>bactéries acétiques</b> d'oxyder l'éthanol en <b>acide acétique</b> : réaction très exothermique, la température monte jusqu'à <b>50 °C</b>, ce qui tue le germe (perte du pouvoir germinatif).</p>
+      <p>La chaleur et l'acide modifient la perméabilité des cellules des cotylédons : la fève gonfle, le contenu des cellules diffuse. Les substances amères et les composés phénoliques (astringence) migrent vers l'extérieur et s'écoulent. Les polyphénols s'associent aux protéines en complexes insolubles (<b>tanins</b>) qui brunissent les fèves. Les <b>précurseurs d'arôme</b> se forment, amertume et astringence diminuent.</p>
+      <h4>Résultat</h4>
+      <p>Criollo : brun jaune ; Forastero : brun violet. Les fèves non fermentées sont dites <b>« ardoisées »</b> (cosse dure, germe compact).</p>`
   }
 ];
 
@@ -726,7 +747,7 @@ const SUGGESTED_QUESTIONS = [
 ];
 
 const GROQ_MODEL = "llama-3.3-70b-versatile";
-const RELAY_URL = "/.netlify/functions/chat";
+const RELAY_URL = "https://technobtm.netlify.app/.netlify/functions/chat";
 
 let chatHistory = [];
 

@@ -546,6 +546,23 @@ const EXAM_QUESTIONS = [
       <p>Issu du citron. Utilisé comme acidifiant et correcteur d'acidité, surtout en lien avec les gélifiants comme catalyseur dans les pâtes de fruits.</p>
       <h4>Acide tartrique (E334, pH 3,2, donc plus acide)</h4>
       <p>Principal acide du vin de raisin. C'est aussi un antioxydant, un régulateur de pH et un stabilisateur — utilisé pour accentuer l'acidulé mais surtout pour <b>graisser les sucres cuits</b> (sucre d'art), un usage que l'acide citrique ne remplit pas de la même façon.</p>`
+  },
+  {
+    id: "emulsifiants",
+    title: "Les émulsifiants sont très utiles en chocolaterie-confiserie : définissez-les, expliquez comment ils agissent et citez-en 2 présents dans nos fabrications",
+    points: "20 pts — d'après l'annale BTM 2026 (proposition de sujet)",
+    hints: [
+      "Définition : deux phases non miscibles (eau / matière grasse) que l'émulsifiant aide à mélanger et à stabiliser.",
+      "Mécanisme : molécule à double affinité (hydrophile / lipophile) placée à l'interface, qui réduit la tension interfaciale."
+    ],
+    answerHtml: `
+      <h4>Définition</h4>
+      <p>Les émulsifiants facilitent et stabilisent le mélange de deux matières <b>non miscibles</b> naturellement (par exemple eau / matière grasse).</p>
+      <h4>Mode d'action</h4>
+      <p>Ce sont des molécules <b>tensio-actives</b> à <b>double affinité</b> : une partie <b>hydrophile</b> attirée par l'eau et une partie <b>lipophile</b> attirée par les graisses. Incorporées à une préparation, elles se placent à l'<b>interface eau / graisse</b> : elles réduisent la tension interfaciale, facilitent la dispersion en fines gouttelettes et empêchent leur regroupement.</p>
+      <p>En chocolaterie, ils améliorent la fluidité, la texture et la stabilité des préparations, tout en limitant la séparation des phases.</p>
+      <h4>Exemples courants</h4>
+      <ul><li><b>Lécithine de soja</b></li><li><b>Lécithine de tournesol</b></li><li><b>PGPR</b> (polyricinoléate de polyglycérol, qui agit sur la viscosité / le seuil d'écoulement)</li></ul>`
   }
 ];
 
@@ -645,7 +662,7 @@ const SUGGESTED_QUESTIONS = [
 ];
 
 const GROQ_MODEL = "llama-3.3-70b-versatile";
-const RELAY_URL = "/.netlify/functions/chat";
+const RELAY_URL = "https://technobtm.netlify.app/.netlify/functions/chat";
 
 let chatHistory = [];
 

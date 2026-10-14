@@ -632,6 +632,36 @@ const EXAM_QUESTIONS = [
         <li>Chocolat au lait ou fourré : <b>6 à 8 mois</b></li>
         <li>Confiseries avec produits laitiers (ganaches, truffes, pralinés) : <b>1 mois</b> maximum sans conservateur</li>
       </ul>`
+  },
+  {
+    id: "polymorphisme",
+    title: "Le beurre de cacao est dit « polymorphe » : expliquez ce terme et son impact sur la pré-cristallisation de la couverture",
+    points: "10 pts (5 + 5) — d'après l'annale BTM 2026 (proposition de sujet)",
+    hints: [
+      "Polymorphe : plusieurs formes cristallines, avec un point de fusion différent pour chacune.",
+      "Pourquoi doit-on pré-cristalliser ? Quelle forme cherche-t-on à obtenir ?"
+    ],
+    answerHtml: `
+      <h4>a) Polymorphisme</h4>
+      <p>Le beurre de cacao peut s'organiser sous <b>plusieurs formes cristallines</b>, chacune ayant un <b>point de fusion différent</b>. Pour une couverture, cela correspond aux différentes structures de cristaux que le beurre de cacao peut former selon la température.</p>
+      <h4>b) Impact sur la pré-cristallisation</h4>
+      <p>Cette propriété explique la nécessité de la pré-cristallisation lors du tablage : il faut <b>former et sélectionner la structure cristalline la plus stable</b>, avec le point de fusion approprié, pour obtenir une couverture <b>brillante, cassante et bien tempérée</b>.</p>`
+  },
+  {
+    id: "blanchiment-praline",
+    title: "En boutique, vos bonbons de chocolat pralinés noisette ont blanchi : quels sont les 2 types de blanchiment et quelles solutions (2 pour chacun) ?",
+    points: "15 pts (10 + 5) — d'après l'annale BTM 2026 (proposition de sujet)",
+    hints: [
+      "Deux blanchiments : l'un lié au sucre et à l'humidité, l'autre à la matière grasse déstabilisée.",
+      "Pour les solutions : pense à la fabrication (pré-cristallisation, broyage, recette) pour le gras et à l'environnement (température, hygrométrie, conditionnement) pour le sucre."
+    ],
+    answerHtml: `
+      <h4>Blanchiment sucrier (sugar bloom)</h4>
+      <p>Dû à l'<b>humidité</b>, à la suite d'une variation de température et d'une condensation sur le produit (ex. produit laissé trop longtemps à +4 °C). La condensation transforme en sirop le sucre de la couverture, qui remonte en surface : surface <b>collante</b>, puis le sirop cristallise et la surface devient <b>rugueuse</b>.</p>
+      <p><b>Solutions</b> : point de rosée, variations de température limitées, contrôle et stabilité de l'hygrométrie, HRE, hygroscopicité des matières premières, méthodes de conditionnement…</p>
+      <h4>Blanchiment gras (fat bloom)</h4>
+      <p>Provient d'une <b>matière grasse déstabilisée</b> : mauvaise pré-cristallisation ou variations de température trop importantes au stockage. Il peut aussi apparaître sur des intérieurs gras comme les <b>pralinés</b> : le gras instable remonte en surface, qui devient <b>grasse au toucher</b>.</p>
+      <p><b>Solutions</b> : température de coulage, méthode et finesse de broyage, composition de la recette (poudre de lait, collage…), couleur du chablon et de l'enrobage, conditions de stockage…</p>`
   }
 ];
 
@@ -731,7 +761,7 @@ const SUGGESTED_QUESTIONS = [
 ];
 
 const GROQ_MODEL = "llama-3.3-70b-versatile";
-const RELAY_URL = "/.netlify/functions/chat";
+const RELAY_URL = "https://technobtm.netlify.app/.netlify/functions/chat";
 
 let chatHistory = [];
 

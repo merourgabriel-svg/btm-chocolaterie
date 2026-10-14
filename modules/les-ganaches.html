@@ -643,6 +643,26 @@ const EXAM_QUESTIONS = [
         <li><b>La ganache sèche ou « remouille »</b> : mauvais réglage de la formule par rapport à l'hygrométrie ambiante.</li>
         <li><b>La ganache « colle » au palais</b> : excès de sirop de glucose.</li>
       </ul>`
+  },
+  {
+    id: "table-analytique-annale",
+    title: "Table analytique : analysez et commentez cette ganache cadrée (crème 35 %, sorbitol, miel, lactée 38 %, fondante 70 %, beurre) et proposez des corrections",
+    points: "25 pts — d'après l'annale BTM 2026 (proposition de sujet)",
+    hints: [
+      "Compare chaque totaux aux paramètres d'une ganache cadrée : eau (25 % max), EST (75 % min), beurre de cacao (18 % min), MG totale (25-40 %), matière sucrante (25-35 %).",
+      "Conclus sur l'AW et la conservation, puis propose une correction : plus de sorbitol/miel, moins de crème."
+    ],
+    answerHtml: `
+      <h4>Données de la recette (1760 g)</h4>
+      <p>Crème 35 % 750 g · sorbitol 80 g · miel 60 g · couverture lactée 38 % 350 g · couverture fondante 70 % 435 g · beurre laitier 85 g.</p>
+      <h4>Résultats de la table analytique</h4>
+      <ul><li>Eau : 475,95 g soit <b>27,04 %</b> (paramètre : 25 % max)</li><li>EST : 1284,05 g soit <b>72,96 %</b> (paramètre : 75 % min)</li><li>Beurre de cacao : 325,44 g soit <b>18,49 %</b> (paramètre : 18 % min)</li><li>Cacao dégraissé : 146,24 g soit 8,31 %</li><li>MG laitière : 353,20 g soit 20,07 %</li><li>MG totale : 678,64 g soit <b>38,59 %</b> (paramètre : 25 à 40 %)</li><li>Matière sucrante : 386,37 g soit <b>21,95 %</b> (paramètre : 25 à 35 %)</li></ul>
+      <h4>Analyse</h4>
+      <ul><li>La <b>balance EST / eau n'est pas respectée</b> (trop d'eau, pas assez d'extrait sec).</li><li>Le beurre de cacao est suffisant.</li><li>La MG totale est suffisante, mais dans une fourchette haute.</li><li>Le sucre est en quantité <b>insuffisante</b>.</li></ul>
+      <h4>Conséquence sur la conservation</h4>
+      <p>Trop d'eau et pas assez de sucre pour la fixer : l'<b>AW</b> n'est pas satisfaisante, la ganache subirait un développement microbien précoce et sa conservation serait limitée.</p>
+      <h4>Correction proposée</h4>
+      <p>Augmenter le sorbitol (6-7 %) et/ou le miel pour apporter l'extrait sec et le sucre manquants, éventuellement en <b>réduisant la crème</b> : on rééquilibre ainsi la balance eau / EST.</p>`
   }
 ];
 
@@ -742,7 +762,7 @@ const SUGGESTED_QUESTIONS = [
 ];
 
 const GROQ_MODEL = "llama-3.3-70b-versatile";
-const RELAY_URL = "/.netlify/functions/chat";
+const RELAY_URL = "https://technobtm.netlify.app/.netlify/functions/chat";
 
 let chatHistory = [];
 
