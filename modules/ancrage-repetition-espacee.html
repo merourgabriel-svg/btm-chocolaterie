@@ -331,7 +331,7 @@ function renderSessionCard(){
 }
 
 const GROQ_MODEL = "llama-3.3-70b-versatile";
-const RELAY_URL = "https://technobtm.netlify.app/.netlify/functions/chat";
+const RELAY_URL = "/.netlify/functions/chat";
 
 async function askTuteur(userPrompt){
   const response = await fetch(RELAY_URL, {
