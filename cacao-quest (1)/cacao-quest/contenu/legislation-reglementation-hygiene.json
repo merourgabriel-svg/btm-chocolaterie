@@ -1,0 +1,456 @@
+{
+ "id": "legislation",
+ "numero": 7,
+ "titre": "Législation, réglementation et hygiène",
+ "lecons": [
+  {
+   "t": "La traçabilité",
+   "qs": [
+    {
+     "k": "multi",
+     "an": "Sujet BTM 2026 · Q10",
+     "q": "La traçabilité. Coche les éléments de réponse attendus.",
+     "o": [
+      "Retrouver l'origine, le parcours et la destination d'un produit",
+      "De la réception à la vente",
+      "Sécurité alimentaire et protection du consommateur",
+      "Retrait ou rappel rapide en cas de problème",
+      "Enregistrer fournisseurs, lots, dates, recettes",
+      "Fait partie du PMS, liée à l'HACCP",
+      "Elle sert à fixer le prix de vente",
+      "Elle est facultative pour les artisans"
+     ],
+     "c": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+     ],
+     "x": "Conserver aussi les bons de livraison et les fiches de fabrication."
+    },
+    {
+     "k": "qcm",
+     "an": "Sujet BTM 2026 · Q10",
+     "q": "Qu'est-ce que la traçabilité en chocolaterie ?",
+     "o": [
+      "Retrouver l'origine, le parcours et la destination d'un produit, de la réception à la vente",
+      "Fixer le prix de vente",
+      "Calculer une recette",
+      "Nettoyer l'atelier"
+     ],
+     "a": 0,
+     "x": "Elle concerne matières premières et produits finis."
+    },
+    {
+     "k": "qcm",
+     "an": "Sujet BTM 2026 · Q10",
+     "q": "Pourquoi la traçabilité est-elle obligatoire ?",
+     "o": [
+      "Sécurité alimentaire : retirer ou rappeler vite un produit en cas de problème",
+      "Pour augmenter le prix",
+      "Pour allonger la DLC",
+      "Pour la publicité"
+     ],
+     "a": 0,
+     "x": "Contamination, allergène non déclaré, défaut de qualité…"
+    },
+    {
+     "k": "pairs",
+     "an": "Sujet BTM 2026 · Q10",
+     "q": "Mise en œuvre à l'atelier : associe chaque étape à ce qu'on enregistre.",
+     "p": [
+      [
+       "Réception",
+       "Fournisseurs, lots, dates"
+      ],
+      [
+       "Fabrication",
+       "Dates, recettes, quantités"
+      ],
+      [
+       "Produits finis",
+       "Date de fabrication et DDM"
+      ]
+     ]
+    },
+    {
+     "k": "fill",
+     "an": "Sujet BTM 2026 · Q10",
+     "q": "La traçabilité fait partie du plan de ___ sanitaire (PMS).",
+     "o": [
+      "maîtrise",
+      "nettoyage",
+      "formation",
+      "vente"
+     ],
+     "a": 0,
+     "x": "Elle est indissociable de la méthode HACCP."
+    },
+    {
+     "k": "vf",
+     "an": "Sujet BTM 2026 · Q10",
+     "q": "Il faut conserver les bons de livraison et les fiches de fabrication.",
+     "a": true,
+     "x": "Ils prouvent la traçabilité en cas de contrôle ou de rappel."
+    },
+    {
+     "k": "qcm",
+     "an": "Annales BTM",
+     "q": "Quel est l'extrait sec minimum d'une confiture ?",
+     "o": [
+      "45 % (55 % pour une extra)",
+      "25 %",
+      "80 %",
+      "10 %"
+     ],
+     "a": 0,
+     "x": "55 % pour une confiture extra."
+    }
+   ]
+  },
+  {
+   "t": "Étiqueter loyalement",
+   "qs": [
+    {
+     "k": "qcm",
+     "q": "Quelle sanction maximale risque-t-on pour tromperie sur l'étiquette ?",
+     "o": [
+      "2 ans de prison et 37 500 € d'amende",
+      "Un simple avertissement",
+      "450 € seulement",
+      "La fermeture définitive automatique"
+     ],
+     "a": 0,
+     "x": "La simple méconnaissance des règles coûte, elle, à partir de 450 €."
+    },
+    {
+     "k": "vf",
+     "q": "Une photo réaliste de fruits sur un produit qui ne contient que des arômes est une tromperie.",
+     "a": true,
+     "x": "Interdiction d'induire le consommateur en erreur."
+    },
+    {
+     "k": "qcm",
+     "q": "Tous les chocolats sont sans cholestérol. Comment l'écrire correctement ?",
+     "o": [
+      "« Naturellement sans cholestérol »",
+      "« Sans cholestérol » en gros",
+      "« Garanti sans cholestérol »",
+      "On n'a pas le droit d'en parler"
+     ],
+     "a": 0,
+     "x": "Interdit de faire croire à une particularité que tous les produits similaires possèdent."
+    },
+    {
+     "k": "fill",
+     "q": "Faire une allusion qui permet d'identifier un concurrent, c'est du ___.",
+     "o": [
+      "dénigrement",
+      "marketing",
+      "parrainage",
+      "benchmarking"
+     ],
+     "a": 0,
+     "x": "Une concurrence déloyale qui engage la responsabilité civile."
+    }
+   ]
+  },
+  {
+   "t": "Les mentions obligatoires",
+   "qs": [
+    {
+     "k": "qcm",
+     "q": "Quelles mentions peuvent être écrites à la main ?",
+     "o": [
+      "La quantité nette et la date",
+      "La liste des ingrédients",
+      "Les allergènes",
+      "La dénomination de vente"
+     ],
+     "a": 0,
+     "x": "Tout le reste doit être dactylographié."
+    },
+    {
+     "k": "fill",
+     "q": "Les ingrédients sont listés par ordre ___ d'importance.",
+     "o": [
+      "décroissant",
+      "alphabétique",
+      "croissant",
+      "de couleur"
+     ],
+     "a": 0,
+     "x": "Selon leur poids à la mise en œuvre, additifs et arômes compris."
+    },
+    {
+     "k": "qcm",
+     "q": "Comment noter de la lécithine de soja dans les ingrédients ?",
+     "o": [
+      "Émulsifiant : lécithine de soja",
+      "E322",
+      "Émulsifiant : E322",
+      "Lécithine"
+     ],
+     "a": 0,
+     "x": "Un additif allergène doit être désigné par son nom, jamais par son seul numéro."
+    },
+    {
+     "k": "vf",
+     "q": "La quantité nette est obligatoire pour un bonbon de chocolat vendu à la pièce de 20 g.",
+     "a": false,
+     "x": "Faux : pas obligatoire sous 50 g pour un produit de chocolat vendu à la pièce."
+    },
+    {
+     "k": "qcm",
+     "q": "Un « nougat au miel et aux amandes » doit indiquer…",
+     "o": [
+      "Le pourcentage de miel et d'amandes",
+      "Le prix au kilo du miel",
+      "L'origine des amandes",
+      "Rien de plus"
+     ],
+     "a": 0,
+     "x": "Un ingrédient mis en valeur dans la dénomination impose son pourcentage."
+    },
+    {
+     "k": "pairs",
+     "q": "Associe chaque date à son usage.",
+     "p": [
+      [
+       "DLC",
+       "Produits rapidement périssables"
+      ],
+      [
+       "DDM (ex-DLUO)",
+       "Qualités gustatives garanties"
+      ],
+      [
+       "Numéro de lot",
+       "Traçabilité interne"
+      ]
+     ]
+    },
+    {
+     "k": "vf",
+     "q": "Un produit dont la DLC est atteinte peut encore être vendu sous la responsabilité du vendeur.",
+     "a": false,
+     "x": "Faux : il doit être retiré. C'est la DDM dépassée qui peut être vendue sous la responsabilité du revendeur."
+    }
+   ]
+  },
+  {
+   "t": "Les allergènes",
+   "qs": [
+    {
+     "k": "qcm",
+     "q": "Combien d'allergènes sont à déclaration obligatoire en Europe ?",
+     "o": [
+      "14",
+      "7",
+      "10",
+      "25"
+     ],
+     "a": 0,
+     "x": "Règlement INCO n°1169/2011."
+    },
+    {
+     "k": "pairs",
+     "q": "Associe chaque ingrédient courant en chocolaterie à son allergène.",
+     "p": [
+      [
+       "Praliné noisette",
+       "Fruits à coque"
+      ],
+      [
+       "Ganache à la crème",
+       "Lait"
+      ],
+      [
+       "Lécithine de soja",
+       "Soja"
+      ],
+      [
+       "Nougat au blanc d'œuf",
+       "Œufs"
+      ]
+     ]
+    },
+    {
+     "k": "qcm",
+     "q": "Sur un produit préemballé, comment signaler un allergène ?",
+     "o": [
+      "En le mettant en évidence dans la liste des ingrédients",
+      "Par un logo rouge",
+      "Uniquement sur demande du client",
+      "Au dos, en petits caractères"
+     ],
+     "a": 0,
+     "x": "Gras, italique ou souligné."
+    },
+    {
+     "k": "vf",
+     "q": "Pour un produit non préemballé, l'information allergènes doit être écrite près du produit.",
+     "a": true,
+     "x": "Décret n°2015-447 : une indication écrite, sans ambiguïté."
+    },
+    {
+     "k": "qcm",
+     "q": "La mention « peut contenir des traces de… » est…",
+     "o": [
+      "Un dernier recours si le risque ne peut pas être maîtrisé",
+      "Obligatoire sur tous les chocolats",
+      "Une protection juridique systématique",
+      "Interdite"
+     ],
+     "a": 0,
+     "x": "Le professionnel doit d'abord évaluer et limiter la contamination croisée."
+    },
+    {
+     "k": "fill",
+     "q": "La réaction allergique la plus grave est le choc ___.",
+     "o": [
+      "anaphylactique",
+      "thermique",
+      "glycémique",
+      "digestif"
+     ],
+     "a": 0,
+     "x": "Un risque vital, surtout chez les enfants et les adolescents."
+    }
+   ]
+  },
+  {
+   "t": "Les qualificatifs",
+   "qs": [
+    {
+     "k": "pairs",
+     "q": "Associe chaque qualificatif à sa condition.",
+     "p": [
+      [
+       "Maison",
+       "Intérieurs faits sur place, vente directe"
+      ],
+      [
+       "Artisanal",
+       "Fabricant ayant la qualité d'artisan"
+      ],
+      [
+       "Traditionnel",
+       "Seulement des graisses de cacao, sans additifs"
+      ]
+     ]
+    },
+    {
+     "k": "vf",
+     "q": "Un bonbon fourré peut être qualifié « pur beurre de cacao » dans son ensemble.",
+     "a": false,
+     "x": "Faux : la mention ne vaut que pour la partie chocolat, par exemple l'enrobage."
+    },
+    {
+     "k": "fill",
+     "q": "Pour parler de « fraîcheur », le produit doit avoir été fabriqué depuis moins de ___ jours.",
+     "o": [
+      "30",
+      "7",
+      "90",
+      "365"
+     ],
+     "a": 0,
+     "x": "Sans traitement pour stopper la flore, sauf réfrigération ou parfois pasteurisation."
+    },
+    {
+     "k": "qcm",
+     "q": "Un chocolatier utilise une couverture industrielle mais fait ses intérieurs. Peut-il écrire « maison » ?",
+     "o": [
+      "Oui",
+      "Non, jamais",
+      "Seulement s'il est Maître artisan",
+      "Seulement en vrac"
+     ],
+     "a": 0,
+     "x": "La couverture industrielle ne prive pas le bonbon de la qualification."
+    },
+    {
+     "k": "qcm",
+     "q": "Peut-on utiliser « Maître chocolatier » sans diplôme particulier ?",
+     "o": [
+      "Oui, si on peut le justifier et sans écrire « Maître artisan »",
+      "Non, c'est un titre protégé",
+      "Oui, sans aucune condition",
+      "Seulement après 20 ans de métier"
+     ],
+     "a": 0,
+     "x": "Le métier de chocolatier n'exige pas de qualification particulière (DGCCRF)."
+    }
+   ]
+  },
+  {
+   "t": "Vrac, HACCP et traçabilité",
+   "qs": [
+    {
+     "k": "qcm",
+     "q": "Un ballotin fermé par un autocollant, préparé à l'avance, est…",
+     "o": [
+      "Un produit préemballé",
+      "Un produit en vrac",
+      "Un produit artisanal",
+      "Un échantillon"
+     ],
+     "a": 0,
+     "x": "Le client ne peut pas le modifier : étiquetage complet obligatoire.",
+     "an": "Annales BTM"
+    },
+    {
+     "k": "fill",
+     "q": "HACCP signifie : analyse des dangers et maîtrise des points ___.",
+     "o": [
+      "critiques",
+      "de vente",
+      "chauds",
+      "de contrôle qualité"
+     ],
+     "a": 0,
+     "x": "Hazard Analysis Critical Control Point."
+    },
+    {
+     "k": "order",
+     "q": "Remets les étapes du process dans l'ordre suivi par l'HACCP.",
+     "o": [
+      "Réception des matières premières",
+      "Stockage",
+      "Fabrication",
+      "Conditionnement",
+      "Vente"
+     ],
+     "x": "Les dangers sont analysés à chaque étape."
+    },
+    {
+     "k": "qcm",
+     "q": "À quoi sert d'abord la traçabilité ?",
+     "o": [
+      "Retirer rapidement un produit en cas de problème",
+      "Fixer le prix de vente",
+      "Calculer les salaires",
+      "Choisir les fournisseurs"
+     ],
+     "a": 0,
+     "x": "Grâce au numéro de lot, de la matière première à la vente."
+    },
+    {
+     "k": "vf",
+     "q": "Le numéro de lot « PRN03 » peut signifier « praliné noisette, semaine 3 ».",
+     "a": true,
+     "x": "Chaque fabrication reçoit un numéro de lot."
+    }
+   ]
+  },
+  {
+   "t": "Coffre de révision",
+   "bonus": true,
+   "qs": []
+  }
+ ],
+ "citation": "« Une bonne étiquette ne ment jamais… même sur le praliné. »"
+}

@@ -1,0 +1,622 @@
+{
+ "id": "sucres",
+ "numero": 13,
+ "titre": "Sucres et édulcorants",
+ "lecons": [
+  {
+   "t": "Fabrication et cuisson du sucre",
+   "qs": [
+    {
+     "k": "multi",
+     "an": "Sujet BTM 2026 · Q5a",
+     "q": "Coche les règles de cuisson du sucre.",
+     "o": [
+      "Matériel en cuivre bien nettoyé",
+      "Cuire lentement jusqu'à fonte des cristaux, puis accélérer",
+      "Sucre en morceaux, sans impuretés",
+      "Eau de source",
+      "Thermomètre étalonné",
+      "Écumer et nettoyer les parois",
+      "Démarrer à feu très vif",
+      "Ajouter le sucre une fois l'eau bouillante"
+     ],
+     "c": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+     ],
+     "x": "Retiens-en au moins 3."
+    },
+    {
+     "k": "pairs",
+     "an": "Sujet BTM 2026 · Q5b",
+     "q": "Associe chaque repère à sa valeur.",
+     "p": [
+      [
+       "Eau à 100 °C",
+       "Dissout 3 fois son poids en sucre"
+      ],
+      [
+       "Eau à 20 °C",
+       "Dissout 1,7 fois son poids"
+      ],
+      [
+       "Au-delà de la saturation",
+       "Sursaturation"
+      ]
+     ]
+    },
+    {
+     "k": "vf",
+     "an": "Sujet BTM 2026 · Q5a",
+     "q": "On préfère le sucre en morceaux et l'eau de source pour cuire un sucre.",
+     "a": true,
+     "x": "Ils contiennent moins d'impuretés."
+    },
+    {
+     "k": "qcm",
+     "an": "Sujet BTM 2026 · Q5b",
+     "q": "Qu'est-ce que la saturation d'un sirop de sucre ?",
+     "o": [
+      "La quantité maximale de sucre dissous à une température donnée",
+      "Un sirop qui bout",
+      "Un sirop sans eau",
+      "Un sirop caramélisé"
+     ],
+     "a": 0,
+     "x": "Au-delà, le sucre recristallise : c'est la sursaturation."
+    },
+    {
+     "k": "qcm",
+     "an": "Sujet BTM 2026 · Q5a",
+     "q": "Quelle est une règle de cuisson du sucre ?",
+     "o": [
+      "Cuire lentement jusqu'à fonte des cristaux, puis accélérer",
+      "Cuire très fort dès le début",
+      "Ne jamais surveiller",
+      "Utiliser une casserole sale"
+     ],
+     "a": 0,
+     "x": "Autres règles : cuivre bien nettoyé, thermomètre étalonné, écumer."
+    },
+    {
+     "k": "order",
+     "an": "Corrigé 1102-2017",
+     "q": "Remets la fabrication du sucre de canne dans l'ordre.",
+     "o": [
+      "Récolte et dépaillage",
+      "Broyage (vesou)",
+      "Filtration",
+      "Évaporation",
+      "Cristallisation",
+      "Essorage"
+     ]
+    }
+   ]
+  },
+  {
+   "t": "Hydrolyse et sorbitol",
+   "qs": [
+    {
+     "k": "multi",
+     "an": "Corrigé 1103-2023",
+     "q": "Le sorbitol : coche ses rôles et son dosage.",
+     "o": [
+      "Anti-cristallisant",
+      "Abaisse l'HRE (AW)",
+      "Limite levures et moisissures",
+      "Stabilise l'humidité",
+      "Sensation de fraîcheur en bouche",
+      "5 % recommandé, jamais plus de 10 %",
+      "Gélifiant",
+      "Colorant",
+      "Dose recommandée : 30 %"
+     ],
+     "c": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+     ],
+     "x": "Polyol E420, utilisé en ganaches, caramels, nougats, pâtes de fruits."
+    },
+    {
+     "k": "multi",
+     "an": "Sujet BTM 2026 · Q6",
+     "q": "L'hydrolyse. Coche les éléments de réponse attendus.",
+     "o": [
+      "Molécules complexes → molécules simples",
+      "Elle nécessite de l'eau",
+      "Favorisée par la chaleur et un catalyseur (acide, enzyme)",
+      "Pulpe acide : hydrolyse plus forte",
+      "Cuisson longue : hydrolyse prolongée",
+      "Elle donne glucose, fructose, sucre inverti",
+      "Elle se fait sans eau",
+      "Elle donne du lactose"
+     ],
+     "c": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+     ],
+     "x": "Dans une pâte de fruits, on maîtrise le pH (mélange de fruits, correcteurs) et la durée de cuisson."
+    },
+    {
+     "k": "pairs",
+     "an": "Sujet BTM 2026 · Q6b",
+     "q": "Pâte de fruits : associe chaque facteur à son effet sur l'hydrolyse.",
+     "p": [
+      [
+       "Pulpe très acide",
+       "Hydrolyse plus prononcée"
+      ],
+      [
+       "Cuisson longue",
+       "Hydrolyse prolongée"
+      ],
+      [
+       "Mélange passion + mangue",
+       "pH atténué"
+      ]
+     ]
+    },
+    {
+     "k": "qcm",
+     "an": "Corrigé 1103-2023",
+     "q": "Sorbitol : quelle dose recommander ?",
+     "o": [
+      "5 %, jamais plus de 10 %",
+      "30 %",
+      "0,1 %",
+      "50 %"
+     ],
+     "a": 0,
+     "x": "Au-delà, effet laxatif. Usages : ganaches, caramels, nougats, pâtes de fruits."
+    },
+    {
+     "k": "qcm",
+     "an": "Sujet BTM 2026 · Q6a",
+     "q": "Qu'est-ce que l'hydrolyse ?",
+     "o": [
+      "Une réaction qui décompose des molécules complexes en molécules simples, avec de l'eau",
+      "Une évaporation",
+      "Une cristallisation",
+      "Une fermentation alcoolique"
+     ],
+     "a": 0,
+     "x": "Favorisée par la chaleur et un catalyseur (enzyme, acide, courant)."
+    },
+    {
+     "k": "qcm",
+     "an": "Sujet BTM 2026 · Q6c",
+     "q": "Quelles matières premières sont issues de l'hydrolyse du saccharose ?",
+     "o": [
+      "Glucose et fructose (sucre inverti)",
+      "Lactose et galactose",
+      "Amidon et cellulose",
+      "Sorbitol et mannitol"
+     ],
+     "a": 0,
+     "x": "Le mélange des deux est le sucre inverti."
+    }
+   ]
+  },
+  {
+   "t": "Le saccharose",
+   "qs": [
+    {
+     "k": "qcm",
+     "q": "Le saccharose est formé de l'union de…",
+     "o": [
+      "Glucose et fructose",
+      "Glucose et galactose",
+      "Deux glucoses",
+      "Fructose et lactose"
+     ],
+     "a": 0,
+     "x": "Un sucre double (diholoside) ; l'inverse de cette union est l'hydrolyse."
+    },
+    {
+     "k": "order",
+     "q": "Remets la fabrication du sucre de betterave dans l'ordre.",
+     "o": [
+      "Lavage",
+      "Découpage en cossettes",
+      "Diffusion",
+      "Évaporation",
+      "Cristallisation",
+      "Essorage"
+     ],
+     "x": "Le jus est aussi filtré (chaux + CO₂) avant évaporation.",
+     "an": "Corrigé 1102-2017"
+    },
+    {
+     "k": "pairs",
+     "q": "Associe chaque terme à sa définition.",
+     "p": [
+      [
+       "Vesou",
+       "Jus de canne broyée"
+      ],
+      [
+       "Bagasse",
+       "Résidu fibreux de la canne"
+      ],
+      [
+       "Mélasse",
+       "Sirop résiduel, base du rhum"
+      ],
+      [
+       "Clairce",
+       "Sirop limpide après filtration"
+      ]
+     ]
+    },
+    {
+     "k": "vf",
+     "q": "Le sucre de betterave doit être raffiné pour devenir blanc.",
+     "a": false,
+     "x": "Faux : il est naturellement blanc. Le raffinage concerne le sucre roux de canne."
+    },
+    {
+     "k": "fill",
+     "q": "Le sucre blanc contient au minimum ___ de saccharose pur.",
+     "o": [
+      "99,8 %",
+      "90 %",
+      "75 %",
+      "100 %"
+     ],
+     "a": 0,
+     "x": "Plus un sucre est foncé, plus il contient d'impuretés."
+    },
+    {
+     "k": "pairs",
+     "q": "Associe chaque sucre à sa particularité.",
+     "p": [
+      [
+       "Sucre glace",
+       "Moulu fin + amidon ou silice"
+      ],
+      [
+       "Sucre candi",
+       "Cristallisation lente d'un sirop"
+      ],
+      [
+       "Vergeoise",
+       "Sirop de betterave recuit"
+      ],
+      [
+       "Muscovado",
+       "Très riche en mélasse"
+      ]
+     ]
+    }
+   ]
+  },
+  {
+   "t": "Les sirops et la cuisson",
+   "qs": [
+    {
+     "k": "pairs",
+     "q": "Associe chaque état à la quantité d'eau autour d'une molécule de sucre.",
+     "p": [
+      [
+       "Sous-saturation",
+       "Plus de 6 molécules d'eau"
+      ],
+      [
+       "Saturation",
+       "6 molécules d'eau"
+      ],
+      [
+       "Sursaturation",
+       "Moins de 6 molécules d'eau"
+      ]
+     ]
+    },
+    {
+     "k": "qcm",
+     "q": "Avec quel instrument mesure-t-on la concentration d'un sirop ?",
+     "o": [
+      "Le réfractomètre",
+      "Le viscosimètre",
+      "Le pH-mètre",
+      "Le gelmètre"
+     ],
+     "a": 0,
+     "x": "La viscosité se mesure, elle, au densimètre."
+    },
+    {
+     "k": "pairs",
+     "q": "Associe chaque cuisson à sa température.",
+     "p": [
+      [
+       "Nappe",
+       "105 °C"
+      ],
+      [
+       "Grand soufflé",
+       "115 °C"
+      ],
+      [
+       "Boulé",
+       "120-124 °C"
+      ],
+      [
+       "Petit cassé",
+       "130-140 °C"
+      ]
+     ]
+    },
+    {
+     "k": "qcm",
+     "q": "Pourquoi ajouter du glucose ou de la crème de tartre à un sucre cuit ?",
+     "o": [
+      "Pour éviter qu'il cristallise (graissage)",
+      "Pour le colorer",
+      "Pour le rendre plus sucré",
+      "Pour accélérer la cuisson"
+     ],
+     "a": 0,
+     "x": "Glucose : 10-20 % du poids du sucre ; crème de tartre : 2-3 g/kg."
+    },
+    {
+     "k": "vf",
+     "q": "En altitude, il faut baisser la température de cuisson du sucre.",
+     "a": true,
+     "x": "La pression étant plus faible, l'eau bout plus tôt."
+    },
+    {
+     "k": "fill",
+     "q": "Le fondant confiseur se cuit au ___.",
+     "o": [
+      "boulé",
+      "petit lissé",
+      "grand cassé",
+      "caramel"
+     ],
+     "a": 0,
+     "x": "Entre 120 et 124 °C, avec 8 % d'eau."
+    }
+   ]
+  },
+  {
+   "t": "Propriétés et pouvoir sucrant",
+   "qs": [
+    {
+     "k": "qcm",
+     "q": "Quelle est la différence entre caramélisation et réaction de Maillard ?",
+     "o": [
+      "Maillard fait réagir sucres et protéines",
+      "La caramélisation a besoin de lait",
+      "Maillard se fait à froid",
+      "Il n'y en a aucune"
+     ],
+     "a": 0,
+     "x": "La caramélisation ne concerne que le sucre, dès 160 °C."
+    },
+    {
+     "k": "pairs",
+     "q": "Associe chaque propriété du sucre à son effet.",
+     "p": [
+      [
+       "Conservateur",
+       "Fixe l'eau, baisse l'AW"
+      ],
+      [
+       "Exhausteur",
+       "Renforce les saveurs"
+      ],
+      [
+       "Fermentescible",
+       "Nourrit les levures"
+      ]
+     ]
+    },
+    {
+     "k": "pairs",
+     "q": "Associe chaque édulcorant à son pouvoir sucrant (saccharose = 1).",
+     "p": [
+      [
+       "Fructose",
+       "1,3 à 1,8"
+      ],
+      [
+       "Dextrose",
+       "0,75"
+      ],
+      [
+       "Sorbitol",
+       "0,55 à 0,6"
+      ],
+      [
+       "Lactose",
+       "0,15 à 0,27"
+      ]
+     ]
+    },
+    {
+     "k": "qcm",
+     "q": "Quel est l'édulcorant intense le plus puissant ?",
+     "o": [
+      "Le néotame",
+      "L'aspartame",
+      "La saccharine",
+      "Le sucralose"
+     ],
+     "a": 0,
+     "x": "7 000 à 13 000 fois plus sucrant que le saccharose."
+    },
+    {
+     "k": "vf",
+     "q": "Le sorbitol est plus hygroscopique que le saccharose.",
+     "a": true,
+     "x": "Le saccharose est le moins hygroscopique de la liste du cours."
+    }
+   ]
+  },
+  {
+   "t": "Glucose, inverti, miel",
+   "qs": [
+    {
+     "k": "fill",
+     "q": "La force d'hydrolyse d'un sirop de glucose se mesure en ___.",
+     "o": [
+      "DE",
+      "Brix",
+      "bloom",
+      "pH"
+     ],
+     "a": 0,
+     "x": "Dextrose Équivalence : 20-70 pour un sirop de glucose, 95-99 pour le dextrose."
+    },
+    {
+     "k": "pairs",
+     "q": "Associe chaque glucose à son usage.",
+     "p": [
+      [
+       "Bas DE (38)",
+       "Sucre d'art, nougatine"
+      ],
+      [
+       "Haut DE (60)",
+       "Ganaches, pâtes de fruits"
+      ],
+      [
+       "Dextrose",
+       "Ganaches, chewing-gum"
+      ]
+     ]
+    },
+    {
+     "k": "qcm",
+     "q": "Plus le DE d'un sirop de glucose est élevé…",
+     "o": [
+      "Plus il est sucrant et brunit",
+      "Plus il est épais",
+      "Moins il est hygroscopique",
+      "Plus il est anti-cristallisant"
+     ],
+     "a": 0,
+     "x": "Il devient plus fluide, mais moins liant et moins anti-cristallisant."
+    },
+    {
+     "k": "qcm",
+     "q": "Quelle dose de sucre inverti recommande-t-on ?",
+     "o": [
+      "5 %",
+      "30 %",
+      "50 %",
+      "0,5 %"
+     ],
+     "a": 0,
+     "x": "Il rend la ganache plus fluide, moelleuse, et abaisse l'HRE."
+    },
+    {
+     "k": "vf",
+     "q": "Le miel est très proche du sucre inverti.",
+     "a": true,
+     "x": "L'invertase des abeilles hydrolyse le nectar. Il apporte en plus un arôme floral."
+    },
+    {
+     "k": "qcm",
+     "q": "Comment obtient-on du sucre inverti ?",
+     "o": [
+      "Par hydrolyse du saccharose",
+      "Par fermentation du lait",
+      "Par pressage de la canne",
+      "Par hydrogénation du maltose"
+     ],
+     "a": 0,
+     "x": "Avec eau, chaleur et un catalyseur (acide ou enzyme).",
+     "an": "Sujet BTM 2026 · Q6"
+    }
+   ]
+  },
+  {
+   "t": "Polyols et édulcorants intenses",
+   "qs": [
+    {
+     "k": "qcm",
+     "q": "Quelle dose de sorbitol ne faut-il jamais dépasser ?",
+     "o": [
+      "10 %",
+      "50 %",
+      "1 %",
+      "25 %"
+     ],
+     "a": 0,
+     "x": "5 % recommandés ; au-delà de 10 %, effet laxatif.",
+     "an": "Corrigé 1103-2023"
+    },
+    {
+     "k": "pairs",
+     "q": "Associe chaque polyol à son usage.",
+     "p": [
+      [
+       "Sorbitol",
+       "Stabiliser l'humidité des ganaches"
+      ],
+      [
+       "Maltitol",
+       "Couvertures sans sucre"
+      ],
+      [
+       "Xylitol",
+       "Chewing-gum anti-caries"
+      ],
+      [
+       "Mannitol",
+       "Saupoudrage anti-collant"
+      ]
+     ]
+    },
+    {
+     "k": "vf",
+     "q": "Le xylitol favorise les caries.",
+     "a": false,
+     "x": "Faux : les bactéries de la bouche ne peuvent pas le fermenter."
+    },
+    {
+     "k": "fill",
+     "q": "Le sorbitol porte le code E___.",
+     "o": [
+      "420",
+      "322",
+      "951",
+      "330"
+     ],
+     "a": 0,
+     "x": "Le maltitol est E965, l'aspartame E951."
+    },
+    {
+     "k": "qcm",
+     "q": "Quel frein limite encore l'usage de la stévia ?",
+     "o": [
+      "Son arrière-goût",
+      "Sa toxicité",
+      "Son prix très bas",
+      "Elle ne supporte pas la chaleur"
+     ],
+     "a": 0,
+     "x": "Elle supporte bien la chaleur, avec un pouvoir sucrant d'environ 300."
+    }
+   ]
+  },
+  {
+   "t": "Coffre de révision",
+   "bonus": true,
+   "qs": []
+  }
+ ],
+ "citation": "« Cuire le sucre, c'est l'art de la patience… et du thermomètre étalonné. »"
+}

@@ -1,0 +1,460 @@
+{
+ "id": "matieres-grasses",
+ "numero": 11,
+ "titre": "Les matières grasses",
+ "lecons": [
+  {
+   "t": "Les graisses végétales autorisées",
+   "qs": [
+    {
+     "k": "multi",
+     "an": "Corrigé 1103-2022",
+     "q": "Coche les 6 graisses végétales autorisées dans le chocolat.",
+     "o": [
+      "Illipé",
+      "Huile de palme",
+      "Sal",
+      "Karité",
+      "Kokum gurgi",
+      "Noyau de mangue",
+      "Huile de coprah",
+      "Huile de colza",
+      "Huile de tournesol"
+     ],
+     "c": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+     ],
+     "x": "5 % maximum du produit fini, en plus du beurre de cacao."
+    },
+    {
+     "k": "qcm",
+     "an": "Corrigé 1103-2022",
+     "q": "Quelle part de graisses végétales (autres que le beurre de cacao) peut-on ajouter au chocolat ?",
+     "o": [
+      "5 % maximum du produit fini",
+      "25 %",
+      "Aucune",
+      "15 %"
+     ],
+     "a": 0,
+     "x": "Directive européenne transposée en France en 2003."
+    },
+    {
+     "k": "fill",
+     "an": "Corrigé 1103-2022",
+     "q": "La directive autorise ___ graisses végétales dans le chocolat.",
+     "o": [
+      "six",
+      "deux",
+      "dix",
+      "quatre"
+     ],
+     "a": 0,
+     "x": "Illipé, palme, sal, karité, kokum gurgi, noyau de mangue."
+    },
+    {
+     "k": "qcm",
+     "an": "Corrigé 1103-2022",
+     "q": "Laquelle de ces graisses n'est pas autorisée dans le chocolat ?",
+     "o": [
+      "L'huile de coprah",
+      "Le karité",
+      "L'illipé",
+      "Le noyau de mangue"
+     ],
+     "a": 0,
+     "x": "Les 6 autorisées : illipé, palme, sal, karité, kokum gurgi, noyau de mangue."
+    },
+    {
+     "k": "vf",
+     "an": "Corrigé 1103-2022",
+     "q": "L'huile de palme fait partie des graisses végétales autorisées dans le chocolat.",
+     "a": true,
+     "x": "Dans la limite de 5 % du produit fini."
+    }
+   ]
+  },
+  {
+   "t": "Le lait",
+   "qs": [
+    {
+     "k": "vf",
+     "q": "Le mot « lait » sans précision désigne uniquement le lait de vache.",
+     "a": true,
+     "x": "Pour les autres, il faut préciser : lait de chèvre, de brebis…"
+    },
+    {
+     "k": "pairs",
+     "q": "Associe chaque constituant du lait à sa part.",
+     "p": [
+      [
+       "Eau",
+       "87 %"
+      ],
+      [
+       "Glucides (lactose)",
+       "5 %"
+      ],
+      [
+       "Lipides",
+       "4 %"
+      ],
+      [
+       "Protides",
+       "3 %"
+      ]
+     ]
+    },
+    {
+     "k": "qcm",
+     "q": "Quelle protéine du lait coagule en milieu acide et fait cailler le lait ?",
+     "o": [
+      "La caséine",
+      "Le lactose",
+      "L'albumine d'œuf",
+      "La lécithine"
+     ],
+     "a": 0,
+     "x": "Elle représente 80 % des protéines du lait."
+    },
+    {
+     "k": "qcm",
+     "q": "Que fait l'homogénéisation du lait ?",
+     "o": [
+      "Elle réduit les globules gras à 1-5 microns",
+      "Elle tue les bactéries",
+      "Elle ajoute de la crème",
+      "Elle sucre le lait"
+     ],
+     "a": 0,
+     "x": "La crème ne remonte plus en surface et le lait est plus digeste."
+    },
+    {
+     "k": "pairs",
+     "q": "Associe chaque traitement à sa température.",
+     "p": [
+      [
+       "Pasteurisation haute",
+       "75 °C / 20 s"
+      ],
+      [
+       "UHT",
+       "140-150 °C / 2 s"
+      ],
+      [
+       "Stérilisation en récipient",
+       "115 °C / 20 min"
+      ]
+     ]
+    },
+    {
+     "k": "qcm",
+     "q": "Quelle invention a permis la création du chocolat au lait ?",
+     "o": [
+      "Le lait en poudre",
+      "Le lait UHT",
+      "La pasteurisation",
+      "Le lait concentré non sucré"
+     ],
+     "a": 0,
+     "x": "Le lait déshydraté à 99 % se conserve 10 à 12 mois."
+    },
+    {
+     "k": "pairs",
+     "q": "Associe chaque procédé de lait en poudre à son résultat.",
+     "p": [
+      [
+       "Spray (atomisation)",
+       "Billes, notes fraîches"
+      ],
+      [
+       "Roller (cylindres)",
+       "Flocons, notes cuites"
+      ],
+      [
+       "Lait concentré sucré",
+       "Conservation 10-11 mois"
+      ]
+     ]
+    }
+   ]
+  },
+  {
+   "t": "La crème",
+   "qs": [
+    {
+     "k": "fill",
+     "q": "La dénomination « crème » exige au minimum ___ de matière grasse laitière.",
+     "o": [
+      "30 %",
+      "12 %",
+      "50 %",
+      "82 %"
+     ],
+     "a": 0,
+     "x": "Une crème légère contient 12 à 29 % de MG."
+    },
+    {
+     "k": "qcm",
+     "q": "Comment obtient-on la crème ?",
+     "o": [
+      "Par centrifugation du lait",
+      "Par barattage",
+      "Par fermentation",
+      "Par évaporation"
+     ],
+     "a": 0,
+     "x": "La crème, moins dense, est séparée du lait écrémé dans l'écrémeuse."
+    },
+    {
+     "k": "vf",
+     "q": "On peut appeler « chantilly » une crème végétale montée.",
+     "a": false,
+     "x": "Faux : « crème » et « chantilly » sont interdites pour les produits végétaux."
+    },
+    {
+     "k": "pairs",
+     "q": "Associe chaque crème à sa durée de conservation légale.",
+     "p": [
+      [
+       "Crème crue",
+       "7 jours"
+      ],
+      [
+       "Crème pasteurisée",
+       "30 jours"
+      ],
+      [
+       "Crème UHT",
+       "4 mois"
+      ],
+      [
+       "Crème stérilisée",
+       "8 mois"
+      ]
+     ]
+    },
+    {
+     "k": "qcm",
+     "q": "Qu'apporte la maturation d'une crème épaisse ?",
+     "o": [
+      "Des arômes et un épaississement par acidification",
+      "Une meilleure conservation à vie",
+      "Plus de matière grasse",
+      "Une couleur plus blanche"
+     ],
+     "a": 0,
+     "x": "Les ferments lactiques transforment le lactose en acide lactique."
+    },
+    {
+     "k": "qcm",
+     "q": "Comment la crème foisonne-t-elle ?",
+     "o": [
+      "Le gras libéré cristallise au froid et emprisonne l'air",
+      "Le sucre forme une mousse",
+      "Les protéines cuisent",
+      "L'eau s'évapore"
+     ],
+     "a": 0,
+     "x": "Il faut un équilibre entre gras libéré et globules intacts."
+    }
+   ]
+  },
+  {
+   "t": "Le beurre",
+   "qs": [
+    {
+     "k": "order",
+     "q": "Remets la fabrication du beurre dans l'ordre.",
+     "o": [
+      "Écrémage",
+      "Pasteurisation",
+      "Maturation",
+      "Barattage",
+      "Lavage et malaxage"
+     ],
+     "x": "Le conditionnement se fait dans les 2-3 h après le malaxage."
+    },
+    {
+     "k": "vf",
+     "q": "Le beurre est une émulsion d'eau dans la matière grasse.",
+     "a": true,
+     "x": "L'inverse du lait et de la crème, où le gras est dispersé dans l'eau."
+    },
+    {
+     "k": "pairs",
+     "q": "Associe chaque beurre à sa caractéristique.",
+     "p": [
+      [
+       "Beurre cru",
+       "Très aromatique, 3 semaines"
+      ],
+      [
+       "Beurre extra-fin",
+       "Crème jamais congelée"
+      ],
+      [
+       "Beurre sec",
+       "Ferme, pour ganaches fermes"
+      ],
+      [
+       "Beurre anhydre",
+       "96 % de MG minimum"
+      ]
+     ]
+    },
+    {
+     "k": "qcm",
+     "q": "Combien de sel contient un beurre salé ?",
+     "o": [
+      "3 %",
+      "0,5 %",
+      "10 %",
+      "1 %"
+     ],
+     "a": 0,
+     "x": "Le demi-sel en contient 0,5 à 3 %."
+    },
+    {
+     "k": "fill",
+     "q": "Le liquide séparé du beurre au barattage s'appelle le ___.",
+     "o": [
+      "babeurre",
+      "lactosérum doux",
+      "tourteau",
+      "mucilage"
+     ],
+     "a": 0,
+     "x": "On l'appelle aussi petit-lait."
+    },
+    {
+     "k": "qcm",
+     "q": "Pourquoi utiliser un beurre sec (de tourage) dans une ganache ?",
+     "o": [
+      "Pour une texture plus ferme",
+      "Pour un goût plus salé",
+      "Pour mieux colorer",
+      "Pour la rendre liquide"
+     ],
+     "a": 0,
+     "x": "Riche en acides gras saturés, son point de fusion dépasse 32 °C."
+    }
+   ]
+  },
+  {
+   "t": "La margarine",
+   "qs": [
+    {
+     "k": "qcm",
+     "q": "De quoi est composée une margarine ?",
+     "o": [
+      "Phase grasse végétale + phase aqueuse",
+      "Uniquement de beurre",
+      "Crème + sucre",
+      "Beurre de cacao + lait"
+     ],
+     "a": 0,
+     "x": "Une émulsion stabilisée, souvent avec des émulsifiants."
+    },
+    {
+     "k": "vf",
+     "q": "La margarine est très utilisée en chocolaterie.",
+     "a": false,
+     "x": "Faux : quasi inexistante, à cause de son goût neutre et de son fondant moindre."
+    },
+    {
+     "k": "qcm",
+     "q": "Quelles margarines sont dangereuses pour la santé ?",
+     "o": [
+      "Les margarines hydrogénées",
+      "Les margarines à tartiner",
+      "Celles aux phytostérols",
+      "Celles pour cuisiner"
+     ],
+     "a": 0,
+     "x": "Elles contiennent des acides gras « trans »."
+    },
+    {
+     "k": "qcm",
+     "q": "Dans quel cas la margarine peut-elle être utile en chocolaterie ?",
+     "o": [
+      "Pour une demande vegan ou sans lactose",
+      "Pour un nougat de Montélimar",
+      "Pour un praliné",
+      "Pour tempérer une couverture"
+     ],
+     "a": 0,
+     "x": "Avec aussi l'avantage d'un point de fusion « au choix » et d'un coût moindre."
+    }
+   ]
+  },
+  {
+   "t": "Usages en chocolaterie",
+   "qs": [
+    {
+     "k": "pairs",
+     "q": "Associe chaque produit laitier à un usage.",
+     "p": [
+      [
+       "Lait concentré",
+       "Ganache longue conservation"
+      ],
+      [
+       "Lait",
+       "Caramel au lait"
+      ],
+      [
+       "Crème",
+       "Ganache"
+      ],
+      [
+       "Beurre sec",
+       "Ganache ferme"
+      ]
+     ]
+    },
+    {
+     "k": "qcm",
+     "q": "Quel rôle joue le lait dans un caramel ?",
+     "o": [
+      "Il colore par brunissement et texture",
+      "Il gélifie",
+      "Il conserve sans sucre",
+      "Il évite toute cristallisation"
+     ],
+     "a": 0,
+     "x": "Il fixe aussi les arômes et limite le dessèchement."
+    },
+    {
+     "k": "vf",
+     "q": "L'emballage du lait doit être opaque pour protéger les vitamines de la lumière.",
+     "a": true,
+     "x": "Hermétique aussi, contre l'oxydation."
+    },
+    {
+     "k": "qcm",
+     "q": "Le lait pasteurisé porte quelle date ?",
+     "o": [
+      "Une DLC",
+      "Une DDM",
+      "Aucune date",
+      "Une date de fabrication seulement"
+     ],
+     "a": 0,
+     "x": "Le lait UHT, produit stabilisé, porte une DDM (ex-DLUO)."
+    }
+   ]
+  },
+  {
+   "t": "Coffre de révision",
+   "bonus": true,
+   "qs": []
+  }
+ ],
+ "citation": "« Le beurre, c'est sérieux : 82 % de bonne humeur. »"
+}

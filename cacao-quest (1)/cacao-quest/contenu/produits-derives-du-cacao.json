@@ -1,0 +1,366 @@
+{
+ "id": "derives",
+ "numero": 12,
+ "titre": "Produits dérivés du cacao",
+ "lecons": [
+  {
+   "t": "La poudre de cacao",
+   "qs": [
+    {
+     "k": "multi",
+     "an": "Corrigé 1103-2023",
+     "q": "Fabrication de la poudre de cacao : coche les éléments justes.",
+     "o": [
+      "Alcalinisation de la pâte de cacao",
+      "Pressage : beurre de cacao + tourteau",
+      "Le degré de pression fixe la teneur en matière grasse",
+      "Blutage du tourteau à 24 °C",
+      "Humidité finale de 3 à 5 % maximum",
+      "Conservation à l'abri de l'humidité et de la lumière",
+      "Fermentation de la poudre",
+      "Ajout de lécithine au blutage"
+     ],
+     "c": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+     ],
+     "x": "Cacao gras : 20-22 % de MG ; cacao maigre : 8-10 %."
+    },
+    {
+     "k": "order",
+     "an": "Corrigé 1103-2023",
+     "q": "Remets la fabrication de la poudre de cacao dans l'ordre.",
+     "o": [
+      "Alcalinisation",
+      "Pressage",
+      "Blutage",
+      "Conditionnement"
+     ]
+    },
+    {
+     "k": "pairs",
+     "an": "Corrigé 1103-2023",
+     "q": "Associe chaque poudre ou repère à sa valeur.",
+     "p": [
+      [
+       "Cacao gras",
+       "20 à 22 % de MG"
+      ],
+      [
+       "Cacao maigre",
+       "8 à 10 % de MG"
+      ],
+      [
+       "Humidité finale",
+       "3 à 5 % maximum"
+      ]
+     ]
+    },
+    {
+     "k": "qcm",
+     "an": "Annales BTM",
+     "q": "Comment extrait-on le beurre de cacao de la pâte de cacao ?",
+     "o": [
+      "Par pressage hydraulique, qui laisse un tourteau",
+      "Par fermentation",
+      "Par conchage",
+      "Par tempérage"
+     ],
+     "a": 0,
+     "x": "Le tourteau sert ensuite à faire la poudre."
+    },
+    {
+     "k": "qcm",
+     "an": "Annales BTM",
+     "q": "Que fait l'alcalinisation (procédé hollandais) ?",
+     "o": [
+      "Elle adoucit le goût et fonce la couleur",
+      "Elle éclaircit la poudre",
+      "Elle augmente l'acidité",
+      "Elle ajoute du sucre"
+     ],
+     "a": 0,
+     "x": "Elle neutralise l'acidité naturelle du cacao."
+    },
+    {
+     "k": "vf",
+     "an": "Corrigé 1103-2023",
+     "q": "La poudre se conserve à l'abri de l'humidité, de la lumière et des insectes, idéalement à 15-18 °C.",
+     "a": true,
+     "x": "Le blutage se fait, lui, à 24 °C."
+    }
+   ]
+  },
+  {
+   "t": "Obtenir le beurre de cacao",
+   "qs": [
+    {
+     "k": "qcm",
+     "q": "Le pressage de la pâte de cacao donne 2 produits. Lesquels ?",
+     "o": [
+      "Le beurre de cacao et le tourteau",
+      "Le grué et la coque",
+      "La poudre et le sucre",
+      "Le beurre et la lécithine"
+     ],
+     "a": 0,
+     "x": "Le tourteau contient encore 22-24 % de matière grasse."
+    },
+    {
+     "k": "order",
+     "q": "Remets le traitement du beurre de cacao pressé dans l'ordre.",
+     "o": [
+      "Pressage",
+      "Filtration",
+      "Raffinage",
+      "Désodorisation",
+      "Moulage"
+     ],
+     "x": "La désodorisation se fait par injection de vapeur sous pression."
+    },
+    {
+     "k": "vf",
+     "q": "Le beurre de cacao obtenu par solvant doit toujours être raffiné et désodorisé.",
+     "a": true,
+     "x": "Les solvants sont des dérivés du pétrole."
+    },
+    {
+     "k": "fill",
+     "q": "La méthode de pressage par vis de compression s'appelle la méthode ___.",
+     "o": [
+      "Expeller",
+      "Dutch",
+      "Spray",
+      "Roller"
+     ],
+     "a": 0,
+     "x": "L'autre méthode utilise des presses hydrauliques (350-530 bars)."
+    },
+    {
+     "k": "qcm",
+     "q": "Sous quelle forme trouve-t-on du beurre de cacao en poudre ?",
+     "o": [
+      "Type Mycryo®",
+      "En pistoles uniquement",
+      "En blocs de 25 kg",
+      "En liquide"
+     ],
+     "a": 0,
+     "x": "On le trouve aussi en blocs, pistoles et liquide (industrie)."
+    }
+   ]
+  },
+  {
+   "t": "Les propriétés du beurre",
+   "qs": [
+    {
+     "k": "qcm",
+     "q": "Quel est le point de fusion du beurre de cacao ?",
+     "o": [
+      "34-35 °C",
+      "20 °C",
+      "45 °C",
+      "60 °C"
+     ],
+     "a": 0,
+     "x": "Juste sous la température de la bouche : d'où le fondant."
+    },
+    {
+     "k": "pairs",
+     "q": "Associe chaque acide gras à sa part.",
+     "p": [
+      [
+       "Oléique (insaturé)",
+       "35 %"
+      ],
+      [
+       "Stéarique (saturé)",
+       "34 %"
+      ],
+      [
+       "Palmitique (saturé)",
+       "26 %"
+      ]
+     ]
+    },
+    {
+     "k": "fill",
+     "q": "85 à 95 % du beurre de cacao est un mélange de 3 triglycérides : POS, SOS et ___.",
+     "o": [
+      "POP",
+      "SOP",
+      "OOO",
+      "PPP"
+     ],
+     "a": 0,
+     "x": "98 % du beurre de cacao est composé de triglycérides."
+    },
+    {
+     "k": "vf",
+     "q": "Le beurre de cacao rancit rapidement.",
+     "a": false,
+     "x": "Faux : ses antioxydants le protègent ; il se conserve très longtemps."
+    },
+    {
+     "k": "pairs",
+     "q": "Associe chaque usage du beurre de cacao à son domaine.",
+     "p": [
+      [
+       "Imperméabiliser un biscuit",
+       "Pâtisserie"
+      ],
+      [
+       "Décor de bonbon",
+       "Chocolaterie"
+      ],
+      [
+       "Crème hydratante",
+       "Cosmétique"
+      ]
+     ]
+    }
+   ]
+  },
+  {
+   "t": "L'alcalinisation",
+   "qs": [
+    {
+     "k": "fill",
+     "q": "L'alcalinisation est aussi appelée « Dutch ___ ».",
+     "o": [
+      "Process",
+      "Method",
+      "Cocoa",
+      "Press"
+     ],
+     "a": 0,
+     "x": "On « mouille le grain » avec une liqueur alcaline avant séchage et torréfaction."
+    },
+    {
+     "k": "qcm",
+     "q": "Quel agent utilise-t-on le plus souvent pour alcaliniser ?",
+     "o": [
+      "Le carbonate de potassium",
+      "L'acide citrique",
+      "Le sel",
+      "Le sucre"
+     ],
+     "a": 0,
+     "x": "Ou de magnésium, 5 % maximum du poids de matière sèche dégraissée."
+    },
+    {
+     "k": "pairs",
+     "q": "Associe chaque effet de l'alcalinisation à son résultat.",
+     "p": [
+      [
+       "pH",
+       "Passe d'environ 5 à 6-8"
+      ],
+      [
+       "Couleur",
+       "Plus foncée"
+      ],
+      [
+       "Liquide",
+       "Meilleure mise en suspension"
+      ]
+     ]
+    },
+    {
+     "k": "vf",
+     "q": "L'alcalinisation rend la poudre vraiment soluble dans l'eau.",
+     "a": false,
+     "x": "Faux : elle améliore surtout la mise en suspension, pas une vraie solubilité."
+    }
+   ]
+  },
+  {
+   "t": "La poudre de cacao",
+   "qs": [
+    {
+     "k": "pairs",
+     "q": "Associe chaque poudre à sa teneur en beurre de cacao.",
+     "p": [
+      [
+       "Poudre 22/24",
+       "22 à 24 %"
+      ],
+      [
+       "Poudre 10/12",
+       "10 à 12 %"
+      ],
+      [
+       "Poudre maigre",
+       "Moins de 8 %"
+      ]
+     ]
+    },
+    {
+     "k": "qcm",
+     "q": "Comment s'appelle l'étape où le tourteau est pulvérisé puis tamisé ?",
+     "o": [
+      "Le blutage",
+      "Le conchage",
+      "Le barattage",
+      "Le tablage"
+     ],
+     "a": 0,
+     "x": "Dans des moulins à broches ou à marteaux, à 24 °C.",
+     "an": "Corrigé 1103-2023"
+    },
+    {
+     "k": "fill",
+     "q": "Le taux d'humidité d'une poudre de cacao est de ___ maximum.",
+     "o": [
+      "3 à 5 %",
+      "10 %",
+      "20 %",
+      "0,5 %"
+     ],
+     "a": 0,
+     "x": "Conservation à l'abri de l'humidité, idéalement entre 15 et 18 °C."
+    },
+    {
+     "k": "qcm",
+     "q": "Qu'est-ce qui détermine la teneur en matière grasse de la poudre ?",
+     "o": [
+      "Le degré de pression",
+      "La variété de cacao uniquement",
+      "La couleur",
+      "Le temps de blutage"
+     ],
+     "a": 0,
+     "x": "Plus on presse, plus la poudre est maigre."
+    },
+    {
+     "k": "vf",
+     "q": "Les poudres de petit-déjeuner contiennent des farines précuites.",
+     "a": true,
+     "x": "Avec du sucre, souvent de la poudre de lait, des arômes et de la lécithine."
+    },
+    {
+     "k": "qcm",
+     "q": "Comment utilise-t-on surtout la poudre de cacao en chocolaterie ?",
+     "o": [
+      "En finition, par exemple pour les truffes",
+      "Comme base de couverture",
+      "Pour tempérer",
+      "Pour remplacer le sucre"
+     ],
+     "a": 0,
+     "x": "En pâtisserie, elle sert davantage : décors, biscuits, glaçages."
+    }
+   ]
+  },
+  {
+   "t": "Coffre de révision",
+   "bonus": true,
+   "qs": []
+  }
+ ],
+ "citation": "« Pressé, mais jamais stressé : le cacao donne tout ce qu'il a. »"
+}

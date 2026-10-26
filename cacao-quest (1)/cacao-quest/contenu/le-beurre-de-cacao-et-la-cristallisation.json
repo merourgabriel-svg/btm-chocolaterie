@@ -1,0 +1,550 @@
+{
+ "id": "beurre-cacao",
+ "numero": 5,
+ "titre": "Le beurre de cacao et la cristallisation",
+ "lecons": [
+  {
+   "t": "Polymorphisme et tempérage",
+   "qs": [
+    {
+     "k": "multi",
+     "an": "Sujet BTM 2026 · Q7",
+     "q": "Le beurre de cacao est polymorphe. Coche les éléments de réponse attendus.",
+     "o": [
+      "Il a plusieurs formes cristallines",
+      "Chaque forme a son propre point de fusion",
+      "La forme obtenue dépend de la température",
+      "Le tablage sélectionne la forme la plus stable (bêta)",
+      "Résultat : couverture brillante, cassante, bien tempérée",
+      "Il n'a qu'une seule forme de cristal",
+      "Il ne cristallise qu'au congélateur"
+     ],
+     "c": [
+      0,
+      1,
+      2,
+      3,
+      4
+     ],
+     "x": "5 formes : gamma, alpha, bêta seconde, bêta prime, bêta (seule stable, 31-35 °C)."
+    },
+    {
+     "k": "fill",
+     "an": "Sujet BTM 2026 · Q7a",
+     "q": "Polymorphe : le beurre de cacao a plusieurs formes cristallines, chacune avec un ___ différent.",
+     "o": [
+      "point de fusion",
+      "goût",
+      "poids",
+      "pH"
+     ],
+     "a": 0,
+     "x": "La forme dépend de la température."
+    },
+    {
+     "k": "qcm",
+     "an": "Corrigé 1102-2017",
+     "q": "Combien de formes de cristaux compte le beurre de cacao ?",
+     "o": [
+      "5",
+      "2",
+      "3",
+      "8"
+     ],
+     "a": 0,
+     "x": "Gamma, alpha, bêta seconde, bêta prime (instables) et bêta (stable)."
+    },
+    {
+     "k": "qcm",
+     "an": "Sujet BTM 2026 · Q7b",
+     "q": "Pourquoi pré-cristalliser (tabler) une couverture ?",
+     "o": [
+      "Pour sélectionner la forme cristalline la plus stable : brillante et cassante",
+      "Pour la sucrer",
+      "Pour la rendre plus liquide",
+      "Pour éliminer l'eau"
+     ],
+     "a": 0,
+     "x": "C'est le cristal bêta (31-35 °C)."
+    },
+    {
+     "k": "pairs",
+     "an": "Corrigés 1102-2017 / 1103-2022",
+     "q": "Associe chaque acide gras à sa part dans le beurre de cacao.",
+     "p": [
+      [
+       "Stéarique (saturé)",
+       "35 %"
+      ],
+      [
+       "Palmitique (saturé)",
+       "26 %"
+      ],
+      [
+       "Oléique (insaturé)",
+       "34 %"
+      ],
+      [
+       "Linoléique (insaturé)",
+       "3 %"
+      ]
+     ]
+    }
+   ]
+  },
+  {
+   "t": "Les blanchiments",
+   "qs": [
+    {
+     "k": "multi",
+     "an": "Sujet BTM 2026 · Q9",
+     "q": "Tes pralinés ont blanchi en boutique. Coche les éléments justes.",
+     "o": [
+      "Sucrier : dû à l'humidité et à la condensation",
+      "Sucrier : variation de température (ex. sortie de +4 °C)",
+      "Sucrier : surface collante puis rugueuse",
+      "Gras : matière grasse déstabilisée",
+      "Gras : mauvaise pré-cristallisation ou stockage trop chaud",
+      "Gras : surface grasse au toucher",
+      "Sucrier : le voile fond au toucher",
+      "Gras : causé par l'eau"
+     ],
+     "c": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+     ],
+     "x": "Solutions : hygrométrie et point de rosée pour le sucrier ; pré-cristallisation, coulage, recette et stockage pour le gras."
+    },
+    {
+     "k": "qcm",
+     "an": "Sujet BTM 2026 · Q9a",
+     "q": "En boutique, tes pralinés ont une surface collante puis rugueuse. Quel blanchiment ?",
+     "o": [
+      "Le blanchiment sucrier",
+      "Le blanchiment gras",
+      "Un rancissement",
+      "Une moisissure"
+     ],
+     "a": 0,
+     "x": "La condensation dissout le sucre, qui recristallise en surface."
+    },
+    {
+     "k": "pairs",
+     "an": "Sujet BTM 2026 · Q9b",
+     "q": "Associe chaque blanchiment à une solution.",
+     "p": [
+      [
+       "Blanchiment sucrier",
+       "Maîtriser l'hygrométrie et le point de rosée"
+      ],
+      [
+       "Blanchiment gras",
+       "Maîtriser la pré-cristallisation et la température de coulage"
+      ],
+      [
+       "Pralinés qui blanchissent",
+       "Adapter la recette et le chablonnage"
+      ]
+     ]
+    },
+    {
+     "k": "qcm",
+     "an": "Sujet BTM 2026 · Q9a",
+     "q": "Un produit reste trop longtemps à +4 °C puis sort en boutique. Que se passe-t-il ?",
+     "o": [
+      "De la condensation, puis un blanchiment sucrier",
+      "Un blanchiment gras par la chaleur",
+      "Il devient plus brillant",
+      "Rien"
+     ],
+     "a": 0,
+     "x": "Attention au point de rosée."
+    },
+    {
+     "k": "vf",
+     "an": "Sujet BTM 2026 · Q9a",
+     "q": "Une surface grasse au toucher signale un blanchiment gras.",
+     "a": true,
+     "x": "La matière grasse déstabilisée remonte en surface."
+    }
+   ]
+  },
+  {
+   "t": "Les cristaux",
+   "qs": [
+    {
+     "k": "fill",
+     "q": "Le beurre de cacao peut former plusieurs types de cristaux : on dit qu'il est ___.",
+     "o": [
+      "polymorphe",
+      "hydrophile",
+      "amorphe",
+      "saturé"
+     ],
+     "a": 0,
+     "x": "5 formes de cristaux, selon la température."
+    },
+    {
+     "k": "qcm",
+     "q": "Quelle est la seule forme de cristaux stable ?",
+     "o": [
+      "Bêta (β)",
+      "Gamma (γ)",
+      "Alpha (α)",
+      "Bêta prime (β')"
+     ],
+     "a": 0,
+     "x": "Point de fusion 31-35 °C.",
+     "an": "Corrigé 1102-2017"
+    },
+    {
+     "k": "pairs",
+     "q": "Associe chaque cristal à son point de fusion.",
+     "p": [
+      [
+       "Gamma",
+       "13-17 °C"
+      ],
+      [
+       "Alpha",
+       "17-20 °C"
+      ],
+      [
+       "Bêta prime",
+       "26-28 °C"
+      ],
+      [
+       "Bêta",
+       "31-35 °C"
+      ]
+     ],
+     "an": "Corrigé 1102-2017"
+    },
+    {
+     "k": "qcm",
+     "q": "Que donnent les cristaux bêta au chocolat ?",
+     "o": [
+      "Cassant, brillance, bon fondant",
+      "Un goût plus sucré",
+      "Une couleur plus foncée",
+      "Une texture élastique"
+     ],
+     "a": 0,
+     "x": "Ils permettent aussi le retrait au démoulage et retardent le blanchiment gras."
+    },
+    {
+     "k": "qcm",
+     "q": "Quel antioxydant naturel protège le beurre de cacao du rancissement ?",
+     "o": [
+      "Le tocophérol",
+      "La lécithine",
+      "La théobromine",
+      "L'acide citrique"
+     ],
+     "a": 0,
+     "x": "C'est pourquoi le beurre de cacao est un corps gras stable."
+    },
+    {
+     "k": "vf",
+     "q": "Le beurre de cacao contient environ 61 % d'acides gras saturés.",
+     "a": true,
+     "x": "Surtout acide stéarique (35 %) et palmitique (26 %)."
+    }
+   ]
+  },
+  {
+   "t": "La courbe de tempérage",
+   "qs": [
+    {
+     "k": "order",
+     "q": "Remets la courbe de tempérage d'un chocolat noir dans l'ordre.",
+     "o": [
+      "Fonte à 50 °C",
+      "Refroidissement à 26-28 °C",
+      "Remontée à 31-32 °C",
+      "Cristallisation finale à 16-17 °C"
+     ],
+     "x": "Au lait et ivoire, la fonte se fait plutôt à 45 °C."
+    },
+    {
+     "k": "qcm",
+     "q": "Pourquoi remonter le chocolat à 31-32 °C ?",
+     "o": [
+      "Pour fondre les cristaux instables et ne garder que les bêta",
+      "Pour le rendre plus brillant à la fonte",
+      "Pour tuer les bactéries",
+      "Pour éviter qu'il colle aux moules"
+     ],
+     "a": 0,
+     "x": "La couverture se fluidifie et se stabilise."
+    },
+    {
+     "k": "pairs",
+     "q": "Associe chaque facteur de la pré-cristallisation à son rôle.",
+     "p": [
+      [
+       "Température",
+       "Crée les différents cristaux"
+      ],
+      [
+       "Friction",
+       "Accélère la formation des cristaux"
+      ],
+      [
+       "Vitesse",
+       "Trop lent = trop de cristaux instables"
+      ]
+     ]
+    },
+    {
+     "k": "fill",
+     "q": "Il faut cristalliser au minimum ___ de cristaux bêta pour stabiliser la couverture.",
+     "o": [
+      "5 %",
+      "50 %",
+      "1 %",
+      "25 %"
+     ],
+     "a": 0,
+     "x": "En descendant la masse rapidement en température."
+    },
+    {
+     "k": "vf",
+     "q": "Au-delà de 35 °C, la couverture est décristallisée.",
+     "a": true,
+     "x": "35 °C, c'est le point de fusion des cristaux bêta."
+    }
+   ]
+  },
+  {
+   "t": "Défauts et méthodes",
+   "qs": [
+    {
+     "k": "pairs",
+     "q": "Associe chaque défaut à son remède.",
+     "p": [
+      [
+       "Sur-cristallisation",
+       "Ajouter de la couverture à 50 °C"
+      ],
+      [
+       "Sous-cristallisation",
+       "Refaire une cristallisation"
+      ],
+      [
+       "Décristallisation",
+       "Retempérer la couverture"
+      ]
+     ]
+    },
+    {
+     "k": "qcm",
+     "q": "À quoi reconnaît-on une couverture sur-cristallisée ?",
+     "o": [
+      "Elle devient épaisse, « vaseline »",
+      "Elle est très fluide",
+      "Elle sent le rance",
+      "Elle est trop brillante"
+     ],
+     "a": 0,
+     "x": "Trop de cristaux solides se sont formés."
+    },
+    {
+     "k": "qcm",
+     "q": "Dans le tablage, quelle part de la masse refroidit-on sur le marbre ?",
+     "o": [
+      "Les 2/3",
+      "La totalité",
+      "1/10",
+      "La moitié exacte"
+     ],
+     "a": 0,
+     "x": "Elle ensemence ensuite le tiers restant."
+    },
+    {
+     "k": "vf",
+     "q": "Pour tempérer par ensemencement, on peut utiliser n'importe quels palets.",
+     "a": false,
+     "x": "Faux : les palets doivent être stabilisés (au point) pour apporter les bons cristaux."
+    },
+    {
+     "k": "qcm",
+     "q": "Quel est l'inconvénient du tempérage par le froid à la main ?",
+     "o": [
+      "Difficile de réchauffer régulièrement sans décristalliser",
+      "Il demande un marbre",
+      "Il gaspille du chocolat",
+      "Il ne marche pas pour le noir"
+     ],
+     "a": 0,
+     "x": "Efficace mais fastidieux."
+    },
+    {
+     "k": "qcm",
+     "q": "Combien de temps maximum peut-on passer un chocolat au froid négatif ?",
+     "o": [
+      "5 minutes",
+      "20 minutes",
+      "1 heure",
+      "Il est conseillé d'y rester longtemps"
+     ],
+     "a": 0,
+     "x": "Fortement déconseillé : au-delà, le problème vient de la pré-cristallisation."
+    }
+   ]
+  },
+  {
+   "t": "Moulage et blanchiments",
+   "qs": [
+    {
+     "k": "pairs",
+     "q": "Associe chaque règle de moulage à sa valeur.",
+     "p": [
+      [
+       "Température du local",
+       "18-22 °C"
+      ],
+      [
+       "Hygrométrie maximale",
+       "70 %"
+      ],
+      [
+       "Refroidissement idéal",
+       "10 °C"
+      ]
+     ]
+    },
+    {
+     "k": "qcm",
+     "q": "Pourquoi éviter de toucher un moulage avec les doigts ?",
+     "o": [
+      "La chaleur du corps marque le chocolat, qui blanchit",
+      "Pour éviter les allergies",
+      "Les doigts le rendent collant",
+      "Pour ne pas le casser"
+     ],
+     "a": 0,
+     "x": "37 °C dépasse le point de cristallisation : gants non poudrés de préférence."
+    },
+    {
+     "k": "pairs",
+     "q": "Associe chaque blanchiment à son repère.",
+     "p": [
+      [
+       "Blanchiment gras",
+       "Voile qui fond au toucher"
+      ],
+      [
+       "Blanchiment sucrier",
+       "Couche rugueuse et collante"
+      ],
+      [
+       "Moulage touché à mains nues",
+       "Traces de doigts puis blanchiment"
+      ]
+     ],
+     "an": "Sujet BTM 2026 · Q9"
+    },
+    {
+     "k": "qcm",
+     "q": "Qu'est-ce qui cause le blanchiment sucrier ?",
+     "o": [
+      "L'humidité, la condensation",
+      "Une température trop élevée",
+      "Un excès de lécithine",
+      "Un tempérage parfait"
+     ],
+     "a": 0,
+     "x": "L'eau dissout le sucre, qui recristallise en surface en séchant."
+    },
+    {
+     "k": "qcm",
+     "q": "Quel remède contre le blanchiment gras d'un praliné enrobé ?",
+     "o": [
+      "Double chablonnage",
+      "Stockage au réfrigérateur",
+      "Ajout d'eau",
+      "Enrobage plus chaud"
+     ],
+     "a": 0,
+     "x": "Avec un apport de lécithine et un bon tempérage."
+    },
+    {
+     "k": "vf",
+     "q": "On nettoie de préférence les moules au coton hydrophile.",
+     "a": true,
+     "x": "Il capte le beurre de cacao résiduel et garde les moules brillants."
+    }
+   ]
+  },
+  {
+   "t": "Conservation",
+   "qs": [
+    {
+     "k": "pairs",
+     "q": "Associe chaque ennemi du chocolat à sa conséquence.",
+     "p": [
+      [
+       "Humidité",
+       "Blanchiment cristallin"
+      ],
+      [
+       "Chaleur",
+       "Blanchiment gras"
+      ],
+      [
+       "Lumière",
+       "Oxydation, rancissement"
+      ]
+     ]
+    },
+    {
+     "k": "qcm",
+     "q": "À quelle température stocker le chocolat ?",
+     "o": [
+      "15-18 °C",
+      "4 °C",
+      "22-25 °C",
+      "0 °C"
+     ],
+     "a": 0,
+     "x": "Avec une hygroscopie constante de 70-75 %, à l'abri des odeurs."
+    },
+    {
+     "k": "pairs",
+     "q": "Associe chaque produit à sa durée de conservation.",
+     "p": [
+      [
+       "Tablette noire",
+       "1 an"
+      ],
+      [
+       "Chocolat au lait ou fourré",
+       "6 à 8 mois"
+      ],
+      [
+       "Ganache, truffe sans conservateur",
+       "1 mois"
+      ]
+     ]
+    },
+    {
+     "k": "vf",
+     "q": "Les matières grasses du chocolat fixent les odeurs.",
+     "a": true,
+     "x": "D'où le stockage à l'abri des odeurs fortes."
+    }
+   ]
+  },
+  {
+   "t": "Coffre de révision",
+   "bonus": true,
+   "qs": []
+  }
+ ],
+ "citation": "« Bêta un jour, bêta toujours : vise le cristal stable ! »"
+}

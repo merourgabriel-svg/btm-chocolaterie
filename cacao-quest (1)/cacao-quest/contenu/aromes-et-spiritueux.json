@@ -1,0 +1,402 @@
+{
+ "id": "aromes",
+ "numero": 1,
+ "titre": "Arômes et spiritueux",
+ "lecons": [
+  {
+   "t": "Qu'est-ce qu'un arôme ?",
+   "qs": [
+    {
+     "k": "multi",
+     "q": "Coche les 5 familles d'arômes de la législation européenne.",
+     "o": [
+      "Naturels",
+      "Identiques naturels",
+      "Artificiels",
+      "De transformation",
+      "De fumée",
+      "Minéraux",
+      "Fermentés",
+      "Additifs E"
+     ],
+     "c": [
+      0,
+      1,
+      2,
+      3,
+      4
+     ],
+     "x": "Un arôme n'est pas un additif : il n'a pas de numéro E."
+    },
+    {
+     "k": "multi",
+     "q": "Coche les 3 types de spiritueux étudiés.",
+     "o": [
+      "Eaux-de-vie",
+      "Liqueurs et crèmes",
+      "Vins",
+      "Sodas",
+      "Sirops",
+      "Bières"
+     ],
+     "c": [
+      0,
+      1,
+      2
+     ],
+     "x": "Eau-de-vie : 40° ; liqueur : 100 g/L de sucre minimum ; crème : 250 g/L."
+    },
+    {
+     "k": "vf",
+     "q": "Un arôme est un additif alimentaire et porte un numéro E.",
+     "a": false,
+     "x": "Faux : contrairement aux colorants, un arôme n'est pas un additif et n'a pas de numéro E."
+    },
+    {
+     "k": "qcm",
+     "q": "Combien de familles d'arômes compte la législation européenne ?",
+     "o": [
+      "5",
+      "2",
+      "3",
+      "10"
+     ],
+     "a": 0,
+     "x": "Naturel, identique naturel, artificiel, de transformation, de fumée."
+    },
+    {
+     "k": "fill",
+     "q": "La définition de l'arôme vient du décret du 11 avril ___.",
+     "o": [
+      "1991",
+      "1975",
+      "2005",
+      "1960"
+     ],
+     "a": 0,
+     "x": "Décret n°91-366 : produit ajouté pour donner une odeur et/ou un goût."
+    },
+    {
+     "k": "pairs",
+     "q": "Associe chaque catégorie à un exemple.",
+     "p": [
+      [
+       "Aromate",
+       "Cannelle, safran"
+      ],
+      [
+       "Denrée aromatique",
+       "Miel"
+      ],
+      [
+       "Identique naturel",
+       "Vanilline"
+      ],
+      [
+       "Artificiel",
+       "Éthylvanilline"
+      ]
+     ]
+    },
+    {
+     "k": "qcm",
+     "q": "Comment appelle-t-on une substance aromatique naturelle consommable en l'état ?",
+     "o": [
+      "Une denrée aromatique",
+      "Un aromate",
+      "Un extrait",
+      "Un hydrolat"
+     ],
+     "a": 0,
+     "x": "Le miel en est l'exemple type."
+    }
+   ]
+  },
+  {
+   "t": "Les arômes naturels",
+   "qs": [
+    {
+     "k": "qcm",
+     "q": "Quelle technique d'extraction est réservée aux agrumes ?",
+     "o": [
+      "L'expression",
+      "La distillation",
+      "La percolation",
+      "La pyrolyse"
+     ],
+     "a": 0,
+     "x": "On presse les zestes : bergamote, citron, orange, mandarine."
+    },
+    {
+     "k": "pairs",
+     "q": "Associe chaque technique à son exemple.",
+     "p": [
+      [
+       "Macération",
+       "Extrait de vanille"
+      ],
+      [
+       "Percolation",
+       "Extrait de café"
+      ],
+      [
+       "Distillation",
+       "Huile essentielle de menthe"
+      ],
+      [
+       "Cryoconcentration",
+       "Concentré de framboise"
+      ]
+     ]
+    },
+    {
+     "k": "fill",
+     "q": "L'eau de fleur d'oranger est un ___.",
+     "o": [
+      "hydrolat",
+      "concentré",
+      "arôme de fumée",
+      "arôme artificiel"
+     ],
+     "a": 0,
+     "x": "Macération dans une eau faiblement alcoolisée, puis distillation."
+    },
+    {
+     "k": "qcm",
+     "q": "La pâte de pistache appartient à quelle catégorie ?",
+     "o": [
+      "Les pâtes aromatiques naturelles",
+      "Les arômes artificiels",
+      "Les arômes de transformation",
+      "Les additifs"
+     ],
+     "a": 0,
+     "x": "Un produit naturel réduit en pâte, éventuellement enrichi de matière grasse."
+    },
+    {
+     "k": "vf",
+     "q": "Les huiles essentielles sont extraites de l'épicarpe des végétaux.",
+     "a": true,
+     "x": "Par distillation (menthe, anis, badiane) ou par expression pour les agrumes."
+    }
+   ]
+  },
+  {
+   "t": "Arômes de synthèse et procédés",
+   "qs": [
+    {
+     "k": "qcm",
+     "q": "Quel avantage ont souvent les arômes identiques naturels ?",
+     "o": [
+      "Moins chers et plus résistants à la chaleur",
+      "Plus naturels que le naturel",
+      "Ils n'ont aucun goût",
+      "Ils sont obligatoires en bio"
+     ],
+     "a": 0,
+     "x": "Ils reproduisent en laboratoire la molécule naturelle, comme le menthol ou la vanilline."
+    },
+    {
+     "k": "vf",
+     "q": "Un arôme artificiel contient des molécules qui n'existent pas dans la nature.",
+     "a": true,
+     "x": "Exemple : le caproate d'allyle (goût ananas)."
+    },
+    {
+     "k": "pairs",
+     "q": "Associe chaque arôme à son procédé.",
+     "p": [
+      [
+       "Arôme de transformation",
+       "Réaction de Maillard"
+      ],
+      [
+       "Arôme de fumée",
+       "Pyrolyse"
+      ],
+      [
+       "Huile essentielle",
+       "Distillation"
+      ]
+     ]
+    },
+    {
+     "k": "qcm",
+     "q": "Quels éléments déclenchent la réaction de Maillard ?",
+     "o": [
+      "Sucres + protéines + chaleur",
+      "Eau + sel",
+      "Alcool + froid",
+      "Matière grasse + lumière"
+     ],
+     "a": 0,
+     "x": "Elle forme des composés bruns aromatiques : torréfaction, grillage, cuisson."
+    },
+    {
+     "k": "qcm",
+     "q": "Dans une distillation fractionnée, quel corps se condense en premier ?",
+     "o": [
+      "Le plus volatil",
+      "Le plus lourd",
+      "L'eau",
+      "Celui qui a le plus de goût"
+     ],
+     "a": 0,
+     "x": "Celui dont la température d'ébullition est la plus basse."
+    },
+    {
+     "k": "fill",
+     "q": "Après distillation, on sépare la phase aqueuse et la phase huileuse par ___.",
+     "o": [
+      "décantation",
+      "torréfaction",
+      "fermentation",
+      "tamisage"
+     ],
+     "a": 0,
+     "x": "Les deux phases ne se mélangent pas ; le relargage peut aider."
+    }
+   ]
+  },
+  {
+   "t": "Eaux-de-vie et liqueurs",
+   "qs": [
+    {
+     "k": "qcm",
+     "q": "Quelles sont les 3 familles de spiritueux ?",
+     "o": [
+      "Eaux-de-vie, liqueurs, vins",
+      "Alcools, sirops, jus",
+      "Rhums, whiskies, vodkas",
+      "Crèmes, punchs, bières"
+     ],
+     "a": 0,
+     "x": "Le cours range les vins parmi les boissons alcoolisées étudiées."
+    },
+    {
+     "k": "fill",
+     "q": "Une eau-de-vie titre en général ___ d'alcool.",
+     "o": [
+      "40°",
+      "12°",
+      "15°",
+      "70°"
+     ],
+     "a": 0,
+     "x": "Obtenue par fermentation puis distillation de fruits, vins, plantes ou graines."
+    },
+    {
+     "k": "pairs",
+     "q": "Associe chaque eau-de-vie à sa base.",
+     "p": [
+      [
+       "Rhum",
+       "Canne à sucre"
+      ],
+      [
+       "Kirsch",
+       "Fruit (cerise)"
+      ],
+      [
+       "Whisky",
+       "Céréales"
+      ],
+      [
+       "Tequila",
+       "Plante"
+      ]
+     ]
+    },
+    {
+     "k": "qcm",
+     "q": "Quelle teneur minimale en sucre faut-il pour une « crème » ?",
+     "o": [
+      "250 g/L",
+      "100 g/L",
+      "50 g/L",
+      "500 g/L"
+     ],
+     "a": 0,
+     "x": "Une liqueur doit contenir au moins 100 g/L de sucre."
+    },
+    {
+     "k": "qcm",
+     "q": "Le Grand Marnier® et le Cointreau® sont des liqueurs à base de…",
+     "o": [
+      "Écorces d'orange",
+      "Cerise",
+      "Plantes de montagne",
+      "Café"
+     ],
+     "a": 0,
+     "x": "Le curaçao est aussi à base d'orange."
+    },
+    {
+     "k": "vf",
+     "q": "Le cognac, l'armagnac et le calvados sont des appellations contrôlées.",
+     "a": true,
+     "x": "Des eaux-de-vie protégées par leur appellation."
+    }
+   ]
+  },
+  {
+   "t": "Les vins",
+   "qs": [
+    {
+     "k": "qcm",
+     "q": "Combien titre un vin en moyenne ?",
+     "o": [
+      "12°",
+      "40°",
+      "5°",
+      "25°"
+     ],
+     "a": 0,
+     "x": "Jusqu'à 23° pour les vins de liqueur."
+    },
+    {
+     "k": "fill",
+     "q": "Les vins doux naturels sont élaborés par ___ : on stoppe la fermentation avec de l'alcool.",
+     "o": [
+      "mutage",
+      "distillation",
+      "macération",
+      "pyrolyse"
+     ],
+     "a": 0,
+     "x": "Le sucre restant est plus élevé : maury, banyuls, muscat, Rivesaltes."
+    },
+    {
+     "k": "pairs",
+     "q": "Associe chaque catégorie à un exemple.",
+     "p": [
+      [
+       "Vin doux naturel",
+       "Banyuls"
+      ],
+      [
+       "Vin de liqueur",
+       "Porto"
+      ],
+      [
+       "Vin effervescent",
+       "Champagne"
+      ]
+     ]
+    },
+    {
+     "k": "vf",
+     "q": "Les vins de table sont soumis à une réglementation stricte sur les cépages.",
+     "a": false,
+     "x": "Faux : ce sont des vins de consommation courante, sans réglementation particulière."
+    }
+   ]
+  },
+  {
+   "t": "Coffre de révision",
+   "bonus": true,
+   "qs": []
+  }
+ ],
+ "citation": "« Ici, on distille le savoir goutte à goutte. »"
+}

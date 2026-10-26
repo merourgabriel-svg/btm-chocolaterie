@@ -1,0 +1,795 @@
+{
+ "id": "cacao",
+ "numero": 6,
+ "titre": "Le cacao",
+ "lecons": [
+  {
+   "t": "Culture et variétés",
+   "qs": [
+    {
+     "k": "multi",
+     "an": "Sujet BTM 2026 · Q1",
+     "q": "Décris les conditions de culture du cacaoyer. Coche les éléments de réponse attendus.",
+     "o": [
+      "Climat équatorial",
+      "Humidité d'environ 75 %",
+      "Température moyenne de 26 °C",
+      "Altitude de 300 à 700 m",
+      "Sol drainé, riche en azote et en potasse",
+      "À l'abri du soleil direct et du vent (agroforesterie)",
+      "Un hiver froid pour la floraison",
+      "Plein soleil toute la journée",
+      "Sol sec et sableux"
+     ],
+     "c": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+     ],
+     "x": "Ajoute la densité : environ 600 arbres/ha ; au-delà de 1 000, les sols s'épuisent."
+    },
+    {
+     "k": "qcm",
+     "an": "Sujet BTM 2026 · Q1",
+     "q": "Une plantation dépasse 1 000 arbres par hectare. Quelle conséquence ?",
+     "o": [
+      "Les sols s'épuisent : apport d'engrais, durée de vie et rendement réduits",
+      "Le rendement augmente durablement",
+      "Le cacao devient plus aromatique",
+      "Aucune conséquence"
+     ],
+     "a": 0,
+     "x": "En plantation, on compte plutôt 600 arbres par hectare."
+    },
+    {
+     "k": "pairs",
+     "an": "Corrigé 1103-2022",
+     "q": "Les 4 variétés : associe chacune à sa part de la production mondiale.",
+     "p": [
+      [
+       "Criollo",
+       "5 à 10 %"
+      ],
+      [
+       "Forastero",
+       "80 %"
+      ],
+      [
+       "Trinitario",
+       "10 à 15 %"
+      ],
+      [
+       "Nacional",
+       "Moins de 1 %"
+      ]
+     ]
+    },
+    {
+     "k": "pairs",
+     "an": "Sujet BTM 2026 · Q1",
+     "q": "Conditions de culture du cacaoyer : associe chaque besoin à sa valeur.",
+     "p": [
+      [
+       "Température moyenne",
+       "26 °C"
+      ],
+      [
+       "Hygrométrie",
+       "75 %"
+      ],
+      [
+       "Altitude",
+       "300 à 700 m"
+      ],
+      [
+       "Sol",
+       "Drainé, riche en azote et potasse"
+      ]
+     ]
+    },
+    {
+     "k": "qcm",
+     "an": "Sujet BTM 2026 · Q1",
+     "q": "Pourquoi planter le cacaoyer à côté d'arbres plus grands (agroforesterie) ?",
+     "o": [
+      "Ils le protègent du soleil et du vent, gardent l'humidité et apportent un revenu les premières années",
+      "Ils accélèrent la floraison",
+      "Ils remplacent l'engrais",
+      "Ils attirent les pollinisateurs"
+     ],
+     "a": 0,
+     "x": "Le cacaoyer supporte mal la lumière directe du soleil."
+    }
+   ]
+  },
+  {
+   "t": "Les maladies du cacaoyer",
+   "qs": [
+    {
+     "k": "multi",
+     "an": "Sujet BTM 2026 · Q2b",
+     "q": "Conséquences de la propagation des maladies. Coche les éléments attendus.",
+     "o": [
+      "Gestion renforcée : entretien, élimination des cabosses infectées",
+      "Coûts de production en hausse",
+      "Baisse de la quantité et de la qualité des fèves",
+      "Mort d'arbres, production durablement réduite",
+      "Propagation aux parcelles voisines",
+      "Revenus des producteurs réduits",
+      "Fèves plus riches en beurre de cacao",
+      "Récolte plus rapide"
+     ],
+     "c": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+     ],
+     "x": "Pense à 4 niveaux : gestion, rendement, propagation, économie."
+    },
+    {
+     "k": "multi",
+     "an": "Sujet BTM 2026 · Q2a",
+     "q": "Coche les 4 maladies du cacaoyer à citer.",
+     "o": [
+      "Moniliose",
+      "Phytophthora",
+      "Balai de sorcière",
+      "Swollen shoot (œdème des pousses)",
+      "Mildiou",
+      "Phylloxéra",
+      "Oïdium"
+     ],
+     "c": [
+      0,
+      1,
+      2,
+      3
+     ],
+     "x": "3 maladies dues à un champignon, 1 virus (swollen shoot, transmis par la cochenille)."
+    },
+    {
+     "k": "pairs",
+     "an": "Sujet BTM 2026 · Q2a",
+     "q": "Les 4 maladies à citer : associe chacune à sa description.",
+     "p": [
+      [
+       "Moniliose",
+       "Champignon dans la cabosse blessée"
+      ],
+      [
+       "Phytophthora",
+       "Taches brunes sur les fruits"
+      ],
+      [
+       "Balai de sorcière",
+       "L'arbre ne fait plus de fruits et s'épuise"
+      ],
+      [
+       "Swollen shoot",
+       "Virus transmis par la cochenille"
+      ]
+     ]
+    },
+    {
+     "k": "qcm",
+     "an": "Sujet BTM 2026 · Q2b",
+     "q": "Quelles sont les conséquences de la propagation des maladies sur une plantation ?",
+     "o": [
+      "Coûts en hausse, rendement et qualité en baisse, revenus réduits",
+      "Prix du cacao en baisse pour les planteurs",
+      "Fèves plus grosses",
+      "Plus de main-d'œuvre disponible"
+     ],
+     "a": 0,
+     "x": "Il faut entretenir, éliminer les cabosses infectées, traiter : plus de travail et de dépenses."
+    },
+    {
+     "k": "fill",
+     "an": "Sujet BTM 2026 · Q2a",
+     "q": "Le swollen shoot peut tuer un cacaoyer en ___.",
+     "o": [
+      "2 à 3 ans",
+      "2 à 3 mois",
+      "20 ans",
+      "une saison"
+     ],
+     "a": 0,
+     "x": "Il provoque aussi des fruits plus petits et un gonflement des tiges et des racines."
+    },
+    {
+     "k": "vf",
+     "an": "Sujet BTM 2026 · Q2b",
+     "q": "Une maladie peut toucher les parcelles voisines par l'eau, le vent, les insectes ou le matériel.",
+     "a": true,
+     "x": "D'où l'élimination des cabosses infectées loin de la plantation."
+    }
+   ]
+  },
+  {
+   "t": "Histoire et génétique",
+   "qs": [
+    {
+     "k": "qcm",
+     "q": "Quel peuple cultivait le cacao à l'arrivée des conquistadors espagnols ?",
+     "o": [
+      "Les Mayas",
+      "Les Incas",
+      "Les Aztèques du Pérou",
+      "Les Caraïbes"
+     ],
+     "a": 0,
+     "x": "Les Mayas le cultivaient sur les côtes du Tabasco puis dans le Soconusco, berceau du cacao."
+    },
+    {
+     "k": "qcm",
+     "q": "Quel était le seul type de cacao connu à cette époque ?",
+     "o": [
+      "Le Criollo",
+      "Le Forastero",
+      "Le Trinitario",
+      "Le Nacional"
+     ],
+     "a": 0,
+     "x": "Cabosses pointues et verruqueuses, fèves blanches, dodues et peu amères."
+    },
+    {
+     "k": "pairs",
+     "q": "Associe chaque nom à sa signification.",
+     "p": [
+      [
+       "Criollo",
+       "Créole, du pays"
+      ],
+      [
+       "Forastero",
+       "Étranger"
+      ],
+      [
+       "Trinitario",
+       "Hybride Criollo × Forastero"
+      ]
+     ]
+    },
+    {
+     "k": "qcm",
+     "q": "Où se situe le centre originel génétique des cacaoyers ?",
+     "o": [
+      "Le bassin amazonien",
+      "Le Mexique",
+      "L'Afrique de l'Ouest",
+      "L'Indonésie"
+     ],
+     "a": 0,
+     "x": "Le bassin amazonien, même si le Mexique est le berceau historique de sa culture."
+    },
+    {
+     "k": "multi",
+     "q": "Récolte trop précoce : coche les conséquences.",
+     "o": [
+      "Moins de beurre de cacao formé",
+      "Mucilage pas assez développé",
+      "Fermentation ratée",
+      "Cacao astringent et amer",
+      "Cacao plus floral",
+      "Plus de beurre de cacao"
+     ],
+     "c": [
+      0,
+      1,
+      2,
+      3
+     ],
+     "x": "Une cabosse trop mûre, elle, donne des graines noires ou germées."
+    }
+   ]
+  },
+  {
+   "t": "Botanique et culture",
+   "qs": [
+    {
+     "k": "fill",
+     "q": "Le nom scientifique du cacaoyer est Theobroma ___ L.",
+     "o": [
+      "cacao",
+      "cocoa",
+      "criollo",
+      "arabica"
+     ],
+     "a": 0,
+     "x": "Famille des Malvacées, comme l'hibiscus, la mauve ou le coton."
+    },
+    {
+     "k": "qcm",
+     "q": "Entre quelles latitudes se situe la « ceinture cacaoyère » ?",
+     "o": [
+      "20e nord et 20e sud",
+      "10e nord et 10e sud",
+      "30e nord et 30e sud",
+      "Tropique du Cancer et cercle polaire"
+     ],
+     "a": 0,
+     "x": "Des pays équatoriaux à pluie abondante."
+    },
+    {
+     "k": "pairs",
+     "q": "Associe chaque besoin du cacaoyer à sa valeur.",
+     "p": [
+      [
+       "Température moyenne",
+       "26 °C"
+      ],
+      [
+       "Pluviométrie idéale",
+       "1 500 mm"
+      ],
+      [
+       "Hygrométrie",
+       "Environ 75 %"
+      ],
+      [
+       "Altitude de référence",
+       "300 à 700 m"
+      ]
+     ],
+     "an": "Sujet BTM 2026 · Q1"
+    },
+    {
+     "k": "qcm",
+     "q": "Pourquoi plante-t-on le cacaoyer à l'abri d'arbres plus hauts (bananiers, manguiers) ?",
+     "o": [
+      "Il ne supporte ni le vent ni le soleil direct",
+      "Pour accélérer la floraison",
+      "Pour attirer les insectes pollinisateurs",
+      "Pour enrichir les fèves en sucre"
+     ],
+     "a": 0,
+     "x": "Il n'accepte que 50 % de la lumière directe ; ces arbres le protègent aussi du vent."
+    },
+    {
+     "k": "vf",
+     "q": "Un cacaoyer donne ses premiers fruits dès sa première année.",
+     "a": false,
+     "x": "Faux : à partir de 3-4 ans, avec un plein rendement vers 8-10 ans."
+    },
+    {
+     "k": "qcm",
+     "q": "Quel élément du sol favorise le développement des racines et des fruits et aide à résister aux maladies ?",
+     "o": [
+      "La potasse",
+      "L'azote",
+      "Le calcaire",
+      "Le sable"
+     ],
+     "a": 0,
+     "x": "L'azote, lui, aide à créer les tissus végétaux et la croissance.",
+     "an": "Sujet BTM 2026 · Q1"
+    },
+    {
+     "k": "qcm",
+     "q": "Quel est l'inconvénient des plantations très denses (jusqu'à 1 000 arbres par hectare) ?",
+     "o": [
+      "Elles appauvrissent les sols et demandent des engrais",
+      "Elles donnent un cacao plus floral",
+      "Elles empêchent toute maladie",
+      "Elles réduisent la main-d'œuvre à zéro"
+     ],
+     "a": 0,
+     "x": "En culture naturelle, on compte plutôt 400 à 600 arbres par hectare."
+    }
+   ]
+  },
+  {
+   "t": "Fleur, cabosse et fève",
+   "qs": [
+    {
+     "k": "vf",
+     "q": "Les fleurs du cacaoyer poussent directement sur le tronc et les branches principales.",
+     "a": true,
+     "x": "Jamais sur les jeunes branches. On y trouve en même temps boutons, fleurs et fruits."
+    },
+    {
+     "k": "qcm",
+     "q": "Quelle part des fleurs donnera finalement une cabosse ?",
+     "o": [
+      "2 à 3 %",
+      "20 à 30 %",
+      "50 %",
+      "Presque toutes"
+     ],
+     "a": 0,
+     "x": "La fleur ne vit que 20 h et la pollinisation est assurée par de minuscules insectes."
+    },
+    {
+     "k": "fill",
+     "q": "Une fleur pollinisée donne quelques jours plus tard une ___.",
+     "o": [
+      "cherelle",
+      "cabosse mûre",
+      "fève",
+      "jorquette"
+     ],
+     "a": 0,
+     "x": "La cherelle est la toute jeune cabosse."
+    },
+    {
+     "k": "qcm",
+     "q": "Combien de graines contient une cabosse ?",
+     "o": [
+      "35 à 50",
+      "5 à 10",
+      "100 à 150",
+      "Une seule"
+     ],
+     "a": 0,
+     "x": "Disposées en 5 rangées, dans une pulpe blanche acide et sucrée : le mucilage."
+    },
+    {
+     "k": "qcm",
+     "q": "Quelle est la teneur moyenne en beurre de cacao de l'amande ?",
+     "o": [
+      "54 %",
+      "25 %",
+      "80 %",
+      "10 %"
+     ],
+     "a": 0,
+     "x": "Entre 43 et 58 % de matière grasse selon les fèves."
+    },
+    {
+     "k": "pairs",
+     "q": "Associe chaque partie de la fève à son rôle ou sa nature.",
+     "p": [
+      [
+       "Tégument (coque)",
+       "Riche en tannins"
+      ],
+      [
+       "Cotylédons",
+       "Réserve de la graine"
+      ],
+      [
+       "Germe",
+       "Donne racines et tige"
+      ],
+      [
+       "Théobromine",
+       "Alcaloïde amer"
+      ]
+     ]
+    },
+    {
+     "k": "vf",
+     "q": "La théobromine est un alcaloïde proche de la caféine.",
+     "a": true,
+     "x": "C'est elle qui donne son amertume à l'amande."
+    }
+   ]
+  },
+  {
+   "t": "Maladies et ravageurs",
+   "qs": [
+    {
+     "k": "pairs",
+     "q": "Associe chaque maladie à sa cause.",
+     "p": [
+      [
+       "Moniliose",
+       "Champignon dans la cabosse"
+      ],
+      [
+       "Swollen shoot",
+       "Virus transmis par la cochenille"
+      ],
+      [
+       "Mirides",
+       "Punaise qui pique l'écorce"
+      ],
+      [
+       "Pod borer",
+       "Chenille qui creuse la cabosse"
+      ]
+     ],
+     "an": "Corrigé 1103-2021"
+    },
+    {
+     "k": "qcm",
+     "q": "Que faire des cabosses touchées par le Phytophthora (pourriture des cabosses) ?",
+     "o": [
+      "Les éliminer loin de la plantation",
+      "Les laisser sur l'arbre",
+      "Les fermenter plus longtemps",
+      "Les laver à l'eau"
+     ],
+     "a": 0,
+     "x": "Et bien se laver les mains pour ne pas propager le champignon."
+    },
+    {
+     "k": "qcm",
+     "q": "Où sévit le balai de sorcière ?",
+     "o": [
+      "Uniquement en Amérique latine",
+      "En Asie du Sud-Est",
+      "En Afrique de l'Ouest",
+      "Partout dans le monde"
+     ],
+     "a": 0,
+     "x": "Il a fait chuter la production brésilienne de 400 000 à 150 000 t entre 1990 et 1998."
+    },
+    {
+     "k": "vf",
+     "q": "Le swollen shoot peut tuer un cacaoyer en 2 à 3 ans.",
+     "a": true,
+     "x": "Gonflement des tiges et racines. Une variété hybride du Ghana résiste au virus."
+    },
+    {
+     "k": "fill",
+     "q": "Le pod borer est le ravageur n°1 du cacao en ___.",
+     "o": [
+      "Asie du Sud-Est",
+      "Afrique de l'Ouest",
+      "Amérique du Sud",
+      "Océanie"
+     ],
+     "a": 0,
+     "x": "Pertes de rendement de 50 à 80 % dans les zones infestées."
+    },
+    {
+     "k": "qcm",
+     "q": "Comment lutte-t-on contre le balai de sorcière ?",
+     "o": [
+      "En coupant les rameaux malades",
+      "En arrosant davantage",
+      "En récoltant plus tôt",
+      "En plantant plus serré"
+     ],
+     "a": 0,
+     "x": "Une lutte qui demande beaucoup de main-d'œuvre, faute de traitements efficaces."
+    }
+   ]
+  },
+  {
+   "t": "Les variétés",
+   "qs": [
+    {
+     "k": "pairs",
+     "q": "Associe chaque variété à sa caractéristique.",
+     "p": [
+      [
+       "Criollo",
+       "Fève blanche, très aromatique"
+      ],
+      [
+       "Forastero",
+       "Robuste, 80 % de la production"
+      ],
+      [
+       "Trinitario",
+       "Hybride né à Trinidad"
+      ],
+      [
+       "Nacional",
+       "Goût floral « Arriba »"
+      ]
+     ],
+     "an": "Corrigé 1103-2022"
+    },
+    {
+     "k": "qcm",
+     "q": "Quelle variété est surnommée « le robusta du cacao » ?",
+     "o": [
+      "Forastero",
+      "Criollo",
+      "Trinitario",
+      "Nacional"
+     ],
+     "a": 0,
+     "x": "Goût très corsé, chocolat très foncé, arbre très résistant."
+    },
+    {
+     "k": "qcm",
+     "q": "Quel événement est à l'origine du Trinitario ?",
+     "o": [
+      "Un cyclone qui détruisit les criollos de Trinidad en 1727",
+      "Une sélection en laboratoire en 1950",
+      "L'arrivée des Espagnols au Mexique",
+      "Le balai de sorcière au Brésil"
+     ],
+     "a": 0,
+     "x": "Des semences d'Amazonie se sont hybridées avec les criollos survivants."
+    },
+    {
+     "k": "vf",
+     "q": "Le Criollo est un arbre robuste qui s'adapte partout.",
+     "a": false,
+     "x": "Faux : il est fragile et ne pousse bien que dans des conditions proches de son pays d'origine."
+    },
+    {
+     "k": "fill",
+     "q": "Le Nacional est cultivé en ___ et au nord du Pérou.",
+     "o": [
+      "Équateur",
+      "Côte d'Ivoire",
+      "Indonésie",
+      "Mexique"
+     ],
+     "a": 0,
+     "x": "Rendement faible, moins de 1 % de la production : rare et recherché."
+    },
+    {
+     "k": "qcm",
+     "q": "Tu crées une gamme prestige aux notes de jasmin et de fleur d'oranger. Quelle variété choisis-tu ?",
+     "o": [
+      "Nacional",
+      "Forastero",
+      "Trinitario",
+      "Criollo"
+     ],
+     "a": 0,
+     "x": "Le Nacional donne les arômes floraux du goût « Arriba »."
+    },
+    {
+     "k": "qcm",
+     "q": "Quelle part de la production mondiale représente le Trinitario ?",
+     "o": [
+      "10 à 15 %",
+      "80 %",
+      "Moins de 1 %",
+      "50 %"
+     ],
+     "a": 0,
+     "x": "Un produit fini de très bonne qualité, souvent utilisé en grand cru."
+    }
+   ]
+  },
+  {
+   "t": "Géographie et marché",
+   "qs": [
+    {
+     "k": "qcm",
+     "q": "Quelle part du cacao mondial produit l'Afrique de l'Ouest ?",
+     "o": [
+      "60 %",
+      "25 %",
+      "40 %",
+      "90 %"
+     ],
+     "a": 0,
+     "x": "Dont 36 % pour la seule Côte d'Ivoire."
+    },
+    {
+     "k": "pairs",
+     "q": "Associe chaque pays à sa part de la production.",
+     "p": [
+      [
+       "Côte d'Ivoire",
+       "36 %"
+      ],
+      [
+       "Ghana",
+       "18 %"
+      ],
+      [
+       "Indonésie",
+       "13 %"
+      ],
+      [
+       "Équateur",
+       "3 %"
+      ]
+     ]
+    },
+    {
+     "k": "fill",
+     "q": "Le cacao est la ___ matière première alimentaire mondiale, après le sucre et le café.",
+     "o": [
+      "3e",
+      "1re",
+      "2e",
+      "5e"
+     ],
+     "a": 0,
+     "x": "57 pays en produisent dans le monde."
+    },
+    {
+     "k": "qcm",
+     "q": "Combien de grands marchés boursiers fixent la cotation du cacao ?",
+     "o": [
+      "5",
+      "2",
+      "10",
+      "1"
+     ],
+     "a": 0,
+     "x": "New York, Londres, Amsterdam, Hambourg et Paris."
+    },
+    {
+     "k": "vf",
+     "q": "Le prix du cacao est fixé chaque année par un accord entre les pays producteurs.",
+     "a": false,
+     "x": "Faux : le marché est entièrement libre, soumis à l'offre et à la demande, avec de fortes fluctuations."
+    },
+    {
+     "k": "qcm",
+     "q": "Pourquoi les producteurs sont-ils désavantagés dans les négociations ?",
+     "o": [
+      "Ils ne peuvent pas garder leur cacao indéfiniment",
+      "Leur cacao est de mauvaise qualité",
+      "Ils vendent toujours en euros",
+      "La bourse leur est interdite"
+     ],
+     "a": 0,
+     "x": "D'où l'intérêt de filières tracées qui protègent et valorisent les producteurs."
+    },
+    {
+     "k": "qcm",
+     "q": "Une mauvaise récolte en Côte d'Ivoire fait monter les prix partout. Pourquoi ?",
+     "o": [
+      "Elle pèse 36 % de l'offre mondiale",
+      "Elle fixe seule les prix",
+      "Elle n'exporte qu'en Europe",
+      "Elle produit tout le Criollo"
+     ],
+     "a": 0,
+     "x": "Moins de cacao disponible = offre plus faible = prix plus élevé."
+    },
+    {
+     "k": "multi",
+     "q": "Coche 5 pays producteurs de cacao.",
+     "o": [
+      "Côte d'Ivoire",
+      "Ghana",
+      "Indonésie",
+      "Nigeria",
+      "Brésil",
+      "Équateur",
+      "France",
+      "Canada",
+      "Norvège"
+     ],
+     "c": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+     ],
+     "x": "La Côte d'Ivoire est 1re mondiale (36 %), le Ghana 2e (18 %)."
+    },
+    {
+     "k": "multi",
+     "q": "Qu'est-ce qui fait varier le prix du cacao ? Coche les facteurs.",
+     "o": [
+      "Problèmes de production",
+      "Anomalies climatiques",
+      "Maladies des cacaoyers",
+      "Manque de main-d'œuvre",
+      "Problèmes diplomatiques",
+      "Le prix du sucre en France",
+      "La couleur des cabosses"
+     ],
+     "c": [
+      0,
+      1,
+      2,
+      3,
+      4
+     ],
+     "x": "Le marché est libre : l'offre et la demande fixent le prix."
+    }
+   ]
+  },
+  {
+   "t": "Coffre de révision",
+   "bonus": true,
+   "qs": []
+  }
+ ],
+ "citation": "« Pas de producteurs, pas de cacao, pas de chocolat. »"
+}

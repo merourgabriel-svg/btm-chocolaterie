@@ -1,0 +1,518 @@
+{
+ "id": "confiseries",
+ "numero": 2,
+ "titre": "Confiseries techniques",
+ "lecons": [
+  {
+   "t": "Candissage et bonbons liqueur",
+   "qs": [
+    {
+     "k": "multi",
+     "an": "Corrigé 1103-2023",
+     "q": "Bonbon liqueur : coche les éléments qui expliquent la robe de sucre.",
+     "o": [
+      "Le sirop de départ est sursaturé",
+      "L'alcool ramène le sirop à saturation",
+      "L'alcool repousse le saccharose vers l'extérieur",
+      "Le sucre cristallise au contact de l'amidon",
+      "On trempe le bonbon dans du sucre",
+      "L'amidon fond dans le sirop"
+     ],
+     "c": [
+      0,
+      1,
+      2,
+      3
+     ],
+     "x": "Repos 6 à 8 h avant retournement, puis 12 h de cristallisation."
+    },
+    {
+     "k": "qcm",
+     "an": "Corrigé 1103-2023",
+     "q": "Bonbon liqueur : dans quel état est le sirop avant l'ajout d'alcool ?",
+     "o": [
+      "Sursaturé",
+      "Sous-saturé",
+      "Caramélisé",
+      "Solide"
+     ],
+     "a": 0,
+     "x": "L'alcool le ramène à saturation."
+    },
+    {
+     "k": "fill",
+     "an": "Sujet BTM 2026 · Q5c",
+     "q": "Sirop de candissage : 1 L d'eau pour ___ de sucre, à 72 Brix.",
+     "o": [
+      "2,5 kg",
+      "500 g",
+      "10 kg",
+      "1 kg"
+     ],
+     "a": 0,
+     "x": "Soit 3 L d'eau pour 7,5 kg de sucre."
+    },
+    {
+     "k": "qcm",
+     "an": "Corrigé 1103-2023",
+     "q": "Comment se forme la robe de sucre du bonbon liqueur ?",
+     "o": [
+      "L'alcool repousse le saccharose vers l'extérieur, qui cristallise au contact de l'amidon",
+      "Par trempage dans le chocolat",
+      "Par saupoudrage de sucre glace",
+      "Par cuisson au four"
+     ],
+     "a": 0,
+     "x": "Le repos dure 6 à 8 h avant retournement, puis 12 h de cristallisation."
+    },
+    {
+     "k": "qcm",
+     "an": "Annales BTM",
+     "q": "Combien de temps dure le repos d'un candissage ?",
+     "o": [
+      "12 heures sans vibration",
+      "20 minutes",
+      "3 jours avec agitation",
+      "1 heure au froid"
+     ],
+     "a": 0,
+     "x": "Les vibrations donneraient une cristallisation irrégulière."
+    }
+   ]
+  },
+  {
+   "t": "Caramels, fondants et fruits confits",
+   "qs": [
+    {
+     "k": "multi",
+     "an": "Code d'usages",
+     "q": "« Caramel au beurre » : coche les conditions à respecter.",
+     "o": [
+      "Uniquement des matières grasses laitières",
+      "Au moins 3 % de matières grasses lactiques",
+      "Au moins 4,5 % de matière sèche non grasse du lait",
+      "Ajouts possibles : fruits secs, chocolat, café",
+      "Huile de palme autorisée",
+      "Au moins 30 % de beurre"
+     ],
+     "c": [
+      0,
+      1,
+      2,
+      3
+     ],
+     "x": "Tout caramel contient au moins 1,5 % de protéines de lait."
+    },
+    {
+     "k": "qcm",
+     "an": "Annales BTM",
+     "q": "Sur quel principe repose la fabrication d'un fruit confit ?",
+     "o": [
+      "L'osmose : l'eau du fruit sort, le sirop entre",
+      "La fermentation",
+      "La caramélisation",
+      "La lyophilisation"
+     ],
+     "a": 0,
+     "x": "Le sirop est concentré progressivement."
+    },
+    {
+     "k": "qcm",
+     "an": "Annales BTM",
+     "q": "Un fondant confiseur se cuit…",
+     "o": [
+      "Au boulé (120 à 124 °C)",
+      "Au caramel (170 °C)",
+      "À 80 °C",
+      "Au grand cassé"
+     ],
+     "a": 0,
+     "x": "Puis il est travaillé pour cristalliser finement."
+    },
+    {
+     "k": "qcm",
+     "an": "Annales BTM",
+     "q": "Tes berlingots remouillent. Quelle est la cause ?",
+     "o": [
+      "Trop de sucre inverti, qui attire l'eau",
+      "Un refroidissement trop rapide",
+      "Un manque de sucre",
+      "Trop de colorant"
+     ],
+     "a": 0,
+     "x": "Le sucre inverti est très hygroscopique."
+    }
+   ]
+  },
+  {
+   "t": "Le candissage",
+   "qs": [
+    {
+     "k": "qcm",
+     "q": "À quoi sert le candissage ?",
+     "o": [
+      "Protéger la confiserie du séchage et la rendre brillante",
+      "Colorer la confiserie",
+      "La rendre plus moelleuse",
+      "Remplacer l'enrobage chocolat"
+     ],
+     "a": 0,
+     "x": "Une couche de cristaux de sucre soudés forme une protection hermétique."
+    },
+    {
+     "k": "qcm",
+     "q": "Combien de fois son poids en sucre l'eau à 100 °C peut-elle dissoudre ?",
+     "o": [
+      "3 fois",
+      "1,7 fois",
+      "10 fois",
+      "Autant que son poids"
+     ],
+     "a": 0,
+     "x": "À 20 °C, seulement 1,7 fois : c'est ce qui crée la sursaturation au refroidissement."
+    },
+    {
+     "k": "fill",
+     "q": "Le sirop de candissage est réalisé à ___ Brix.",
+     "o": [
+      "72",
+      "30",
+      "50",
+      "90"
+     ],
+     "a": 0,
+     "x": "3 L d'eau pour 7,5 kg de sucre."
+    },
+    {
+     "k": "vf",
+     "q": "Pendant les 12 h de cristallisation, il faut éviter toute vibration.",
+     "a": true,
+     "x": "Les vibrations déplacent les cristaux et donnent une cristallisation irrégulière."
+    },
+    {
+     "k": "qcm",
+     "q": "Pourquoi utiliser de l'eau de source et du sucre en morceaux ?",
+     "o": [
+      "Pour leur propreté : les impuretés gênent la cristallisation",
+      "Pour un goût plus sucré",
+      "Pour aller plus vite",
+      "Pour colorer le sirop"
+     ],
+     "a": 0,
+     "x": "Le seul point d'accroche voulu, c'est la confiserie à candir."
+    },
+    {
+     "k": "order",
+     "q": "Remets les étapes du candissage dans l'ordre.",
+     "o": [
+      "Sirop saturé à chaud",
+      "Refroidissement à 25 °C",
+      "Immersion des supports",
+      "Repos 12 h sans vibration",
+      "Égouttage"
+     ],
+     "x": "En refroidissant, le sirop devient sursaturé et recristallise sur les supports."
+    }
+   ]
+  },
+  {
+   "t": "Bonbons liqueur",
+   "qs": [
+    {
+     "k": "order",
+     "q": "Remets la fabrication des bonbons liqueur dans l'ordre.",
+     "o": [
+      "Empreintes dans l'amidon",
+      "Cuisson eau + sucre",
+      "Mélange sirop et alcool",
+      "Coulage dans les empreintes",
+      "Cristallisation 12 h",
+      "Ramassage et dépoussiérage"
+     ],
+     "x": "L'amidon est tamisé et passé 24 h à l'étuve avant de faire les empreintes.",
+     "an": "Corrigé 1103-2023"
+    },
+    {
+     "k": "qcm",
+     "q": "Comment se forme la robe de sucre ?",
+     "o": [
+      "L'alcool repousse le saccharose vers l'extérieur, qui cristallise au contact de l'amidon",
+      "Le chocolat fige autour du sirop",
+      "On trempe le bonbon dans du sucre glace",
+      "L'amidon fond à la chaleur"
+     ],
+     "a": 0,
+     "x": "L'alcool ramène le sirop sursaturé à saturation.",
+     "an": "Corrigé 1103-2023"
+    },
+    {
+     "k": "fill",
+     "q": "On mélange le sirop et l'alcool par ___ d'un récipient à l'autre.",
+     "o": [
+      "transvasement",
+      "fouettage",
+      "mixage",
+      "pompage"
+     ],
+     "a": 0,
+     "x": "Un mélange doux, sans faire cristalliser le sirop."
+    },
+    {
+     "k": "vf",
+     "q": "On retourne les bonbons immédiatement après le coulage.",
+     "a": false,
+     "x": "Faux : on attend 6 à 8 h avant le retournement."
+    }
+   ]
+  },
+  {
+   "t": "Caramels et nougats",
+   "qs": [
+    {
+     "k": "qcm",
+     "q": "Quel minimum de protéines de lait doit contenir un caramel ?",
+     "o": [
+      "1,5 %",
+      "5 %",
+      "0,5 %",
+      "10 %"
+     ],
+     "a": 0,
+     "x": "Code d'usages du Syndicat National de la Confiserie, 1996."
+    },
+    {
+     "k": "pairs",
+     "q": "Associe chaque caramel à son minimum de matières grasses lactiques.",
+     "p": [
+      [
+       "Caramel au lait",
+       "1,5 %"
+      ],
+      [
+       "Caramel au beurre",
+       "3 %"
+      ],
+      [
+       "Caramel à la crème",
+       "3 %, sans MG non laitière"
+      ]
+     ]
+    },
+    {
+     "k": "vf",
+     "q": "C'est le lait qui donne au caramel sa saveur et sa couleur.",
+     "a": true,
+     "x": "Grâce à la caramélisation qu'il subit pendant la cuisson."
+    },
+    {
+     "k": "fill",
+     "q": "Dans un nougat, la garniture (amandes, noisettes, pistaches) représente au moins ___ du produit fini.",
+     "o": [
+      "15 %",
+      "5 %",
+      "30 %",
+      "50 %"
+     ],
+     "a": 0,
+     "x": "Au-delà de 3 %, les ingrédients facultatifs doivent figurer dans la dénomination."
+    },
+    {
+     "k": "pairs",
+     "q": "Associe chaque nougat à sa garniture minimale.",
+     "p": [
+      [
+       "Nougat",
+       "15 %"
+      ],
+      [
+       "Nougat de Montélimar",
+       "30 %"
+      ],
+      [
+       "Nougat blanc de Provence",
+       "35 %"
+      ],
+      [
+       "Nougat noir de Provence",
+       "50 %"
+      ]
+     ]
+    },
+    {
+     "k": "qcm",
+     "q": "Quel est le seul arôme autorisé dans le nougat de Montélimar ?",
+     "o": [
+      "L'arôme naturel de vanille",
+      "La fleur d'oranger",
+      "Le miel de lavande",
+      "Aucun arôme"
+     ],
+     "a": 0,
+     "x": "Avec au moins 25 % de miel dans les matières sucrantes.",
+     "an": "Annales BTM"
+    },
+    {
+     "k": "qcm",
+     "q": "Qu'est-ce qui caractérise le nougat noir ?",
+     "o": [
+      "Une pâte non aérée, fortement caramélisée",
+      "Une pâte aérée au blanc d'œuf",
+      "L'ajout de chocolat noir",
+      "Une cuisson à basse température"
+     ],
+     "a": 0,
+     "x": "Comme le nougat rouge et la croquante."
+    }
+   ]
+  },
+  {
+   "t": "Pâtes de fruits",
+   "qs": [
+    {
+     "k": "qcm",
+     "q": "Quelle quantité minimale de fruits doit contenir une pâte de fruits ?",
+     "o": [
+      "50 %",
+      "25 %",
+      "15 %",
+      "80 %"
+     ],
+     "a": 0,
+     "x": "Code d'usages de 2010 : soit l'équivalent de 11 % d'extrait sec.",
+     "an": "Annales BTM"
+    },
+    {
+     "k": "pairs",
+     "q": "Associe la dénomination à la part du fruit cité dans la pulpe utilisée.",
+     "p": [
+      [
+       "Pâte d'abricot",
+       "100 %"
+      ],
+      [
+       "Pâte de fruits à l'abricot",
+       "Au moins 25 %"
+      ],
+      [
+       "Pâte de fruits aromatisée",
+       "Arômes non naturels"
+      ]
+     ]
+    },
+    {
+     "k": "vf",
+     "q": "On peut dessiner une fraise sur l'étiquette même si le goût vient d'un arôme artificiel.",
+     "a": false,
+     "x": "Faux : le dessin d'un fruit n'est permis que si la saveur provient réellement de ce fruit."
+    },
+    {
+     "k": "fill",
+     "q": "La texture d'une pâte de fruits est solide, souple et non ___.",
+     "o": [
+      "élastique",
+      "sucrée",
+      "colorée",
+      "acide"
+     ],
+     "a": 0,
+     "x": "C'est ce qui la distingue d'une gomme ou d'un bonbon gélifié."
+    },
+    {
+     "k": "qcm",
+     "q": "Une pâte de fruits a 50 % de fruits avant candissage. Où se mesure ce taux ?",
+     "o": [
+      "Sur le produit avant finition",
+      "Sur le produit candi",
+      "Sur le fruit frais avant cuisson",
+      "Sur la pulpe seule"
+     ],
+     "a": 0,
+     "x": "Le candissage ajoute du sucre ; le taux se calcule avant cette finition."
+    }
+   ]
+  },
+  {
+   "t": "Praliné, gélatine et sucre cuit",
+   "qs": [
+    {
+     "k": "fill",
+     "q": "Un praliné contient au minimum ___ d'amandes et/ou de noisettes.",
+     "o": [
+      "50 %",
+      "30 %",
+      "15 %",
+      "70 %"
+     ],
+     "a": 0,
+     "x": "Le reste est du sucre ; le mélange est intime et broyé."
+    },
+    {
+     "k": "vf",
+     "q": "L'arachide est considérée comme un fruit à coque dans le praliné.",
+     "a": false,
+     "x": "Faux : elle ne compte pas comme fruit à coque."
+    },
+    {
+     "k": "qcm",
+     "q": "Comment se mesure la force d'une gélatine ?",
+     "o": [
+      "En degrés bloom",
+      "En degrés Brix",
+      "En pascals",
+      "En microns"
+     ],
+     "a": 0,
+     "x": "De 50 à 300 bloom : plus le chiffre est élevé, plus elle est puissante."
+    },
+    {
+     "k": "qcm",
+     "q": "Dans quelle confiserie la gélatine sert-elle d'agent aérateur ?",
+     "o": [
+      "La guimauve",
+      "Le caramel dur",
+      "La pâte d'amande",
+      "Le fondant"
+     ],
+     "a": 0,
+     "x": "Aussi dans le nougat et les mousses ; elle stabilise les caramels mous."
+    },
+    {
+     "k": "pairs",
+     "q": "Associe chaque cuisson du sucre à son usage.",
+     "p": [
+      [
+       "Nappe / grand perlé",
+       "Pâte de fruits"
+      ],
+      [
+       "Boulé (120-124 °C)",
+       "Fondant confiseur"
+      ],
+      [
+       "Petit cassé (130-140 °C)",
+       "Caramel dur"
+      ]
+     ]
+    },
+    {
+     "k": "qcm",
+     "q": "Une pâte de nougat contient moins de combien de garniture ?",
+     "o": [
+      "15 %",
+      "30 %",
+      "50 %",
+      "5 %"
+     ],
+     "a": 0,
+     "x": "5 % seulement si la garniture est faite uniquement de céréales soufflées."
+    }
+   ]
+  },
+  {
+   "t": "Coffre de révision",
+   "bonus": true,
+   "qs": []
+  }
+ ],
+ "citation": "« Le sucre aime le calme : pas de vibration pendant qu'il cristallise ! »"
+}

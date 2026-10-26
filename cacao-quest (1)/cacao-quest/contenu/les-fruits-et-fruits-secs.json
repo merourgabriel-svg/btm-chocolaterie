@@ -1,0 +1,471 @@
+{
+ "id": "fruits",
+ "numero": 9,
+ "titre": "Les fruits et fruits secs",
+ "lecons": [
+  {
+   "t": "Variétés et conservation des fruits secs",
+   "qs": [
+    {
+     "k": "multi",
+     "an": "Sujet BTM 2026 · Q8",
+     "q": "Pour tes pralinés, coche les variétés françaises.",
+     "o": [
+      "Corabel (noisette)",
+      "Fertile de Coutard (noisette)",
+      "Princesse (amande)",
+      "Languedoc (amande)",
+      "Fournat de Brézenaud (amande)",
+      "Marcona (amande)",
+      "Tonda Gentile (noisette)",
+      "Ennis (noisette)",
+      "Valencia (amande)"
+     ],
+     "c": [
+      0,
+      1,
+      2,
+      3,
+      4
+     ],
+     "x": "Retiens-en 3 de chaque, dont 1 française."
+    },
+    {
+     "k": "multi",
+     "an": "Sujet BTM 2026 · Q8",
+     "q": "Conservation des fruits secs : coche les bonnes pratiques.",
+     "o": [
+      "À l'abri de la lumière",
+      "Au sec",
+      "Température stable, vers 15 °C",
+      "À l'abri des insectes, de la poussière et des odeurs",
+      "Près du four pour les garder secs",
+      "En vitrine au soleil"
+     ],
+     "c": [
+      0,
+      1,
+      2,
+      3
+     ],
+     "x": "Le danger principal : le rancissement, par oxydation des matières grasses."
+    },
+    {
+     "k": "qcm",
+     "an": "Sujet BTM 2026 · Q8",
+     "q": "Pour tes pralinés, laquelle de ces noisettes est française ?",
+     "o": [
+      "Corabel",
+      "Ennis",
+      "Segorbe",
+      "Tonda Gentile"
+     ],
+     "a": 0,
+     "x": "Autre noisette française : la Fertile de Coutard."
+    },
+    {
+     "k": "qcm",
+     "an": "Sujet BTM 2026 · Q8",
+     "q": "Laquelle de ces amandes est française ?",
+     "o": [
+      "Princesse",
+      "Marcona",
+      "Valencia",
+      "Tuono"
+     ],
+     "a": 0,
+     "x": "Autres amandes françaises : Languedoc, Fournat de Brézenaud."
+    },
+    {
+     "k": "pairs",
+     "an": "Sujet BTM 2026 · Q8",
+     "q": "Associe chaque variété à son fruit et son origine.",
+     "p": [
+      [
+       "Fertile de Coutard",
+       "Noisette française"
+      ],
+      [
+       "Fournat de Brézenaud",
+       "Amande française"
+      ],
+      [
+       "Tonda Gentile",
+       "Noisette italienne"
+      ],
+      [
+       "Marcona",
+       "Amande espagnole"
+      ]
+     ]
+    },
+    {
+     "k": "qcm",
+     "an": "Sujet BTM 2026 · Q8",
+     "q": "Quelle est la principale altération des fruits secs, et sa cause ?",
+     "o": [
+      "Le rancissement, par oxydation des matières grasses",
+      "La fermentation, par les levures",
+      "Le blanchiment, par l'humidité",
+      "La cristallisation du sucre"
+     ],
+     "a": 0,
+     "x": "Favorisé par l'oxygène, la lumière, la chaleur, un stockage trop long."
+    },
+    {
+     "k": "qcm",
+     "an": "Sujet BTM 2026 · Q8",
+     "q": "Comment conserver tes fruits secs ?",
+     "o": [
+      "Au sec, à l'abri de la lumière, à température stable vers 15 °C",
+      "Au soleil",
+      "Près du four",
+      "Dans un local humide"
+     ],
+     "a": 0,
+     "x": "À l'abri aussi de la poussière, des insectes et des odeurs."
+    }
+   ]
+  },
+  {
+   "t": "Fruit ou légume ?",
+   "qs": [
+    {
+     "k": "vf",
+     "q": "La tomate et l'aubergine sont des fruits.",
+     "a": true,
+     "x": "Le fruit contient les graines et succède à la fleur, qu'il soit sucré ou salé."
+    },
+    {
+     "k": "qcm",
+     "q": "Laquelle de ces plantes est un légume et non un fruit ?",
+     "o": [
+      "La rhubarbe",
+      "Le concombre",
+      "La tomate",
+      "L'aubergine"
+     ],
+     "a": 0,
+     "x": "On en mange la tige, comme la canne à sucre."
+    },
+    {
+     "k": "pairs",
+     "q": "Associe chaque partie de l'abricot à son nom.",
+     "p": [
+      [
+       "Peau veloutée",
+       "Épicarpe"
+      ],
+      [
+       "Chair",
+       "Mésocarpe"
+      ],
+      [
+       "Partie dure autour de la graine",
+       "Endocarpe"
+      ]
+     ]
+    },
+    {
+     "k": "qcm",
+     "q": "Sous quelle forme trouve-t-on surtout les fruits en chocolaterie ?",
+     "o": [
+      "Transformés : pulpe, confit, marmelade",
+      "Frais uniquement",
+      "Surgelés entiers",
+      "En jus pressé à la minute"
+     ],
+     "a": 0,
+     "x": "Ils sont rarement utilisés à l'état frais."
+    }
+   ]
+  },
+  {
+   "t": "Les fruits charnus",
+   "qs": [
+    {
+     "k": "pairs",
+     "q": "Associe chaque groupe à un exemple.",
+     "p": [
+      [
+       "Drupe",
+       "Abricot"
+      ],
+      [
+       "Baie",
+       "Cassis"
+      ],
+      [
+       "Agrume",
+       "Yuzu"
+      ],
+      [
+       "Fruit exotique",
+       "Fruit de la passion"
+      ]
+     ]
+    },
+    {
+     "k": "qcm",
+     "q": "Qu'est-ce qui caractérise une drupe ?",
+     "o": [
+      "Un noyau qui renferme la graine",
+      "Plusieurs pépins dans la chair",
+      "Une peau épaisse en quartiers",
+      "Une ouverture automatique à maturité"
+     ],
+     "a": 0,
+     "x": "Mirabelle, pêche, cerise… La framboise est un amas de petites drupes."
+    },
+    {
+     "k": "vf",
+     "q": "Les agrumes sont une sous-catégorie des baies.",
+     "a": true,
+     "x": "Famille des rutacées, riches en vitamine C, pulpe en 8 à 15 quartiers."
+    },
+    {
+     "k": "fill",
+     "q": "L'odeur des agrumes vient de l'huile essentielle contenue dans le ___.",
+     "o": [
+      "zeste",
+      "pépin",
+      "jus",
+      "noyau"
+     ],
+     "a": 0,
+     "x": "D'où l'intérêt des zestes pour aromatiser une ganache."
+    },
+    {
+     "k": "qcm",
+     "q": "Comment appelle-t-on l'ouverture automatique d'un fruit sec à maturité ?",
+     "o": [
+      "La déhiscence",
+      "La fructification",
+      "La germination",
+      "La pollinisation"
+     ],
+     "a": 0,
+     "x": "Un fruit indéhiscent est un akène, ou un caryopse si la paroi est soudée à la graine."
+    }
+   ]
+  },
+  {
+   "t": "Amande et noisette",
+   "qs": [
+    {
+     "k": "qcm",
+     "q": "Quel pays produit environ 80 % des amandes ?",
+     "o": [
+      "Les États-Unis",
+      "L'Espagne",
+      "L'Italie",
+      "La France"
+     ],
+     "a": 0,
+     "x": "L'Australie suit avec 7 %."
+    },
+    {
+     "k": "pairs",
+     "q": "Associe chaque variété à son usage ou sa qualité.",
+     "p": [
+      [
+       "Avola",
+       "Dragées"
+      ],
+      [
+       "Ferrastar",
+       "Masses de praliné"
+      ],
+      [
+       "Tonda Gentile",
+       "Meilleure noisette au monde"
+      ],
+      [
+       "Corabel",
+       "Noisette française, émondage facile"
+      ]
+     ]
+    },
+    {
+     "k": "vf",
+     "q": "Les amandes amères séchées sont toxiques en grande quantité.",
+     "a": true,
+     "x": "Elles contiennent de l'acide cyanhydrique : on les utilise à faible dose."
+    },
+    {
+     "k": "qcm",
+     "q": "Quel pays produit environ 70 % des noisettes ?",
+     "o": [
+      "La Turquie",
+      "L'Italie",
+      "Les États-Unis",
+      "La France"
+     ],
+     "a": 0,
+     "x": "En France, le Lot-et-Garonne fait 98 % de la production."
+    },
+    {
+     "k": "fill",
+     "q": "La noisette contient environ ___ de matières grasses.",
+     "o": [
+      "60 %",
+      "20 %",
+      "35 %",
+      "85 %"
+     ],
+     "a": 0,
+     "x": "L'amande en contient 54 à 56 %."
+    },
+    {
+     "k": "qcm",
+     "q": "Quel est l'inconvénient de la Tonda Romana ?",
+     "o": [
+      "Un émondage difficile",
+      "Un goût trop amer",
+      "Une petite taille",
+      "Elle rancit en 24 h"
+     ],
+     "a": 0,
+     "x": "Elle reste idéale pour le praliné."
+    }
+   ]
+  },
+  {
+   "t": "Noix et pistache",
+   "qs": [
+    {
+     "k": "pairs",
+     "q": "Associe chaque AOC de noix à ses variétés.",
+     "p": [
+      [
+       "Noix de Grenoble",
+       "Mayette, Parisienne"
+      ],
+      [
+       "Noix du Périgord",
+       "Corne, Grandjean, Marbot"
+      ],
+      [
+       "Franquette",
+       "Présente dans les 2 AOC"
+      ]
+     ]
+    },
+    {
+     "k": "qcm",
+     "q": "Quelle partie de la noix ne se mange pas ?",
+     "o": [
+      "Le brou",
+      "Le cerneau",
+      "L'huile",
+      "Le noyau sec"
+     ],
+     "a": 0,
+     "x": "Le brou (la chair) sert de teinture."
+    },
+    {
+     "k": "fill",
+     "q": "La pistache est arrivée en France au XVIIe siècle sous le nom d'« amande de ___ ».",
+     "o": [
+      "Perse",
+      "Sicile",
+      "Syrie",
+      "Grèce"
+     ],
+     "a": 0,
+     "x": "Elle est originaire du Moyen-Orient."
+    },
+    {
+     "k": "qcm",
+     "q": "Quel pays est le 1er producteur de noix ?",
+     "o": [
+      "La Chine",
+      "Les États-Unis",
+      "La France",
+      "L'Iran"
+     ],
+     "a": 0,
+     "x": "45 % de la production, surtout consommée sur place."
+    },
+    {
+     "k": "vf",
+     "q": "La pistache contient 54 à 58 % de matière grasse.",
+     "a": true,
+     "x": "C'est un fruit oléagineux."
+    }
+   ]
+  },
+  {
+   "t": "Conservation et rancissement",
+   "qs": [
+    {
+     "k": "qcm",
+     "q": "Quel est le principal danger pour les fruits secs oléagineux ?",
+     "o": [
+      "Le rancissement",
+      "La fermentation",
+      "La cristallisation",
+      "Le blanchiment sucrier"
+     ],
+     "a": 0,
+     "x": "Très riches en matières grasses, ils rancissent vite."
+    },
+    {
+     "k": "pairs",
+     "q": "Associe chaque mode de stockage à sa précaution.",
+     "p": [
+      [
+       "Froid positif",
+       "Humidité et captation d'odeurs"
+      ],
+      [
+       "Froid négatif",
+       "Condensation à la remise en température"
+      ],
+      [
+       "Chambre chocolat",
+       "Bonne solution, régulée"
+      ]
+     ]
+    },
+    {
+     "k": "vf",
+     "q": "Le rancissement touche surtout les acides gras insaturés.",
+     "a": true,
+     "x": "L'attaque se fait au niveau des doubles liaisons : plus c'est insaturé, plus c'est fragile."
+    },
+    {
+     "k": "qcm",
+     "q": "Qu'est-ce qui accélère le rancissement ?",
+     "o": [
+      "L'oxygène, la lumière, la chaleur",
+      "Le froid et l'obscurité",
+      "Le sucre",
+      "Le sel"
+     ],
+     "a": 0,
+     "x": "D'où un stockage au sec, à l'abri de la lumière, vers 15 °C.",
+     "an": "Sujet BTM 2026 · Q8"
+    },
+    {
+     "k": "fill",
+     "q": "Le rancissement libère des ___, non toxiques mais au goût très désagréable.",
+     "o": [
+      "aldéhydes",
+      "protéines",
+      "sucres",
+      "vitamines"
+     ],
+     "a": 0,
+     "x": "La matière devient impropre à la consommation."
+    }
+   ]
+  },
+  {
+   "t": "Coffre de révision",
+   "bonus": true,
+   "qs": []
+  }
+ ],
+ "citation": "« Une noisette rance, c'est un praliné qui pleure. »"
+}
