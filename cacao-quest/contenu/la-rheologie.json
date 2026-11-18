@@ -1,0 +1,408 @@
+{
+ "id": "rheologie",
+ "numero": 3,
+ "titre": "La rhéologie",
+ "lecons": [
+  {
+   "t": "Viscosité et limite d'écoulement",
+   "qs": [
+    {
+     "k": "multi",
+     "an": "Corrigé 1102-2017",
+     "q": "Quels facteurs modifient la viscosité et la limite d'écoulement ? Coche-les.",
+     "o": [
+      "La lécithine ou le PGPR",
+      "Le taux d'humidité",
+      "La taille des particules",
+      "La température",
+      "Le temps de conchage",
+      "La teneur en beurre de cacao",
+      "La couleur de l'emballage",
+      "L'origine du sucre (canne ou betterave)"
+     ],
+     "c": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+     ],
+     "x": "Mesure au viscosimètre rotatif, à température précise."
+    },
+    {
+     "k": "qcm",
+     "an": "Corrigé 1102-2017",
+     "q": "Qu'est-ce que la viscosité ?",
+     "o": [
+      "Une force de résistance à l'étalement",
+      "La vitesse de cristallisation",
+      "La teneur en sucre",
+      "La brillance du chocolat"
+     ],
+     "a": 0,
+     "x": "À distinguer de la limite d'écoulement."
+    },
+    {
+     "k": "qcm",
+     "an": "Corrigé 1102-2017",
+     "q": "Avec quel instrument mesure-t-on la viscosité d'un chocolat ?",
+     "o": [
+      "Le viscosimètre rotatif",
+      "Le réfractomètre",
+      "Le densimètre",
+      "Le thermomètre"
+     ],
+     "a": 0,
+     "x": "Il mesure la résistance d'un rotor à une température donnée."
+    },
+    {
+     "k": "qcm",
+     "an": "Corrigé 1102-2017",
+     "q": "Qu'est-ce que la limite d'écoulement ?",
+     "o": [
+      "La masse critique au-delà de laquelle la pesanteur fait couler le chocolat",
+      "La température de fonte",
+      "La finesse des particules",
+      "Le temps de conchage"
+     ],
+     "a": 0,
+     "x": "Elle se mesure en pascals (Pa)."
+    },
+    {
+     "k": "pairs",
+     "an": "Corrigé 1102-2017",
+     "q": "Associe chaque facteur à son effet sur le chocolat.",
+     "p": [
+      [
+       "Lécithine 0,1 à 0,3 %",
+       "Viscosité en baisse"
+      ],
+      [
+       "Un peu d'eau",
+       "Viscosité et limite en forte hausse"
+      ],
+      [
+       "Conchage prolongé",
+       "Limite d'écoulement en baisse"
+      ],
+      [
+       "Grosses particules",
+       "Viscosité et limite plus faibles"
+      ]
+     ]
+    },
+    {
+     "k": "vf",
+     "an": "Corrigé 1102-2017",
+     "q": "La viscosité et la limite d'écoulement dépendent toutes deux de la température.",
+     "a": true,
+     "x": "D'où la mesure à une température précise."
+    }
+   ]
+  },
+  {
+   "t": "Les bases",
+   "qs": [
+    {
+     "k": "qcm",
+     "q": "Qu'étudie la rhéologie ?",
+     "o": [
+      "La déformation et l'écoulement de la matière",
+      "La couleur du chocolat",
+      "La cristallisation du sucre",
+      "La fermentation du cacao"
+     ],
+     "a": 0,
+     "x": "Concrètement : la viscosité et la limite d'écoulement."
+    },
+    {
+     "k": "fill",
+     "q": "La rhéologie du chocolat se mesure avec un ___ rotatif.",
+     "o": [
+      "viscosimètre",
+      "réfractomètre",
+      "thermomètre",
+      "pH-mètre"
+     ],
+     "a": 0,
+     "x": "Il mesure la résistance d'un rotor qui tourne dans le chocolat."
+    },
+    {
+     "k": "pairs",
+     "q": "Associe chaque propriété à son unité.",
+     "p": [
+      [
+       "Viscosité",
+       "mPa.s"
+      ],
+      [
+       "Limite d'écoulement",
+       "Pa"
+      ],
+      [
+       "Sucre en solution",
+       "Brix"
+      ]
+     ]
+    },
+    {
+     "k": "vf",
+     "q": "La rhéologie aide à comprendre des difficultés rencontrées au laboratoire.",
+     "a": true,
+     "x": "Moulage trop épais, bulles, enrobage irrégulier…"
+    }
+   ]
+  },
+  {
+   "t": "La viscosité",
+   "qs": [
+    {
+     "k": "qcm",
+     "q": "Un chocolat à 7 000 mPa.s est…",
+     "o": [
+      "Très visqueux",
+      "Très fluide",
+      "Parfaitement tempéré",
+      "Trop chaud"
+     ],
+     "a": 0,
+     "x": "Un chocolat à 500 mPa.s, lui, est très fluide."
+    },
+    {
+     "k": "vf",
+     "q": "Ajouter du beurre de cacao diminue la viscosité du chocolat.",
+     "a": true,
+     "x": "La lécithine permet d'en ajouter moins."
+    },
+    {
+     "k": "fill",
+     "q": "La viscosité est l'expression de la friction ___ d'un fluide soumis à une force.",
+     "o": [
+      "interne",
+      "externe",
+      "thermique",
+      "chimique"
+     ],
+     "a": 0,
+     "x": "Elle se mesure au repos (à plat) ou avec une force appliquée (à 45°)."
+    },
+    {
+     "k": "qcm",
+     "q": "Quels facteurs influencent directement la viscosité ?",
+     "o": [
+      "La teneur en lipides et l'émulsifiant",
+      "La couleur et le parfum",
+      "Le sucre et le sel",
+      "L'origine des fèves uniquement"
+     ],
+     "a": 0,
+     "x": "Le couverturier l'ajuste selon l'usage : moulage, enrobage, intérieurs."
+    },
+    {
+     "k": "qcm",
+     "q": "À quoi la viscosité est-elle associée sur un bonbon enrobé ?",
+     "o": [
+      "À l'aplanissement",
+      "À l'égouttage",
+      "À la brillance",
+      "Au goût"
+     ],
+     "a": 0,
+     "x": "La viscosité joue sur le glissement en couche mince (force horizontale)."
+    }
+   ]
+  },
+  {
+   "t": "La limite d'écoulement",
+   "qs": [
+    {
+     "k": "qcm",
+     "q": "Que décrit la limite d'écoulement ?",
+     "o": [
+      "L'écoulement sous son propre poids",
+      "La vitesse de cristallisation",
+      "La finesse des particules",
+      "La brillance"
+     ],
+     "a": 0,
+     "x": "La force minimale pour que le chocolat s'écoule par simple gravité."
+    },
+    {
+     "k": "vf",
+     "q": "Une limite d'écoulement de 30 Pa signifie que le chocolat s'écoule beaucoup.",
+     "a": false,
+     "x": "Faux : peu ou pas d'écoulement. À 0, l'écoulement est total."
+    },
+    {
+     "k": "fill",
+     "q": "La limite d'écoulement est associée à l'___ (pesanteur).",
+     "o": [
+      "égouttage",
+      "aplanissement",
+      "étalement",
+      "brillance"
+     ],
+     "a": 0,
+     "x": "Force verticale : la soufflerie et la tapoteuse de l'enrobeuse l'accentuent."
+    },
+    {
+     "k": "pairs",
+     "q": "Associe chaque force à la propriété qu'elle révèle.",
+     "p": [
+      [
+       "Force horizontale",
+       "Viscosité"
+      ],
+      [
+       "Force verticale",
+       "Limite d'écoulement"
+      ],
+      [
+       "Vibrations de la tapoteuse",
+       "Pesanteur accentuée"
+      ]
+     ]
+    },
+    {
+     "k": "vf",
+     "q": "Noir, lait et blanc ont le même comportement rhéologique à matière grasse égale.",
+     "a": false,
+     "x": "Faux : ils se comportent différemment pour une même teneur en MG."
+    }
+   ]
+  },
+  {
+   "t": "Agir sur la rhéologie",
+   "qs": [
+    {
+     "k": "qcm",
+     "q": "0,1 à 0,3 % de lécithine ont le même effet sur la viscosité que…",
+     "o": [
+      "1 à 3 % de beurre de cacao",
+      "10 % de sucre",
+      "5 % d'eau",
+      "Une chauffe à 60 °C"
+     ],
+     "a": 0,
+     "x": "D'où une économie de beurre de cacao, donc de coût.",
+     "an": "Corrigé 1102-2017"
+    },
+    {
+     "k": "vf",
+     "q": "Ajouter trop de lécithine fait monter la limite d'écoulement.",
+     "a": true,
+     "x": "Au-delà des doses conseillées, l'effet s'inverse sur la limite d'écoulement."
+    },
+    {
+     "k": "qcm",
+     "q": "Quel émulsifiant a un grand effet sur la limite d'écoulement ?",
+     "o": [
+      "Le PGPR",
+      "Le sucre inverti",
+      "La gélatine",
+      "L'acide citrique"
+     ],
+     "a": 0,
+     "x": "Polyricinoléate de polyglycérol."
+    },
+    {
+     "k": "qcm",
+     "q": "Que provoque une petite quantité d'eau dans le chocolat ?",
+     "o": [
+      "Une forte hausse de la viscosité et de la limite d'écoulement",
+      "Un chocolat plus fluide",
+      "Rien de visible",
+      "Une meilleure brillance"
+     ],
+     "a": 0,
+     "x": "D'où l'importance d'un matériel bien sec.",
+     "an": "Corrigé 1102-2017"
+    },
+    {
+     "k": "qcm",
+     "q": "Selon le cours, que se passe-t-il quand on augmente la température (au-dessus du point de fusion) ?",
+     "o": [
+      "Viscosité en baisse, limite d'écoulement en hausse",
+      "Viscosité et limite d'écoulement en hausse",
+      "Les deux en baisse",
+      "Aucun effet"
+     ],
+     "a": 0,
+     "x": "C'est ce qu'on pratique en maintenant le chocolat à température de travail."
+    },
+    {
+     "k": "fill",
+     "q": "Le conchage fait surtout baisser la limite d'écoulement, en particulier pendant les premières ___.",
+     "o": [
+      "heures",
+      "minutes",
+      "semaines",
+      "secondes"
+     ],
+     "a": 0,
+     "x": "Le conchage à sec agit sur la viscosité et la limite d'écoulement."
+    }
+   ]
+  },
+  {
+   "t": "Défauts en production",
+   "qs": [
+    {
+     "k": "qcm",
+     "q": "Une couverture trop visqueuse au moulage provoque…",
+     "o": [
+      "Des bulles d'air que le tapotage n'élimine pas",
+      "Une coque trop brillante",
+      "Un démoulage trop facile",
+      "Un goût amer"
+     ],
+     "a": 0,
+     "x": "Une limite d'écoulement inadaptée, elle, donne une coque trop fine ou trop épaisse."
+    },
+    {
+     "k": "qcm",
+     "q": "Une couverture trop fluide à l'enrobage…",
+     "o": [
+      "Couvre mal les arêtes, qui fissurent",
+      "Forme des crêtes épaisses",
+      "Emprisonne beaucoup d'air",
+      "Donne un pied trop large"
+     ],
+     "a": 0,
+     "x": "Elle adhère mal et fragilise l'intérieur."
+    },
+    {
+     "k": "pairs",
+     "q": "Associe le défaut d'enrobage à sa cause.",
+     "p": [
+      [
+       "Bulles fréquentes, crêtes",
+       "Couverture trop visqueuse"
+      ],
+      [
+       "Arêtes découvertes",
+       "Couverture trop fluide"
+      ],
+      [
+       "Pied, flancs irréguliers",
+       "Limite d'écoulement inadaptée"
+      ]
+     ]
+    },
+    {
+     "k": "vf",
+     "q": "Les paramètres de tempérage modifient le comportement rhéologique du chocolat.",
+     "a": true,
+     "x": "Les cristaux formés, la température des intérieurs et l'atelier comptent aussi."
+    }
+   ]
+  },
+  {
+   "t": "Coffre de révision",
+   "bonus": true,
+   "qs": []
+  }
+ ],
+ "citation": "« Trop fluide, il s'enfuit ; trop épais, il boude. Trouve le juste milieu ! »"
+}

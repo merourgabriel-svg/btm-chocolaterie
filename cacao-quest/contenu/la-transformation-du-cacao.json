@@ -1,0 +1,720 @@
+{
+ "id": "transformation",
+ "numero": 4,
+ "titre": "La transformation du cacao",
+ "lecons": [
+  {
+   "t": "Fermentation et défauts",
+   "qs": [
+    {
+     "k": "multi",
+     "an": "Sujet BTM 2026 · Q3a",
+     "q": "Décris la fermentation. Coche les éléments de réponse attendus.",
+     "o": [
+      "Elle élimine le mucilage",
+      "Elle tue le germe (pouvoir germinatif)",
+      "Elle diminue amertume et astringence",
+      "Elle forme les précurseurs d'arômes",
+      "Phase alcoolique anaérobie, 24 à 48 h, par les levures",
+      "Phase acétique aérobie, jusqu'à 50 °C, par les bactéries",
+      "Elle dure 24 heures en tout",
+      "Les fèves sont enfermées en bac étanche",
+      "Elle augmente l'amertume"
+     ],
+     "c": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+     ],
+     "x": "Durée totale : 5 à 7 jours, avec brassages pour apporter l'air."
+    },
+    {
+     "k": "multi",
+     "an": "Sujet BTM 2026 · Q3b",
+     "q": "Conséquences d'une fermentation mal conduite. Coche les éléments attendus.",
+     "o": [
+      "Arômes mal formés",
+      "Cacao amer et astringent",
+      "Goûts indésirables : acide, végétal, moisi",
+      "Risque de moisissures",
+      "Fèves violettes ou ardoisées",
+      "Fèves déclassées, vendues moins cher",
+      "Fèves plus brillantes",
+      "Cacao plus floral"
+     ],
+     "c": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+     ],
+     "x": "Trop courte : manque d'arômes ; trop longue : excès d'acide acétique."
+    },
+    {
+     "k": "qcm",
+     "an": "Corrigé 1103-2023",
+     "q": "Après la récolte, quelles sont les 2 opérations les plus importantes pour l'arôme ?",
+     "o": [
+      "La fermentation et la torréfaction",
+      "Le séchage et le stockage",
+      "L'écabossage et le lavage",
+      "Le concassage et le broyage"
+     ],
+     "a": 0,
+     "x": "La fermentation forme les précurseurs d'arômes, la torréfaction les développe."
+    },
+    {
+     "k": "qcm",
+     "an": "Sujet BTM 2026 · Q3a",
+     "q": "Quels sont les objectifs de la fermentation ?",
+     "o": [
+      "Éliminer le mucilage, tuer le germe, réduire amertume et astringence, former les précurseurs d'arômes",
+      "Sécher les fèves",
+      "Sucrer les fèves",
+      "Séparer la coque de l'amande"
+     ],
+     "a": 0,
+     "x": "Une opération complexe : fermentation du mucilage + réactions dans les cotylédons."
+    },
+    {
+     "k": "fill",
+     "an": "Sujet BTM 2026 · Q3a",
+     "q": "Les polyphénols s'associent aux protéines et forment des ___ qui brunissent les fèves.",
+     "o": [
+      "tanins",
+      "sucres",
+      "levures",
+      "pectines"
+     ],
+     "a": 0,
+     "x": "Amertume et astringence diminuent."
+    },
+    {
+     "k": "vf",
+     "an": "Sujet BTM 2026 · Q3a",
+     "q": "On fait fermenter les fèves dans des bacs étanches pour garder le jus.",
+     "a": false,
+     "x": "Faux : les jus doivent pouvoir s'écouler librement."
+    },
+    {
+     "k": "qcm",
+     "an": "Sujet BTM 2026 · Q3a",
+     "q": "Pendant la phase alcoolique, que fait l'acidité ?",
+     "o": [
+      "Elle diminue (le pH monte)",
+      "Elle augmente fortement",
+      "Elle ne change pas",
+      "Elle disparaît totalement"
+     ],
+     "a": 0,
+     "x": "Les levures transforment les sucres en éthanol + CO₂ ; la température monte très légèrement."
+    },
+    {
+     "k": "pairs",
+     "an": "Sujet BTM 2026 · Q3a",
+     "q": "Associe chaque fève à sa couleur après fermentation.",
+     "p": [
+      [
+       "Criollo fermenté",
+       "Brun jaune"
+      ],
+      [
+       "Forastero fermenté",
+       "Brun violet"
+      ],
+      [
+       "Fève non fermentée",
+       "Ardoisée"
+      ]
+     ]
+    },
+    {
+     "k": "qcm",
+     "an": "Sujet BTM 2026 · Q3b",
+     "q": "Quelle est la conséquence d'une fermentation trop longue ?",
+     "o": [
+      "Un excès d'acide acétique (goût piquant)",
+      "Un manque d'acidité",
+      "Des fèves ardoisées",
+      "Un cacao plus floral"
+     ],
+     "a": 0,
+     "x": "Trop courte : arômes mal formés, cacao amer et astringent, fèves violettes ou ardoisées."
+    }
+   ]
+  },
+  {
+   "t": "Torréfaction et conchage",
+   "qs": [
+    {
+     "k": "multi",
+     "an": "Corrigé 1103-2023",
+     "q": "Fermentation et torréfaction : coche les repères justes.",
+     "o": [
+      "Fermentation : 5 à 7 jours",
+      "Phase acétique : jusqu'à 50 °C",
+      "Torréfaction : 110 à 150 °C",
+      "Torréfaction : 15 à 40 minutes",
+      "Torréfaction : humidité ramenée à 2,5 %",
+      "Torréfaction : réaction de Maillard",
+      "Torréfaction : 2 heures à 60 °C",
+      "Fermentation : 48 heures en tout"
+     ],
+     "c": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+     ],
+     "x": "Ce sont les 2 opérations clés pour l'arôme après la récolte."
+    },
+    {
+     "k": "multi",
+     "an": "Corrigé 1102-2017",
+     "q": "Pourquoi le conchage est-il important ? Coche les effets attendus.",
+     "o": [
+      "Élimine l'humidité résiduelle",
+      "Évacue l'acidité et l'amertume",
+      "Développe la flaveur et les arômes",
+      "Donne onctuosité et finesse",
+      "Baisse viscosité et limite d'écoulement",
+      "Sépare la coque de l'amande",
+      "Tempère le chocolat",
+      "Apporte le sucre"
+     ],
+     "c": [
+      0,
+      1,
+      2,
+      3,
+      4
+     ],
+     "x": "Effets mécaniques, physiques et chimiques, sur 8 à 72 h."
+    },
+    {
+     "k": "qcm",
+     "an": "Corrigé 1102-2017",
+     "q": "Pourquoi le conchage est-il une étape importante ?",
+     "o": [
+      "Il élimine humidité, acidité et amertume et développe flaveur et onctuosité",
+      "Il refroidit le chocolat",
+      "Il sépare le beurre de cacao",
+      "Il trie les fèves"
+     ],
+     "a": 0,
+     "x": "Effets mécaniques, physiques et chimiques."
+    },
+    {
+     "k": "pairs",
+     "an": "Corrigé 1103-2023",
+     "q": "Associe chaque étape à ses repères (but, durée, température).",
+     "p": [
+      [
+       "Phase alcoolique",
+       "Anaérobie, 24 à 48 h"
+      ],
+      [
+       "Phase acétique",
+       "Aérobie, jusqu'à 50 °C"
+      ],
+      [
+       "Torréfaction",
+       "15 à 40 min, 110 à 150 °C"
+      ]
+     ]
+    },
+    {
+     "k": "qcm",
+     "an": "Corrigé 1103-2023",
+     "q": "Quand ajoute-t-on la lécithine dans la couverture, et à quelle dose ?",
+     "o": [
+      "En fin de conchage liquide, 0,3 à 0,7 %",
+      "Au début de la torréfaction, 5 %",
+      "Pendant la fermentation, 1 %",
+      "Au tempérage, 10 %"
+     ],
+     "a": 0,
+     "x": "Additif E322, extrait du soja ou du tournesol."
+    }
+   ]
+  },
+  {
+   "t": "Récolte et écabossage",
+   "qs": [
+    {
+     "k": "pairs",
+     "q": "Associe chaque défaut de récolte à sa conséquence.",
+     "p": [
+      [
+       "Cabosse immature",
+       "Moins de beurre de cacao"
+      ],
+      [
+       "Cabosse trop mûre",
+       "Graines noires ou germées"
+      ],
+      [
+       "Graine endommagée",
+       "Moisissures et toxines"
+      ]
+     ]
+    },
+    {
+     "k": "qcm",
+     "q": "Quels sont les 2 signes de maturité d'une cabosse ?",
+     "o": [
+      "Changement de couleur et son sourd au tapotement",
+      "Poids et odeur sucrée",
+      "Taille et dureté",
+      "Chute naturelle et couleur noire"
+     ],
+     "a": 0,
+     "x": "Les vertes deviennent jaunes, les rouges deviennent orange.",
+     "an": "Corrigé 1103-2016"
+    },
+    {
+     "k": "fill",
+     "q": "On coupe la cabosse au niveau du ___, sans abîmer les bourgeons dormants.",
+     "o": [
+      "pédoncule",
+      "cortex",
+      "mucilage",
+      "rachis"
+     ],
+     "a": 0,
+     "x": "Coupe franche, à la machette ou à la faucille."
+    },
+    {
+     "k": "vf",
+     "q": "L'écabossage peut se faire jusqu'à 5 jours après la récolte.",
+     "a": true,
+     "x": "Mais dès l'ouverture, les levures s'installent : il faut être rapide."
+    },
+    {
+     "k": "qcm",
+     "q": "Combien de graines extrait-on en moyenne d'une cabosse à l'écabossage ?",
+     "o": [
+      "30 à 80",
+      "5 à 10",
+      "150 à 200",
+      "Une seule"
+     ],
+     "a": 0,
+     "x": "Noyées dans le mucilage, séparées du rachis puis triées."
+    },
+    {
+     "k": "qcm",
+     "q": "Pourquoi faut-il être rapide une fois la cabosse ouverte ?",
+     "o": [
+      "La transformation biochimique commence aussitôt",
+      "Les fèves perdent leur couleur",
+      "Le mucilage durcit",
+      "Les fèves germent en une heure"
+     ],
+     "a": 0,
+     "x": "Cabosse fermée = milieu stérile ; ouverte, les levures arrivent par millions."
+    }
+   ]
+  },
+  {
+   "t": "La fermentation",
+   "qs": [
+    {
+     "k": "qcm",
+     "q": "Combien de temps dure la fermentation en moyenne ?",
+     "o": [
+      "5 à 7 jours",
+      "24 heures",
+      "3 semaines",
+      "2 mois"
+     ],
+     "a": 0,
+     "x": "Dans des bacs couverts de feuilles de bananier, brassés régulièrement."
+    },
+    {
+     "k": "order",
+     "q": "Remets la fermentation dans l'ordre.",
+     "o": [
+      "Mise en bacs",
+      "Phase alcoolique",
+      "Écoulement du jus et entrée d'air",
+      "Phase acétique",
+      "Séchage"
+     ],
+     "x": "L'arrivée d'air met fin à la phase alcoolique et lance la phase acétique."
+    },
+    {
+     "k": "pairs",
+     "q": "Associe chaque phase à ce qui s'y passe.",
+     "p": [
+      [
+       "Phase alcoolique",
+       "Levures : sucres → éthanol + CO₂"
+      ],
+      [
+       "Phase acétique",
+       "Bactéries : éthanol → acide acétique"
+      ],
+      [
+       "Montée à 50 °C",
+       "Le germe meurt"
+      ]
+     ],
+     "an": "Corrigé 1103-2023"
+    },
+    {
+     "k": "qcm",
+     "q": "Pourquoi faut-il au moins 80 kg de fèves dans un bac ?",
+     "o": [
+      "Pour l'effet de masse",
+      "Pour remplir un sac de jute",
+      "Pour éviter le séchage",
+      "Pour accélérer l'écabossage"
+     ],
+     "a": 0,
+     "x": "Au-dessus d'1 tonne, en revanche, la fermentation n'est plus homogène."
+    },
+    {
+     "k": "fill",
+     "q": "Les composés formés pendant la fermentation sont appelés les « ___ d'arômes ».",
+     "o": [
+      "précurseurs",
+      "fixateurs",
+      "exhausteurs",
+      "agents"
+     ],
+     "a": 0,
+     "x": "Ils réagiront à la torréfaction pour donner le goût du chocolat."
+    },
+    {
+     "k": "qcm",
+     "q": "Une mauvaise fermentation (bâche plastique, jus mal évacué…) peut donner :",
+     "o": [
+      "Des notes de beurre rance, voire de purin",
+      "Un goût floral",
+      "Plus de beurre de cacao",
+      "Une couleur plus claire"
+     ],
+     "a": 0,
+     "x": "Fermentation lactique, propionique ou butyrique : arômes désagréables."
+    },
+    {
+     "k": "pairs",
+     "q": "Associe le résultat du cut test à l'état des fèves.",
+     "p": [
+      [
+       "Gris ardoise",
+       "Non fermentées"
+      ],
+      [
+       "Violettes",
+       "Insuffisamment fermentées"
+      ],
+      [
+       "Brunes, craquelées",
+       "Bien fermentées"
+      ],
+      [
+       "Noirâtres, germées",
+       "Défectueuses"
+      ]
+     ]
+    }
+   ]
+  },
+  {
+   "t": "Séchage et stockage",
+   "qs": [
+    {
+     "k": "fill",
+     "q": "Le séchage fait passer l'humidité des fèves de 55 % à ___.",
+     "o": [
+      "7 %",
+      "20 %",
+      "0 %",
+      "35 %"
+     ],
+     "a": 0,
+     "x": "Au-delà de 7 %, les moisissures menacent pendant le stockage."
+    },
+    {
+     "k": "qcm",
+     "q": "Quelle part de la production est séchée naturellement, au soleil ?",
+     "o": [
+      "95 %",
+      "50 %",
+      "5 %",
+      "100 %"
+     ],
+     "a": 0,
+     "x": "Sur claies, nattes ou aires cimentées, en couche de 3-4 cm."
+    },
+    {
+     "k": "pairs",
+     "q": "Associe chaque mode de séchage à sa caractéristique.",
+     "p": [
+      [
+       "Au soleil",
+       "5 à 20 jours, meilleure qualité"
+      ],
+      [
+       "Artificiel",
+       "15 à 36 h, label bio impossible"
+      ],
+      [
+       "Au feu de bois",
+       "Goût fumé, basse qualité"
+      ]
+     ]
+    },
+    {
+     "k": "vf",
+     "q": "Le séchage artificiel élimine mieux l'acide acétique que le séchage au soleil.",
+     "a": false,
+     "x": "Faux : il l'élimine mal, et sans réaction d'oxydation favorable aux arômes."
+    },
+    {
+     "k": "qcm",
+     "q": "Dans quoi stocke-t-on le plus souvent les fèves ?",
+     "o": [
+      "Des sacs de toile de jute",
+      "Des bacs en inox",
+      "Des sacs plastique",
+      "Des fûts de chêne"
+     ],
+     "a": 0,
+     "x": "60 à 90 kg par sac : le jute laisse circuler l'air."
+    },
+    {
+     "k": "qcm",
+     "q": "Pourquoi éloigner les fèves des odeurs fortes pendant le stockage ?",
+     "o": [
+      "La matière grasse capte les odeurs",
+      "Elles germeraient",
+      "Elles perdraient leur couleur",
+      "Pour éviter les insectes"
+     ],
+     "a": 0,
+     "x": "Le beurre de cacao absorbe les odeurs et peut donner un goût étranger."
+    }
+   ]
+  },
+  {
+   "t": "Torréfaction et broyage",
+   "qs": [
+    {
+     "k": "order",
+     "q": "Remets les étapes de l'usine dans l'ordre.",
+     "o": [
+      "Nettoyage",
+      "Torréfaction",
+      "Concassage",
+      "Pré-broyage",
+      "Pâte de cacao"
+     ],
+     "x": "Le concassage sépare les coques ; le broyage transforme le grué en pâte."
+    },
+    {
+     "k": "qcm",
+     "q": "Quels sont les paramètres moyens de la torréfaction ?",
+     "o": [
+      "15 à 40 min, 110 à 150 °C",
+      "2 h à 60 °C",
+      "5 min à 250 °C",
+      "24 h à 40 °C"
+     ],
+     "a": 0,
+     "x": "Avec une perte de 5 à 10 % du poids initial.",
+     "an": "Corrigé 1103-2023"
+    },
+    {
+     "k": "fill",
+     "q": "La torréfaction déclenche la réaction de ___ entre protéines et sucres.",
+     "o": [
+      "Maillard",
+      "Lindt",
+      "Motamayor",
+      "fermentation"
+     ],
+     "a": 0,
+     "x": "Environ 500 composés aromatiques se forment à cette étape."
+    },
+    {
+     "k": "vf",
+     "q": "C'est à la torréfaction que le couverturier apporte sa signature.",
+     "a": true,
+     "x": "Il n'y a pas de règle universelle : intensité et durée dépendent des fèves et de l'objectif."
+    },
+    {
+     "k": "qcm",
+     "q": "Comment s'appellent les fèves concassées débarrassées de leur coque ?",
+     "o": [
+      "Le grué (ou nibs)",
+      "La masse",
+      "Le tourteau",
+      "Le mucilage"
+     ],
+     "a": 0,
+     "x": "La coque représente 10 à 12 % du poids de la fève."
+    },
+    {
+     "k": "qcm",
+     "q": "Quelle est la granulométrie de la pâte de cacao après pré-broyage ?",
+     "o": [
+      "80 à 100 microns",
+      "18 à 20 microns",
+      "1 mm",
+      "2 à 3 mm"
+     ],
+     "a": 0,
+     "x": "Les 18-20 microns ne seront atteints qu'à l'affinage."
+    }
+   ]
+  },
+  {
+   "t": "Affinage et conchage",
+   "qs": [
+    {
+     "k": "fill",
+     "q": "En fin d'affinage, la granulométrie du chocolat est d'environ ___ microns.",
+     "o": [
+      "18-20",
+      "80-100",
+      "200",
+      "2"
+     ],
+     "a": 0,
+     "x": "Obtenue dans des broyeurs à 3 ou 5 cylindres de plus en plus serrés."
+    },
+    {
+     "k": "qcm",
+     "q": "Qui a inventé le conchage, et quand ?",
+     "o": [
+      "Rodolphe Lindt, en 1879",
+      "Jean Neuhaus, en 1912",
+      "Henri Nestlé, en 1867",
+      "Motamayor, en 2008"
+     ],
+     "a": 0,
+     "x": "Une découverte accidentelle : sa conche était restée en marche."
+    },
+    {
+     "k": "qcm",
+     "q": "Combien de temps dure généralement le conchage ?",
+     "o": [
+      "8 à 72 h",
+      "10 minutes",
+      "2 semaines",
+      "1 heure"
+     ],
+     "a": 0,
+     "x": "En 2 temps : conchage à sec, puis conchage liquide."
+    },
+    {
+     "k": "pairs",
+     "q": "Associe chaque temps du conchage à ce qui s'y passe.",
+     "p": [
+      [
+       "Conchage à sec",
+       "Friction, 45-50 °C, l'humidité s'évapore"
+      ],
+      [
+       "Conchage liquide",
+       "Ajout de beurre de cacao, film continu"
+      ],
+      [
+       "Fin de conchage",
+       "Ajout de lécithine E322"
+      ]
+     ],
+     "an": "Corrigé 1102-2017"
+    },
+    {
+     "k": "qcm",
+     "q": "Quel est le rôle de la lécithine ajoutée en fin de conchage ?",
+     "o": [
+      "Diminuer la viscosité",
+      "Sucrer le chocolat",
+      "Colorer la pâte",
+      "Allonger la conservation"
+     ],
+     "a": 0,
+     "x": "0,3 à 0,7 % : elle stabilise, fluidifie et économise du beurre de cacao.",
+     "an": "Corrigé 1103-2023"
+    },
+    {
+     "k": "vf",
+     "q": "La lécithine est indispensable pour fabriquer des tablettes.",
+     "a": false,
+     "x": "Faux : inutile pour les tablettes, elle sert surtout à l'enrobage mécanique."
+    }
+   ]
+  },
+  {
+   "t": "Conditionnement",
+   "qs": [
+    {
+     "k": "qcm",
+     "q": "Sous quelles formes la couverture est-elle moulée ?",
+     "o": [
+      "Pistoles, pains, tablettes",
+      "Uniquement en poudre",
+      "En blocs de pâte crue",
+      "En sacs de grué"
+     ],
+     "a": 0,
+     "x": "Après pré-cristallisation, moulage et refroidissement."
+    },
+    {
+     "k": "pairs",
+     "q": "Associe chaque condition de stockage du chocolat à sa valeur.",
+     "p": [
+      [
+       "Température",
+       "15 à 20 °C"
+      ],
+      [
+       "Hygrométrie",
+       "50 à 60 %"
+      ],
+      [
+       "Emballage",
+       "Hermétique, à l'abri de la lumière"
+      ]
+     ]
+    },
+    {
+     "k": "qcm",
+     "q": "À l'usine, les fèves sont stockées à quelle température ?",
+     "o": [
+      "12-14 °C",
+      "25-30 °C",
+      "0-4 °C",
+      "35 °C"
+     ],
+     "a": 0,
+     "x": "Avec 65 % d'hygrométrie, dans des locaux propres, secs et désinfectés."
+    },
+    {
+     "k": "vf",
+     "q": "À la réception, les fèves passent un test gustatif sur un échantillon transformé en chocolat.",
+     "a": true,
+     "x": "Triple examen : coupe des fèves, test olfactif, test gustatif."
+    }
+   ]
+  },
+  {
+   "t": "Coffre de révision",
+   "bonus": true,
+   "qs": []
+  }
+ ],
+ "citation": "« De la cabosse à la tablette, le moindre geste a son importance. »"
+}

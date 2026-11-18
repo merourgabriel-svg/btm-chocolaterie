@@ -1,0 +1,30 @@
+{
+ "id": "/cacao-quest/",
+ "name": "Cacao Quest",
+ "short_name": "Cacao Quest",
+ "description": "Révisions BTM Chocolatier en leçons courtes.",
+ "lang": "fr",
+ "start_url": "/cacao-quest/",
+ "scope": "/cacao-quest/",
+ "display": "standalone",
+ "background_color": "#FFFCF5",
+ "theme_color": "#7A2E5E",
+ "icons": [
+  {
+   "src": "icons/icon-192.png",
+   "sizes": "192x192",
+   "type": "image/png"
+  },
+  {
+   "src": "icons/icon-512.png",
+   "sizes": "512x512",
+   "type": "image/png"
+  },
+  {
+   "src": "icons/icon-maskable-512.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "maskable"
+  }
+ ]
+}

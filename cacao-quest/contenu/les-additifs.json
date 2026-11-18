@@ -1,0 +1,463 @@
+{
+ "id": "additifs",
+ "numero": 8,
+ "titre": "Les additifs",
+ "lecons": [
+  {
+   "t": "Émulsifiants, acides et pectines",
+   "qs": [
+    {
+     "k": "multi",
+     "an": "Sujet BTM 2026 · Q4",
+     "q": "Les émulsifiants. Coche les éléments de réponse attendus.",
+     "o": [
+      "Ils stabilisent le mélange de 2 phases non miscibles (eau / matière grasse)",
+      "Ce sont des molécules tensio-actives",
+      "Une partie hydrophile, une partie lipophile",
+      "Ils se placent à l'interface eau / graisse",
+      "Ils réduisent la tension interfaciale",
+      "Exemples : lécithine (soja, tournesol), PGPR",
+      "Ils gélifient l'eau",
+      "Exemple : la pectine"
+     ],
+     "c": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+     ],
+     "x": "Effet : fluidité, texture et stabilité, sans séparation des phases."
+    },
+    {
+     "k": "qcm",
+     "an": "Sujet BTM 2026 · Q4",
+     "q": "Qu'est-ce qu'un émulsifiant ?",
+     "o": [
+      "Une molécule tensio-active qui stabilise le mélange eau / matière grasse",
+      "Un colorant",
+      "Un gélifiant",
+      "Un acidifiant"
+     ],
+     "a": 0,
+     "x": "Il facilite le mélange de deux matières non miscibles."
+    },
+    {
+     "k": "pairs",
+     "an": "Sujet BTM 2026 · Q4",
+     "q": "Associe chaque partie de l'émulsifiant à son rôle.",
+     "p": [
+      [
+       "Partie hydrophile",
+       "Attirée par l'eau"
+      ],
+      [
+       "Partie lipophile",
+       "Attirée par les graisses"
+      ],
+      [
+       "Interface eau / graisse",
+       "Où se placent les émulsifiants"
+      ]
+     ]
+    },
+    {
+     "k": "qcm",
+     "an": "Sujet BTM 2026 · Q4",
+     "q": "Comment agissent les émulsifiants ?",
+     "o": [
+      "Ils réduisent la tension interfaciale et empêchent les gouttelettes de se regrouper",
+      "Ils font bouillir l'eau",
+      "Ils durcissent la graisse",
+      "Ils sucrent le mélange"
+     ],
+     "a": 0,
+     "x": "Résultat : fluidité, texture et stabilité améliorées."
+    },
+    {
+     "k": "qcm",
+     "an": "Sujet BTM 2026 · Q4",
+     "q": "Cite 2 émulsifiants utilisés en chocolaterie.",
+     "o": [
+      "Lécithine (soja ou tournesol) et PGPR",
+      "Pectine et gélatine",
+      "Sorbitol et glucose",
+      "Acide citrique et tartrique"
+     ],
+     "a": 0,
+     "x": "Le PGPR agit sur la viscosité et la limite d'écoulement."
+    },
+    {
+     "k": "qcm",
+     "an": "Annales BTM",
+     "q": "Le code E334 correspond à…",
+     "o": [
+      "L'acide tartrique",
+      "L'acide citrique",
+      "La crème de tartre",
+      "La lécithine"
+     ],
+     "a": 0,
+     "x": "E330 : acide citrique ; E336 : crème de tartre ; E322 : lécithine."
+    },
+    {
+     "k": "qcm",
+     "an": "Annales BTM",
+     "q": "La pectine jaune gélifie…",
+     "o": [
+      "En milieu acide, sans être thermoréversible",
+      "À chaud, de façon thermoréversible",
+      "Sans sucre",
+      "Dans le lait"
+     ],
+     "a": 0,
+     "x": "La pectine NH, elle, est thermoréversible (nappages)."
+    }
+   ]
+  },
+  {
+   "t": "Définition et codes E",
+   "qs": [
+    {
+     "k": "fill",
+     "q": "La quantité d'additif qu'on peut ingérer chaque jour à vie sans danger s'appelle la ___.",
+     "o": [
+      "DJA",
+      "DLC",
+      "DDM",
+      "AOC"
+     ],
+     "a": 0,
+     "x": "Dose Journalière Autorisée, fixée après des tests en laboratoire."
+    },
+    {
+     "k": "pairs",
+     "q": "Associe chaque famille à sa plage de codes.",
+     "p": [
+      [
+       "Colorants",
+       "E1XX"
+      ],
+      [
+       "Conservateurs",
+       "E2XX"
+      ],
+      [
+       "Antioxydants",
+       "E300-E321"
+      ],
+      [
+       "Agents de texture",
+       "E322-E495"
+      ]
+     ]
+    },
+    {
+     "k": "qcm",
+     "q": "Depuis quand les additifs sont-ils codifiés par la lettre E ?",
+     "o": [
+      "1979",
+      "1905",
+      "2011",
+      "1950"
+     ],
+     "a": 0,
+     "x": "Le 6 août 1979 : un E suivi de 3 chiffres."
+    },
+    {
+     "k": "vf",
+     "q": "Les additifs sont sans danger quelle que soit la dose.",
+     "a": false,
+     "x": "Faux : à forte dose ils sont nocifs, d'où la DJA."
+    }
+   ]
+  },
+  {
+   "t": "Colorants et conservateurs",
+   "qs": [
+    {
+     "k": "qcm",
+     "q": "Quel est le seul colorant d'origine animale employé en chocolaterie ?",
+     "o": [
+      "Le rouge carmin E120",
+      "La bétanine",
+      "La chlorophylle",
+      "Le carotène"
+     ],
+     "a": 0,
+     "x": "Il vient de la cochenille, un petit insecte du Mexique."
+    },
+    {
+     "k": "pairs",
+     "q": "Associe chaque colorant végétal à sa source.",
+     "p": [
+      [
+       "Carotène",
+       "Carotte"
+      ],
+      [
+       "Bétanine",
+       "Betterave rouge"
+      ],
+      [
+       "Chlorophylle",
+       "Plantes vertes"
+      ],
+      [
+       "Bleu",
+       "Indigotier"
+      ]
+     ]
+    },
+    {
+     "k": "qcm",
+     "q": "Pour colorer du beurre de cacao, il faut un colorant…",
+     "o": [
+      "Liposoluble",
+      "Hydrosoluble",
+      "Minéral uniquement",
+      "Azoïque obligatoirement"
+     ],
+     "a": 0,
+     "x": "Les hydrosolubles servent pour le sucre d'art ou la pâte d'amande."
+    },
+    {
+     "k": "qcm",
+     "q": "En chocolaterie, qui joue le plus souvent le rôle de conservateur ?",
+     "o": [
+      "Les matières premières : sucre, alcool, graisse",
+      "L'acide sorbique",
+      "Le nitrate de sodium",
+      "Le colorant"
+     ],
+     "a": 0,
+     "x": "On parle d'adjuvants naturels."
+    },
+    {
+     "k": "vf",
+     "q": "Le sucre et l'alcool ont une action antiseptique.",
+     "a": true,
+     "x": "Le sel attire l'eau, le vinaigre stoppe la multiplication des microbes."
+    }
+   ]
+  },
+  {
+   "t": "Antioxydants, émulsifiants, stabilisants",
+   "qs": [
+    {
+     "k": "qcm",
+     "q": "Que fait un antioxydant ?",
+     "o": [
+      "Il évite le rancissement et le noircissement des fruits",
+      "Il colore",
+      "Il sucre",
+      "Il fait gonfler la pâte"
+     ],
+     "a": 0,
+     "x": "Exemple : l'acide ascorbique, comme le jus de citron sur un fruit coupé."
+    },
+    {
+     "k": "fill",
+     "q": "L'émulsifiant le plus utilisé est la ___, présente dans le soja et le jaune d'œuf.",
+     "o": [
+      "lécithine",
+      "pectine",
+      "gélatine",
+      "silice"
+     ],
+     "a": 0,
+     "x": "Elle diminue l'apport de beurre de cacao nécessaire dans le chocolat."
+    },
+    {
+     "k": "qcm",
+     "q": "À quoi sert un émulsifiant ?",
+     "o": [
+      "Stabiliser un mélange eau / matière grasse",
+      "Gélifier un liquide",
+      "Acidifier une pâte",
+      "Colorer une couverture"
+     ],
+     "a": 0,
+     "x": "Deux matières qui, sinon, ne se mélangent pas."
+    },
+    {
+     "k": "qcm",
+     "q": "Quel stabilisant est le plus utilisé en chocolaterie ?",
+     "o": [
+      "Le sorbitol",
+      "L'agar-agar",
+      "Le carmin",
+      "L'acide lactique"
+     ],
+     "a": 0,
+     "x": "Stabilisateur d'humidité dans les ganaches, fondants, pâtes de fruits."
+    },
+    {
+     "k": "vf",
+     "q": "Stabilisant et stabilisateur, c'est la même chose.",
+     "a": false,
+     "x": "Faux : le stabilisateur sert en glacerie à retarder la cristallisation de l'eau."
+    }
+   ]
+  },
+  {
+   "t": "Épaississants et gélifiants",
+   "qs": [
+    {
+     "k": "qcm",
+     "q": "Dans quel milieu la pectine gélifie-t-elle ?",
+     "o": [
+      "En milieu acide",
+      "En milieu neutre",
+      "En milieu gras",
+      "Dans l'eau froide seule"
+     ],
+     "a": 0,
+     "x": "PH 3,5-3,8 et au moins 75 % d'extrait sec : d'où l'acide dans les pâtes de fruits."
+    },
+    {
+     "k": "pairs",
+     "q": "Associe chaque pectine à son usage.",
+     "p": [
+      [
+       "Pectine jaune",
+       "Pâtes de fruits"
+      ],
+      [
+       "Pectine NH",
+       "Nappages"
+      ],
+      [
+       "Sucre gélifiant",
+       "Confitures"
+      ]
+     ]
+    },
+    {
+     "k": "pairs",
+     "q": "Associe chaque gélatine à sa force.",
+     "p": [
+      [
+       "Or",
+       "200-210 bloom"
+      ],
+      [
+       "Argent",
+       "180 bloom"
+      ],
+      [
+       "Bronze",
+       "150 bloom"
+      ]
+     ]
+    },
+    {
+     "k": "qcm",
+     "q": "D'où vient l'agar-agar ?",
+     "o": [
+      "D'une algue rouge",
+      "De la peau de porc",
+      "Des pépins de pomme",
+      "De la betterave"
+     ],
+     "a": 0,
+     "x": "Alternative végétarienne très gélifiante, aux propriétés laxatives : dosage à respecter."
+    },
+    {
+     "k": "vf",
+     "q": "La gomme arabique sert au brillantage des turbinés.",
+     "a": true,
+     "x": "Aussi pour les dragées et les gommes."
+    },
+    {
+     "k": "fill",
+     "q": "La pectine est extraite notamment de la peau des ___.",
+     "o": [
+      "agrumes",
+      "bananes",
+      "amandes",
+      "fèves"
+     ],
+     "a": 0,
+     "x": "Aussi des pépins de pomme, des groseilles et des coings."
+    }
+   ]
+  },
+  {
+   "t": "Les acidifiants",
+   "qs": [
+    {
+     "k": "pairs",
+     "q": "Associe chaque acide à son code.",
+     "p": [
+      [
+       "Acide citrique",
+       "E330"
+      ],
+      [
+       "Acide tartrique",
+       "E334"
+      ],
+      [
+       "Crème de tartre",
+       "E336"
+      ],
+      [
+       "Acide lactique",
+       "E270"
+      ]
+     ]
+    },
+    {
+     "k": "qcm",
+     "q": "Quel acide est le principal acide du vin ?",
+     "o": [
+      "L'acide tartrique",
+      "L'acide citrique",
+      "L'acide lactique",
+      "L'acide acétique"
+     ],
+     "a": 0,
+     "x": "Il graisse les sucres cuits et accentue l'acidulé."
+    },
+    {
+     "k": "qcm",
+     "q": "Pourquoi ajouter de l'acide citrique dans une pâte de fruits ?",
+     "o": [
+      "Il déclenche la gélification de la pectine",
+      "Il colore la pâte",
+      "Il remplace le sucre",
+      "Il évite le candissage"
+     ],
+     "a": 0,
+     "x": "Il agit comme catalyseur avec les gélifiants."
+    },
+    {
+     "k": "vf",
+     "q": "Les acidifiants favorisent la production de sucre inverti à la cuisson.",
+     "a": true,
+     "x": "Ils rehaussent aussi l'arôme des fruits."
+    },
+    {
+     "k": "qcm",
+     "q": "Quel additif empêche le sucre glace de prendre en bloc ?",
+     "o": [
+      "Un antiagglomérant",
+      "Un exhausteur de goût",
+      "Un gélifiant",
+      "Un émulsifiant"
+     ],
+     "a": 0,
+     "x": "Par exemple la silice."
+    }
+   ]
+  },
+  {
+   "t": "Coffre de révision",
+   "bonus": true,
+   "qs": []
+  }
+ ],
+ "citation": "« E322 ou pas E322, telle est la question. »"
+}

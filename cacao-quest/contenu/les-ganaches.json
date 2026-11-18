@@ -1,0 +1,557 @@
+{
+ "id": "ganaches",
+ "numero": 10,
+ "titre": "Les ganaches",
+ "lecons": [
+  {
+   "t": "La table analytique",
+   "qs": [
+    {
+     "k": "qcm",
+     "an": "Sujet BTM 2026 · Q11",
+     "q": "Dans une ganache cadrée, la matière grasse totale doit se situer entre…",
+     "o": [
+      "25 et 40 %",
+      "10 et 15 %",
+      "50 et 60 %",
+      "5 et 10 %"
+     ],
+     "a": 0,
+     "x": "Ici, 38,6 % : suffisant mais dans la fourchette haute."
+    },
+    {
+     "k": "qcm",
+     "an": "Sujet BTM 2026 · Q11",
+     "q": "Comment corriger cette ganache trop aqueuse et pas assez sucrée ?",
+     "o": [
+      "Augmenter le sorbitol (6-7 %) et/ou le miel, réduire la crème",
+      "Ajouter de la crème",
+      "Ajouter de l'eau",
+      "Retirer le chocolat"
+     ],
+     "a": 0,
+     "x": "On rééquilibre la balance eau / EST."
+    },
+    {
+     "k": "qcm",
+     "an": "Annales BTM",
+     "q": "Tu changes de couverture et la texture de ta ganache change. Que fais-tu ?",
+     "o": [
+      "Je recalcule le poids de chocolat avec la table analytique",
+      "Je ne change rien",
+      "Je double la crème",
+      "J'ajoute de l'eau"
+     ],
+     "a": 0,
+     "x": "Chaque couverture a son propre taux de cacao et de beurre de cacao."
+    },
+    {
+     "k": "pairs",
+     "an": "Sujet BTM 2026 · Q11",
+     "q": "Table analytique d'une ganache cadrée : associe chaque paramètre à sa valeur.",
+     "p": [
+      [
+       "Eau",
+       "25 % maximum"
+      ],
+      [
+       "EST",
+       "75 % minimum"
+      ],
+      [
+       "Beurre de cacao",
+       "18 % minimum"
+      ],
+      [
+       "Matière sucrante",
+       "25 à 35 %"
+      ]
+     ]
+    },
+    {
+     "k": "qcm",
+     "an": "Sujet BTM 2026 · Q11",
+     "q": "Une ganache cadrée contient 27 % d'eau et 21,95 % de matière sucrante. Conséquence ?",
+     "o": [
+      "AW trop élevée : développement microbien précoce, conservation limitée",
+      "Ganache trop dure",
+      "Ganache trop sucrée",
+      "Aucun problème"
+     ],
+     "a": 0,
+     "x": "Trop d'eau et pas assez de sucre pour la fixer."
+    }
+   ]
+  },
+  {
+   "t": "Ganache tranchée et conservation",
+   "qs": [
+    {
+     "k": "multi",
+     "an": "Sujet BTM 2026 · Q11",
+     "q": "Ganache cadrée à 27 % d'eau, 73 % d'extrait sec, 18,5 % de beurre de cacao et 22 % de sucre. Coche les constats et corrections justes.",
+     "o": [
+      "Trop d'eau : 27 % pour 25 % max",
+      "Extrait sec insuffisant : 73 % pour 75 % min",
+      "Beurre de cacao suffisant : 18,5 %",
+      "Matière sucrante insuffisante : 22 %",
+      "AW trop élevée : conservation limitée",
+      "Correction : sorbitol 6-7 % et/ou miel, moins de crème",
+      "Trop de sucre",
+      "Beurre de cacao insuffisant",
+      "Correction : ajouter de la crème"
+     ],
+     "c": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+     ],
+     "x": "La matière grasse totale (38,6 %) est correcte, dans la fourchette haute."
+    },
+    {
+     "k": "multi",
+     "an": "Corrigé 1102-2017",
+     "q": "Ta ganache tranche. Coche les causes possibles.",
+     "o": [
+      "Recette déséquilibrée : trop de gras ou pas assez de sucre",
+      "Mélange mal fait entre la matière grasse et le chocolat",
+      "Mauvais rapport de températures au mélange",
+      "Hygiène insuffisante",
+      "Moule trop propre"
+     ],
+     "c": [
+      0,
+      1,
+      2
+     ],
+     "x": "Corrections : rééquilibrer, reprendre au mixeur, bain-marie froid si trop chaude, lécithine liquide."
+    },
+    {
+     "k": "multi",
+     "an": "Corrigé 1103-2023",
+     "q": "Bien conserver une ganache sans alcool : coche les règles attendues.",
+     "o": [
+      "Hygiène du personnel, du matériel et des matières premières",
+      "Recette équilibrée avec la table analytique",
+      "Ajout de sorbitol",
+      "Liquides portés à ébullition",
+      "Pas d'air incorporé",
+      "Respect de la température de coulage",
+      "Pas de choc thermique (point de rosée)",
+      "Stockage à 25 °C",
+      "Ajout d'eau en fin de mélange"
+     ],
+     "c": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+     ],
+     "x": "Objectif : éviter moisissures, rancissement et dessèchement."
+    },
+    {
+     "k": "qcm",
+     "an": "Corrigé 1102-2017",
+     "q": "Ta ganache tranche parce qu'elle est trop chaude. Que fais-tu ?",
+     "o": [
+      "Bain-marie froid en émulsionnant au mixeur",
+      "Je la fais bouillir",
+      "J'ajoute de l'alcool",
+      "Je la jette"
+     ],
+     "a": 0,
+     "x": "Autres pistes : un peu de matière grasse ou de lécithine liquide pour réamorcer l'émulsion."
+    },
+    {
+     "k": "qcm",
+     "an": "Corrigé 1102-2017",
+     "q": "Pour quelles raisons une ganache tranche-t-elle ?",
+     "o": [
+      "Recette déséquilibrée, mauvais mélange, mauvais rapport de températures",
+      "Trop d'hygiène",
+      "Un chocolat trop frais",
+      "Un moule trop propre"
+     ],
+     "a": 0,
+     "x": "Trop de matières grasses ou pas assez de sucre, par exemple."
+    },
+    {
+     "k": "pairs",
+     "an": "Corrigé 1103-2023",
+     "q": "Conserver une ganache sans alcool : associe chaque levier à une action.",
+     "p": [
+      [
+       "Hygiène",
+       "Personnel, matériel, matières premières"
+      ],
+      [
+       "Équilibrage",
+       "Table analytique et sorbitol"
+      ],
+      [
+       "Production",
+       "Liquides bouillis, pas d'air incorporé"
+      ]
+     ]
+    }
+   ]
+  },
+  {
+   "t": "Une émulsion",
+   "qs": [
+    {
+     "k": "qcm",
+     "q": "Qu'est-ce qu'une ganache, techniquement ?",
+     "o": [
+      "Une émulsion",
+      "Une suspension de sucre",
+      "Un gel",
+      "Une mousse"
+     ],
+     "a": 0,
+     "x": "Un corps aqueux (crème, lait) et un corps gras, assemblés et stabilisés."
+    },
+    {
+     "k": "pairs",
+     "q": "Associe chaque ingrédient à son rôle dans la ganache.",
+     "p": [
+      [
+       "Crème",
+       "Corps aqueux"
+      ],
+      [
+       "Beurre de cacao",
+       "Corps gras"
+      ],
+      [
+       "Sorbitol",
+       "Agent de conservation"
+      ],
+      [
+       "Glucose",
+       "Agent de texture"
+      ]
+     ]
+    },
+    {
+     "k": "qcm",
+     "q": "Quelles 2 substances permettent l'émulsion ?",
+     "o": [
+      "La lécithine et les protéines",
+      "Le sucre et le sel",
+      "L'alcool et l'eau",
+      "La pectine et la gélatine"
+     ],
+     "a": 0,
+     "x": "Ensemble, elles stabilisent le mélange."
+    },
+    {
+     "k": "vf",
+     "q": "Une émulsion mal réussie donne une texture granuleuse.",
+     "a": true,
+     "x": "Les cristaux de beurre de cacao se séparent de la phase liquide."
+    },
+    {
+     "k": "fill",
+     "q": "Plus la ___ entre l'eau et la matière grasse est importante, plus l'émulsion est fine.",
+     "o": [
+      "friction",
+      "température",
+      "pression",
+      "acidité"
+     ],
+     "a": 0,
+     "x": "D'où l'usage du mixeur ou du Stéphan en fin de mélange."
+    }
+   ]
+  },
+  {
+   "t": "Réussir l'émulsion",
+   "qs": [
+    {
+     "k": "qcm",
+     "q": "Que provoque un mélange trop important ?",
+     "o": [
+      "La rupture de l'émulsion et la séparation du gras",
+      "Une ganache plus brillante",
+      "Une meilleure conservation",
+      "Aucun effet"
+     ],
+     "a": 0,
+     "x": "Un mélange insuffisant, lui, laisse des gouttes de gras non émulsionnées."
+    },
+    {
+     "k": "pairs",
+     "q": "Associe chaque ganache à sa température de coulage idéale.",
+     "p": [
+      [
+       "Noire",
+       "33 °C"
+      ],
+      [
+       "Lactée",
+       "31 °C"
+      ],
+      [
+       "Ivoire",
+       "27 °C"
+      ]
+     ]
+    },
+    {
+     "k": "qcm",
+     "q": "Pourquoi éviter les casseroles trop larges ?",
+     "o": [
+      "Elles font trop évaporer l'eau",
+      "Elles chauffent mal",
+      "Elles abîment la crème",
+      "Elles sont difficiles à nettoyer"
+     ],
+     "a": 0,
+     "x": "L'évaporation déséquilibre le rapport eau / matière grasse."
+    },
+    {
+     "k": "vf",
+     "q": "Il faut incorporer de l'air dans une ganache pour la conserver plus longtemps.",
+     "a": false,
+     "x": "Faux : l'air favorise les microbes et l'oxydation des matières grasses."
+    },
+    {
+     "k": "qcm",
+     "q": "Que peut provoquer trop d'alcool dans une ganache ?",
+     "o": [
+      "La rupture de la caséine",
+      "Une meilleure émulsion",
+      "Une cristallisation du sucre",
+      "Un blanchiment gras"
+     ],
+     "a": 0,
+     "x": "Il casse la couche entre le liquide et la matière grasse."
+    }
+   ]
+  },
+  {
+   "t": "L'activité de l'eau",
+   "qs": [
+    {
+     "k": "qcm",
+     "q": "Que mesure l'AW ?",
+     "o": [
+      "La disponibilité de l'eau",
+      "La quantité totale d'eau",
+      "La température de l'eau",
+      "L'acidité"
+     ],
+     "a": 0,
+     "x": "On distingue l'eau libre et l'eau liée."
+    },
+    {
+     "k": "pairs",
+     "q": "Associe chaque seuil d'AW à ce qui se développe.",
+     "p": [
+      [
+       "0,25 à 0,45",
+       "Réactions chimiques"
+      ],
+      [
+       "0,60 à 0,75",
+       "Réactions enzymatiques"
+      ],
+      [
+       "0,65 et plus",
+       "Levures et moisissures"
+      ],
+      [
+       "0,86 et plus",
+       "Bactéries"
+      ]
+     ],
+     "an": "Annales BTM"
+    },
+    {
+     "k": "qcm",
+     "q": "Comment fait-on baisser l'AW d'une ganache ?",
+     "o": [
+      "Avec les sucres et la lécithine qui fixent l'eau",
+      "En ajoutant de l'eau",
+      "En la réchauffant",
+      "En ajoutant de l'air"
+     ],
+     "a": 0,
+     "x": "Même principe que le sucrage des confitures."
+    },
+    {
+     "k": "vf",
+     "q": "La couverture d'enrobage est parfaitement étanche.",
+     "a": false,
+     "x": "Faux : des échanges se font entre l'intérieur et le milieu de stockage."
+    },
+    {
+     "k": "fill",
+     "q": "Une ganache dont l'AW dépasse 0,86 ne se conservera pas plus de ___.",
+     "o": [
+      "2 à 3 semaines",
+      "6 mois",
+      "1 an",
+      "2 jours"
+     ],
+     "a": 0,
+     "x": "Tous les micro-organismes peuvent s'y développer."
+    }
+   ]
+  },
+  {
+   "t": "Défauts et rattrapages",
+   "qs": [
+    {
+     "k": "pairs",
+     "q": "Associe chaque défaut à sa cause.",
+     "p": [
+      [
+       "Goût de savon",
+       "pH pas assez acide"
+      ],
+      [
+       "Colle au palais",
+       "Trop de sirop de glucose"
+      ],
+      [
+       "Rugueuse",
+       "Trop de chocolat"
+      ],
+      [
+       "Fermente",
+       "Hygiène des matières premières"
+      ]
+     ]
+    },
+    {
+     "k": "qcm",
+     "q": "Une ganache tranche par manque d'eau. Comment la rattraper ?",
+     "o": [
+      "Ajouter un ingrédient riche en eau (lait, crème, glucose)",
+      "Ajouter du chocolat",
+      "La mettre au froid",
+      "Ajouter de l'alcool"
+     ],
+     "a": 0,
+     "x": "Puis reprendre au mixeur pour homogénéiser.",
+     "an": "Corrigé 1102-2017"
+    },
+    {
+     "k": "fill",
+     "q": "Une ganache qui tranche, c'est une ___.",
+     "o": [
+      "synérèse",
+      "saponification",
+      "oxydation",
+      "fermentation"
+     ],
+     "a": 0,
+     "x": "Manque d'eau ou excès de matières grasses."
+    },
+    {
+     "k": "qcm",
+     "q": "Une ganache « graine ». Quelle est la cause ?",
+     "o": [
+      "Mauvaise cristallisation du beurre de cacao",
+      "Trop de sucre inverti",
+      "Trop d'eau",
+      "Une hygiène insuffisante"
+     ],
+     "a": 0,
+     "x": "Une émulsion bien menée à la bonne température l'évite."
+    },
+    {
+     "k": "pairs",
+     "q": "Associe chaque altération à son type.",
+     "p": [
+      [
+       "Ganache qui sèche",
+       "Transformation physique"
+      ],
+      [
+       "Rancissement",
+       "Transformation chimique"
+      ],
+      [
+       "Lipolyse",
+       "Transformation enzymatique"
+      ]
+     ]
+    }
+   ]
+  },
+  {
+   "t": "Hygiène et conservation",
+   "qs": [
+    {
+     "k": "qcm",
+     "q": "À quelle température conserver les bonbons de chocolat ?",
+     "o": [
+      "14-18 °C",
+      "4 °C",
+      "22-25 °C",
+      "-18 °C"
+     ],
+     "a": 0,
+     "x": "Avec 55 à 65 % d'humidité relative, de façon stable."
+    },
+    {
+     "k": "qcm",
+     "q": "Pourquoi conserver les pralinés plutôt à 10 °C ?",
+     "o": [
+      "Pour freiner le blanchiment gras",
+      "Pour éviter les bactéries",
+      "Pour garder le croustillant",
+      "Pour les rendre plus brillants"
+     ],
+     "a": 0,
+     "x": "Les matières grasses du fruit sec migrent vers l'extérieur."
+    },
+    {
+     "k": "fill",
+     "q": "La décongélation se fait par paliers de moins de ___ pour éviter le point de rosée.",
+     "o": [
+      "7 °C",
+      "20 °C",
+      "2 °C",
+      "15 °C"
+     ],
+     "a": 0,
+     "x": "Sinon de l'eau se condense sur les bonbons."
+    },
+    {
+     "k": "vf",
+     "q": "Un bonbon décongelé se conserve aussi longtemps qu'un bonbon frais.",
+     "a": false,
+     "x": "Faux : sa durée de conservation est plus courte."
+    },
+    {
+     "k": "qcm",
+     "q": "Combien de temps les absorbeurs d'oxygène mettent-ils un produit congelé en « inertie » ?",
+     "o": [
+      "3 mois",
+      "1 semaine",
+      "2 ans",
+      "24 heures"
+     ],
+     "a": 0,
+     "x": "Ils sont efficaces associés à la congélation."
+    }
+   ]
+  },
+  {
+   "t": "Coffre de révision",
+   "bonus": true,
+   "qs": []
+  }
+ ],
+ "citation": "« Une ganache qui tranche ? Pas de panique, sors le mixeur. »"
+}

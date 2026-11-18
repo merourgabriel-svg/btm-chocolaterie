@@ -1,0 +1,504 @@
+{
+ "id": "revisions",
+ "numero": 14,
+ "titre": "Révisions générales",
+ "lecons": [
+  {
+   "t": "Tour d'horizon",
+   "qs": [
+    {
+     "k": "qcm",
+     "an": "Sujet BTM 2026 · Q1",
+     "q": "De quel climat le cacaoyer a-t-il besoin ?",
+     "o": [
+      "Équatorial : 26 °C de moyenne, 75 % d'humidité",
+      "Tempéré et sec",
+      "Montagnard, au-dessus de 2 000 m",
+      "Désertique"
+     ],
+     "a": 0,
+     "x": "Avec un sol drainé, riche en azote et en potasse."
+    },
+    {
+     "k": "qcm",
+     "an": "Sujet BTM 2026 · Q3a",
+     "q": "Combien de temps dure la phase alcoolique de la fermentation ?",
+     "o": [
+      "24 à 48 h",
+      "5 à 7 jours",
+      "Moins de 6 h",
+      "2 semaines"
+     ],
+     "a": 0,
+     "x": "Elle est anaérobie ; la phase acétique, aérobie, suit."
+    },
+    {
+     "k": "qcm",
+     "an": "Sujet BTM 2026 · Q4",
+     "q": "Où se placent les émulsifiants dans une préparation ?",
+     "o": [
+      "À l'interface entre l'eau et la matière grasse",
+      "Au fond du récipient",
+      "Dans le sucre",
+      "À la surface de l'air"
+     ],
+     "a": 0,
+     "x": "Grâce à leur partie hydrophile et leur partie lipophile."
+    },
+    {
+     "k": "qcm",
+     "an": "Sujet BTM 2026 · Q6",
+     "q": "Dans une pâte de fruits, qu'est-ce qui accentue l'hydrolyse ?",
+     "o": [
+      "Une pulpe acide et une cuisson longue",
+      "Le froid",
+      "Une pulpe neutre et une cuisson rapide",
+      "L'ajout de beurre"
+     ],
+     "a": 0,
+     "x": "On peut corriger le pH en mélangeant les fruits."
+    },
+    {
+     "k": "qcm",
+     "an": "Sujet BTM 2026 · Q9",
+     "q": "Surface grasse au toucher sur des pralinés en boutique. Quel blanchiment ?",
+     "o": [
+      "Gras",
+      "Sucrier",
+      "Aucun, c'est normal",
+      "Une moisissure"
+     ],
+     "a": 0,
+     "x": "Le blanchiment sucrier donne une surface collante puis rugueuse."
+    },
+    {
+     "k": "qcm",
+     "an": "Sujet BTM 2026 · Q11",
+     "q": "Table analytique. Quelle est la teneur en eau maximale d'une ganache cadrée ?",
+     "o": [
+      "25 %",
+      "50 %",
+      "10 %",
+      "35 %"
+     ],
+     "a": 0,
+     "x": "Et 75 % d'EST minimum."
+    }
+   ]
+  },
+  {
+   "t": "De la fève à la couverture",
+   "qs": [
+    {
+     "k": "order",
+     "q": "Remets le parcours complet du cacao dans l'ordre.",
+     "o": [
+      "Fermentation",
+      "Séchage",
+      "Torréfaction",
+      "Broyage en pâte",
+      "Conchage",
+      "Tempérage"
+     ],
+     "x": "Les précurseurs d'arômes de la fermentation se révèlent à la torréfaction."
+    },
+    {
+     "k": "pairs",
+     "q": "Associe chaque étape à ce qu'elle apporte au goût.",
+     "p": [
+      [
+       "Fermentation",
+       "Précurseurs d'arômes"
+      ],
+      [
+       "Torréfaction",
+       "Réaction de Maillard"
+      ],
+      [
+       "Conchage",
+       "Élimine l'acidité, développe la flaveur"
+      ],
+      [
+       "Tempérage",
+       "Cassant et brillance"
+      ]
+     ]
+    },
+    {
+     "k": "qcm",
+     "q": "Le pressage de la pâte de cacao donne du beurre de cacao. Que devient l'autre partie ?",
+     "o": [
+      "Le tourteau, broyé en poudre de cacao",
+      "Le grué",
+      "La coque",
+      "La mélasse"
+     ],
+     "a": 0,
+     "x": "Lien entre « Transformation » et « Produits dérivés »."
+    },
+    {
+     "k": "qcm",
+     "q": "Pourquoi le beurre de cacao fond-il agréablement en bouche ?",
+     "o": [
+      "Ses cristaux bêta fondent vers 34-35 °C",
+      "Il contient du sucre",
+      "Il est hydrogéné",
+      "Il est riche en eau"
+     ],
+     "a": 0,
+     "x": "Juste sous la température du corps."
+    },
+    {
+     "k": "vf",
+     "q": "La lécithine ajoutée au conchage agit aussi sur la rhéologie du chocolat.",
+     "a": true,
+     "x": "Elle baisse la viscosité et permet d'économiser du beurre de cacao."
+    },
+    {
+     "k": "pairs",
+     "q": "Associe chaque taille de particules à son étape.",
+     "p": [
+      [
+       "2-3 mm",
+       "Concassage (grué)"
+      ],
+      [
+       "80-100 microns",
+       "Pâte de cacao"
+      ],
+      [
+       "18-20 microns",
+       "Fin d'affinage"
+      ]
+     ]
+    }
+   ]
+  },
+  {
+   "t": "Diagnostiquer un défaut",
+   "qs": [
+    {
+     "k": "qcm",
+     "q": "Tes bonbons enrobés ont un voile blanc qui fond sous le doigt. Quelle est la cause probable ?",
+     "o": [
+      "Un blanchiment gras : stockage trop chaud ou mauvais tempérage",
+      "Un blanchiment sucrier : humidité",
+      "Une ganache trop sucrée",
+      "Des moules sales"
+     ],
+     "a": 0,
+     "x": "Remèdes : bon tempérage, double chablonnage, lécithine, stockage à 15-18 °C."
+    },
+    {
+     "k": "qcm",
+     "q": "Ta couverture est épaisse et forme des bulles au moulage. Que faire ?",
+     "o": [
+      "Elle est sur-cristallisée : ajouter de la couverture à 50 °C",
+      "La mettre au froid",
+      "Ajouter de l'eau",
+      "Ajouter de la crème"
+     ],
+     "a": 0,
+     "x": "Une couverture trop visqueuse emprisonne l'air que le tapotage n'élimine pas."
+    },
+    {
+     "k": "qcm",
+     "q": "Ta ganache a un goût de savon. Quelle est la cause ?",
+     "o": [
+      "Un pH pas assez acide : saponification des graisses",
+      "Trop de chocolat",
+      "Trop de glucose",
+      "Un mauvais tempérage"
+     ],
+     "a": 0,
+     "x": "Les matières grasses se dégradent en milieu peu acide."
+    },
+    {
+     "k": "pairs",
+     "q": "Associe chaque défaut à son module de cours.",
+     "p": [
+      [
+       "Blanchiment sucrier",
+       "Beurre de cacao et cristallisation"
+      ],
+      [
+       "Ganache qui tranche",
+       "Les ganaches"
+      ],
+      [
+       "Fruits secs rances",
+       "Fruits et fruits secs"
+      ],
+      [
+       "Arêtes découvertes à l'enrobage",
+       "La rhéologie"
+      ]
+     ]
+    },
+    {
+     "k": "qcm",
+     "q": "Ton fondant devient granuleux pendant la cuisson. Que manquait-il ?",
+     "o": [
+      "Un anti-cristallisant : glucose ou crème de tartre",
+      "Du sel",
+      "De la pectine",
+      "De la lécithine"
+     ],
+     "a": 0,
+     "x": "Le graissage du sucre évite une cristallisation prématurée."
+    },
+    {
+     "k": "vf",
+     "q": "Des moisissures sur des ganaches indiquent souvent un stockage trop humide.",
+     "a": true,
+     "x": "Au-delà de 0,65 d'AW, levures et moisissures se développent."
+    }
+   ]
+  },
+  {
+   "t": "Équilibrer une ganache",
+   "qs": [
+    {
+     "k": "qcm",
+     "q": "Tu veux allonger la conservation d'une ganache. Quel ingrédient ajoutes-tu ?",
+     "o": [
+      "Du sorbitol ou du sucre inverti",
+      "De l'eau",
+      "Du lait frais",
+      "De l'air"
+     ],
+     "a": 0,
+     "x": "Ils fixent l'eau et font baisser l'AW."
+    },
+    {
+     "k": "pairs",
+     "q": "Associe chaque ingrédient à son effet sur la ganache.",
+     "p": [
+      [
+       "Sucre inverti",
+       "Plus fluide et moelleuse"
+      ],
+      [
+       "Beurre sec",
+       "Plus ferme"
+      ],
+      [
+       "Sorbitol",
+       "Stabilise l'humidité"
+      ],
+      [
+       "Glucose haut DE",
+       "Anti-cristallisant, liant"
+      ]
+     ]
+    },
+    {
+     "k": "qcm",
+     "q": "Ganache au lait concentré ou ganache à la crème : laquelle se conserve le plus longtemps ?",
+     "o": [
+      "Au lait concentré",
+      "À la crème",
+      "Elles se valent",
+      "Aucune des deux"
+     ],
+     "a": 0,
+     "x": "Le lait concentré contient beaucoup moins d'eau libre."
+    },
+    {
+     "k": "fill",
+     "q": "Pour une ganache noire, on coule idéalement à ___.",
+     "o": [
+      "33 °C",
+      "45 °C",
+      "27 °C",
+      "20 °C"
+     ],
+     "a": 0,
+     "x": "31 °C pour une lactée, 27 °C pour une ivoire."
+    },
+    {
+     "k": "vf",
+     "q": "Trop de sorbitol peut avoir un effet laxatif.",
+     "a": true,
+     "x": "5 % recommandés, jamais plus de 10 %."
+    },
+    {
+     "k": "qcm",
+     "q": "Pourquoi éviter une ganache trop riche en alcool ?",
+     "o": [
+      "L'alcool casse l'émulsion (caséine)",
+      "Il la fait moisir",
+      "Il la rend trop sucrée",
+      "Il est interdit"
+     ],
+     "a": 0,
+     "x": "L'alcool reste un bon conservateur, à dose maîtrisée."
+    }
+   ]
+  },
+  {
+   "t": "Étiqueter ta création",
+   "qs": [
+    {
+     "k": "qcm",
+     "q": "Tu vends des « pâtes de fruits à la framboise ». Quelle part de la pulpe doit venir de la framboise ?",
+     "o": [
+      "Au moins 25 %",
+      "100 %",
+      "10 %",
+      "50 % de sucre"
+     ],
+     "a": 0,
+     "x": "« Pâte de framboise » exigerait 100 % de pulpe de framboise."
+    },
+    {
+     "k": "qcm",
+     "q": "Ton bonbon contient du praliné noisette et de la lécithine de soja. Quels allergènes mettre en évidence ?",
+     "o": [
+      "Fruits à coque et soja",
+      "Aucun",
+      "Uniquement le lait",
+      "Uniquement le gluten"
+     ],
+     "a": 0,
+     "x": "Ajoute le lait si la couverture ou la ganache en contient."
+    },
+    {
+     "k": "vf",
+     "q": "Ton praliné doit indiquer son pourcentage de fruits secs.",
+     "a": false,
+     "x": "Faux : un praliné en contient par définition au moins 50 %."
+    },
+    {
+     "k": "qcm",
+     "q": "Ton nougat contient 32 % d'amandes, du miel et de la vanille naturelle, aéré au blanc d'œuf. Peut-il s'appeler « nougat de Montélimar » ?",
+     "o": [
+      "Oui, si le miel fait au moins 25 % des matières sucrantes",
+      "Non, il faut 50 % d'amandes",
+      "Non, la vanille est interdite",
+      "Oui, sans condition"
+     ],
+     "a": 0,
+     "x": "Garniture ≥ 30 %, aération à l'œuf, seule la vanille naturelle comme arôme."
+    },
+    {
+     "k": "qcm",
+     "q": "Tu colores un décor au beurre de cacao en rouge carmin. Comment le noter ?",
+     "o": [
+      "Colorant : E120 (ou carmin)",
+      "Arôme naturel",
+      "Rien, c'est un décor",
+      "Conservateur : E120"
+     ],
+     "a": 0,
+     "x": "Les additifs sont nommés par catégorie puis nom ou code E."
+    },
+    {
+     "k": "pairs",
+     "q": "Associe chaque produit à sa durée de conservation.",
+     "p": [
+      [
+       "Tablette noire",
+       "1 an"
+      ],
+      [
+       "Bonbon au lait ou fourré",
+       "6 à 8 mois"
+      ],
+      [
+       "Ganache sans conservateur",
+       "1 mois"
+      ]
+     ]
+    }
+   ]
+  },
+  {
+   "t": "Choisir ses matières premières",
+   "qs": [
+    {
+     "k": "qcm",
+     "q": "Le prix du cacao s'envole après une mauvaise récolte en Afrique de l'Ouest. Quelle action est la plus réaliste ?",
+     "o": [
+      "Recalculer ses coûts et diversifier ses origines",
+      "Arrêter de vendre du chocolat",
+      "Remplacer le cacao par de la margarine",
+      "Ne rien changer"
+     ],
+     "a": 0,
+     "x": "60 % du cacao mondial vient d'Afrique de l'Ouest : un choc local touche tout le marché."
+    },
+    {
+     "k": "qcm",
+     "q": "Un client vegan veut un bonbon. Quelle matière grasse peut remplacer la crème et le beurre ?",
+     "o": [
+      "Une matière grasse végétale ou du beurre de cacao",
+      "Du beurre anhydre",
+      "De la crème UHT",
+      "Du lait concentré"
+     ],
+     "a": 0,
+     "x": "Le beurre de cacao est végétal ; la margarine est aussi une option."
+    },
+    {
+     "k": "pairs",
+     "q": "Associe chaque objectif au bon ingrédient.",
+     "p": [
+      [
+       "Notes florales de jasmin",
+       "Cacao Nacional"
+      ],
+      [
+       "Praliné très goûteux",
+       "Amande Ferrastar"
+      ],
+      [
+       "Couverture sans sucre",
+       "Maltitol"
+      ],
+      [
+       "Saupoudrage anti-collant",
+       "Mannitol"
+      ]
+     ]
+    },
+    {
+     "k": "qcm",
+     "q": "Pour un enrobage mécanique fluide, quel ajout aide la couverture ?",
+     "o": [
+      "Lécithine ou beurre de cacao",
+      "Eau",
+      "Sucre glace",
+      "Poudre de cacao"
+     ],
+     "a": 0,
+     "x": "Ils baissent la viscosité."
+    },
+    {
+     "k": "vf",
+     "q": "Une poudre de cacao alcalinisée est plus foncée et moins acide.",
+     "a": true,
+     "x": "Le pH passe d'environ 5 à 6-8."
+    },
+    {
+     "k": "qcm",
+     "q": "Où stocker tes fruits secs pour éviter qu'ils rancissent ?",
+     "o": [
+      "Au sec, à l'abri de la lumière, vers 15 °C",
+      "Près du four",
+      "En plein soleil",
+      "Dans un local humide"
+     ],
+     "a": 0,
+     "x": "La chambre chocolat est une bonne solution."
+    }
+   ]
+  },
+  {
+   "t": "Grand coffre BTM",
+   "bonus": "all",
+   "qs": []
+  }
+ ],
+ "citation": "« Dernière ligne droite : chaque bonne réponse vaut un carré de chocolat. »"
+}
