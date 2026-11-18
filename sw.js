@@ -1,3 +1,6 @@
+// Notifications Cacao Quest (OneSignal) : doit rester en première ligne.
+importScripts("https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.sw.js");
+
 // Service worker minimal : rend le site installable.
 // Stratégie "réseau d'abord" : l'élève voit toujours la dernière version publiée ;
 // le cache ne sert que si le réseau est indisponible. Le tuteur (fonction Netlify) n'est jamais mis en cache.
