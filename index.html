@@ -629,12 +629,14 @@ function render(){
   const standalone=window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone===true;
   if(!('Notification' in window) || !('serviceWorker' in navigator)) return;      // navigateur sans notifications
   if(isIOS && !standalone) return;                                                  // iPhone : il faut d'abord installer le hub
-  let later=0; try{ later=Number(localStorage.getItem('btm-notif-later'))||0; }catch(e){}
+  let later=0, asked=false;
+  try{ later=Number(localStorage.getItem('btm-notif-later'))||0; asked=localStorage.getItem('btm-notif-asked')==='1'; }catch(e){}
   let OS=null;
   function show(){
     if(Date.now()<later){ box.classList.remove('show'); return; }
     const perm=Notification.permission, on=OS && OS.User.PushSubscription.optedIn;
     if(perm==='granted' && on){ box.classList.remove('show'); return; }
+    if(perm==='default' && !asked){ box.classList.remove('show'); return; }   // la demande se fera au 1er « Jouer »
     if(perm==='denied'){
       title.textContent='Notifications bloquées';
       text.textContent='Réactive-les dans les réglages du téléphone (Notifications), ou dans les paramètres du site dans Chrome.';
@@ -649,6 +651,17 @@ function render(){
   });
   document.getElementById('notifClose').addEventListener('click',()=>{
     later=Date.now()+3*864e5; try{ localStorage.setItem('btm-notif-later',String(later)); }catch(e){} box.classList.remove('show');
+  });
+  async function ask(){
+    asked=true; try{ localStorage.setItem('btm-notif-asked','1'); }catch(e){}
+    try{ await OS.Notifications.requestPermission(); if(OS.Notifications.permission) await OS.User.PushSubscription.optIn(); }catch(e){}
+  }
+  const play=document.querySelector('a.quest');
+  if(play) play.addEventListener('click',async(e)=>{
+    if(asked || !OS || Notification.permission!=='default') return;   // déjà demandé : on ouvre Cacao Quest directement
+    e.preventDefault();
+    const go=play.href, t=setTimeout(()=>{ location.href=go; },20000); // au cas où la fenêtre ne s'afficherait pas
+    await ask(); clearTimeout(t); location.href=go;
   });
   window.OneSignalDeferred=window.OneSignalDeferred||[];
   const s=document.createElement('script'); s.src='https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js'; s.defer=true; document.head.appendChild(s);
