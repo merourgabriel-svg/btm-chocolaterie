@@ -4,12 +4,6 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#7A2E5E">
-<link rel="manifest" href="manifest.webmanifest">
-<link rel="apple-touch-icon" href="icons/icon-180.png">
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="Cacao Quest">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
 <title>Cacao Quest</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -528,7 +522,7 @@ function renderPath(){
  showNav("path");S=null;
  const ui=curUnit(),u=UNITS[ui],st=unitStats(u);
  const cur=u.lecons.findIndex((l,i)=>unlocked(u,i)&&!P.done[lkey(u,i)]);
- let html=statsBar()+`<div id="installSlot"></div><div id="pushSlot"></div><div id="defiSlot"></div><button class="unit" id="pick" aria-label="Changer de module">${mascot()}<div><small>Unité ${esc(u.numero||ui+1)} · changer ▾</small><h1>${esc(u.titre)}</h1><p>${st.nd} / ${st.core} leçons terminées</p>${u.citation?`<p class="quote">${esc(u.citation)}</p>`:""}</div></button><div class="path">`;
+ let html=statsBar()+`<div id="defiSlot"></div><button class="unit" id="pick" aria-label="Changer de module">${mascot()}<div><small>Unité ${esc(u.numero||ui+1)} · changer ▾</small><h1>${esc(u.titre)}</h1><p>${st.nd} / ${st.core} leçons terminées</p>${u.citation?`<p class="quote">${esc(u.citation)}</p>`:""}</div></button><div class="path">`;
  u.lecons.forEach((l,i)=>{
   const lk=!unlocked(u,i),dn=P.done[lkey(u,i)],isCur=i===cur;
   const cls=["node",l.bonus?"chest":"",lk?"locked":"",isCur?"current":""].join(" ");
@@ -548,7 +542,6 @@ function renderPath(){
  if(nx)document.getElementById("next").onclick=()=>{P.unit=ui+1;save();renderPath()};
  document.getElementById("out").onclick=()=>{if(confirmOut){confirmOut=false;logout()}else{confirmOut=true;renderPath()}};
  window.scrollTo(0,0);
- refreshInstallCard();refreshPushCard();
  getDefi().then(st=>{const slot=document.getElementById("defiSlot");if(!slot||!st.defi)return;slot.innerHTML=defiCard(st);document.getElementById("defiOpen").onclick=renderDefi}).catch(()=>{});
  /* où en sont les camarades de la classe dans ce module */
  getBoard().then(pl=>{
@@ -678,30 +671,7 @@ function finishDefi(abandon){
  document.getElementById("back").onclick=()=>renderPath();
 }
 
-/* ---------- raccourci sur l'écran d'accueil ---------- */
-let INSTALL_EVT=null;
-window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();INSTALL_EVT=e;refreshInstallCard()});
-window.addEventListener("appinstalled",()=>{INSTALL_EVT=null;refreshInstallCard()});
-const isAndroid=/Android/i.test(navigator.userAgent);
-function installCard(){
- if(isStandalone()||(P.installLater&&Date.now()<P.installLater))return"";
- let body,btn="";
- if(INSTALL_EVT){body=`<b>Installe Cacao Quest</b><span>Ajoute l'appli sur ton écran d'accueil pour l'ouvrir en un geste.</span>`;btn=`<button class="pgo" id="instOn">Installer</button>`}
- else if(isIOS)body=`<b>Ajoute Cacao Quest à ton écran d'accueil</b><span>Dans Safari, touche <i>Partager</i> ${I.share}, puis « Sur l'écran d'accueil » et « Ajouter ». Ouvre ensuite l'appli depuis son icône${ONESIGNAL_ID?" pour activer les notifications":""}.</span>`;
- else if(isAndroid)body=`<b>Ajoute Cacao Quest à ton écran d'accueil</b><span>Dans Chrome, touche le menu ⋮, puis « Installer l'application » ou « Ajouter à l'écran d'accueil ».</span>`;
- else return"";
- return `<div class="pushc"><span class="pbell">${I.home}</span><span class="ptx">${body}</span><span class="pbtns">${btn}<button class="plater" id="instLater">Plus tard</button></span></div>`;
-}
-function refreshInstallCard(){
- const slot=document.getElementById("installSlot");if(!slot)return;
- slot.innerHTML=installCard();
- const on=document.getElementById("instOn");
- if(on)on.onclick=async()=>{const e=INSTALL_EVT;if(!e)return;INSTALL_EVT=null;e.prompt();try{await e.userChoice}catch(_){}refreshInstallCard()};
- const lt=document.getElementById("instLater");
- if(lt)lt.onclick=()=>{P.installLater=Date.now()+3*864e5;save();refreshInstallCard()};
-}
-
-/* ---------- notifications sur le téléphone (OneSignal) ---------- */
+/* ---------- notifications : activées depuis le hub ; ici on rattache seulement la classe et le pseudo ---------- */
 const ONESIGNAL_ID=(CONFIG.ONESIGNAL_APP_ID||"").trim();
 const isIOS=/iPad|iPhone|iPod/.test(navigator.userAgent)||(navigator.platform==="MacIntel"&&navigator.maxTouchPoints>1);
 const isStandalone=()=>matchMedia("(display-mode: standalone)").matches||navigator.standalone===true;
@@ -714,9 +684,7 @@ function initPush(){
   try{
    await OneSignal.init({appId:ONESIGNAL_ID,safari_web_id:CONFIG.ONESIGNAL_SAFARI_ID||undefined,serviceWorkerPath:"/sw.js",serviceWorkerParam:{scope:"/"},notifyButton:{enable:false}});
    OS=OneSignal;tagPush();
-   OneSignal.Notifications.addEventListener("permissionChange",()=>{tagPush();refreshPushCard()});
-   OneSignal.User.PushSubscription.addEventListener("change",refreshPushCard);
-   refreshPushCard();
+   OneSignal.Notifications.addEventListener("permissionChange",tagPush);
   }catch(e){console.warn("Notifications indisponibles :",e)}
  });
 }
@@ -724,33 +692,6 @@ function tagPush(){ // permet au formateur de cibler une classe ou un élève
  if(!OS||!P.pseudo)return;
  try{OS.login(normTxt(P.classe+"-"+P.pseudo).replace(/[^a-z0-9]+/g,"-"));OS.User.addTags({classe:P.classe,pseudo:P.pseudo})}catch(e){}
 }
-function pushState(){
- if(!ONESIGNAL_ID)return"off";
- if(isIOS&&!isStandalone())return"ios-install";
- if(!("Notification" in window)||!("serviceWorker" in navigator))return"unsupported";
- if(Notification.permission==="denied")return"denied";
- if(Notification.permission==="granted"&&OS&&OS.User.PushSubscription.optedIn)return"on";
- return"ask";
-}
-function pushCard(){
- const s=pushState(),later=P.pushLater&&Date.now()<P.pushLater;
- if(["off","on","unsupported","ios-install"].includes(s)||later)return"";
- const body={
-  ask:`<b>Active les notifications</b><span>Pour ne rater aucun défi et garder ta série.</span>`,
-  denied:`<b>Notifications bloquées</b><span>Réactive-les dans les réglages du téléphone (Notifications), ou dans les réglages du site si tu utilises Chrome.</span>`
- }[s];
- return `<div class="pushc"><span class="pbell">${I.bell}</span><span class="ptx">${body}</span><span class="pbtns">
-  ${s==="ask"?`<button class="pgo" id="pushOn" ${OS?"":"disabled"}>${OS?"Activer":"…"}</button>`:""}<button class="plater" id="pushLater">Plus tard</button></span></div>`;
-}
-function refreshPushCard(){
- const slot=document.getElementById("pushSlot");if(!slot)return;
- slot.innerHTML=pushCard();
- const on=document.getElementById("pushOn");
- if(on)on.onclick=async()=>{try{await OS.Notifications.requestPermission();if(OS.Notifications.permission)await OS.User.PushSubscription.optIn()}catch(e){}tagPush();refreshPushCard()};
- const lt=document.getElementById("pushLater");
- if(lt)lt.onclick=()=>{P.pushLater=Date.now()+3*864e5;save();refreshPushCard()};
-}
-
 /* ---------- moteur de leçon ---------- */
 let S=null;
 function startLesson(ui,i){

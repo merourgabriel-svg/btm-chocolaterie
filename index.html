@@ -214,6 +214,8 @@
   .install-box .txt{flex:1;min-width:200px;}
   .install-box .txt b{color:var(--text-bright);display:block;margin-bottom:2px;}
   .install-box button{background:linear-gradient(155deg,var(--caramel-hi),var(--caramel));color:var(--on-accent,#20110a);border:none;padding:10px 18px;border-radius:10px;font:600 13.5px 'Inter',sans-serif;cursor:pointer;}
+  .install-box .notif-ico{width:44px;height:44px;padding:9px;box-sizing:border-box;border-radius:10px;flex-shrink:0;background:var(--surface-alt);color:var(--gold);}
+  .install-box button:disabled{opacity:.6;cursor:default;}
   .install-box .close{background:transparent;color:var(--text-dim);border:1px solid var(--border);padding:8px 12px;font-weight:500;}
 </style>
 </head>
@@ -248,6 +250,13 @@
     <div class="txt"><b>Installer le raccourci sur ton téléphone</b><span id="installText">Ajoute le hub à ton écran d'accueil pour l'ouvrir comme une application.</span></div>
     <button id="installBtn" style="display:none">Installer</button>
     <button class="close" id="installClose">Plus tard</button>
+  </div>
+
+  <div class="install-box" id="notifBox">
+    <svg class="notif-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a6 6 0 0 0-6 6v3.5L4.5 16h15L18 12.5V9a6 6 0 0 0-6-6z" fill="currentColor"/><path d="M9.5 18.5a2.5 2.5 0 0 0 5 0" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/></svg>
+    <div class="txt"><b id="notifTitle">Active les notifications</b><span id="notifText">Pour être prévenu des nouveaux défis Cacao Quest et des rappels de révision.</span></div>
+    <button id="notifBtn">Activer</button>
+    <button class="close" id="notifClose">Plus tard</button>
   </div>
 
   <a class="quest" href="cacao-quest/" aria-label="Ouvrir Cacao Quest, l'appli de révision">
@@ -610,6 +619,51 @@ function render(){
     box.classList.add('show');
   }
 })();
+
+/* ============ Notifications (OneSignal) ============ */
+(function(){
+  const APP_ID='23a4cb6f-34d7-4b54-9a62-5269c0839880', SAFARI_ID='web.onesignal.auto.18c6dc90-7633-4ce6-8875-ae2763214094';
+  const box=document.getElementById('notifBox'), btn=document.getElementById('notifBtn'), title=document.getElementById('notifTitle'), text=document.getElementById('notifText');
+  const ua=navigator.userAgent||'';
+  const isIOS=/iPad|iPhone|iPod/.test(ua) || (navigator.platform==='MacIntel' && navigator.maxTouchPoints>1);
+  const standalone=window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone===true;
+  if(!('Notification' in window) || !('serviceWorker' in navigator)) return;      // navigateur sans notifications
+  if(isIOS && !standalone) return;                                                  // iPhone : il faut d'abord installer le hub
+  let later=0; try{ later=Number(localStorage.getItem('btm-notif-later'))||0; }catch(e){}
+  let OS=null;
+  function show(){
+    if(Date.now()<later){ box.classList.remove('show'); return; }
+    const perm=Notification.permission, on=OS && OS.User.PushSubscription.optedIn;
+    if(perm==='granted' && on){ box.classList.remove('show'); return; }
+    if(perm==='denied'){
+      title.textContent='Notifications bloquées';
+      text.textContent='Réactive-les dans les réglages du téléphone (Notifications), ou dans les paramètres du site dans Chrome.';
+      btn.style.display='none';
+    } else { btn.style.display='inline-block'; btn.disabled=!OS; }
+    box.classList.add('show');
+  }
+  btn.addEventListener('click',async()=>{
+    if(!OS) return;
+    try{ await OS.Notifications.requestPermission(); if(OS.Notifications.permission) await OS.User.PushSubscription.optIn(); }catch(e){}
+    show();
+  });
+  document.getElementById('notifClose').addEventListener('click',()=>{
+    later=Date.now()+3*864e5; try{ localStorage.setItem('btm-notif-later',String(later)); }catch(e){} box.classList.remove('show');
+  });
+  window.OneSignalDeferred=window.OneSignalDeferred||[];
+  const s=document.createElement('script'); s.src='https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js'; s.defer=true; document.head.appendChild(s);
+  OneSignalDeferred.push(async function(OneSignal){
+    try{
+      await OneSignal.init({appId:APP_ID, safari_web_id:SAFARI_ID, serviceWorkerPath:'/sw.js', serviceWorkerParam:{scope:'/'}, notifyButton:{enable:false}});
+      OS=OneSignal;
+      OneSignal.Notifications.addEventListener('permissionChange',show);
+      OneSignal.User.PushSubscription.addEventListener('change',show);
+    }catch(e){ console.warn('Notifications indisponibles :',e); }
+    show();
+  });
+  show();
+})();
+
 
 /* ============ Theme toggle ============ */
 const themeToggle = document.getElementById('themeToggle');
