@@ -278,6 +278,7 @@ const I={
  close:'<svg width="26" height="26" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></svg>',
  check:'<svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" stroke="#fff" stroke-width="3.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>',
  lock:'<svg viewBox="0 0 24 24"><rect x="5" y="10.5" width="14" height="10" rx="2.5" fill="currentColor"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5" stroke="currentColor" stroke-width="2.4" fill="none"/></svg>',
+ home:'<svg viewBox="0 0 24 24"><rect x="6" y="2.5" width="12" height="19" rx="3" stroke="currentColor" stroke-width="2" fill="none"/><path d="M12 8v6M9 11l3 3 3-3" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>',
  bell:'<svg viewBox="0 0 24 24"><path d="M12 3a6 6 0 0 0-6 6v3.5L4.5 16h15L18 12.5V9a6 6 0 0 0-6-6z" fill="currentColor"/><path d="M9.5 18.5a2.5 2.5 0 0 0 5 0" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/></svg>',
  share:'<svg viewBox="0 0 24 24" style="width:16px;height:16px;vertical-align:-3px"><path d="M12 3v12M7.5 7.5 12 3l4.5 4.5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M6 11H5v10h14V11h-1" stroke="currentColor" stroke-width="2" fill="none"/></svg>',
  trophy:'<svg viewBox="0 0 24 24"><path d="M7 3h10v4a5 5 0 0 1-10 0z" fill="currentColor"/><path d="M7 4H4v2a3 3 0 0 0 3 3M17 4h3v2a3 3 0 0 1-3 3" stroke="currentColor" stroke-width="2" fill="none"/><path d="M12 12v4M8 21h8l-1-5H9z" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>',
@@ -334,7 +335,7 @@ const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",
 
 /* ---------- progression locale ---------- */
 const KEY="cacao-quest-v2";
-const DEF=()=>({done:{},xp:0,streak:0,last:null,code:null,pseudo:null,classe:null,wk:{k:null,xp:0},pending:[],replays:{},unit:null,defiLocal:{},pushLater:0});
+const DEF=()=>({done:{},xp:0,streak:0,last:null,code:null,pseudo:null,classe:null,wk:{k:null,xp:0},pending:[],replays:{},unit:null,defiLocal:{},pushLater:0,installLater:0});
 let P=load();
 function load(){try{const r=localStorage.getItem(KEY);if(r)return Object.assign(DEF(),JSON.parse(r))}catch(e){}return DEF()}
 function save(){try{localStorage.setItem(KEY,JSON.stringify(P))}catch(e){}}
@@ -527,7 +528,7 @@ function renderPath(){
  showNav("path");S=null;
  const ui=curUnit(),u=UNITS[ui],st=unitStats(u);
  const cur=u.lecons.findIndex((l,i)=>unlocked(u,i)&&!P.done[lkey(u,i)]);
- let html=statsBar()+`<div id="pushSlot"></div><div id="defiSlot"></div><button class="unit" id="pick" aria-label="Changer de module">${mascot()}<div><small>Unité ${esc(u.numero||ui+1)} · changer ▾</small><h1>${esc(u.titre)}</h1><p>${st.nd} / ${st.core} leçons terminées</p>${u.citation?`<p class="quote">${esc(u.citation)}</p>`:""}</div></button><div class="path">`;
+ let html=statsBar()+`<div id="installSlot"></div><div id="pushSlot"></div><div id="defiSlot"></div><button class="unit" id="pick" aria-label="Changer de module">${mascot()}<div><small>Unité ${esc(u.numero||ui+1)} · changer ▾</small><h1>${esc(u.titre)}</h1><p>${st.nd} / ${st.core} leçons terminées</p>${u.citation?`<p class="quote">${esc(u.citation)}</p>`:""}</div></button><div class="path">`;
  u.lecons.forEach((l,i)=>{
   const lk=!unlocked(u,i),dn=P.done[lkey(u,i)],isCur=i===cur;
   const cls=["node",l.bonus?"chest":"",lk?"locked":"",isCur?"current":""].join(" ");
@@ -547,7 +548,7 @@ function renderPath(){
  if(nx)document.getElementById("next").onclick=()=>{P.unit=ui+1;save();renderPath()};
  document.getElementById("out").onclick=()=>{if(confirmOut){confirmOut=false;logout()}else{confirmOut=true;renderPath()}};
  window.scrollTo(0,0);
- refreshPushCard();
+ refreshInstallCard();refreshPushCard();
  getDefi().then(st=>{const slot=document.getElementById("defiSlot");if(!slot||!st.defi)return;slot.innerHTML=defiCard(st);document.getElementById("defiOpen").onclick=renderDefi}).catch(()=>{});
  /* où en sont les camarades de la classe dans ce module */
  getBoard().then(pl=>{
@@ -677,6 +678,29 @@ function finishDefi(abandon){
  document.getElementById("back").onclick=()=>renderPath();
 }
 
+/* ---------- raccourci sur l'écran d'accueil ---------- */
+let INSTALL_EVT=null;
+window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();INSTALL_EVT=e;refreshInstallCard()});
+window.addEventListener("appinstalled",()=>{INSTALL_EVT=null;refreshInstallCard()});
+const isAndroid=/Android/i.test(navigator.userAgent);
+function installCard(){
+ if(isStandalone()||(P.installLater&&Date.now()<P.installLater))return"";
+ let body,btn="";
+ if(INSTALL_EVT){body=`<b>Installe Cacao Quest</b><span>Ajoute l'appli sur ton écran d'accueil pour l'ouvrir en un geste.</span>`;btn=`<button class="pgo" id="instOn">Installer</button>`}
+ else if(isIOS)body=`<b>Ajoute Cacao Quest à ton écran d'accueil</b><span>Dans Safari, touche <i>Partager</i> ${I.share}, puis « Sur l'écran d'accueil » et « Ajouter ». Ouvre ensuite l'appli depuis son icône${ONESIGNAL_ID?" pour activer les notifications":""}.</span>`;
+ else if(isAndroid)body=`<b>Ajoute Cacao Quest à ton écran d'accueil</b><span>Dans Chrome, touche le menu ⋮, puis « Installer l'application » ou « Ajouter à l'écran d'accueil ».</span>`;
+ else return"";
+ return `<div class="pushc"><span class="pbell">${I.home}</span><span class="ptx">${body}</span><span class="pbtns">${btn}<button class="plater" id="instLater">Plus tard</button></span></div>`;
+}
+function refreshInstallCard(){
+ const slot=document.getElementById("installSlot");if(!slot)return;
+ slot.innerHTML=installCard();
+ const on=document.getElementById("instOn");
+ if(on)on.onclick=async()=>{const e=INSTALL_EVT;if(!e)return;INSTALL_EVT=null;e.prompt();try{await e.userChoice}catch(_){}refreshInstallCard()};
+ const lt=document.getElementById("instLater");
+ if(lt)lt.onclick=()=>{P.installLater=Date.now()+3*864e5;save();refreshInstallCard()};
+}
+
 /* ---------- notifications sur le téléphone (OneSignal) ---------- */
 const ONESIGNAL_ID=(CONFIG.ONESIGNAL_APP_ID||"").trim();
 const isIOS=/iPad|iPhone|iPod/.test(navigator.userAgent)||(navigator.platform==="MacIntel"&&navigator.maxTouchPoints>1);
@@ -710,10 +734,9 @@ function pushState(){
 }
 function pushCard(){
  const s=pushState(),later=P.pushLater&&Date.now()<P.pushLater;
- if(["off","on","unsupported"].includes(s)||later)return"";
+ if(["off","on","unsupported","ios-install"].includes(s)||later)return"";
  const body={
   ask:`<b>Active les notifications</b><span>Pour ne rater aucun défi et garder ta série.</span>`,
-  "ios-install":`<b>Sur iPhone, installe d'abord l'appli</b><span>Touche <i>Partager</i> ${I.share} puis « Sur l'écran d'accueil ». Ouvre ensuite Cacao Quest depuis l'icône pour activer les notifications.</span>`,
   denied:`<b>Notifications bloquées</b><span>Réactive-les dans les réglages du téléphone (Notifications), ou dans les réglages du site si tu utilises Chrome.</span>`
  }[s];
  return `<div class="pushc"><span class="pbell">${I.bell}</span><span class="ptx">${body}</span><span class="pbtns">
